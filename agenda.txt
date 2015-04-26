@@ -5,4 +5,12 @@ Hacer los prácticos:
 
 
 Pushiate los prácticos:
-	
+	...
+
+Documentar la página de donde sacamos Glut
+
+Recordar que las librerias estan en el versionado pero pueden conflictuar entre nosotros.
+
+Ver las cosas de prog dura que podemos pararelizar:
+	Lectura de archivos?
+	Guardar el estado a un archivo? 
