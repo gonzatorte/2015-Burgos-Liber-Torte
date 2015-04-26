@@ -1,0 +1,8 @@
+
+Hacer los prácticos:
+	Ver que cosas dejamos en el gitignore.
+
+
+
+Pushiate los prácticos:
+	
