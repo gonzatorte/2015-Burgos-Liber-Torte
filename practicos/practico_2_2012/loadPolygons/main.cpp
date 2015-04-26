@@ -1,3 +1,4 @@
+#include <windows.h>
 #ifdef __cplusplus
     #include <cstdlib>
 #else
@@ -7,6 +8,71 @@
 #include <SDL/SDL.h>
 #include "SDL/SDL_opengl.h"
 
+#include<iostream>
+#include<stdlib.h>
+#include <GL/glut.h>
+
+float angle = 0.0f;
+
+void MyRendering() {
+    // Reset the back buffer
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+angle = angle + 0.1f;
+    if (angle >= 360.0f) {
+        angle = 0.0f;
+    }
+    //glRotatef(angle, 0.0f, 1.0f, 1.0f);
+
+
+    // Drawing - on the back buffer
+    //glPushMatrix();
+    glTranslatef(0, 0, -6);
+    glRotatef(angle, 0, 1, 0);
+    glTranslatef(0, 0, 6);
+
+    glTranslatef(0, 0, -6);
+
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_FRONT);
+    glFrontFace(GL_CW);
+    glPolygonMode(GL_FRONT, GL_FILL);
+
+    glBegin(GL_TRIANGLES);
+        glColor3f(1,0,0);
+        glVertex3f(0,1,0);
+        glColor3f(0,0,1);
+        glVertex3f(1,-1,1);
+        glColor3f(0,1,0);
+        glVertex3f(-1,-1,1);
+    glEnd();
+    glBegin(GL_TRIANGLES);
+        glColor3f(1,0,0);
+        glVertex3f(0,1,0);
+        glColor3f(0,0,1);
+        glVertex3f(1,-1,1);
+        glColor3f(0,1,0);
+        glVertex3f(1,-1,-1);
+    glEnd();
+    glBegin(GL_TRIANGLES);
+        glColor3f(1,0,0);
+        glVertex3f(0,1,0);
+        glColor3f(0,1,0);
+        glVertex3f(1,-1,-1);
+        glColor3f(0,0,1);
+        glVertex3f(-1,-1,-1);
+    glEnd();
+    glBegin(GL_TRIANGLES);
+        glColor3f(1,0,0);
+        glVertex3f(0,1,0);
+        glColor3f(0,0,1);
+        glVertex3f(-1,-1,-1);
+        glColor3f(0,1,0);
+        glVertex3f(-1,-1,1);
+    glEnd();
+    // Swap the back buffer with the front buffer
+    //SwapBuffers();
+}
 int main ( int argc, char** argv )
 {
     // initialize SDL video
@@ -20,8 +86,8 @@ int main ( int argc, char** argv )
     atexit(SDL_Quit);
 
     // create a new window
-    SDL_Surface* screen = SDL_SetVideoMode(640, 480, 16,
-                                           SDL_HWSURFACE|SDL_DOUBLEBUF);
+    SDL_Surface* screen = SDL_SetVideoMode(640, 480, 32,
+                                           SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_OPENGL);
     if ( !screen )
     {
         printf("Unable to set 640x480 video: %s\n", SDL_GetError());
@@ -44,13 +110,19 @@ int main ( int argc, char** argv )
     glClearColor(0, 0, 0, 1);
     gluPerspective(45, 640/480.f, 0.1, 100);
     glMatrixMode(GL_MODELVIEW);
+
+
+
+
     // program main loop
     bool done = false;
     while (!done)
     {
+
+        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        //glLoadIdentity();
         // message processing loop
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
+
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
@@ -74,8 +146,13 @@ int main ( int argc, char** argv )
         } // end of message processing
 
         // DRAWING STARTS HERE
+
+        // DRAWING ENDS HERE
+
+        MyRendering();
+        // finally, update the screen :)
+
         SDL_GL_SwapBuffers();
-        // clear screen
     } // end main loop
 
     // free loaded bitmap
