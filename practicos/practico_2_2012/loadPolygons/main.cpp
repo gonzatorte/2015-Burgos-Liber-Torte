@@ -32,11 +32,10 @@ angle = angle + 0.1f;
     glTranslatef(0, 0, 6);
 
     glTranslatef(0, 0, -6);
-
-    //glEnable(GL_CULL_FACE);
-    //glCullFace(GL_FRONT);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
     glFrontFace(GL_CW);
-    glPolygonMode(GL_FRONT, GL_FILL);
+    //glPolygonMode(GL_FRONT, GL_FILL);
 
     glBegin(GL_TRIANGLES);
         glColor3f(1,0,0);
