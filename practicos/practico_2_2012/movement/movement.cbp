@@ -13,7 +13,17 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="../../../SDL-devel-1.2.15-mingw32/SDL-1.2.15/include" />
+					<Add directory="../../../freeglut-MinGW-3.0.0-1.mp/freeglut/include" />
 				</Compiler>
+				<Linker>
+					<Add library="..\..\..\opengl\deCodeBlocks\lib\libglaux.a" />
+					<Add library="..\..\..\opengl\deCodeBlocks\lib\libglu32.a" />
+					<Add library="..\..\..\opengl\deCodeBlocks\lib\libopengl32.a" />
+					<Add library="..\..\..\freeglut-MinGW-3.0.0-1.mp\freeglut\lib\libfreeglut.a" />
+					<Add library="..\..\..\freeglut-MinGW-3.0.0-1.mp\freeglut\lib\libfreeglut_static.a" />
+					<Add directory="../../../SDL-devel-1.2.15-mingw32/SDL-1.2.15/lib" />
+				</Linker>
 			</Target>
 		</Build>
 		<Compiler>

@@ -7,26 +7,32 @@
 
 #include <SDL/SDL.h>
 #include "SDL/SDL_opengl.h"
-
-#include<iostream>
-#include<stdlib.h>
 #include <GL/glut.h>
 
-float angle = 0.0f;
+#include <ctime>
+#include <iostream>
+#include <stdlib.h>
+
+float frencuency = 0.5; // En hertz, vel angular
+float fps = 10;
+int sleep_time = (int)(1/float(fps));
+float angle_per_frame = (frencuency/fps);
+float angle = 0;
+
+time_t tstart, tend;
 
 void MyRendering() {
     // Reset the back buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    angle = angle + 0.1f;
+    angle = angle + angle_per_frame;
     if (angle >= 360.0f) {
-        angle = 0.0f;
+        angle = angle_per_frame;
     }
     glRotatef(angle, 0.0f, 0.0f, 1.0f);
 
     // Drawing - on the back buffer
-
     glPushMatrix();
     glBegin(GL_TRIANGLES);
     glVertex3f(-1.5,1,-6);
@@ -42,10 +48,8 @@ void MyRendering() {
     glVertex3f(-0.5,-1,-6);
     glPopMatrix();
     glEnd();
-
-    // Swap the back buffer with the front buffer
-    //SwapBuffers();
 }
+
 int main ( int argc, char** argv )
 {
     // initialize SDL video
@@ -84,17 +88,11 @@ int main ( int argc, char** argv )
     gluPerspective(45, 640/480.f, 0.1, 100);
     glMatrixMode(GL_MODELVIEW);
 
-
-
-
     // program main loop
     bool done = false;
     while (!done)
     {
-
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //glLoadIdentity();
-        // message processing loop
+        tstart = time(0);
 
         SDL_Event event;
         while (SDL_PollEvent(&event))
@@ -126,6 +124,10 @@ int main ( int argc, char** argv )
         // finally, update the screen :)
 
         SDL_GL_SwapBuffers();
+
+        tend = time(0);
+        // sleep_time - (tend - tstart)
+        Sleep(sleep_time);
     } // end main loop
 
     // free loaded bitmap

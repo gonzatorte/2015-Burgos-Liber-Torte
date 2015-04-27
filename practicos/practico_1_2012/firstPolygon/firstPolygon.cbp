@@ -13,7 +13,15 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="../../../SDL-devel-1.2.15-mingw32/SDL-1.2.15/include" />
 				</Compiler>
+				<Linker>
+					<Add library="..\..\..\opengl\deCodeBlocks\lib\libglaux.a" />
+					<Add library="..\..\..\opengl\deCodeBlocks\lib\libglu32.a" />
+					<Add library="..\..\..\opengl\deCodeBlocks\lib\libopengl32.a" />
+					<Add directory="../../../SDL-devel-1.2.15-mingw32/SDL-1.2.15/lib" />
+					<Add directory="C:/Program Files (x86)/CodeBlocks/MinGW/lib" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/firstPolygon" prefix_auto="1" extension_auto="1" />
@@ -42,6 +50,7 @@
 			<Add library="dxguid" />
 			<Add directory="C:/Program Files (x86)/CodeBlocks/SDL/lib" />
 		</Linker>
+		<Unit filename="SDL.dll" />
 		<Unit filename="cb.bmp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
