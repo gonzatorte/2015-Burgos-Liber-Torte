@@ -10,7 +10,7 @@
 
 #include<iostream>
 #include<stdlib.h>
-#include <GL/glut.h>
+
 
 float angle = 0.0f;
 
@@ -103,7 +103,8 @@ int main ( int argc, char** argv )
     glClearColor(0, 0, 0, 1);
     gluPerspective(45, 640/480.f, 0.1, 100);
     glMatrixMode(GL_MODELVIEW);
-
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
 
 
 

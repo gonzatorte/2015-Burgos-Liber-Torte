@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1430076379 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\practicos\practico_2_2012\movement\main.cpp
+1430165812 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\practicos\practico_2_2012\movement\main.cpp
 	<windows.h>
 	<cstdlib>
 	<stdlib.h>
@@ -7,7 +7,6 @@
 	"SDL/SDL_opengl.h"
 	<iostream>
 	<stdlib.h>
-	<GL/glut.h>
 
 1325735040 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl.h
 	"SDL_main.h"

@@ -10,7 +10,6 @@
 
 #include<iostream>
 #include<stdlib.h>
-#include <GL/glut.h>
 
 float angle = 0.0f;
 
@@ -32,9 +31,11 @@ angle = angle + 0.1f;
     glTranslatef(0, 0, 6);
 
     glTranslatef(0, 0, -6);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
-    glFrontFace(GL_CW);
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_FRONT);
+    //glFrontFace(GL_CW);
     //glPolygonMode(GL_FRONT, GL_FILL);
 
     glBegin(GL_TRIANGLES);
