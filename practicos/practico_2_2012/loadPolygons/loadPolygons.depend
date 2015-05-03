@@ -1,13 +1,18 @@
 # depslib dependency file v1.0
-1430077284 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\practicos\practico_2_2012\loadpolygons\main.cpp
+1430271735 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\practicos\practico_2_2012\loadpolygons\main.cpp
 	<windows.h>
-	<cstdlib>
-	<stdlib.h>
-	<SDL/SDL.h>
-	"SDL/SDL_opengl.h"
+	<stdio.h>
+	<math.h>
 	<iostream>
-	<stdlib.h>
-	<GL/glut.h>
+	<GL/freeglut.h>
+	<GL/glu.h>
+	<cstdlib>
+	<vector>
+	<string>
+	<algorithm>
+	<fstream>
+	<cstdio>
+	<Vfw.h>
 
 1325735040 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl.h
 	"SDL_main.h"
