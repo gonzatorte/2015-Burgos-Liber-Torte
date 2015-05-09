@@ -18,6 +18,8 @@ Building::Building()
 
 void Building::drawFigure() {
 
+    glTranslatef(this->getPosition()->getX(), this->getPosition()->getY(), this->getPosition()->getZ());
+
     glColor3f(1.0f, 1.0f, 1.0f);
 
 // Draw Body
