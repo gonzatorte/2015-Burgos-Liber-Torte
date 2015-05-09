@@ -7,6 +7,7 @@ class Constants
 {
     public:
         static const float dt;
+        static const int BALLRADIUS;
     protected:
     private:
 };

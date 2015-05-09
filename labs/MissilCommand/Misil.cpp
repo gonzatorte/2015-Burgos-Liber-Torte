@@ -9,6 +9,8 @@
 #include <SDL/SDL.h>
 #include "SDL/SDL_opengl.h"
 #include "Figure.h"
+#include "Constants.h"
+#include <GL/freeglut.h>
 
 Misil::Misil()
 {
@@ -17,14 +19,9 @@ Misil::Misil()
 
 void Misil::drawFigure() {
 
-    glBegin(GL_TRIANGLES);           // Begin drawing the pyramid with 4 triangles
-      glVertex3f(-1.5, 1, -6);
-      glColor3f(1.0, 0.0, 0.0);
-      glVertex3f(-2.5,-1,-6);
-      glColor3f(0.0, 0.0, 1.0);
-      glVertex3f(-0.5,-1,-6);
-      glColor3f(0.0, 1.0, 0.0);
-    glEnd();   // Done drawing the pyramid
+    glColor3f(1.0f,0.0f,0.0f);
+    glTranslatef(this->getPosition()->getX(), this->getPosition()->getY(), this->getPosition()->getZ());
+    glutSolidSphere(Constants::BALLRADIUS,50,50);
 }
 
 void Misil::moveFigure() {

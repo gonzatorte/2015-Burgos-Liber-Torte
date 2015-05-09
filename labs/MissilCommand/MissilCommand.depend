@@ -1,23 +1,25 @@
 # depslib dependency file v1.0
-1430366148 source:c:\users\liber azambuya\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\constants.cpp
-	"Constants.h"
-
-1430366062 c:\users\liber azambuya\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\constants.h
-
-1430367715 source:c:\users\liber azambuya\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\figure.cpp
-	"Figure.h"
+1431195025 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\building.cpp
+	"Building.h"
+	<windows.h>
+	<cstdlib>
+	<stdlib.h>
 	<SDL/SDL.h>
 	"SDL/SDL_opengl.h"
-	"Vector.h"
-	"Constants.h"
+	"Figure.h"
+	<GL/freeglut.h>
 
-1430365384 c:\users\liber azambuya\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\figure.h
+1431195240 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\building.h
+	<iostream>
+	"Figure.h"
+
+1431127291 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\figure.h
 	<iostream>
 	"Vector.h"
 
-1430367609 c:\users\liber azambuya\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\vector.h
+1431127291 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\vector.h
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl.h
 	"SDL_main.h"
 	"SDL_stdinc.h"
 	"SDL_audio.h"
@@ -36,14 +38,14 @@
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_main.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_main.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_stdinc.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_stdinc.h
 	"SDL_config.h"
 	<sys/types.h>
 	<stdio.h>
@@ -69,7 +71,7 @@
 	<stdlib.h>
 	"close_code.h"
 
-1326107387 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_config.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_config.h
 	"SDL_platform.h"
 	"SDL_config_dreamcast.h"
 	"SDL_config_macos.h"
@@ -79,16 +81,16 @@
 	"SDL_config_os2.h"
 	"SDL_config_minimal.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_platform.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_platform.h
 
-1326107394 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_config_win32.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_config_win32.h
 	"SDL_platform.h"
 
-1326107400 c:\program files (x86)\codeblocks\sdl\include\sdl\begin_code.h
+1431208972 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\begin_code.h
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\close_code.h
+1431208972 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\close_code.h
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_audio.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_audio.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_endian.h"
@@ -98,24 +100,24 @@
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_error.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_error.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_endian.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_endian.h
 	"SDL_stdinc.h"
 	<endian.h>
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_mutex.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_mutex.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_thread.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_thread.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_mutex.h"
@@ -123,24 +125,24 @@
 	<process.h>
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_rwops.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_rwops.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_cdrom.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_cdrom.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_cpuinfo.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_cpuinfo.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_events.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_events.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_active.h"
@@ -151,63 +153,63 @@
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_active.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_active.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_keyboard.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_keyboard.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_keysym.h"
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_keysym.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_keysym.h
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_mouse.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_mouse.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_video.h"
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_video.h
+1431208972 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_video.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_rwops.h"
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_joystick.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_joystick.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_quit.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_quit.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_loadso.h
-	"SDL_stdinc.h"
-	"SDL_error.h"
-	"begin_code.h"
-	"close_code.h"
-
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_timer.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_loadso.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_version.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1431208972 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_version.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1325735039 c:\program files (x86)\codeblocks\sdl\include\sdl\sdl_opengl.h
+1431208971 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_opengl.h
 	"SDL_config.h"
 	<windows.h>
 	<OpenGL/gl.h>
@@ -219,7 +221,29 @@
 	<windows.h>
 	<stddef.h>
 
-1431130037 source:c:\users\liber azambuya\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\main.cpp
+1431207639 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\camera.cpp
+	"Camera.h"
+
+1431204280 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\camera.h
+	<math.h>
+	<GL/glu.h>
+	<GL/freeglut.h>
+	"Vector.h"
+	<iostream>
+
+1431207206 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\constants.cpp
+	"Constants.h"
+
+1431207206 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\constants.h
+
+1431127291 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\figure.cpp
+	"Figure.h"
+	<SDL/SDL.h>
+	"SDL/SDL_opengl.h"
+	"Vector.h"
+	"Constants.h"
+
+1431209286 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\main.cpp
 	<windows.h>
 	<stdio.h>
 	<math.h>
@@ -235,13 +259,7 @@
 	<Vfw.h>
 	"Camera.h"
 
-1430687383 c:\users\liber azambuya\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\camera.h
-	<math.h>
-	<GL/glu.h>
-	"Vector.h"
-	<iostream>
-
-1430362550 source:c:\users\liber azambuya\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\misil.cpp
+1431207206 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\misil.cpp
 	"Misil.h"
 	<windows.h>
 	<cstdlib>
@@ -249,11 +267,13 @@
 	<SDL/SDL.h>
 	"SDL/SDL_opengl.h"
 	"Figure.h"
+	"Constants.h"
+	<GL/freeglut.h>
 
-1430361613 c:\users\liber azambuya\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\misil.h
+1431127291 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\misil.h
 	<iostream>
 	"Figure.h"
 
-1430686784 source:c:\users\liber azambuya\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\vector.cpp
+1431127291 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\vector.cpp
 	"Vector.h"
 

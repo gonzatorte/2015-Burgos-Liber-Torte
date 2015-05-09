@@ -117,10 +117,10 @@ if (button == GLUT_LEFT_BUTTON) {
 
 // when the button is released
 if (state == GLUT_UP) {
-            camera->endMove();
+//            camera->endMove();
 }
 else  {// state = GLUT_DOWN
-camera->startMove(x,y);
+//camera->startMove(x,y);
 }
 }
 }

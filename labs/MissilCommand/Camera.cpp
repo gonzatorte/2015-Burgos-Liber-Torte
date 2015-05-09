@@ -60,6 +60,7 @@ void Camera::moveCam(int x, int y) {
     }
     if(yAngle > M_PI / 8) {
       yAngle = M_PI / 8;
+
     }
 
     float lookAtX = sinf(xAngle) * cosf(yAngle);
