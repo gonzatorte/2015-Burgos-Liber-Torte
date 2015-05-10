@@ -28,7 +28,7 @@ float deltaMove = 0;
 int cant_pelotas = 36;
 int cant_snowman = 36;
 
-Misil* bolas[36];
+Misil* bolas[37];
 Building* buildings[36];
 
 bool hay_bolas = false;
@@ -59,6 +59,20 @@ void addBalls() {
         bola->setVelocity(initVelocity);
         bolas[i] = bola;
     }
+
+    Misil* bala = new Misil();
+        Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
+        bala->setAcceleration(initAccel);
+
+        Vector* initPosition = new Vector(camera->getPosition()->getX()+1, camera->getPosition()->getY()-1, camera->getPosition()->getZ());
+        bala->setPosition(initPosition);
+
+        Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*100,
+                                          (camera->getPoint()->getY() - camera->getPosition()->getY())*100,
+                                          (camera->getPoint()->getZ() - camera->getPosition()->getZ())*100);
+        bala->setVelocity(initVelocity);
+    bolas[36] = bala;
+
     hay_bolas = true;
 }
 
@@ -83,7 +97,7 @@ void addSnowmans() {
 }
 
 void drawBalls() {
-    for (int i=0; i<cant_pelotas; i++){
+    for (int i=0; i<cant_pelotas + 1; i++){
 		glPushMatrix();
 			bolas[i]->drawFigure();
 			//glutSolidCube(6);
@@ -132,7 +146,7 @@ glMatrixMode(GL_MODELVIEW);
 
 void ballDisplacement() {
 
-    for (int i=0; i<cant_pelotas; i++){
+    for (int i=0; i<cant_pelotas+1; i++){
 	 Vector* Ygravity = new Vector(0, 0, 0);
 
 	 bolas[i]->eulerIntegrate();
@@ -238,6 +252,9 @@ glutInitWindowPosition(100,100);
 glutInitWindowSize(320,320);
 glutCreateWindow("Lighthouse3D - GLUT Tutorial");
 
+// balas
+
+// balas
 
 addSnowmans();
 // register callbacks
