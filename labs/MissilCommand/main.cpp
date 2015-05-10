@@ -16,6 +16,8 @@
 #include "Camera.h"
 #include "Misil.h"
 #include "Building.h"
+#include "Bullet.h"
+#include <list>
 using namespace std;
 
 #define PI	3.14159265358979323846
@@ -28,39 +30,82 @@ float deltaMove = 0;
 int cant_pelotas = 36;
 int cant_snowman = 36;
 
-Misil* bolas[37];
-Building* buildings[36];
+list<Misil*> bolas;
+list<Building*> buildings;
+list<Bullet*> bullets;
 
 bool hay_bolas = false;
 
 void detectCollisions(){
-    for (int i=0; i<cant_pelotas; i++){
-            int a = bolas[i]->getPosition()->getX() - buildings[i]->getPosition()->getX();
-            int b = bolas[i]->getPosition()->getY() - buildings[i]->getPosition()->getY();
-            int c = bolas[i]->getPosition()->getZ() - buildings[i]->getPosition()->getZ();
-            if (-2.5f < a && a < 2.5f && -2.5f < b && b < 2.5f && -2.5f < c && c < 2.5f){
+    list<Misil*>::iterator it = bolas.begin();
+    list<Building*>::iterator itB = buildings.begin();
+
+    float a;
+    float b;
+    float c;
+    bool delete_bola;
+    while (it!=bolas.end()){
+            delete_bola = false;
+            float x_b = (*it)->getPosition()->getX();
+            float x_diff = x_b - (*itB)->getPosition()->getX();
+            float y_b = (*it)->getPosition()->getY();
+            float y_diff = y_b - (*itB)->getPosition()->getY();
+            float z_b = (*it)->getPosition()->getZ();
+            float z_diff = z_b - (*itB)->getPosition()->getZ();
+            if (fabs(x_diff) < 2.0f && fabs(y_diff) < 2.0f && fabs(z_diff) < 2.0f){
                 Vector* initVelocity = new Vector(0 ,0 ,0.0);
-                bolas[i]->setVelocity(initVelocity);
+                (*it)->setVelocity(initVelocity);
             }
+            list<Bullet*>::iterator itBullet = bullets.begin();
+            while(itBullet!=bullets.end()){
+                        a = x_b - (*itBullet)->getPosition()->getX();
+                        b = y_b - (*itBullet)->getPosition()->getY();
+                        c = z_b - (*itBullet)->getPosition()->getZ();
+                        if (fabs(a) < 0.7f && fabs(b) < 0.7f && fabs(c) < 0.7f){
+                            Vector* initVelocity = new Vector(0 ,0 ,0.0);
+                            (*it)->setVelocity(initVelocity);
+                            (*itBullet)->setVelocity(initVelocity);
+                            //delete *itBullet;
+                            //itBullet = bullets.erase(itBullet);
+                            //delete_bola = true;
+                            //break;
+                        }
+                        //else
+                        ++itBullet;
+            }
+            //if (delete_bola){
+            //    delete *it;
+            //bolas.erase(it++);
+            //}
+            //else{
+                ++it;
+            //}
+            ++itB;
     }
 }
 
 void addBalls() {
-
+    list<Building*>::iterator itB = buildings.begin();
     for (int i=0; i<cant_pelotas; i++){
         Misil* bola = new Misil();
         Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
         bola->setAcceleration(initAccel);
 
-        Vector* initPosition = new Vector(buildings[i]->getPosition()->getX(), buildings[i]->getPosition()->getY() + 30, buildings[i]->getPosition()->getZ());
+        Vector* initPosition = new Vector((*itB)->getPosition()->getX(), (*itB)->getPosition()->getY() + 30, (*itB)->getPosition()->getZ());
         bola->setPosition(initPosition);
 
         Vector* initVelocity = new Vector(0 ,-6.0 ,0.0);
         bola->setVelocity(initVelocity);
-        bolas[i] = bola;
+        bolas.push_back(bola);
+        ++itB;
     }
 
-    Misil* bala = new Misil();
+
+    hay_bolas = true;
+}
+
+void addBullet(){
+    Bullet* bala = new Bullet();
         Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
         bala->setAcceleration(initAccel);
 
@@ -71,14 +116,12 @@ void addBalls() {
                                           (camera->getPoint()->getY() - camera->getPosition()->getY())*100,
                                           (camera->getPoint()->getZ() - camera->getPosition()->getZ())*100);
         bala->setVelocity(initVelocity);
-    bolas[36] = bala;
+    bullets.push_back(bala);
 
-    hay_bolas = true;
 }
 
 
 void addSnowmans() {
-    int n = 0;
     for(int i = -3; i < 3; i++)
         for(int j=-3; j < 3; j++) {
             Building* snowman = new Building();
@@ -91,24 +134,38 @@ void addSnowmans() {
             Vector* initVelocity = new Vector(0 , 0 ,0.0);
             snowman->setVelocity(initVelocity);
 
-            buildings[n] = snowman;
-            n++;
+            buildings.push_back(snowman);
         }
 }
 
 void drawBalls() {
-    for (int i=0; i<cant_pelotas + 1; i++){
+    list<Misil*>::iterator it;
+    for (it=bolas.begin(); it!=bolas.end(); ++it){
 		glPushMatrix();
-			bolas[i]->drawFigure();
+            (*it)->drawFigure();
+			//bolas[i]->drawFigure();
+			//glutSolidCube(6);
+		glPopMatrix();
+    }
+}
+
+void drawBullets() {
+    list<Bullet*>::iterator it;
+    for (it=bullets.begin(); it!=bullets.end(); ++it){
+		glPushMatrix();
+            (*it)->drawFigure();
+			//bolas[i]->drawFigure();
 			//glutSolidCube(6);
 		glPopMatrix();
     }
 }
 
 void drawSnowmans() {
-    for (int i=0; i<cant_pelotas; i++){
+    list<Building*>::iterator it;
+    for (it=buildings.begin(); it!=buildings.end(); ++it){
 		glPushMatrix();
-			buildings[i]->drawFigure();
+			(*it)->drawFigure();
+			//buildings[i]->drawFigure();
 		glPopMatrix();
     }
 }
@@ -146,14 +203,26 @@ glMatrixMode(GL_MODELVIEW);
 
 void ballDisplacement() {
 
-    for (int i=0; i<cant_pelotas+1; i++){
+    list<Misil*>::iterator it;
+    for (it=bolas.begin(); it!=bolas.end(); ++it){
 	 Vector* Ygravity = new Vector(0, 0, 0);
 
-	 bolas[i]->eulerIntegrate();
+	 (*it)->eulerIntegrate();
 
-	 Vector* velocity = bolas[i]->getVelocity(); // Save old velocity
+	 Vector* velocity = (*it)->getVelocity(); // Save old velocity
 
-	 bolas[i]->setVelocity(velocity); // Save new velocity
+	 (*it)->setVelocity(velocity); // Save new velocity
+    }
+
+    list<Bullet*>::iterator itB;
+    for (itB=bullets.begin(); itB!=bullets.end(); ++itB){
+	 Vector* Ygravity = new Vector(0, 0, 0);
+
+	 (*itB)->eulerIntegrate();
+
+	 Vector* velocity = (*itB)->getVelocity(); // Save old velocity
+
+	 (*itB)->setVelocity(velocity); // Save new velocity
     }
 
 	glutPostRedisplay();
@@ -182,11 +251,11 @@ glEnd();
 
 
 drawSnowmans();
-if (hay_bolas){
-    ballDisplacement();
-    detectCollisions();
-    drawBalls();
-}
+drawBullets();
+ballDisplacement();
+detectCollisions();
+drawBalls();
+
 
 
 
@@ -241,6 +310,9 @@ void keyboard (unsigned char key, int x, int y) {
 	if (key=='b') {
 		addBalls();
 	}
+	if (key==32) { // space bar
+		addBullet();
+	}
 }
 
 int main(int argc, char **argv) {
@@ -275,6 +347,8 @@ glutSetCursor(GLUT_CURSOR_NONE);
 
 // OpenGL init
 glEnable(GL_DEPTH_TEST);
+glEnable(GL_BLEND);
+
 
 // enter GLUT event processing cycle
 glutMainLoop();

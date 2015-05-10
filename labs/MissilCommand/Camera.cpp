@@ -55,11 +55,11 @@ void Camera::moveCam(int x, int y) {
     } else if(xAngle > M_PI) {
       xAngle -= M_PI * 2;
     }
-    if(yAngle < -M_PI / 16) {
-      yAngle = -M_PI / 16;
+    if(yAngle < -M_PI / 124) {
+      yAngle = -M_PI / 124;
     }
-    if(yAngle > M_PI / 8) {
-      yAngle = M_PI / 8;
+    if(yAngle > M_PI / 2) {
+      yAngle = M_PI / 2;
 
     }
 

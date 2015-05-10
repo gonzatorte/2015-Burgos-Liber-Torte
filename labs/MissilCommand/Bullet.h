@@ -1,16 +1,16 @@
-#ifndef MISIL_H
-#define MISIL_H
+#ifndef BULLET_H
+#define BULLET_H
 
 #include <iostream>
 #include "Figure.h"
 
 using namespace std;
 
-class Misil: public Figure
+class Bullet: public Figure
 {
     public:
-        Misil();
-        ~Misil();
+        Bullet();
+        ~Bullet();
         void drawFigure();
         void moveFigure();
         void set_y(int y);
@@ -20,4 +20,4 @@ class Misil: public Figure
     private:
 };
 
-#endif // MISIL_H
+#endif // BULLET_H
