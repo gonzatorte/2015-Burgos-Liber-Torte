@@ -22,16 +22,6 @@ Camera* camera = new Camera(new Vector(0.0f,1.0f,5.0f), new Vector(0.0f,1.0f,4.0
 float deltaAngle = 0.0f;
 float deltaAngleYY = 0.0f;
 float deltaMove = 0;
-//int xOrigin = -1;
-//int yOrigin = -1;
-// angle of rotation for the camera direction
-//float angle=0.0;
-//float angleY=0.0;
-// actual vector representing the camera's direction
-//float lx=0.0f,lz=-1.0f;
-//float ly = 0.0f;
-// XZ position of the camera
-//float x=0.0f,z=5.0f,y=1.0f;
 
 
 void processNormalKeys(unsigned char key, int x, int y) {
@@ -174,7 +164,8 @@ glutSpecialUpFunc(releaseKey);
 
 // here are the two new functions
 glutMouseFunc(mouseButton);
-glutMotionFunc(mouseMove);
+glutPassiveMotionFunc(mouseMove);
+glutSetCursor(GLUT_CURSOR_NONE);
 
 // OpenGL init
 glEnable(GL_DEPTH_TEST);
