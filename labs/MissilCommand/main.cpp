@@ -22,13 +22,13 @@ using namespace std;
 
 #define PI	3.14159265358979323846
 #define MAXOBJECTS	200
-Camera* camera = new Camera(new Vector(0.0f,1.0f,5.0f), new Vector(0.0f,1.0f,4.0f));
+Camera* camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
 float deltaAngle = 0.0f;
 float deltaAngleYY = 0.0f;
 float deltaMove = 0;
 
-int cant_pelotas = 36;
-int cant_snowman = 36;
+int cant_pelotas = 8;
+int cant_snowman = 8;
 
 list<Misil*> bolas;
 list<Building*> buildings;
@@ -38,66 +38,85 @@ bool hay_bolas = false;
 
 void detectCollisions(){
     list<Misil*>::iterator it = bolas.begin();
-    list<Building*>::iterator itB = buildings.begin();
+
 
     float a;
     float b;
     float c;
+    float x_b;
+    float x_diff;
+    float y_b;
+    float y_diff;
+    float z_b;
+    float z_diff;
     bool delete_bola;
+    bool delete_building;
     while (it!=bolas.end()){
             delete_bola = false;
-            float x_b = (*it)->getPosition()->getX();
-            float x_diff = x_b - (*itB)->getPosition()->getX();
-            float y_b = (*it)->getPosition()->getY();
-            float y_diff = y_b - (*itB)->getPosition()->getY();
-            float z_b = (*it)->getPosition()->getZ();
-            float z_diff = z_b - (*itB)->getPosition()->getZ();
-            if (fabs(x_diff) < 2.0f && fabs(y_diff) < 2.0f && fabs(z_diff) < 2.0f){
-                Vector* initVelocity = new Vector(0 ,0 ,0.0);
-                (*it)->setVelocity(initVelocity);
+            delete_building = false;
+            x_b = (*it)->getPosition()->getX();
+            y_b = (*it)->getPosition()->getY();
+            z_b = (*it)->getPosition()->getZ();
+            list<Building*>::iterator itB = buildings.begin();
+            while(itB!=buildings.end()){
+                x_diff = x_b - (*itB)->getPosition()->getX();
+                y_diff = y_b - (*itB)->getPosition()->getY();
+                z_diff = z_b - (*itB)->getPosition()->getZ();
+                if (fabs(x_diff) < 2.0f && fabs(y_diff) < 2.0f && fabs(z_diff) < 2.0f){
+                    Vector* initVelocity = new Vector(0 ,0 ,0.0);
+                    (*it)->setVelocity(initVelocity);
+                    itB = buildings.erase(itB);
+                    delete_bola = true;
+                }
+                else
+                    ++itB;
             }
-            list<Bullet*>::iterator itBullet = bullets.begin();
-            while(itBullet!=bullets.end()){
-                        a = x_b - (*itBullet)->getPosition()->getX();
-                        b = y_b - (*itBullet)->getPosition()->getY();
-                        c = z_b - (*itBullet)->getPosition()->getZ();
-                        if (fabs(a) < 0.7f && fabs(b) < 0.7f && fabs(c) < 0.7f){
-                            Vector* initVelocity = new Vector(0 ,0 ,0.0);
-                            (*it)->setVelocity(initVelocity);
-                            (*itBullet)->setVelocity(initVelocity);
-                            //delete *itBullet;
-                            //itBullet = bullets.erase(itBullet);
-                            //delete_bola = true;
-                            //break;
-                        }
-                        //else
-                        ++itBullet;
+            if (!delete_bola){
+                list<Bullet*>::iterator itBullet = bullets.begin();
+                while(itBullet!=bullets.end()){
+                            a = x_b - (*itBullet)->getPosition()->getX();
+                            b = y_b - (*itBullet)->getPosition()->getY();
+                            c = z_b - (*itBullet)->getPosition()->getZ();
+                            if (fabs(a) < 1 && fabs(b) < 1 && fabs(c) < 1){
+                                Vector* initVelocity = new Vector(0 ,0 ,0.0);
+                                (*it)->setVelocity(initVelocity);
+                                (*itBullet)->setVelocity(initVelocity);
+                                itBullet = bullets.erase(itBullet);
+                                delete_bola = true;
+                                break;
+                            }
+                            else
+                                ++itBullet;
+                }
             }
-            //if (delete_bola){
-            //    delete *it;
-            //bolas.erase(it++);
-            //}
-            //else{
+            if (delete_bola){
+                it = bolas.erase(it);
+            }
+            else{
                 ++it;
-            //}
-            ++itB;
+            }
     }
 }
 
 void addBalls() {
     list<Building*>::iterator itB = buildings.begin();
-    for (int i=0; i<cant_pelotas; i++){
+    int i = -1;
+    while(itB!=buildings.end()){
         Misil* bola = new Misil();
         Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
         bola->setAcceleration(initAccel);
-
-        Vector* initPosition = new Vector((*itB)->getPosition()->getX(), (*itB)->getPosition()->getY() + 30, (*itB)->getPosition()->getZ());
+        float rand_x = (*itB)->getPosition()->getX() + (rand() % 30) * i;
+        float rand_z = (*itB)->getPosition()->getZ() + (rand() % 30) * i;
+        float y = 35.0;
+        Vector* initPosition = new Vector(rand_x, 35, rand_z);
         bola->setPosition(initPosition);
 
-        Vector* initVelocity = new Vector(0 ,-6.0 ,0.0);
+        Vector* initVelocity = new Vector((*itB)->getPosition()->getX()/25 - rand_x/25, (*itB)->getPosition()->getY()/25 - y/25
+                                          ,(*itB)->getPosition()->getZ()/25 - rand_z/25);
         bola->setVelocity(initVelocity);
         bolas.push_back(bola);
         ++itB;
+        i = i * -1;
     }
 
 
@@ -112,9 +131,9 @@ void addBullet(){
         Vector* initPosition = new Vector(camera->getPosition()->getX()+1, camera->getPosition()->getY()-1, camera->getPosition()->getZ());
         bala->setPosition(initPosition);
 
-        Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*100,
-                                          (camera->getPoint()->getY() - camera->getPosition()->getY())*100,
-                                          (camera->getPoint()->getZ() - camera->getPosition()->getZ())*100);
+        Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*600,
+                                          (camera->getPoint()->getY() - camera->getPosition()->getY())*600,
+                                          (camera->getPoint()->getZ() - camera->getPosition()->getZ())*600);
         bala->setVelocity(initVelocity);
     bullets.push_back(bala);
 
@@ -122,20 +141,27 @@ void addBullet(){
 
 
 void addSnowmans() {
-    for(int i = -3; i < 3; i++)
+    int n = cant_snowman;
+    for(int i = -3; i < 3; i++){
         for(int j=-3; j < 3; j++) {
             Building* snowman = new Building();
             Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
             snowman->setAcceleration(initAccel);
 
-            Vector* initPosition = new Vector(i*10.0,0,j * 10.0);
+            Vector* initPosition = new Vector(i*5.0,0,j * 5.0);
             snowman->setPosition(initPosition);
 
             Vector* initVelocity = new Vector(0 , 0 ,0.0);
             snowman->setVelocity(initVelocity);
 
             buildings.push_back(snowman);
+            n--;
+            if (n==0)
+                break;
         }
+        if (n==0)
+            break;
+    }
 }
 
 void drawBalls() {
@@ -324,9 +350,6 @@ glutInitWindowPosition(100,100);
 glutInitWindowSize(320,320);
 glutCreateWindow("Lighthouse3D - GLUT Tutorial");
 
-// balas
-
-// balas
 
 addSnowmans();
 // register callbacks
