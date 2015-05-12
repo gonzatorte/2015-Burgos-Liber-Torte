@@ -63,10 +63,11 @@ void detectCollisions(){
                 y_diff = y_b - (*itB)->getPosition()->getY();
                 z_diff = z_b - (*itB)->getPosition()->getZ();
                 if (fabs(x_diff) < 2.0f && fabs(y_diff) < 2.0f && fabs(z_diff) < 2.0f){
-                    Vector* initVelocity = new Vector(0 ,0 ,0.0);
-                    (*it)->setVelocity(initVelocity);
+                    //Vector* initVelocity = new Vector(0 ,0 ,0.0);
+                    //(*it)->setVelocity(initVelocity);
                     itB = buildings.erase(itB);
                     delete_bola = true;
+                    break;
                 }
                 else
                     ++itB;
@@ -78,9 +79,9 @@ void detectCollisions(){
                             b = y_b - (*itBullet)->getPosition()->getY();
                             c = z_b - (*itBullet)->getPosition()->getZ();
                             if (fabs(a) < 1 && fabs(b) < 1 && fabs(c) < 1){
-                                Vector* initVelocity = new Vector(0 ,0 ,0.0);
-                                (*it)->setVelocity(initVelocity);
-                                (*itBullet)->setVelocity(initVelocity);
+                                //Vector* initVelocity = new Vector(0 ,0 ,0.0);
+                                //(*it)->setVelocity(initVelocity);
+                                //(*itBullet)->setVelocity(initVelocity);
                                 itBullet = bullets.erase(itBullet);
                                 delete_bola = true;
                                 break;
