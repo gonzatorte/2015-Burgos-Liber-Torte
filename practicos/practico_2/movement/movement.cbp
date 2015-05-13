@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="movement" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/movement" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="../../../SDL-devel-1.2.15-mingw32/SDL-1.2.15/include" />
+					<Add directory="../../../freeglut-MinGW-3.0.0-1.mp/freeglut/include" />
+					<Add directory="../../../SDL-devel-1.2.15-mingw32/SDL-1.2.15/include/SDL" />
+					<Add directory="../../../SDL_ttf-2.0.11/SDL_ttf-2.0.11" />
+				</Compiler>
+				<Linker>
+					<Add library="..\..\..\opengl\deCodeBlocks\lib\libglaux.a" />
+					<Add library="..\..\..\opengl\deCodeBlocks\lib\libglu32.a" />
+					<Add library="..\..\..\opengl\deCodeBlocks\lib\libopengl32.a" />
+					<Add library="..\..\..\freeglut-MinGW-3.0.0-1.mp\freeglut\lib\libfreeglut.a" />
+					<Add library="..\..\..\freeglut-MinGW-3.0.0-1.mp\freeglut\lib\libfreeglut_static.a" />
+					<Add directory="../../../SDL-devel-1.2.15-mingw32/SDL-1.2.15/lib" />
+					<Add directory="../../../SDL_ttf-2.0.11/SDL_ttf-2.0.11/.libs" />
+					<Add directory="../../../SDL_ttf-2.0.11-win32-x64" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="C:/Program Files (x86)/CodeBlocks/SDL/include" />
+		</Compiler>
+		<Linker>
+			<Add library="mingw32" />
+			<Add library="SDLmain" />
+			<Add library="SDL.dll" />
+			<Add library="user32" />
+			<Add library="gdi32" />
+			<Add library="winmm" />
+			<Add library="dxguid" />
+			<Add directory="C:/Program Files (x86)/CodeBlocks/SDL/lib" />
+		</Linker>
+		<Unit filename="cb.bmp" />
+		<Unit filename="loader3ds.cpp" />
+		<Unit filename="loader3ds.hpp" />
+		<Unit filename="loader3ds_sample_use.cpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="samples.cpp" />
+		<Unit filename="utils.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,27 +1,30 @@
-
 #include <windows.h>
-#include <stdio.h>
-#include <math.h>
-#include <iostream>
-#include <GL/freeglut.h>
-#include <GL/glu.h>
-
+#include <cstdio>
+#include <cmath>
 #include <cstdlib>
+
 #include <vector>
 #include <string>
 #include <algorithm>
 #include <fstream>
-#include <cstdio>
+#include <iostream>
+#include <list>
+
+#include <GL/freeglut.h>
+#include <GL/glu.h>
+
 #include <Vfw.h>
+
 #include "Camera.h"
 #include "Misil.h"
 #include "Building.h"
 #include "Bullet.h"
-#include <list>
-using namespace std;
 
 #define PI	3.14159265358979323846
 #define MAXOBJECTS	200
+
+using namespace std;
+
 Camera* camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
 float deltaAngle = 0.0f;
 float deltaAngleYY = 0.0f;
@@ -36,9 +39,9 @@ list<Bullet*> bullets;
 
 bool hay_bolas = false;
 
-void detectCollisions(){
+void detectCollisions()
+{
     list<Misil*>::iterator it = bolas.begin();
-
 
     float a;
     float b;
@@ -51,58 +54,68 @@ void detectCollisions(){
     float z_diff;
     bool delete_bola;
     bool delete_building;
-    while (it!=bolas.end()){
-            delete_bola = false;
-            delete_building = false;
-            x_b = (*it)->getPosition()->getX();
-            y_b = (*it)->getPosition()->getY();
-            z_b = (*it)->getPosition()->getZ();
-            list<Building*>::iterator itB = buildings.begin();
-            while(itB!=buildings.end()){
-                x_diff = x_b - (*itB)->getPosition()->getX();
-                y_diff = y_b - (*itB)->getPosition()->getY();
-                z_diff = z_b - (*itB)->getPosition()->getZ();
-                if (fabs(x_diff) < 2.0f && fabs(y_diff) < 2.0f && fabs(z_diff) < 2.0f){
+    while (it!=bolas.end())
+    {
+        delete_bola = false;
+        delete_building = false;
+        x_b = (*it)->getPosition()->getX();
+        y_b = (*it)->getPosition()->getY();
+        z_b = (*it)->getPosition()->getZ();
+        list<Building*>::iterator itB = buildings.begin();
+        while(itB!=buildings.end())
+        {
+            x_diff = x_b - (*itB)->getPosition()->getX();
+            y_diff = y_b - (*itB)->getPosition()->getY();
+            z_diff = z_b - (*itB)->getPosition()->getZ();
+            if (fabs(x_diff) < 2.0f && fabs(y_diff) < 2.0f && fabs(z_diff) < 2.0f)
+            {
+                //Vector* initVelocity = new Vector(0 ,0 ,0.0);
+                //(*it)->setVelocity(initVelocity);
+                itB = buildings.erase(itB);
+                delete_bola = true;
+                break;
+            }
+            else
+                ++itB;
+        }
+        if (!delete_bola)
+        {
+            list<Bullet*>::iterator itBullet = bullets.begin();
+            while(itBullet!=bullets.end())
+            {
+                a = x_b - (*itBullet)->getPosition()->getX();
+                b = y_b - (*itBullet)->getPosition()->getY();
+                c = z_b - (*itBullet)->getPosition()->getZ();
+                if (fabs(a) < 1 && fabs(b) < 1 && fabs(c) < 1)
+                {
                     //Vector* initVelocity = new Vector(0 ,0 ,0.0);
                     //(*it)->setVelocity(initVelocity);
-                    itB = buildings.erase(itB);
+                    //(*itBullet)->setVelocity(initVelocity);
+                    itBullet = bullets.erase(itBullet);
                     delete_bola = true;
                     break;
                 }
                 else
-                    ++itB;
+                    ++itBullet;
             }
-            if (!delete_bola){
-                list<Bullet*>::iterator itBullet = bullets.begin();
-                while(itBullet!=bullets.end()){
-                            a = x_b - (*itBullet)->getPosition()->getX();
-                            b = y_b - (*itBullet)->getPosition()->getY();
-                            c = z_b - (*itBullet)->getPosition()->getZ();
-                            if (fabs(a) < 1 && fabs(b) < 1 && fabs(c) < 1){
-                                //Vector* initVelocity = new Vector(0 ,0 ,0.0);
-                                //(*it)->setVelocity(initVelocity);
-                                //(*itBullet)->setVelocity(initVelocity);
-                                itBullet = bullets.erase(itBullet);
-                                delete_bola = true;
-                                break;
-                            }
-                            else
-                                ++itBullet;
-                }
-            }
-            if (delete_bola){
-                it = bolas.erase(it);
-            }
-            else{
-                ++it;
-            }
+        }
+        if (delete_bola)
+        {
+            it = bolas.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
     }
 }
 
-void addBalls() {
+void addBalls()
+{
     list<Building*>::iterator itB = buildings.begin();
     int i = -1;
-    while(itB!=buildings.end()){
+    while(itB!=buildings.end())
+    {
         Misil* bola = new Misil();
         Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
         bola->setAcceleration(initAccel);
@@ -120,31 +133,32 @@ void addBalls() {
         i = i * -1;
     }
 
-
     hay_bolas = true;
 }
 
-void addBullet(){
+void addBullet()
+{
     Bullet* bala = new Bullet();
-        Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
-        bala->setAcceleration(initAccel);
+    Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
+    bala->setAcceleration(initAccel);
 
-        Vector* initPosition = new Vector(camera->getPosition()->getX()+1, camera->getPosition()->getY()-1, camera->getPosition()->getZ());
-        bala->setPosition(initPosition);
+    Vector* initPosition = new Vector(camera->getPosition()->getX()+1, camera->getPosition()->getY()-1, camera->getPosition()->getZ());
+    bala->setPosition(initPosition);
 
-        Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*600,
-                                          (camera->getPoint()->getY() - camera->getPosition()->getY())*600,
-                                          (camera->getPoint()->getZ() - camera->getPosition()->getZ())*600);
-        bala->setVelocity(initVelocity);
+    Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*600,
+                                      (camera->getPoint()->getY() - camera->getPosition()->getY())*600,
+                                      (camera->getPoint()->getZ() - camera->getPosition()->getZ())*600);
+    bala->setVelocity(initVelocity);
     bullets.push_back(bala);
-
 }
 
-
-void addSnowmans() {
+void addSnowmans()
+{
     int n = cant_snowman;
-    for(int i = -3; i < 3; i++){
-        for(int j=-3; j < 3; j++) {
+    for(int i = -3; i < 3; i++)
+    {
+        for(int j=-3; j < 3; j++)
+        {
             Building* snowman = new Building();
             Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
             snowman->setAcceleration(initAccel);
@@ -165,217 +179,247 @@ void addSnowmans() {
     }
 }
 
-void drawBalls() {
+void drawBalls()
+{
     list<Misil*>::iterator it;
-    for (it=bolas.begin(); it!=bolas.end(); ++it){
-		glPushMatrix();
-            (*it)->drawFigure();
-			//bolas[i]->drawFigure();
-			//glutSolidCube(6);
-		glPopMatrix();
+    for (it=bolas.begin(); it!=bolas.end(); ++it)
+    {
+        glPushMatrix();
+        (*it)->drawFigure();
+        //bolas[i]->drawFigure();
+        //glutSolidCube(6);
+        glPopMatrix();
     }
 }
 
-void drawBullets() {
+void drawBullets()
+{
     list<Bullet*>::iterator it;
-    for (it=bullets.begin(); it!=bullets.end(); ++it){
-		glPushMatrix();
-            (*it)->drawFigure();
-			//bolas[i]->drawFigure();
-			//glutSolidCube(6);
-		glPopMatrix();
+    for (it=bullets.begin(); it!=bullets.end(); ++it)
+    {
+        glPushMatrix();
+        (*it)->drawFigure();
+        //bolas[i]->drawFigure();
+        //glutSolidCube(6);
+        glPopMatrix();
     }
 }
 
-void drawSnowmans() {
+void drawSnowmans()
+{
     list<Building*>::iterator it;
-    for (it=buildings.begin(); it!=buildings.end(); ++it){
-		glPushMatrix();
-			(*it)->drawFigure();
-			//buildings[i]->drawFigure();
-		glPopMatrix();
+    for (it=buildings.begin(); it!=buildings.end(); ++it)
+    {
+        glPushMatrix();
+        (*it)->drawFigure();
+        //buildings[i]->drawFigure();
+        glPopMatrix();
     }
 }
 
-void processNormalKeys(unsigned char key, int x, int y) {
+void processNormalKeys(unsigned char key, int x, int y)
+{
 
-if (key == 27)
-exit(0);
+    if (key == 27)
+        exit(0);
 }
 
-void changeSize(int w, int h) {
-
+void changeSize(int w, int h)
+{
 // Prevent a divide by zero, when window is too short
 // (you cant make a window of zero width).
-if(h == 0)
-h = 1;
-float ratio = 1.0* w / h;
+    if(h == 0)
+        h = 1;
+    float ratio = 1.0* w / h;
 
 // Use the Projection Matrix
-glMatrixMode(GL_PROJECTION);
+    glMatrixMode(GL_PROJECTION);
 
-        // Reset Matrix
-glLoadIdentity();
+    // Reset Matrix
+    glLoadIdentity();
 
 // Set the viewport to be the entire window
-glViewport(0, 0, w, h);
+    glViewport(0, 0, w, h);
 
 // Set the correct perspective.
-gluPerspective(45,ratio,1,1000);
+    gluPerspective(45,ratio,1,1000);
 
 // Get Back to the Modelview
-glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
 }
 
-
-void ballDisplacement() {
-
+void ballDisplacement()
+{
     list<Misil*>::iterator it;
-    for (it=bolas.begin(); it!=bolas.end(); ++it){
-	 Vector* Ygravity = new Vector(0, 0, 0);
+    for (it=bolas.begin(); it!=bolas.end(); ++it)
+    {
+        Vector* Ygravity = new Vector(0, 0, 0);
 
-	 (*it)->eulerIntegrate();
+        (*it)->eulerIntegrate();
 
-	 Vector* velocity = (*it)->getVelocity(); // Save old velocity
+        Vector* velocity = (*it)->getVelocity(); // Save old velocity
 
-	 (*it)->setVelocity(velocity); // Save new velocity
+        (*it)->setVelocity(velocity); // Save new velocity
     }
 
     list<Bullet*>::iterator itB;
-    for (itB=bullets.begin(); itB!=bullets.end(); ++itB){
-	 Vector* Ygravity = new Vector(0, 0, 0);
+    for (itB=bullets.begin(); itB!=bullets.end(); ++itB)
+    {
+        Vector* Ygravity = new Vector(0, 0, 0);
 
-	 (*itB)->eulerIntegrate();
+        (*itB)->eulerIntegrate();
 
-	 Vector* velocity = (*itB)->getVelocity(); // Save old velocity
+        Vector* velocity = (*itB)->getVelocity(); // Save old velocity
 
-	 (*itB)->setVelocity(velocity); // Save new velocity
+        (*itB)->setVelocity(velocity); // Save new velocity
     }
 
-	glutPostRedisplay();
+    glutPostRedisplay();
 }
 
+void renderScene()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-void renderScene() {
+    glLoadIdentity();
 
-// Clear Color and Depth Buffers
+    camera->setLookAt();
 
-glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // Draw ground
+    glColor3f(0.8f, 0.8f, 0.8f);
+    glBegin(GL_QUADS);
+    glVertex3f(-100.0f, 0.0f, -100.0f);
+    glVertex3f(-100.0f, 0.0f,  100.0f);
+    glVertex3f( 100.0f, 0.0f,  100.0f);
+    glVertex3f( 100.0f, 0.0f, -100.0f);
+    glEnd();
 
-// Reset transformations
-glLoadIdentity();
-// Set the camera
-camera->setLookAt();
+    glColor3f(0, 0, 1);
+    glBegin(GL_QUADS);
+    glVertex3f(-100.0f,  0.0f, -100.0f);
+    glVertex3f(-100.0f,  0.0f,  100.0f);
+    glVertex3f(-100.0f, 50.0f,  100.0f);
+    glVertex3f(-100.0f, 50.0f, -100.0f);
+    glEnd();
 
-        // Draw ground
-glColor3f(0.9f, 0.9f, 0.9f);
-glBegin(GL_QUADS);
-glVertex3f(-100.0f, 0.0f, -100.0f);
-glVertex3f(-100.0f, 0.0f,  100.0f);
-glVertex3f( 100.0f, 0.0f,  100.0f);
-glVertex3f( 100.0f, 0.0f, -100.0f);
-glEnd();
+    glColor3f(0, 1, 0);
+    glBegin(GL_QUADS);
+    glVertex3f(-100.0f, 50.0f, 100.0f);
+    glVertex3f( 100.0f, 50.0f, 100.0f);
+    glVertex3f( 100.0f,  0.0f, 100.0f);
+    glVertex3f(-100.0f,  0.0f, 100.0f);
+    glEnd();
 
+    drawSnowmans();
+    drawBullets();
+    ballDisplacement();
+    detectCollisions();
+    drawBalls();
 
-drawSnowmans();
-drawBullets();
-ballDisplacement();
-detectCollisions();
-drawBalls();
-
-
-
-
-glutSwapBuffers();
+    glutSwapBuffers();
 }
 
-void mouseButton(int button, int state, int x, int y) {
-
+void mouseButton(int button, int state, int x, int y)
+{
 // only start motion if the left button is pressed
-if (button == GLUT_LEFT_BUTTON) {
-
+    if (button == GLUT_LEFT_BUTTON)
+    {
 // when the button is released
-if (state == GLUT_UP) {
+        if (state == GLUT_UP)
+        {
 //            camera->endMove();
-}
-else  {// state = GLUT_DOWN
-//camera->startMove(x,y);
-}
-}
+        }
+        else   // state = GLUT_DOWN
+        {
+//            camera->startMove(x,y);
+        }
+    }
 }
 
-void mouseMove(int x, int y) {
-
+void mouseMove(int x, int y)
+{
     camera->moveCam(x,y);
 }
 
-
-
-void pressKey(int key, int xx, int yy) {
-
-switch (key) {
-case GLUT_KEY_LEFT : deltaAngle += -0.01f; break;
-case GLUT_KEY_RIGHT : deltaAngle += 0.01f; break;
-case GLUT_KEY_UP : deltaMove += 0.5f; break;
-case GLUT_KEY_DOWN : deltaMove += -0.5f; break;
-}
-}
-
-void releaseKey(int key, int x, int y) {
-
-switch (key) {
-case GLUT_KEY_LEFT : deltaAngle -= -0.01f; break;
-case GLUT_KEY_RIGHT : deltaAngle -= 0.01f; break;
-case GLUT_KEY_UP : deltaMove -= 0.5f; break;
-case GLUT_KEY_DOWN : deltaMove -= -0.5f; break;
-}
+void pressKey(int key, int xx, int yy)
+{
+    switch (key)
+    {
+    case GLUT_KEY_LEFT :
+        deltaAngle += -0.01f;
+        break;
+    case GLUT_KEY_RIGHT :
+        deltaAngle += 0.01f;
+        break;
+    case GLUT_KEY_UP :
+        deltaMove += 0.5f;
+        break;
+    case GLUT_KEY_DOWN :
+        deltaMove += -0.5f;
+        break;
+    }
 }
 
-
-void keyboard (unsigned char key, int x, int y) {
-
-	if (key=='b') {
-		addBalls();
-	}
-	if (key==32) { // space bar
-		addBullet();
-	}
+void releaseKey(int key, int x, int y)
+{
+    switch (key)
+    {
+    case GLUT_KEY_LEFT :
+        deltaAngle -= -0.01f;
+        break;
+    case GLUT_KEY_RIGHT :
+        deltaAngle -= 0.01f;
+        break;
+    case GLUT_KEY_UP :
+        deltaMove -= 0.5f;
+        break;
+    case GLUT_KEY_DOWN :
+        deltaMove -= -0.5f;
+        break;
+    }
 }
 
-int main(int argc, char **argv) {
+void keyboard (unsigned char key, int x, int y)
+{
+    if (key=='b')
+    {
+        addBalls();
+    }
+    if (key==32)   // space bar
+    {
+        addBullet();
+    }
+}
 
-// init GLUT and create window
-glutInit(&argc, argv);
-glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-glutInitWindowPosition(100,100);
-glutInitWindowSize(320,320);
-glutCreateWindow("Lighthouse3D - GLUT Tutorial");
+int main(int argc, char **argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+    glutInitWindowPosition(100,100);
+    glutInitWindowSize(320,320);
+    glutCreateWindow("MissilCommander");
 
+    addSnowmans();
 
-addSnowmans();
-// register callbacks
-glutDisplayFunc(renderScene);
-glutReshapeFunc(changeSize);
-glutIdleFunc(renderScene);
+    glutDisplayFunc(renderScene);
+    glutReshapeFunc(changeSize);
+    glutIdleFunc(renderScene);
 
-glutIgnoreKeyRepeat(1);
-glutKeyboardFunc(processNormalKeys);
-glutKeyboardFunc(keyboard);
-glutSpecialFunc(pressKey);
-glutSpecialUpFunc(releaseKey);
+    glutIgnoreKeyRepeat(1);
+    glutKeyboardFunc(processNormalKeys);
+    glutKeyboardFunc(keyboard);
+    glutSpecialFunc(pressKey);
+    glutSpecialUpFunc(releaseKey);
 
-// here are the two new functions
-glutMouseFunc(mouseButton);
-glutPassiveMotionFunc(mouseMove);
-glutSetCursor(GLUT_CURSOR_NONE);
+    glutMouseFunc(mouseButton);
+    glutPassiveMotionFunc(mouseMove);
+    glutSetCursor(GLUT_CURSOR_NONE);
 
-// OpenGL init
-glEnable(GL_DEPTH_TEST);
-glEnable(GL_BLEND);
-
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
 
 // enter GLUT event processing cycle
-glutMainLoop();
+    glutMainLoop();
 
-return 1;
+    return 1;
 }

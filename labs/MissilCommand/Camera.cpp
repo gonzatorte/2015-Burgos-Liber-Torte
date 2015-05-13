@@ -22,66 +22,80 @@ Camera::Camera(Vector* position, Vector* point)
     isValidEvent = false;
 }
 
-Vector* Camera::getPosition() {
+Vector* Camera::getPosition()
+{
     return position;
 }
 
-Vector* Camera::getPoint() {
+Vector* Camera::getPoint()
+{
     return point;
 }
 
-void Camera::setPosition(Vector* position) {
+void Camera::setPosition(Vector* position)
+{
     this->position = position;
 }
 
-void Camera::setPoint(Vector* point) {
+void Camera::setPoint(Vector* point)
+{
     this->point = point;
 }
 
-void Camera::moveCam(int x, int y) {
+void Camera::moveCam(int x, int y)
+{
 
-  if(!isValidEvent) {
+    if(!isValidEvent)
+    {
 
-    int centerX = glutGet(GLUT_WINDOW_WIDTH) / 2;
-    int centerY = glutGet(GLUT_WINDOW_HEIGHT) / 2;
-    int dx = x - centerX;
-    int dy = y - centerY;
-    // Do something with dx and dy here
-    xAngle += dx * mouseSpeed;
-    yAngle += dy * mouseSpeed;
+        int centerX = glutGet(GLUT_WINDOW_WIDTH) / 2;
+        int centerY = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+        int dx = x - centerX;
+        int dy = y - centerY;
+        // Do something with dx and dy here
+        xAngle += dx * mouseSpeed;
+        yAngle += dy * mouseSpeed;
 
-    if(xAngle < -M_PI) {
-      xAngle += M_PI * 2;
-    } else if(xAngle > M_PI) {
-      xAngle -= M_PI * 2;
+        if(xAngle < -M_PI)
+        {
+            xAngle += M_PI * 2;
+        }
+        else if(xAngle > M_PI)
+        {
+            xAngle -= M_PI * 2;
+        }
+        if(yAngle < -M_PI / 124)
+        {
+            yAngle = -M_PI / 124;
+        }
+        if(yAngle > M_PI / 2)
+        {
+            yAngle = M_PI / 2;
+
+        }
+
+        float lookAtX = sinf(xAngle) * cosf(yAngle);
+        float lookAtY = sinf(yAngle);
+        float lookAtZ = cosf(xAngle) * cosf(yAngle);
+        point->setX(position->getX() + lookAtX);
+        point->setY(position->getY() + lookAtY);
+        point->setZ(position->getZ() + lookAtZ);
+        // move mouse pointer back to the center of the window
+        isValidEvent = true;
+        glutWarpPointer(centerX, centerY);
     }
-    if(yAngle < -M_PI / 124) {
-      yAngle = -M_PI / 124;
+    else
+    {
+        isValidEvent = false;
     }
-    if(yAngle > M_PI / 2) {
-      yAngle = M_PI / 2;
-
-    }
-
-    float lookAtX = sinf(xAngle) * cosf(yAngle);
-    float lookAtY = sinf(yAngle);
-    float lookAtZ = cosf(xAngle) * cosf(yAngle);
-    point->setX(position->getX() + lookAtX);
-    point->setY(position->getY() + lookAtY);
-    point->setZ(position->getZ() + lookAtZ);
-    // move mouse pointer back to the center of the window
-    isValidEvent = true;
-    glutWarpPointer(centerX, centerY);
-  } else {
-    isValidEvent = false;
-  }
 
 }
 
-void Camera::setLookAt() {
+void Camera::setLookAt()
+{
     gluLookAt(position->getX(), position->getY(), position->getZ(),
-            point->getX(), point->getY(),  point->getZ(),
-			0.0f, 1.0f,  0.0f);
+              point->getX(), point->getY(),  point->getZ(),
+              0.0f, 1.0f,  0.0f);
 }
 
 Camera::~Camera()

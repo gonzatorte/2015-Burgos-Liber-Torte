@@ -1,16 +1,13 @@
-#include "Misil.h"
 #include <windows.h>
-#ifdef __cplusplus
-    #include <cstdlib>
-#else
-    #include <stdlib.h>
-#endif
+#include <cstdlib>
 
 #include <SDL/SDL.h>
 #include "SDL/SDL_opengl.h"
 #include "Figure.h"
 #include "Constants.h"
 #include <GL/freeglut.h>
+
+#include "Misil.h"
 
 Misil::Misil()
 {
