@@ -161,21 +161,21 @@ class Game{
         glRotatef(angle, 1, 0, 0);
 //        glScalef(sin(angle), sin(angle), 1);
 //        glScalef(angle/(360.0), angle/(360.0), 1);
-        glScalef(1.0/6, 1.0/6, 1);
+//        glScalef(1.0/6, 1.0/6, 1);
 
-//        glEnable(GL_TEXTURE_2D);
-//        glPushMatrix();
-//
-//        glBegin(GL_TRIANGLES);
-//        glTexCoord2d(1, 1);
-//        glVertex3f(-1.5,2,-6);
-//        glTexCoord2d(1, 0);
-//        glVertex3f(-2.5,-1,-6);
-//        glTexCoord2d(0, 0);
-//        glVertex3f(-0.5,-1,-6);
-//        glEnd();
-//
-//        glDisable(GL_TEXTURE_2D);
+        glEnable(GL_TEXTURE_2D);
+        glPushMatrix();
+
+        glBegin(GL_TRIANGLES);
+        glTexCoord2d(1, 1);
+        glVertex3f(-1.5,2,-6);
+        glTexCoord2d(1, 0);
+        glVertex3f(-2.5,-1,-6);
+        glTexCoord2d(0, 0);
+        glVertex3f(-0.5,-1,-6);
+        glEnd();
+
+        glDisable(GL_TEXTURE_2D);
 
         glBegin(GL_TRIANGLES);
         glVertex3f(-1.1,2,-1);
@@ -183,7 +183,7 @@ class Game{
         glVertex3f(-1.5,-1,-2);
         glEnd();
 
-        render_text();
+//        render_text();
 
         for(unsigned int i=0;i<this->model1.polygons_qty;i++){
             glBegin(GL_TRIANGLES);
