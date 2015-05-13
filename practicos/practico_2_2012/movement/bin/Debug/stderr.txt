@@ -1,0 +1,1 @@
+freeglut  ERROR:  Function <glutStrokeCharacter> called without first calling 'glutInit'.

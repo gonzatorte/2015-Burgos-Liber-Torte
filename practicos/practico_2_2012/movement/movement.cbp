@@ -15,6 +15,8 @@
 					<Add option="-g" />
 					<Add directory="../../../SDL-devel-1.2.15-mingw32/SDL-1.2.15/include" />
 					<Add directory="../../../freeglut-MinGW-3.0.0-1.mp/freeglut/include" />
+					<Add directory="../../../SDL-devel-1.2.15-mingw32/SDL-1.2.15/include/SDL" />
+					<Add directory="../../../SDL_ttf-2.0.11/SDL_ttf-2.0.11" />
 				</Compiler>
 				<Linker>
 					<Add library="..\..\..\opengl\deCodeBlocks\lib\libglaux.a" />
@@ -23,6 +25,8 @@
 					<Add library="..\..\..\freeglut-MinGW-3.0.0-1.mp\freeglut\lib\libfreeglut.a" />
 					<Add library="..\..\..\freeglut-MinGW-3.0.0-1.mp\freeglut\lib\libfreeglut_static.a" />
 					<Add directory="../../../SDL-devel-1.2.15-mingw32/SDL-1.2.15/lib" />
+					<Add directory="../../../SDL_ttf-2.0.11/SDL_ttf-2.0.11/.libs" />
+					<Add directory="../../../SDL_ttf-2.0.11-win32-x64" />
 				</Linker>
 			</Target>
 		</Build>
@@ -41,7 +45,11 @@
 			<Add directory="C:/Program Files (x86)/CodeBlocks/SDL/lib" />
 		</Linker>
 		<Unit filename="cb.bmp" />
+		<Unit filename="loader3ds.cpp" />
+		<Unit filename="loader3ds.hpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="samples.cpp" />
+		<Unit filename="utils.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

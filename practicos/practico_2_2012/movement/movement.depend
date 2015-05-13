@@ -211,16 +211,18 @@
 	<windows.h>
 	<stddef.h>
 
-1430078504 source:c:\users\gonzalo\documents\develop\compgraf\repo\practicos\practico_2_2012\movement\main.cpp
+1431406982 source:c:\users\gonzalo\documents\develop\compgraf\repo\practicos\practico_2_2012\movement\main.cpp
 	<windows.h>
 	<cstdlib>
-	<stdlib.h>
+	<ctime>
+	<cmath>
+	<iostream>
+	<cstdio>
 	<SDL/SDL.h>
+	<SDL_ttf.h>
 	"SDL/SDL_opengl.h"
 	<GL/glut.h>
-	<ctime>
-	<iostream>
-	<stdlib.h>
+	"loader3ds.hpp"
 
 1325735039 c:\users\gonzalo\documents\develop\compgraf\repo\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl.h
 	"SDL_main.h"
@@ -437,4 +439,30 @@
 	<GL/gl.h>
 	<GL/glu.h>
 	<stdlib.h>
+
+1326599048 c:\users\gonzalo\documents\develop\compgraf\repo\sdl-devel-1.2.15-mingw32\sdl-1.2.15\include\sdl\sdl_ttf.h
+	"SDL.h"
+	"begin_code.h"
+	"close_code.h"
+
+1431398261 source:c:\users\gonzalo\documents\develop\compgraf\repo\practicos\practico_2_2012\movement\utils.cpp
+	<windows.h>
+	<cstdlib>
+	<ctime>
+	<cmath>
+	<iostream>
+	<cstdio>
+	<SDL/SDL.h>
+	<SDL_ttf.h>
+	"SDL/SDL_opengl.h"
+	<GL/glut.h>
+
+1431399040 source:c:\users\gonzalo\documents\develop\compgraf\repo\practicos\practico_2_2012\movement\samples.cpp
+
+1431404166 source:c:\users\gonzalo\documents\develop\compgraf\repo\practicos\practico_2_2012\movement\loader3ds.cpp
+	"loader3ds.hpp"
+
+1431404181 c:\users\gonzalo\documents\develop\compgraf\repo\practicos\practico_2_2012\movement\loader3ds.hpp
+	<cstdio>
+	<io.h>
 

@@ -1,18 +1,14 @@
 
-Hacer los prácticos:
-	Ver que cosas dejamos en el gitignore.
-
 Documentar la página de donde sacamos Glut.
-
-Preguntas:
-	Como hacer sin usar faceback culling para que no muestre el fondo de una figura 3D.
-
-Recordar que las librerias estan en el versionado pero pueden conflictuar entre nosotros.
 
 Ver las cosas de prog dura que podemos pararelizar:
 	Lectura de archivos?
 	Guardar el estado a un archivo?
 
+Ver que cosas dejamos en el gitignore.
+Recordar que las librerias estan en el versionado pero pueden conflictuar entre nosotros.
 
-Leer teo de displayList:
-	Lo bajé en el teo...
+Ver si glut permite renderizar texto.
+Si gimp me devuelve imagenes raw para openGL.
+Ver si glTexGen autogenera coordenas (FAQ)
+Hacer mas portable algunas funciones (sleep de windows...)
