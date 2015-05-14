@@ -1,9 +1,5 @@
 #include <windows.h>
-#ifdef __cplusplus
-    #include <cstdlib>
-#else
-    #include <stdlib.h>
-#endif
+#include <cstdlib>
 
 #include <SDL/SDL.h>
 #include "SDL/SDL_opengl.h"
@@ -30,24 +26,48 @@ void MyRendering() {
     if (angle >= 360.0f) {
         angle = angle_per_frame;
     }
-    glRotatef(angle, 0.0f, 0.0f, 1.0f);
+    //glRotatef(angle, 0.0f, 1.0f, 1.0f);
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_BACK);
+    //glFrontFace(GL_CW);
 
     // Drawing - on the back buffer
+    //glPushMatrix();
+    glTranslatef(0, 0, -6);
+    glRotatef(angle, 0, 1, 0);
+    glTranslatef(0, 0, 6);
+    //glPopMatrix();
+
     glPushMatrix();
+    glTranslatef(-1.5, -1, -6);
+    glRotatef(angle, 0, 1, 0);
+    glTranslatef(1.5, 1, 6);
     glBegin(GL_TRIANGLES);
+    glColor3f(0,1,0);
     glVertex3f(-1.5,1,-6);
+    glColor3f(0,0,1);
     glVertex3f(-2.5,-1,-6);
+    glColor3f(1,0,0);
     glVertex3f(-0.5,-1,-6);
+    glClearColor(0,0,0,1);
+    glEnd();
     glPopMatrix();
 // Drawing - on the back buffer
 
     glPushMatrix();
-    glBegin(GL_TRIANGLES);
-    glVertex3f(-1.5,2,-6);
-    glVertex3f(-2.5,-1,-6);
-    glVertex3f(-0.5,-1,-6);
-    glPopMatrix();
+    glColor3f(0, 0.6, 0.9);
+    glTranslatef(1.5, -1, -6);
+    glRotatef(angle, 0, 1, 0);
+    glTranslatef(-1.5, 1, 6);
+    glBegin(GL_QUADS);
+    glVertex3f(0.5,1,-6);
+    glVertex3f(2.5,1,-6);
+    glVertex3f(2.5,-1,-6);
+    glVertex3f(0.5,-1,-6);
     glEnd();
+    glPopMatrix();
+    // Swap the back buffer with the front buffer
+    //SwapBuffers();
 }
 
 int main ( int argc, char** argv )
@@ -87,6 +107,8 @@ int main ( int argc, char** argv )
     glClearColor(0, 0, 0, 1);
     gluPerspective(45, 640/480.f, 0.1, 100);
     glMatrixMode(GL_MODELVIEW);
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
 
     // program main loop
     bool done = false;

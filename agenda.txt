@@ -2,17 +2,5 @@
 Hacer los prácticos:
 	Ver que cosas dejamos en el gitignore.
 
-Documentar la página de donde sacamos Glut.
+Hacer que los proy de grafica sean al menos un poco portables (Constante POSIX o WIN32...)
 
-Preguntas:
-	Como hacer sin usar faceback culling para que no muestre el fondo de una figura 3D.
-
-Recordar que las librerias estan en el versionado pero pueden conflictuar entre nosotros.
-
-Ver las cosas de prog dura que podemos pararelizar:
-	Lectura de archivos?
-	Guardar el estado a un archivo?
-
-
-Leer teo de displayList:
-	Lo bajé en el teo...
