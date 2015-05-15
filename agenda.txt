@@ -2,15 +2,16 @@
 Hacer los prácticos:
 	Ver que cosas dejamos en el gitignore.
 
-
-
-Pushiate los prácticos:
-	...
-
 Documentar la página de donde sacamos Glut
 
-Recordar que las librerias estan en el versionado pero pueden conflictuar entre nosotros.
+Recordar que las librerias estan en el versionado pero pueden conflictuar entre nosotros. (es windows, no lo creo...).
 
-Ver las cosas de prog dura que podemos pararelizar:
-	Lectura de archivos?
-	Guardar el estado a un archivo? 
+Carga de 3ds:
+	http://www.spacesimulator.net/tutorials/3ds_loader_tutorial.html
+	http://assimp.sourceforge.net/main_features.html
+
+Pushiate los prácticos
+Que lean comparta el drive...
+
+Hacer que los proy de grafica sean al menos un poco portables (Constante POSIX o WIN32...)
+
