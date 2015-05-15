@@ -6,6 +6,9 @@
 
 #include <iostream>
 #include <exception>
+#include <string>
+#include <sstream>
+#include <stdexcept>
 
 #include <SDL/SDL.h>
 #include <SDL_ttf.h>
@@ -13,6 +16,7 @@
 #include <GL/glut.h>
 
 #include "loader3ds.hpp"
+#include "utils.hpp"
 
 using namespace std;
 
@@ -41,29 +45,42 @@ class Game{
 
     void setUp_SDL(){
         if ( SDL_Init( SDL_INIT_VIDEO ) < 0 ){
-            throw "Unable to init SDL: %s\n", SDL_GetError();
+            std::stringstream ss;
+            ss << "Unable to inti SDL: " << SDL_GetError();
+            throw std::runtime_error(ss.str().c_str());
+        }
+
+        if (TTF_Init() < 0) {
+            std::stringstream ss;
+            ss << "Unable to inti TTF: " << SDL_GetError();
+            throw std::runtime_error(ss.str().c_str());
         }
 
         atexit(SDL_Quit);
 
         screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_OPENGL);
         if ( !screen ){
-            throw "Unable to set 640x480 video: %s\n", SDL_GetError();
+            std::stringstream ss;
+            ss << "Unable to set video: " << SDL_GetError();
+            throw std::runtime_error(ss.str().c_str());
         }
     }
 
     void setUp_font(){
-//        font = TTF_OpenFont("font.ttf", 16);
-        font = NULL;
+        font = TTF_OpenFont("../../../../rsc/fonts/leadcoat.ttf", 16);
         if (!font){
-            throw "Unable to load font: %s\n", SDL_GetError();
+            std::stringstream ss;
+            ss << "Unable to load font: " << SDL_GetError();
+            throw std::runtime_error(ss.str().c_str());
         }
     }
 
     void setUp_bmp(){
-        bmp = SDL_LoadBMP("cb.bmp");
+        bmp = SDL_LoadBMP("../../../../rsc/textures/symbol_2.bmp");
         if (!bmp){
-            throw "Unable to load bitmap: %s\n", SDL_GetError();
+            std::stringstream ss;
+            ss << "Unable to load bitmap: " << SDL_GetError();
+            throw std::runtime_error(ss.str().c_str());
         }
         // centre the bitmap on screen
         SDL_Rect dstrect;
@@ -91,8 +108,7 @@ class Game{
     }
 
     void setUp_model(){
-//        Load3DS(&model1, "horse.3ds");
-        model1 = Load3DS("cubo.3ds");
+        model1 = Load3DS("../../../../rsc/models/cubo.3ds");
     }
 
     void tearDown_model(){
@@ -110,7 +126,7 @@ class Game{
     void setUp(){
         setUp_SDL();
         setUp_bmp();
-        //setUp_font();
+        setUp_font();
         setUp_textures();
         setUp_model();
         setUp_modelview();
@@ -137,20 +153,6 @@ class Game{
         tearDown_model();
         tearDown_bmp();
         tearDown_SDL();
-    }
-
-    void render_text()
-    {
-        int lenghOfQuote;
-        glRotatef(-20, 1.0, 0.0, 0.0);
-        glScalef(0.1, 0.1, 0.1);
-        char quote [] = "Hola que tal";
-
-        lenghOfQuote = (int)strlen(quote);
-        for (int i = 0; i < lenghOfQuote; i++)
-        {
-            glutStrokeCharacter(GLUT_STROKE_ROMAN, quote[i]);
-        }
     }
 
     void rendering() {
@@ -188,32 +190,35 @@ class Game{
         glVertex3f(-1.5,-1,-2);
         glEnd();
 
-//        render_text();
-
         glEnable(GL_TEXTURE_2D);
         for(unsigned int i=0;i<this->model1->polygons_qty;i++){
             glBegin(GL_TRIANGLES);
             Polygon3DS p = this->model1->polygon[i];
 
             Vertex3DS v = this->model1->vertex[p.a];
-            glTexCoord2f(this->model1->mapcoord[p.a].u,
-                         this->model1->mapcoord[p.a].v);
+            if (this->model1->has_mapcoord)
+                glTexCoord2f(this->model1->mapcoord[p.a].u,
+                             this->model1->mapcoord[p.a].v);
             //ToDo: Sacar el -10 que es un hotfix para que se vea
             glVertex3f(v.x,v.y,v.z-10);
+
             v = this->model1->vertex[p.b];
-            glTexCoord2f(this->model1->mapcoord[p.b].u,
-                         this->model1->mapcoord[p.b].v);
+            if (this->model1->has_mapcoord)
+                glTexCoord2f(this->model1->mapcoord[p.b].u,
+                             this->model1->mapcoord[p.b].v);
             glVertex3f(v.x,v.y,v.z-10);
+
             v = this->model1->vertex[p.c];
-            glTexCoord2f(this->model1->mapcoord[p.c].u,
-                         this->model1->mapcoord[p.c].v);
+            if (this->model1->has_mapcoord)
+                glTexCoord2f(this->model1->mapcoord[p.c].u,
+                             this->model1->mapcoord[p.c].v);
             glVertex3f(v.x,v.y,v.z-10);
             glEnd();
         }
         glDisable(GL_TEXTURE_2D);
 
 //        glPopMatrix();
-        //DrawText(font, "Hola", &(texs[3]));
+        DrawTexto(font, "Hola", &(texs[2]));
     }
 
     bool main_loop(){
@@ -247,8 +252,8 @@ class Game{
 
 int main ( int argc, char** argv )
 {
-    freopen("CON", "w", stdout);
-    freopen("CON", "w", stderr);
+//    freopen("CON", "w", stdout);
+//    freopen("CON", "w", stderr);
     try{
         Game g = Game();
         g.setUp();
@@ -256,14 +261,14 @@ int main ( int argc, char** argv )
         g.tearDown();
         return 0;
     } catch (const char * e) {
-        cout << "An exception occurred. " << e << endl;
+        cout << "An exception occurred 1. " << e << endl;
     } catch (exception & e) {
-        cout << "An exception occurred. " << e.what() << endl;
+        cout << "An exception occurred 2. " << e.what() << endl;
     } catch(...) {
         cout << "default exception";
     }
-    fclose(stdout);
-    fclose(stderr);
+//    fclose(stdout);
+//    fclose(stderr);
 }
 
 
@@ -283,4 +288,5 @@ int test_rendering(){
     glClearColor(0,0,0,1);
     glEnd();
     glPopMatrix();
+    return 0;
 }

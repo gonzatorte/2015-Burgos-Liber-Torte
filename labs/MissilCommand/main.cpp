@@ -219,7 +219,6 @@ void drawSnowmans()
 
 void processNormalKeys(unsigned char key, int x, int y)
 {
-
     if (key == 27)
         exit(0);
 }
@@ -286,7 +285,7 @@ void renderScene()
     camera->setLookAt();
 
     // Draw ground
-    glColor3f(0.8f, 0.8f, 0.8f);
+    glColor3f(0.0f, 0.5f, 0.0f);
     glBegin(GL_QUADS);
     glVertex3f(-100.0f, 0.0f, -100.0f);
     glVertex3f(-100.0f, 0.0f,  100.0f);
@@ -294,6 +293,15 @@ void renderScene()
     glVertex3f( 100.0f, 0.0f, -100.0f);
     glEnd();
 
+    glColor3f(0.5f, 0.0f, 0.5f);
+    glBegin(GL_QUADS);
+    glVertex3f( 100.0f, 50.0f,  100.0f);
+    glVertex3f( 100.0f, 50.0f, -100.0f);
+    glVertex3f(-100.0f, 50.0f, -100.0f);
+    glVertex3f(-100.0f, 50.0f,  100.0f);
+    glEnd();
+
+    // Draw borders
     glColor3f(0, 0, 1);
     glBegin(GL_QUADS);
     glVertex3f(-100.0f,  0.0f, -100.0f);
@@ -302,7 +310,8 @@ void renderScene()
     glVertex3f(-100.0f, 50.0f, -100.0f);
     glEnd();
 
-    glColor3f(0, 1, 0);
+    // Draw borders
+    glColor3f(1, 1, 1);
     glBegin(GL_QUADS);
     glVertex3f(-100.0f, 50.0f, 100.0f);
     glVertex3f( 100.0f, 50.0f, 100.0f);
@@ -310,6 +319,25 @@ void renderScene()
     glVertex3f(-100.0f,  0.0f, 100.0f);
     glEnd();
 
+    // Draw borders
+    glColor3f(1, 0, 0);
+    glBegin(GL_QUADS);
+    glVertex3f(100.0f,  0.0f, 100.0f);
+    glVertex3f(100.0f,  0.0f,-100.0f);
+    glVertex3f(100.0f, 50.0f,-100.0f);
+    glVertex3f(100.0f, 50.0f, 100.0f);
+    glEnd();
+
+    // Draw borders
+    glColor3f(0.5, 0.5, 0.5);
+    glBegin(GL_QUADS);
+    glVertex3f( 100.0f,  0.0f, -100.0f);
+    glVertex3f(-100.0f,  0.0f, -100.0f);
+    glVertex3f(-100.0f, 50.0f, -100.0f);
+    glVertex3f( 100.0f, 50.0f, -100.0f);
+    glEnd();
+
+    addSnowmans();
     drawSnowmans();
     drawBullets();
     ballDisplacement();
@@ -398,8 +426,6 @@ int main(int argc, char **argv)
     glutInitWindowPosition(100,100);
     glutInitWindowSize(320,320);
     glutCreateWindow("MissilCommander");
-
-    addSnowmans();
 
     glutDisplayFunc(renderScene);
     glutReshapeFunc(changeSize);

@@ -11,12 +11,11 @@
 #include "SDL/SDL_opengl.h"
 #include <GL/glut.h>
 
-void DrawText(TTF_Font * font, const char* text, GLuint * texture)
+void DrawTexto(TTF_Font * font, const char* text, GLuint * texture)
 {
     SDL_Color color = {0,0,0};
     SDL_Surface * text_surface;
-//    text_surface = TTF_RenderText_Solid(font, text, color);
-    text_surface = NULL;
+    text_surface = TTF_RenderText_Solid(font, text, color);
     if (text_surface == NULL)
     {
         throw "No pude cargar el texto";

@@ -16,3 +16,20 @@ Refactorear codigo de los gurices antes de que nos pisemos...
 Revisar los DLL que aparecian en los ejemplos de otros anios
 
 Se esta haciendo mucho new y ningun delete
+
+
+
+main(){
+	
+
+	set_up();
+
+	while 1:
+		input()
+		CreateModifMoveInteractObjs()
+		DrawObjs()
+
+
+	tear_down();
+
+}

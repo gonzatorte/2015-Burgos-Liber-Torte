@@ -1,13 +1,15 @@
+#include <SDL/SDL.h>
+#include <SDL_ttf.h>
+#include "SDL/SDL_opengl.h"
+#include <GL/glut.h>
+#include "loader3ds.hpp"
 
-void sample_use(){
+
+void sample_use(Model3D object){
     glBegin(GL_TRIANGLES);
-    for (j=0; j<object.polygons_qty; j++)
+    for (int j=0; j<object.polygons_qty; j++)
     {
         //----------------- FIRST VERTEX -----------------
-        //Normal coordinates of the first vertex
-        glNormal3f( object.normal[ object.polygon[j].a ].x,
-                    object.normal[ object.polygon[j].a ].y,
-                    object.normal[ object.polygon[j].a ].z);
         // Texture coordinates of the first vertex
         glTexCoord2f( object.mapcoord[ object.polygon[j].a ].u,
                       object.mapcoord[ object.polygon[j].a ].v);
@@ -17,10 +19,6 @@ void sample_use(){
                     object.vertex[ object.polygon[j].a ].z);
 
         //----------------- SECOND VERTEX -----------------
-        //Normal coordinates of the second vertex
-        glNormal3f( object.normal[ object.polygon[j].b ].x,
-                    object.normal[ object.polygon[j].b ].y,
-                    object.normal[ object.polygon[j].b ].z);
         // Texture coordinates of the second vertex
         glTexCoord2f( object.mapcoord[ object.polygon[j].b ].u,
                       object.mapcoord[ object.polygon[j].b ].v);
@@ -30,10 +28,6 @@ void sample_use(){
                     object.vertex[ object.polygon[j].b ].z);
 
         //----------------- THIRD VERTEX -----------------
-        //Normal coordinates of the third vertex
-        glNormal3f( object.normal[ object.polygon[j].c ].x,
-                    object.normal[ object.polygon[j].c ].y,
-                    object.normal[ object.polygon[j].c ].z);
         // Texture coordinates of the third vertex
         glTexCoord2f( object.mapcoord[ object.polygon[j].c ].u,
                       object.mapcoord[ object.polygon[j].c ].v);

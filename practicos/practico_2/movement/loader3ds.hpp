@@ -31,6 +31,8 @@ typedef struct {
 
     unsigned int polygons_qty;
     Polygon3DS * polygon;
+
+    bool has_mapcoord = false;
     Mapcoord3DS * mapcoord;
 } Model3D;
 

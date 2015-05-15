@@ -60,7 +60,8 @@ Model3D * Load3DS(const char *p_filename)
             break;
         case 0x4140:
             fread (&l_qty, sizeof (unsigned short), 1, l_file);
-            p_object->polygon = new Polygon3DS[l_qty];
+            p_object->has_mapcoord = (l_qty > 0);
+            p_object->mapcoord = new Mapcoord3DS[l_qty];
             for (i=0; i<l_qty; i++)
             {
                 fread (&p_object->mapcoord[i].u, sizeof (float), 1, l_file);
