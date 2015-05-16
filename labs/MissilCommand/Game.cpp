@@ -56,7 +56,7 @@ Game::Game() {
     score = 0;
     gameOver = false;
     multiplicador = -1;
-    level = 5;
+    level = 1;
     initLevel(level);
 
     //}
