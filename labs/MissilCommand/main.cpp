@@ -25,13 +25,15 @@ using namespace std;
 #define PI	3.14159265358979323846
 #define MAXOBJECTS	200
 Camera* camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
-Game* game = new Game(8,8,20,1,20);
+Game* game = new Game();
 float deltaAngle = 0.0f;
 float deltaAngleYY = 0.0f;
 float deltaMove = 0;
 
 boolean isPaused = false;
 int xPosBeforePause, yPosBeforePause;
+
+
 
 void changeSize(int w, int h) {
 
@@ -66,6 +68,11 @@ void renderScene() {
         }else {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+            if (game->levelCompleted()) {
+                cout << "Pasastes de nivel CAPO!!!";
+                game->levelUp();
+                game->addBuildings();
+            }
 
             game->manageGame();
 

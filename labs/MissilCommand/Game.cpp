@@ -1,63 +1,65 @@
 #include "Game.h"
-int waitForAddMisil;
+
 list<Building*>::iterator itBuildings;
 int multiplicador;
 
 
 //METODOS PRIVADOS
-void initLevel(int level) {
-    //waitForAddMisil = 550 - level*50;
-    waitForAddMisil=1;
+void Game::initLevel(int levelNumber) {
+    Level* level = levels->find(levelNumber)->second;
+    this->maxMisilQuantity = level->getMaxMisilQuantity();
+    this->maxBuildQuantity = level->getMaxBuildQuantity();
+    this->maxBulletQuantity = level->getMaxBulletQuantity();
+    this->simultMisilQuant = level->getSimultMisilQuant();
+    this->misilSpeed = level->getMisilSpeed();
+    this->life = 8;
+    this->misilQuantity = 0;
+    this->bulletQuantity = maxBulletQuantity;
+    this->lastMisilTime = clock();
+    misils = new list<Misil*>();
+    buildings = new list<Building*>();
+    bullets = new list<Bullet*>();
+    //addBuildings();
+
 }
 
-void Game::levelUp() {
-    maxMisilQuantity += 2;
+map<int, Level*>* Game::getLevelsFromSetting(tinyxml2::XMLElement* gameSettings) {
+    map<int, Level*>* levels = new map<int, Level*>();
+    tinyxml2::XMLElement* levelElement;
+    for(levelElement=gameSettings->FirstChildElement("LEVEL"); levelElement; levelElement=levelElement->NextSiblingElement()) {
+
+        int levelNumber = atoi(levelElement->FirstChildElement("LEVEL_NUMBER")->GetText());
+        int misilSpeed = atoi(levelElement->FirstChildElement("MISSILE_SPEED")->GetText());
+        int maxBuildQuantity = atoi(levelElement->FirstChildElement("CANT_BUILDINGS")->GetText());
+        int maxMisilQuantity = atoi(levelElement->FirstChildElement("CANT_MISSILES")->GetText());
+        int simultMisilQuant = atoi(levelElement->FirstChildElement("CANT_SIMULTANEOUS_MISSILES")->GetText());
+        int maxBulletQuantity = atoi(levelElement->FirstChildElement("CANT_BULLETS")->GetText());
+        Level* level = new Level();
+        level->setLevelNumber(levelNumber);
+        level->setMisilSpeed(misilSpeed);
+        level->setMaxBuildQuantity(maxBuildQuantity);
+        level->setMaxMisilQuantity(maxMisilQuantity);
+        level->setSimultMisilQuant(simultMisilQuant);
+        level->setMaxBulletQuantity(maxBulletQuantity);
+        levels->insert(pair<int, Level*>(levelNumber, level));
+    }
+    return levels;
 }
+
 //METODOS PUBLICOS
-Game::Game()
-{
-    //ctor
-}
-
-
-Game::Game(int maxMisilQuantity, int maxBuildQuantity, int maxBulletQuantity, int level, int life) {
-    this->maxMisilQuantity = maxMisilQuantity;
-    this->maxBuildQuantity = maxBuildQuantity;
-    this->maxBulletQuantity = maxBulletQuantity;
-    this->level = level;
-    this->life = life;
+Game::Game() {
+    tinyxml2::XMLDocument settings;
+    settings.LoadFile("settings.xml");
+    //if (loadOK) {
+    tinyxml2::XMLElement* gameSettings = settings.FirstChildElement("GAME");
+    levels = getLevelsFromSetting(gameSettings);
+    score = 0;
     gameOver = false;
-    misilQuantity = 0;
-    buildQuantity = 0;
-    bulletQuantity = 0;
-    misilDestroyCount = 0;
-    initLevel(level);
     multiplicador = -1;
+    level = 5;
+    initLevel(level);
 
-}
-
-void Game::setMaxMisilQuantity(int maxMisilQuantity) {
-    this->maxMisilQuantity=maxMisilQuantity;
-}
-
-void Game::setMaxBuildQuantity(int maxBuildQuantity) {
-    this->maxBuildQuantity=maxBuildQuantity;
-}
-
-void Game::setMaxBulletQuantity(int maxBulletQuantity) {
-    this->maxBulletQuantity=maxBulletQuantity;
-}
-
-int Game::getMaxMisilQuantity() {
-    return maxMisilQuantity;
-}
-
-int Game::getMaxBuildQuantity() {
-    return maxBuildQuantity;
-}
-
-int Game::getMaxBulletQuantity() {
-    return maxBulletQuantity;
+    //}
 }
 
 void Game::decreaseLife() {
@@ -73,8 +75,8 @@ bool Game::isGameOver() {
 
 void Game::addMisil() {
 
-    if (itBuildings == buildings.end()) {
-        itBuildings = buildings.begin();
+    if (itBuildings == buildings->end()) {
+        itBuildings = buildings->begin();
     }
 
     Misil* misil = new Misil();
@@ -89,25 +91,28 @@ void Game::addMisil() {
     misil->setPosition(initPosition);
 
     //Vector* initVelocity = new Vector(0,-0.5,0);
-    Vector* initVelocity = new Vector((*itBuildings)->getPosition()->getX()/25 - rand_x/25, (*itBuildings)->getPosition()->getY()/25 - y/25
-                                      ,(*itBuildings)->getPosition()->getZ()/25 - rand_z/25);
+    Vector* initVelocity = new Vector((*itBuildings)->getPosition()->getX()/misilSpeed - rand_x/misilSpeed, (*itBuildings)->getPosition()->getY()/misilSpeed - y/misilSpeed
+                                      ,(*itBuildings)->getPosition()->getZ()/misilSpeed - rand_z/misilSpeed);
     misil->setVelocity(initVelocity);
-    misils.push_back(misil);
+    misils->push_back(misil);
 
     misilQuantity++;
+    maxMisilQuantity--;
     ++itBuildings;
     multiplicador = multiplicador * -1;
 }
 
 void Game::addBullet(Vector* initPosition, Vector* initVelocity, Vector* initAccel) {
 
-    Bullet* bullet = new Bullet();
-    bullet->setAcceleration(initAccel);
-    bullet->setPosition(initPosition);
-    bullet->setVelocity(initVelocity);
-    bullets.push_back(bullet);
+    if (bulletQuantity > 0) {
+        Bullet* bullet = new Bullet();
+        bullet->setAcceleration(initAccel);
+        bullet->setPosition(initPosition);
+        bullet->setVelocity(initVelocity);
+        bullets->push_back(bullet);
 
-    bulletQuantity++;
+        bulletQuantity--;
+    }
 
 }
 
@@ -125,7 +130,7 @@ void Game::addBuildings() {
             Vector* initVelocity = new Vector(0 , 0 ,0.0);
             building->setVelocity(initVelocity);
 
-            buildings.push_back(building);
+            buildings->push_back(building);
             n--;
             if (n==0)
                 break;
@@ -133,14 +138,13 @@ void Game::addBuildings() {
         if (n==0)
             break;
     }
-    bulletQuantity = maxBuildQuantity;
-    itBuildings = buildings.begin();
+    itBuildings = buildings->begin();
 }
 
 void Game::misilDisplacement() {
 
     list<Misil*>::iterator it;
-    for (it=misils.begin(); it!=misils.end(); ++it){
+    for (it=misils->begin(); it!=misils->end(); ++it){
 	 Vector* Ygravity = new Vector(0, 0, 0);
 
 	 (*it)->eulerIntegrate();
@@ -151,7 +155,7 @@ void Game::misilDisplacement() {
     }
 
     list<Bullet*>::iterator itB;
-    for (itB=bullets.begin(); itB!=bullets.end(); ++itB){
+    for (itB=bullets->begin(); itB!=bullets->end(); ++itB){
 	 Vector* Ygravity = new Vector(0, 0, 0);
 
 	 (*itB)->eulerIntegrate();
@@ -166,58 +170,50 @@ void Game::misilDisplacement() {
 
 void Game::detectCollisions(){
 
-    list<Misil*>::iterator it = misils.begin();
+    list<Misil*>::iterator it = misils->begin();
 
     float a, b, c, x_b, x_diff, y_b, y_diff, z_b, z_diff;
-    bool delete_misil, delete_building;
+    bool delete_misil;
 
-    while (it!=misils.end()){
+    while (it!=misils->end()){
         delete_misil = false;
-        delete_building = false;
         x_b = (*it)->getPosition()->getX();
         y_b = (*it)->getPosition()->getY();
         z_b = (*it)->getPosition()->getZ();
-        list<Building*>::iterator itB = buildings.begin();
-        while(itB!=buildings.end()){
+        list<Building*>::iterator itB = buildings->begin();
+        while(itB!=buildings->end()){
             x_diff = x_b - (*itB)->getPosition()->getX();
             y_diff = y_b - (*itB)->getPosition()->getY();
             z_diff = z_b - (*itB)->getPosition()->getZ();
             if (fabs(x_diff) < 2.0f && fabs(y_diff) < 2.0f && fabs(z_diff) < 2.0f){
-                itB = buildings.erase(itB);
-                buildQuantity--;
+                itB = buildings->erase(itB);
                 decreaseLife();
                 delete_misil = true;
                 break;
-            }
-            else
+            } else {
                 ++itB;
+            }
         }
         if (!delete_misil){
-            list<Bullet*>::iterator itBullet = bullets.begin();
-            while(itBullet!=bullets.end()){
+            list<Bullet*>::iterator itBullet = bullets->begin();
+            while(itBullet!=bullets->end()){
                 a = x_b - (*itBullet)->getPosition()->getX();
                 b = y_b - (*itBullet)->getPosition()->getY();
                 c = z_b - (*itBullet)->getPosition()->getZ();
-                if (fabs(a) < 1 && fabs(b) < 1 && fabs(c) < 1){
-                    itBullet = bullets.erase(itBullet);
-                    bulletQuantity--;
+                if (fabs(a) < 1.5f && fabs(b) < 1.5f && fabs(c) < 1.5f){
+                    itBullet = bullets->erase(itBullet);
                     delete_misil = true;
-                    misilDestroyCount++;
-                    if (misilDestroyCount == Constants::LEVEL_UP_CONDITION) {
-                        misilDestroyCount = 0;
-                        levelUp();
-                    }
+                    score += Constants::MISIL_POINTS;
                     break;
-                }
-                else
+                } else {
                     ++itBullet;
+                }
             }
         }
         if (delete_misil){
-            it = misils.erase(it);
+            it = misils->erase(it);
             misilQuantity--;
-        }
-        else {
+        } else {
             ++it;
         }
     }
@@ -225,20 +221,19 @@ void Game::detectCollisions(){
 
 
 void Game::manageGame() {
-    waitForAddMisil--;
-    //cout << "wait:" << waitForAddMisil;
-    if (waitForAddMisil == 0) {
-        initLevel(level);
-        //cout << ",cantidad: " << misilQuantity;
-        if (misilQuantity < maxMisilQuantity) {
+
+    clock_t time = clock();
+    if (time - lastMisilTime >= 1000) { //Paso mas de dos segundos desde que se lanzo el ultimo misil.
+        if (misilQuantity < simultMisilQuant && maxMisilQuantity > 0) {
             addMisil();
+            lastMisilTime = time;
         }
     }
 }
 
 void Game::drawMisils() {
     list<Misil*>::iterator it;
-    for (it=misils.begin(); it!=misils.end(); ++it){
+    for (it=misils->begin(); it!=misils->end(); ++it){
 		glPushMatrix();
             (*it)->drawFigure();
 		glPopMatrix();
@@ -247,7 +242,7 @@ void Game::drawMisils() {
 
 void Game::drawBullets() {
     list<Bullet*>::iterator it;
-    for (it=bullets.begin(); it!=bullets.end(); ++it){
+    for (it=bullets->begin(); it!=bullets->end(); ++it){
 		glPushMatrix();
             (*it)->drawFigure();
 		glPopMatrix();
@@ -256,13 +251,22 @@ void Game::drawBullets() {
 
 void Game::drawBuildings() {
     list<Building*>::iterator it;
-    for (it=buildings.begin(); it!=buildings.end(); ++it){
+    for (it=buildings->begin(); it!=buildings->end(); ++it){
 		glPushMatrix();
 			(*it)->drawFigure();
 		glPopMatrix();
     }
 }
 
+bool Game::levelCompleted() {
+    return maxMisilQuantity==0 && misilQuantity==0;
+}
+void Game::levelUp() {
+    score += life * Constants::LIFE_POINTS;
+    score += bulletQuantity * Constants::BULLET_POINTS;
+    level++;
+    initLevel(level);
+}
 
 Game::~Game()
 {

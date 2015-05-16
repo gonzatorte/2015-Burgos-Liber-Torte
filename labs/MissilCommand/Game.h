@@ -2,13 +2,18 @@
 #define GAME_H
 
 #include <list>
+#include <map>
+#include <stdlib.h>
 #include <algorithm>
 #include <math.h>
+#include <time.h>
 #include <GL/freeglut.h>
+#include "tinyxml2.h"
 #include "Misil.h"
 #include "Building.h"
 #include "Bullet.h"
 #include "Vector.h"
+#include "Level.h"
 #include "Constants.h"
 
 using namespace std;
@@ -17,13 +22,6 @@ class Game
 {
     public:
         Game();
-        Game(int maxMisilQuantity, int maxBuildQuantity, int maxBulletQuantity, int level, int life);
-        void setMaxMisilQuantity(int maxMisilQuantity);
-        void setMaxBuildQuantity(int maxBuildQuantity);
-        void setMaxBulletQuantity(int maxBulletQuantity);
-        int getMaxMisilQuantity();
-        int getMaxBuildQuantity();
-        int getMaxBulletQuantity();
         void decreaseLife();
         bool isGameOver();
         void addMisil();
@@ -35,20 +33,25 @@ class Game
         void drawMisils();
         void drawBullets();
         void drawBuildings();
+        bool levelCompleted();
+        void levelUp();
         virtual ~Game();
     protected:
     private:
         int level;
-        int misilQuantity, maxMisilQuantity, misilDestroyCount;
-        int buildQuantity, maxBuildQuantity;
+        int misilQuantity, maxMisilQuantity, simultMisilQuant, misilSpeed;
+        int maxBuildQuantity;
         int bulletQuantity, maxBulletQuantity;
         int score;
         int life;
         bool gameOver;
-        void levelUp();
-        list<Misil*> misils;
-        list<Building*> buildings;
-        list<Bullet*> bullets;
+        void initLevel(int levelNumber);
+        clock_t lastMisilTime;
+        map<int, Level*>* getLevelsFromSetting(tinyxml2::XMLElement* gameSettings);
+        list<Misil*>* misils;
+        list<Building*>* buildings;
+        list<Bullet*>* bullets;
+        map<int, Level*>* levels;
 };
 
 #endif // GAME_H
