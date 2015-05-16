@@ -1,6 +1,6 @@
 #include "Game.h"
 
-list<Building*>::iterator itBuildings;
+//list<Building*>::iterator itBuildings;
 int multiplicador;
 
 
@@ -12,7 +12,7 @@ void Game::initLevel(int levelNumber) {
     this->maxBulletQuantity = level->getMaxBulletQuantity();
     this->simultMisilQuant = level->getSimultMisilQuant();
     this->misilSpeed = level->getMisilSpeed();
-    this->life = 8;
+    this->life = maxBuildQuantity-2;
     this->misilQuantity = 0;
     this->bulletQuantity = maxBulletQuantity;
     this->lastMisilTime = clock();
@@ -46,6 +46,20 @@ map<int, Level*>* Game::getLevelsFromSetting(tinyxml2::XMLElement* gameSettings)
     return levels;
 }
 
+list<Building*>::iterator Game::obtRandomIterator() {
+    int randomAccess = rand() % maxBuildQuantity;
+    int cont = 0;
+    list<Building*>::iterator itB = buildings->begin();
+    while (cont < randomAccess) {
+        ++itB;
+        if (itB == buildings->end()) {
+            itB = buildings->begin();
+        }
+        cont++;
+    }
+    return itB;
+}
+
 //METODOS PUBLICOS
 Game::Game() {
     tinyxml2::XMLDocument settings;
@@ -75,9 +89,10 @@ bool Game::isGameOver() {
 
 void Game::addMisil() {
 
-    if (itBuildings == buildings->end()) {
-        itBuildings = buildings->begin();
-    }
+    //if (itBuildings == buildings->end()) {
+    //    itBuildings = buildings->begin();
+    //}
+    list<Building*>::iterator itBuildings = obtRandomIterator();
 
     Misil* misil = new Misil();
     Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
@@ -98,7 +113,7 @@ void Game::addMisil() {
 
     misilQuantity++;
     maxMisilQuantity--;
-    ++itBuildings;
+    //++itBuildings;
     multiplicador = multiplicador * -1;
 }
 
@@ -138,7 +153,7 @@ void Game::addBuildings() {
         if (n==0)
             break;
     }
-    itBuildings = buildings->begin();
+    //itBuildings = buildings->begin();
 }
 
 void Game::misilDisplacement() {
@@ -209,6 +224,9 @@ void Game::detectCollisions(){
                     ++itBullet;
                 }
             }
+        }
+        if (y_b <= 0) { //choca contra el piso
+            delete_misil = true;
         }
         if (delete_misil){
             it = misils->erase(it);

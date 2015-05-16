@@ -45,13 +45,15 @@ class Game
         int score;
         int life;
         bool gameOver;
-        void initLevel(int levelNumber);
         clock_t lastMisilTime;
-        map<int, Level*>* getLevelsFromSetting(tinyxml2::XMLElement* gameSettings);
         list<Misil*>* misils;
         list<Building*>* buildings;
         list<Bullet*>* bullets;
         map<int, Level*>* levels;
+        void initLevel(int levelNumber);
+        map<int, Level*>* getLevelsFromSetting(tinyxml2::XMLElement* gameSettings);
+        list<Building*>::iterator obtRandomIterator();
+
 };
 
 #endif // GAME_H
