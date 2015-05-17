@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1431216093 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\building.cpp
+1431818184 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\building.cpp
 	"Building.h"
 	<windows.h>
 	<cstdlib>
@@ -8,6 +8,7 @@
 	"SDL/SDL_opengl.h"
 	"Figure.h"
 	<GL/freeglut.h>
+	<GL/glu.h>
 
 1431195240 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\building.h
 	<iostream>
@@ -221,8 +222,9 @@
 	<windows.h>
 	<stddef.h>
 
-1431223421 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\camera.cpp
+1431829255 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\camera.cpp
 	"Camera.h"
+	"SDL/SDL.h"
 
 1431204280 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\camera.h
 	<math.h>
@@ -231,10 +233,10 @@
 	"Vector.h"
 	<iostream>
 
-1431222577 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\constants.cpp
+1431813451 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\constants.cpp
 	"Constants.h"
 
-1431222591 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\constants.h
+1431813451 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\constants.h
 
 1431127291 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\figure.cpp
 	"Figure.h"
@@ -243,7 +245,7 @@
 	"Vector.h"
 	"Constants.h"
 
-1431207206 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\misil.cpp
+1431819962 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\misil.cpp
 	"Misil.h"
 	<windows.h>
 	<cstdlib>
@@ -261,13 +263,15 @@
 1431127291 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\vector.cpp
 	"Vector.h"
 
-1431565862 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\main.cpp
+1431829049 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\main.cpp
 	<windows.h>
 	<stdio.h>
 	<math.h>
 	<iostream>
 	<GL/freeglut.h>
 	<GL/glu.h>
+	"SDL/SDL.h"
+	"SDL/SDL_opengl.h"
 	<cstdlib>
 	<vector>
 	<string>
@@ -279,10 +283,11 @@
 	"Misil.h"
 	"Building.h"
 	"Bullet.h"
-	"tinyxml2.h"
+	"Constants.h"
+	"Game.h"
 	<list>
 
-1431271716 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\bullet.cpp
+1431820252 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\bullet.cpp
 	"Bullet.h"
 	<windows.h>
 	<cstdlib>
@@ -344,4 +349,28 @@
 	<new>
 	<stddef.h>
 	<cstddef>
+
+1431813451 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\game.h
+	<list>
+	<map>
+	<stdlib.h>
+	<algorithm>
+	<math.h>
+	<time.h>
+	<GL/freeglut.h>
+	"tinyxml2.h"
+	"Misil.h"
+	"Building.h"
+	"Bullet.h"
+	"Vector.h"
+	"Level.h"
+	"Constants.h"
+
+1431813451 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\level.h
+
+1431818349 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\game.cpp
+	"Game.h"
+
+1431813451 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\level.cpp
+	"Level.h"
 

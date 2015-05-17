@@ -19,9 +19,11 @@ Bullet::Bullet()
 
 void Bullet::drawFigure() {
 
-    glColor3f(1.0f,0.0f,0.0f);
+
     glTranslatef(this->getPosition()->getX(), this->getPosition()->getY(), this->getPosition()->getZ());
-    glutSolidSphere(Constants::BALLRADIUS,50,50);
+    glColor3f(1.0f,0.0f,0.0f);
+    //glutSolidSphere(Constants::BALLRADIUS,50,50);
+    gluSphere(gluNewQuadric(), 2,50,50);
 }
 
 void Bullet::moveFigure() {

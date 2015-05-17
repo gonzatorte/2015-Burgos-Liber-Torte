@@ -1,0 +1,5 @@
+*.o
+labs/MissilCommand/MissilCommand.cbp
+labs/MissilCommand/MissilCommand.depend
+labs/MissilCommand/MissilCommand.layout
+labs/MissilCommand/bin/Debug/MissilCommand.exe
