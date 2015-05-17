@@ -31,3 +31,5 @@ main(){
 	tear_down();
 
 }
+Hacer que los proy de grafica sean al menos un poco portables (Constante POSIX o WIN32...)
+

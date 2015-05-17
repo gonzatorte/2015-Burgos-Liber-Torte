@@ -1,4 +1,6 @@
+#ifdef __WIN32__
 #include <windows.h>
+#endif // __WIN32__
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
@@ -155,15 +157,21 @@ class Game{
         tearDown_SDL();
     }
 
+    int loop_count = 0;
+
     void rendering() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
+
+        glTranslatef(0,0,-0.1*this->loop_count);
+        this->loop_count = (this->loop_count+1) % 1000;
 
         angle = angle + angle_per_frame;
         if (angle >= 360.0f) {
             angle = angle_per_frame;
         }
-//        glRotatef(angle, 0, 0, 1);
+
+        glRotatef(angle, 0, 0, 1);
 //        glRotatef(angle*0.2, 0, 0.2, 0);
 //        glRotatef(angle*0.3, 0.3, 0, 0);
 //        glScalef(sin(angle), sin(angle), 1);
@@ -171,24 +179,24 @@ class Game{
 //        glScalef(1.0/6, 1.0/6, 1);
 
 //        glPushMatrix();
-        glEnable(GL_TEXTURE_2D);
+//        glEnable(GL_TEXTURE_2D);
+//
+//        glBegin(GL_TRIANGLES);
+//        glTexCoord2d(1, 1);
+//        glVertex3f(-1.5,2,-8);
+//        glTexCoord2d(1, 0);
+//        glVertex3f(-2.5,-1,-8);
+//        glTexCoord2d(0, 0);
+//        glVertex3f(-0.5,-1,-8);
+//        glEnd();
+//
+//        glDisable(GL_TEXTURE_2D);
 
-        glBegin(GL_TRIANGLES);
-        glTexCoord2d(1, 1);
-        glVertex3f(-1.5,2,-8);
-        glTexCoord2d(1, 0);
-        glVertex3f(-2.5,-1,-8);
-        glTexCoord2d(0, 0);
-        glVertex3f(-0.5,-1,-8);
-        glEnd();
-
-        glDisable(GL_TEXTURE_2D);
-
-        glBegin(GL_TRIANGLES);
-        glVertex3f(-1.1,2,-1);
-        glVertex3f(-1.5,-1,-2);
-        glVertex3f(-1.5,-1,-2);
-        glEnd();
+//        glBegin(GL_TRIANGLES);
+//        glVertex3f(-1.1,2,-1);
+//        glVertex3f(-1.5,-1,-2);
+//        glVertex3f(-1.5,-1,-2);
+//        glEnd();
 
         glEnable(GL_TEXTURE_2D);
         for(unsigned int i=0;i<this->model1->polygons_qty;i++){

@@ -1,6 +1,6 @@
 #include "loader3ds.hpp"
 
-Model3D * Load3DS(const char *p_filename)
+Model3D * Load3DS(const char * texture_name)
 {
     Model3D * p_object = new Model3D();
     int i;
@@ -11,8 +11,16 @@ Model3D * Load3DS(const char *p_filename)
     unsigned short l_qty;
     unsigned short l_face_flags;
 
-    if ((l_file=fopen (p_filename, "rb"))== NULL)
+    strcpy(, ".3ds");
+
+    sprintf(model_file, "%s.3ds")
+    char * model_file = new char [strlen("../../rsc/models/")+strlen(texture_name)+strlen(".3ds")+1];
+    char * texture_file = new char [strlen("../../rsc/models/textures")+strlen(texture_name)+strlen(".3ds")+1];
+    if ((l_file=fopen(model_file, "rb"))== NULL)
         throw "Cant open model file";
+    if ((t_file=fopen(p_filename, "rb"))!=NULL){
+        t_file
+    }
     while (ftell (l_file) < filelength (fileno (l_file)))
     {
         fread (&l_chunk_id, 2, 1, l_file); //Read the chunk header

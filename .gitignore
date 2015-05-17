@@ -3,3 +3,5 @@
 *.layout
 *.exe
 *.log
+**/stderr.txt
+**/stdout.txt
