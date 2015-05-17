@@ -1,5 +1,5 @@
 #include "Camera.h"
-
+#include "SDL/SDL.h"
 const float mouseSpeed = 0.001f;
 float xAngle, yAngle; //Angulos de rotacion de la camara.
 bool isValidEvent;
@@ -42,8 +42,8 @@ void Camera::moveCam(int x, int y) {
 
   if(!isValidEvent) {
 
-    int centerX = glutGet(GLUT_WINDOW_WIDTH) / 2;
-    int centerY = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+    int centerX = 640 / 2;
+    int centerY = 480 / 2;
     int dx = x - centerX;
     int dy = y - centerY;
     // Do something with dx and dy here
@@ -71,7 +71,8 @@ void Camera::moveCam(int x, int y) {
     point->setZ(position->getZ() + lookAtZ);
     // move mouse pointer back to the center of the window
     isValidEvent = true;
-    glutWarpPointer(centerX, centerY);
+    SDL_WarpMouse(centerX, centerY);
+    //glutWarpPointer(centerX, centerY);
   } else {
     isValidEvent = false;
   }
