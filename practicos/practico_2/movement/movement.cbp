@@ -13,20 +13,26 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="../../../SDL-devel-1.2.15-mingw32/SDL-1.2.15/include" />
-					<Add directory="../../../freeglut-MinGW-3.0.0-1.mp/freeglut/include" />
-					<Add directory="../../../SDL-devel-1.2.15-mingw32/SDL-1.2.15/include/SDL" />
-					<Add directory="../../../SDL_ttf-2.0.11/SDL_ttf-2.0.11" />
+					<Add directory="../../../libs/opengl-deCodeblocks/include" />
+					<Add directory="../../../libs/freeglut-MinGW-3.0.0-1.mp/freeglut/include" />
+					<Add directory="../../../libs/SDL-devel-1.2.15-mingw32/SDL-1.2.15/include" />
+					<Add directory="../../../libs/SDL-devel-1.2.15-mingw32/SDL-1.2.15/include/SDL" />
+					<Add directory="../../../libs/SDL_ttf-2.0.11" />
 				</Compiler>
 				<Linker>
-					<Add library="..\..\..\opengl\deCodeBlocks\lib\libglaux.a" />
-					<Add library="..\..\..\opengl\deCodeBlocks\lib\libglu32.a" />
-					<Add library="..\..\..\opengl\deCodeBlocks\lib\libopengl32.a" />
-					<Add library="..\..\..\freeglut-MinGW-3.0.0-1.mp\freeglut\lib\libfreeglut.a" />
-					<Add library="..\..\..\freeglut-MinGW-3.0.0-1.mp\freeglut\lib\libfreeglut_static.a" />
-					<Add directory="../../../SDL-devel-1.2.15-mingw32/SDL-1.2.15/lib" />
-					<Add directory="../../../SDL_ttf-2.0.11/SDL_ttf-2.0.11/.libs" />
-					<Add directory="../../../SDL_ttf-2.0.11-win32-x64" />
+					<Add library="..\..\..\libs\opengl-deCodeblocks\lib\libglaux.a" />
+					<Add library="..\..\..\libs\opengl-deCodeblocks\lib\libglu32.a" />
+					<Add library="..\..\..\libs\opengl-deCodeblocks\lib\libopengl32.a" />
+					<Add library="..\..\..\libs\freeglut-MinGW-3.0.0-1.mp\freeglut\lib\libfreeglut.a" />
+					<Add library="..\..\..\libs\freeglut-MinGW-3.0.0-1.mp\freeglut\lib\libfreeglut_static.a" />
+					<Add library="..\..\..\libs\SDL_ttf-2.0.11\.libs\libSDL_ttf.a" />
+					<Add library="..\..\..\libs\SDL_ttf-2.0.11\.libs\libSDL_ttf.dll.a" />
+					<Add library="..\..\..\libs\freetype-2.5.5\objs\.libs\libfreetype.a" />
+					<Add library="..\..\..\libs\freetype-2.5.5\objs\.libs\libfreetype.dll.a" />
+					<Add library="..\..\..\libs\SDL-devel-1.2.15-mingw32\SDL-1.2.15\lib\libSDL.dll.a" />
+					<Add library="..\..\..\libs\SDL-devel-1.2.15-mingw32\SDL-1.2.15\lib\libSDLmain.a" />
+					<Add directory="../../../libs/dlls" />
+					<Add directory="../../../libs/SDL-devel-1.2.15-mingw32/SDL-1.2.15/lib" />
 				</Linker>
 			</Target>
 		</Build>
@@ -51,6 +57,7 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="samples.cpp" />
 		<Unit filename="utils.cpp" />
+		<Unit filename="utils.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

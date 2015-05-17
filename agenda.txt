@@ -20,8 +20,6 @@ Se esta haciendo mucho new y ningun delete
 
 
 main(){
-	
-
 	set_up();
 
 	while 1:
