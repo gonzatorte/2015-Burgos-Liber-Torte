@@ -67,7 +67,7 @@ void Application::setUp_models(){
 }
 
 void Application::setUp_fonts(){
-    font = TTF_OpenFont("../../../../rsc/fonts/leadcoat.ttf", 16);
+    font = TTF_OpenFont("../../rsc/fonts/leadcoat.ttf", 16);
     if (!font){
         std::stringstream ss;
         ss << "Unable to load font: " << SDL_GetError();
@@ -91,7 +91,7 @@ void Application::setUp(){
     setUp_SDL();
     setUp_GL();
     setUp_fonts();
-    setUp_textures();
+//    setUp_textures();
     setUp_models();
 }
 
