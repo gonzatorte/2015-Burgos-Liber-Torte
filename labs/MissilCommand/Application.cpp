@@ -81,7 +81,7 @@ void Application::setUp_GL(){
     float color = 0;
     glClearColor(color, color, color, 1);
 
-    gluPerspective(45, 640/480.f, 0.1, 100);
+    gluPerspective(45, 800/600.f, 0.1, 100);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glMatrixMode(GL_MODELVIEW);

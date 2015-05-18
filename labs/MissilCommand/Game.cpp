@@ -344,27 +344,13 @@ void Game::levelUp() {
 void Game::drawHud()
 {
     // Temporary disable lighting
-glPushMatrix();
-    glDisable( GL_DEPTH_TEST ) ;
-//glMatrixMode( GL_PROJECTION ) ;
-glLoadIdentity() ;
 
-
-/*
- * Upside-down square viewport: it maps the screen as if the (arbitrary-set) resolution were
- * 1000x1000 pixels.
- *
- */
-
-//glOrtho( /* left */ 0, /* right */ 1000, /* bottom */ 1000, /* top */ 0,
-//	/* near */ 0, /* far */ 1 ) ;
-
-	//- or, preferably to keep the 4/3 ratio like 800x600, 640x480, 1024x768, etc. -
-
-// Non-reversed 4/3 viewport:
-glOrtho( /* left */ -320.0f, /* right */ 320.0f, /* bottom */ -240.0f, /* top */ 240.0f,
-	/* near */ -1, /* far */ 1 ) ;
-glPushMatrix();
+    // Our HUD consists of a simple rectangle
+    glMatrixMode( GL_PROJECTION );
+    glPushMatrix();
+        glLoadIdentity();
+        glOrtho( -100.0f, 100.0f, -100.0f, 100.0f, -100.0f, 100.0f );
+        glMatrixMode( GL_MODELVIEW );
             glLoadIdentity();
             glColor3f( 1.0f, 0.0f, 0.0f );
             glBegin( GL_QUADS );
@@ -373,9 +359,11 @@ glPushMatrix();
                 glVertex2f( -40.0f, 40.0f );
                 glVertex2f( -40.0f, 90.0f );
             glEnd();
-        glPopMatrix();
-    // Reenable lighting
+    glMatrixMode( GL_PROJECTION );
     glPopMatrix();
+    glMatrixMode( GL_MODELVIEW );
+
+    // Reenable lighting
 }
 
 Game::~Game()

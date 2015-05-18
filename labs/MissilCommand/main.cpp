@@ -106,31 +106,10 @@ void renderScene()
             game->misilDisplacement();
             game->detectCollisions();
             game->drawMisils();
+            game->drawHud();
 
 
             //glutSwapBuffers();
-        }
-    }
-}
-
-void mouseButton(int button, int state, int x, int y)
-{
-
-// only start motion if the left button is pressed
-    if (button == GLUT_LEFT_BUTTON)
-    {
-
-// when the button is released
-        if (state == GLUT_UP)
-        {
-//            camera->endMove();
-        }
-        else   // state = GLUT_DOWN
-        {
-//camera->startMove(x,y);
-//camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,400.0f));
-
-//camera = new Camera(new Vector(-20.0f,1.0f,-80.0f), new Vector(0.0f,1.0f,4.0f));
         }
     }
 }
@@ -144,47 +123,6 @@ void mouseMove(int x, int y)
         camera->moveCam(x,y);
     }
 }
-
-void pressKey(int key, int xx, int yy)
-{
-
-    switch (key)
-    {
-    case GLUT_KEY_LEFT :
-        deltaAngle += -0.01f;
-        break;
-    case GLUT_KEY_RIGHT :
-        deltaAngle += 0.01f;
-        break;
-    case GLUT_KEY_UP :
-        deltaMove += 0.5f;
-        break;
-    case GLUT_KEY_DOWN :
-        deltaMove += -0.5f;
-        break;
-    }
-}
-
-void releaseKey(int key, int x, int y)
-{
-
-    switch (key)
-    {
-    case GLUT_KEY_LEFT :
-        deltaAngle -= -0.01f;
-        break;
-    case GLUT_KEY_RIGHT :
-        deltaAngle -= 0.01f;
-        break;
-    case GLUT_KEY_UP :
-        deltaMove -= 0.5f;
-        break;
-    case GLUT_KEY_DOWN :
-        deltaMove -= -0.5f;
-        break;
-    }
-}
-
 
 void keyboard (unsigned char key, int x, int y)
 {
