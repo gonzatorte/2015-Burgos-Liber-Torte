@@ -33,6 +33,7 @@ class Game
         void drawMisils();
         void drawBullets();
         void drawBuildings();
+        void drawLandscape();
         bool levelCompleted();
         void levelUp();
         void drawHud();

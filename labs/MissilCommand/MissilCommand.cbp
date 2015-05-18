@@ -13,8 +13,30 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="../MissilCommand" />
+					<Add directory="../../libs/freeglut-MinGW-3.0.0-1.mp/freeglut/include" />
+					<Add directory="../../libs/opengl-deCodeblocks/include" />
+					<Add directory="../../libs/SDL-devel-1.2.15-mingw32/SDL-1.2.15/include" />
+					<Add directory="../../libs/SDL-devel-1.2.15-mingw32/SDL-1.2.15/include/SDL" />
+					<Add directory="../../libs/SDL_ttf-2.0.11" />
+					<Add directory="../../libs/freetype-2.5.5/include" />
 				</Compiler>
+				<Linker>
+					<Add library="..\..\libs\freeglut-MinGW-3.0.0-1.mp\freeglut\lib\libfreeglut.a" />
+					<Add library="..\..\libs\freeglut-MinGW-3.0.0-1.mp\freeglut\lib\libfreeglut_static.a" />
+					<Add library="..\..\libs\opengl-deCodeblocks\lib\libglaux.a" />
+					<Add library="..\..\libs\opengl-deCodeblocks\lib\libglu32.a" />
+					<Add library="..\..\libs\opengl-deCodeblocks\lib\libopengl32.a" />
+					<Add library="..\..\libs\SDL_ttf-2.0.11\.libs\libSDL_ttf.a" />
+					<Add library="..\..\libs\SDL_ttf-2.0.11\.libs\libSDL_ttf.dll.a" />
+					<Add library="..\..\libs\freetype-2.5.5\objs\.libs\libfreetype.a" />
+					<Add library="..\..\libs\freetype-2.5.5\objs\.libs\libfreetype.dll.a" />
+					<Add library="..\..\libs\SDL-devel-1.2.15-mingw32\SDL-1.2.15\lib\libSDL.dll.a" />
+					<Add library="..\..\libs\SDL-devel-1.2.15-mingw32\SDL-1.2.15\lib\libSDLmain.a" />
+					<Add directory="../../libs/SDL-devel-1.2.15-mingw32/SDL-1.2.15/lib" />
+					<Add directory="../../libs/freeglut-MinGW-3.0.0-1.mp/freeglut/lib" />
+					<Add directory="../../libs/opengl-deCodeblocks/lib" />
+					<Add directory="../../libs/dlls" />
+				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
@@ -31,6 +53,10 @@
 			<Add library="dxguid" />
 			<Add directory="C:/Users/leobaf/Documents/Grafica/2015-Graf-Lburgos-LAzambuya-Gtorte/SDL-devel-1.2.15-mingw32/SDL-1.2.15/lib" />
 		</Linker>
+		<Unit filename="3dsloader.cpp" />
+		<Unit filename="3dsloader.h" />
+		<Unit filename="Application.cpp" />
+		<Unit filename="Application.h" />
 		<Unit filename="Building.cpp" />
 		<Unit filename="Building.h" />
 		<Unit filename="Bullet.cpp" />
@@ -41,15 +67,24 @@
 		<Unit filename="Constants.h" />
 		<Unit filename="Figure.cpp" />
 		<Unit filename="Figure.h" />
+		<Unit filename="Game.cpp" />
+		<Unit filename="Game.h" />
+		<Unit filename="Level.cpp" />
+		<Unit filename="Level.h" />
+		<Unit filename="Menu.cpp" />
+		<Unit filename="Menu.h" />
 		<Unit filename="Misil.cpp" />
 		<Unit filename="Misil.h" />
+		<Unit filename="ModelType.h" />
 		<Unit filename="Vector.cpp" />
 		<Unit filename="Vector.h" />
-		<Unit filename="cb.bmp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="settings.xml" />
+		<Unit filename="texture.cpp" />
+		<Unit filename="texture.h" />
 		<Unit filename="tinyxml2.cpp" />
 		<Unit filename="tinyxml2.h" />
+		<Unit filename="util.cpp" />
+		<Unit filename="util.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
