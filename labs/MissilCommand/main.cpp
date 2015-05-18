@@ -1,11 +1,3 @@
-
-#include <windows.h>
-#include <stdio.h>
-#include <math.h>
-#include <iostream>
-//#include <GL/freeglut.h>
-#include <GL/glu.h>
-
 #include "SDL/SDL.h"
 #include "SDL/SDL_opengl.h"
 #include <cstdlib>
@@ -15,17 +7,36 @@
 #include <fstream>
 #include <cstdio>
 #include <Vfw.h>
+
+#include <windows.h>
+#include <cstdio>
+#include <cmath>
+#include <cstdlib>
+
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <list>
+
+#include <GL/freeglut.h>
+#include <GL/glu.h>
+
+#include <Vfw.h>
+
 #include "Camera.h"
 #include "Misil.h"
 #include "Building.h"
 #include "Bullet.h"
 #include "Constants.h"
 #include "Game.h"
-#include <list>
-using namespace std;
 
 #define PI	3.14159265358979323846
 #define MAXOBJECTS	200
+
+using namespace std;
+
 Camera* camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
 Game* game = new Game();
 float deltaAngle = 0.0f;

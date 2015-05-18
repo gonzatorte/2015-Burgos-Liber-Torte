@@ -1,6 +1,35 @@
 
-Hacer los prácticos:
-	Ver que cosas dejamos en el gitignore.
+Ver las cosas de prog dura que podemos pararelizar:
+	Lectura de archivos?
+	Guardar el estado a un archivo?
 
+Si gimp me devuelve imagenes raw para openGL.
+Ver si glTexGen autogenera coordenas (FAQ)
+Hacer mas portable algunas funciones (sleep de windows...)
+
+Revisar el codigo de space simulator que esta hecho lindo sin usar glut
+Ver si glut permite renderizar texto.
+	Tratar de arreglar GlutStroke
+Que loggee la stdout y stderr a un archivo de texto (ya lo estaba haciendo por defecto, a stderr.txt)
+Refactorear codigo de los gurices antes de que nos pisemos...
+
+Revisar los DLL que aparecian en los ejemplos de otros anios
+
+Se esta haciendo mucho new y ningun delete
+
+
+
+main(){
+	set_up();
+
+	while 1:
+		input()
+		CreateModifMoveInteractObjs()
+		DrawObjs()
+
+
+	tear_down();
+
+}
 Hacer que los proy de grafica sean al menos un poco portables (Constante POSIX o WIN32...)
 
