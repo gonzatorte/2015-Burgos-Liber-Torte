@@ -1,9 +1,7 @@
-#include "SDL/SDL.h"
-#include "SDL/SDL_opengl.h"
+#include <SDL/SDL.h>
+#include <SDL_ttf.h>
+#include <SDL/SDL_opengl.h>
 
-#ifdef __WIN32__
-#include <windows.h>
-#endif // __WIN32__
 #include <cstdio>
 #include <cmath>
 #include <cstdlib>
@@ -19,7 +17,7 @@
 #include <sstream>
 #include <stdexcept>
 
-#include <GL/freeglut.h>
+//#include <GL/freeglut.h>
 #include <GL/glu.h>
 
 #include <Vfw.h>
@@ -30,6 +28,8 @@
 #include "Bullet.h"
 #include "Constants.h"
 #include "Game.h"
+#include "Application.h"
+#include "util.h"
 
 #define PI	3.14159265358979323846
 #define MAXOBJECTS	200
@@ -100,60 +100,7 @@ void renderScene()
             // Set the camera
             camera->setLookAt();
 
-            // Draw ground
-            glColor3f(0.0f, 0.5f, 0.0f);
-            glBegin(GL_QUADS);
-            glVertex3f(-100.0f, 0.0f, -100.0f);
-            glVertex3f(-100.0f, 0.0f,  100.0f);
-            glVertex3f( 100.0f, 0.0f,  100.0f);
-            glVertex3f( 100.0f, 0.0f, -100.0f);
-            glEnd();
-
-            glColor3f(0.5f, 0.0f, 0.5f);
-            glBegin(GL_QUADS);
-            glVertex3f( 100.0f, 50.0f,  100.0f);
-            glVertex3f( 100.0f, 50.0f, -100.0f);
-            glVertex3f(-100.0f, 50.0f, -100.0f);
-            glVertex3f(-100.0f, 50.0f,  100.0f);
-            glEnd();
-
-            // Draw borders
-            glColor3f(0, 0, 1);
-            glBegin(GL_QUADS);
-            glVertex3f(-100.0f,  0.0f, -100.0f);
-            glVertex3f(-100.0f,  0.0f,  100.0f);
-            glVertex3f(-100.0f, 50.0f,  100.0f);
-            glVertex3f(-100.0f, 50.0f, -100.0f);
-            glEnd();
-
-            // Draw borders
-            glColor3f(1, 1, 1);
-            glBegin(GL_QUADS);
-            glVertex3f(-100.0f, 50.0f, 100.0f);
-            glVertex3f( 100.0f, 50.0f, 100.0f);
-            glVertex3f( 100.0f,  0.0f, 100.0f);
-            glVertex3f(-100.0f,  0.0f, 100.0f);
-            glEnd();
-
-            // Draw borders
-            glColor3f(1, 0, 0);
-            glBegin(GL_QUADS);
-            glVertex3f(100.0f,  0.0f, 100.0f);
-            glVertex3f(100.0f,  0.0f,-100.0f);
-            glVertex3f(100.0f, 50.0f,-100.0f);
-            glVertex3f(100.0f, 50.0f, 100.0f);
-            glEnd();
-
-            // Draw borders
-            glColor3f(0.5, 0.5, 0.5);
-            glBegin(GL_QUADS);
-            glVertex3f( 100.0f,  0.0f, -100.0f);
-            glVertex3f(-100.0f,  0.0f, -100.0f);
-            glVertex3f(-100.0f, 50.0f, -100.0f);
-            glVertex3f( 100.0f, 50.0f, -100.0f);
-            glEnd();
-
-
+            game->drawLandscape();
             game->drawBuildings();
             game->drawBullets();
             game->misilDisplacement();
@@ -197,8 +144,6 @@ void mouseMove(int x, int y)
         camera->moveCam(x,y);
     }
 }
-
-
 
 void pressKey(int key, int xx, int yy)
 {
@@ -270,49 +215,24 @@ void keyboard (unsigned char key, int x, int y)
 
 int main(int argc, char **argv)
 {
-
-// init GLUT and create window
-    if(SDL_Init(SDL_INIT_VIDEO)<0)
-    {
-        cerr << "No se pudo iniciar SDL: " << SDL_GetError() << endl;
-        exit(1);
+//    freopen("CON", "w", stdout);
+//    freopen("CON", "w", stderr);
+//    fclose(stdout);
+//    fclose(stderr);
+    try{
+        Application app;
+        app.setUp();
+    } catch (const char * e) {
+        cout << "An exception occurred 1. " << e << endl;
+    } catch (exception & e) {
+        cout << "An exception occurred 2. " << e.what() << endl;
+    } catch(...) {
+        cout << "default exception";
     }
 
-    atexit(SDL_Quit);
-
-    Uint32 flags = SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_OPENGL;
-
-    if(SDL_SetVideoMode(640, 480, 32, flags)==NULL)
-    {
-        cerr << "No se pudo establecer el modo de video: " << SDL_GetError() << endl;
-        exit(1);
-    }
-
-    if(SDL_EnableKeyRepeat(10, 10)<0)
-    {
-        cerr << "No se pudo establecer el modo key-repeat: " << SDL_GetError() << endl;
-        exit(1);
-    }
-
-    glMatrixMode(GL_PROJECTION);
-
-    float color = 0;
-    glClearColor(color, color, color, 1);
-
-    gluPerspective(45, 640/480.f, 0.1, 100);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glMatrixMode(GL_MODELVIEW);
-
-//glutInit(&argc, argv);
-//glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-//glutInitWindowPosition(100,100);
-//glutInitWindowSize(320,320);
-//glutCreateWindow("Laboratorio1");
     bool fin = false;
     SDL_Event evento;
     game->addBuildings();
-    SDL_EnableKeyRepeat(0,1);
     do
     {
         int xm,ym;
@@ -326,7 +246,6 @@ int main(int argc, char **argv)
         {
             switch(evento.type)
             {
-
             case SDL_QUIT:
                 fin = true;
                 break;
@@ -336,7 +255,7 @@ int main(int argc, char **argv)
                 case SDLK_ESCAPE:
                     fin = true;
                     break;
-                case SDLK_SPACE:
+                case SDLK_SPACE:{
                     Vector* initPosition = new Vector(camera->getPosition()->getX()+1, camera->getPosition()->getY()-1, camera->getPosition()->getZ());
                     Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*100,
                                                       (camera->getPoint()->getY() - camera->getPosition()->getY())*100,
@@ -346,6 +265,11 @@ int main(int argc, char **argv)
                     game->addBullet(initPosition, initVelocity, initAccel);
                     break;
                 }
+                default:
+                    break;
+                }
+                break;
+            default:
                 break;
             }
         }
@@ -353,28 +277,5 @@ int main(int argc, char **argv)
         //changeSize();
     }
     while (!fin);
-// register callbacks
-//glutDisplayFunc(renderScene);
-//glutReshapeFunc(changeSize);
-//glutIdleFunc(renderScene);
-
-//glutIgnoreKeyRepeat(1);
-//glutKeyboardFunc(keyboard);
-//glutSpecialFunc(pressKey);
-//glutSpecialUpFunc(releaseKey);
-
-// here are the two new functions
-//glutMouseFunc(mouseButton);
-//glutPassiveMotionFunc(mouseMove);
-//glutSetCursor(GLUT_CURSOR_NONE);
-
-// OpenGL init
-//glEnable(GL_DEPTH_TEST);
-//glEnable(GL_BLEND);
-
-
-// enter GLUT event processing cycle
-//glutMainLoop();
-
     return 1;
 }

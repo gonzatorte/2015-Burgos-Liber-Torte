@@ -14,7 +14,7 @@
 
 #include <SDL/SDL.h>
 #include <SDL_ttf.h>
-#include "SDL/SDL_opengl.h"
+#include <SDL/SDL_opengl.h>
 #include <GL/glut.h>
 
 #include "loader3ds.hpp"

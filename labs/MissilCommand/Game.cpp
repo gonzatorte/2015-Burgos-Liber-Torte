@@ -276,6 +276,61 @@ void Game::drawBuildings() {
     }
 }
 
+void Game::drawLandscape(){
+    // Draw ground
+    glColor3f(0.0f, 0.5f, 0.0f);
+    glBegin(GL_QUADS);
+    glVertex3f(-100.0f, 0.0f, -100.0f);
+    glVertex3f(-100.0f, 0.0f,  100.0f);
+    glVertex3f( 100.0f, 0.0f,  100.0f);
+    glVertex3f( 100.0f, 0.0f, -100.0f);
+    glEnd();
+
+    glColor3f(0.5f, 0.0f, 0.5f);
+    glBegin(GL_QUADS);
+    glVertex3f( 100.0f, 50.0f,  100.0f);
+    glVertex3f( 100.0f, 50.0f, -100.0f);
+    glVertex3f(-100.0f, 50.0f, -100.0f);
+    glVertex3f(-100.0f, 50.0f,  100.0f);
+    glEnd();
+
+    // Draw borders
+    glColor3f(0, 0, 1);
+    glBegin(GL_QUADS);
+    glVertex3f(-100.0f,  0.0f, -100.0f);
+    glVertex3f(-100.0f,  0.0f,  100.0f);
+    glVertex3f(-100.0f, 50.0f,  100.0f);
+    glVertex3f(-100.0f, 50.0f, -100.0f);
+    glEnd();
+
+    // Draw borders
+    glColor3f(1, 1, 1);
+    glBegin(GL_QUADS);
+    glVertex3f(-100.0f, 50.0f, 100.0f);
+    glVertex3f( 100.0f, 50.0f, 100.0f);
+    glVertex3f( 100.0f,  0.0f, 100.0f);
+    glVertex3f(-100.0f,  0.0f, 100.0f);
+    glEnd();
+
+    // Draw borders
+    glColor3f(1, 0, 0);
+    glBegin(GL_QUADS);
+    glVertex3f(100.0f,  0.0f, 100.0f);
+    glVertex3f(100.0f,  0.0f,-100.0f);
+    glVertex3f(100.0f, 50.0f,-100.0f);
+    glVertex3f(100.0f, 50.0f, 100.0f);
+    glEnd();
+
+    // Draw borders
+    glColor3f(0.5, 0.5, 0.5);
+    glBegin(GL_QUADS);
+    glVertex3f( 100.0f,  0.0f, -100.0f);
+    glVertex3f(-100.0f,  0.0f, -100.0f);
+    glVertex3f(-100.0f, 50.0f, -100.0f);
+    glVertex3f( 100.0f, 50.0f, -100.0f);
+    glEnd();
+}
+
 bool Game::levelCompleted() {
     return maxMisilQuantity==0 && misilQuantity==0;
 }

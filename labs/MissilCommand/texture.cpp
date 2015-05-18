@@ -1,24 +1,7 @@
-/*
- * ---------------- www.spacesimulator.net --------------
- *   ---- Space simulators and 3d engine tutorials ----
- *
- * Author: Damiano Vitulli
- *
- * This program is released under the BSD licence
- * By using this program you agree to licence terms on spacesimulator.net copyright page
- *
- *
- * Tutorial 4: 3d engine - 3ds models loader
- * 
- * Include File: texture.cpp
- *  
- */
-
-
-
 #include <stdio.h>
 #include <windows.h>
-#include <GL/glut.h>
+//#include <GL/glut.h>
+#include <GL/glu.h>
 #include "texture.h"
 
 
@@ -41,23 +24,23 @@ int num_texture=-1; //Counter to keep track of the last loaded texture
  *
  *********************************************************/
 
-int LoadBitmap(char *filename) 
+int LoadBitmap(char *filename)
 {
     int i, j=0; //Index variables
     FILE *l_file; //File pointer
     unsigned char *l_texture; //The pointer to the memory zone in which we will load the texture
-     
+
     // windows.h gives us these types to work with the Bitmap files
-    BITMAPFILEHEADER fileheader; 
+    BITMAPFILEHEADER fileheader;
     BITMAPINFOHEADER infoheader;
     RGBTRIPLE rgb;
 
     num_texture++; // The counter of the current texture is increased
 
     if( (l_file = fopen(filename, "rb"))==NULL) return (-1); // Open the file for reading
-    
+
     fread(&fileheader, sizeof(fileheader), 1, l_file); // Read the fileheader
-    
+
     fseek(l_file, sizeof(fileheader), SEEK_SET); // Jump the fileheader
     fread(&infoheader, sizeof(infoheader), 1, l_file); // and read the infoheader
 
@@ -65,12 +48,12 @@ int LoadBitmap(char *filename)
     l_texture = (byte *) malloc(infoheader.biWidth * infoheader.biHeight * 4);
     // And fill it with zeros
     memset(l_texture, 0, infoheader.biWidth * infoheader.biHeight * 4);
- 
+
     // At this point we can read every pixel of the image
     for (i=0; i < infoheader.biWidth*infoheader.biHeight; i++)
-    {            
+    {
             // We load an RGB value from the file
-            fread(&rgb, sizeof(rgb), 1, l_file); 
+            fread(&rgb, sizeof(rgb), 1, l_file);
 
             // And store it
             l_texture[j+0] = rgb.rgbtRed; // Red component
@@ -81,7 +64,7 @@ int LoadBitmap(char *filename)
     }
 
     fclose(l_file); // Closes the file stream
-     
+
     glBindTexture(GL_TEXTURE_2D, num_texture); // Bind the ID texture specified by the 2nd parameter
 
     // The next commands sets the texture parameters
