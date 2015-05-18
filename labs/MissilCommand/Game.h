@@ -35,6 +35,7 @@ class Game
         void drawBuildings();
         bool levelCompleted();
         void levelUp();
+        void drawHud();
         virtual ~Game();
     protected:
     private:

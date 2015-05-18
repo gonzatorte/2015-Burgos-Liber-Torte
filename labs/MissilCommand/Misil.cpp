@@ -10,7 +10,7 @@
 #include "SDL/SDL_opengl.h"
 #include "Figure.h"
 #include "Constants.h"
-#include <GL/freeglut.h>
+//#include <GL/freeglut.h>
 
 Misil::Misil()
 {

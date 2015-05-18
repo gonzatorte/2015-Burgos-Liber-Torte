@@ -26,7 +26,7 @@ using namespace std;
 
 #define PI	3.14159265358979323846
 #define MAXOBJECTS	200
-Camera* camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
+Camera* camera = new Camera(new Vector(30.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
 Game* game = new Game();
 float deltaAngle = 0.0f;
 float deltaAngleYY = 0.0f;
@@ -142,7 +142,7 @@ void renderScene() {
             game->misilDisplacement();
             game->detectCollisions();
             game->drawMisils();
-
+            game->drawHud();
 
             //glutSwapBuffers();
         }
@@ -176,48 +176,6 @@ void mouseMove(int x, int y) {
 }
 
 
-
-void pressKey(int key, int xx, int yy) {
-
-switch (key) {
-case GLUT_KEY_LEFT : deltaAngle += -0.01f; break;
-case GLUT_KEY_RIGHT : deltaAngle += 0.01f; break;
-case GLUT_KEY_UP : deltaMove += 0.5f; break;
-case GLUT_KEY_DOWN : deltaMove += -0.5f; break;
-}
-}
-
-void releaseKey(int key, int x, int y) {
-
-switch (key) {
-case GLUT_KEY_LEFT : deltaAngle -= -0.01f; break;
-case GLUT_KEY_RIGHT : deltaAngle -= 0.01f; break;
-case GLUT_KEY_UP : deltaMove -= 0.5f; break;
-case GLUT_KEY_DOWN : deltaMove -= -0.5f; break;
-}
-}
-
-
-void keyboard (unsigned char key, int x, int y) {
-
-	if (key == 27) {
-        exit(0);
-	} else if (key==32) { // space bar
-        Vector* initPosition = new Vector(camera->getPosition()->getX()+1, camera->getPosition()->getY()-1, camera->getPosition()->getZ());
-        Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*60,
-                                          (camera->getPoint()->getY() - camera->getPosition()->getY())*60,
-                                          (camera->getPoint()->getZ() - camera->getPosition()->getZ())*60);
-        Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
-
-        game->addBullet(initPosition, initVelocity, initAccel);
-	} else if (key==Constants::P || key==Constants::UP_P) {
-        if (isPaused) {
-            glutWarpPointer(xPosBeforePause, yPosBeforePause);
-        }
-        isPaused=!isPaused;
-	}
-}
-
 int main(int argc, char **argv) {
 
 // init GLUT and create window
@@ -230,7 +188,7 @@ if(SDL_Init(SDL_INIT_VIDEO)<0) {
 
     Uint32 flags = SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_OPENGL;
 
-    if(SDL_SetVideoMode(640, 480, 32, flags)==NULL) {
+    if(SDL_SetVideoMode(800, 600, 32, flags)==NULL) {
         cerr << "No se pudo establecer el modo de video: " << SDL_GetError() << endl;
         exit(1);
     }
@@ -245,7 +203,7 @@ glMatrixMode(GL_PROJECTION);
     float color = 0;
     glClearColor(color, color, color, 1);
 
-    gluPerspective(45, 640/480.f, 0.1, 100);
+    gluPerspective(45, 800/600.f, 0.1, 100);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glMatrixMode(GL_MODELVIEW);

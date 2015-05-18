@@ -42,8 +42,8 @@ void Camera::moveCam(int x, int y) {
 
   if(!isValidEvent) {
 
-    int centerX = 640 / 2;
-    int centerY = 480 / 2;
+    int centerX = 800 / 2;
+    int centerY = 600 / 2;
     int dx = x - centerX;
     int dy = y - centerY;
     // Do something with dx and dy here

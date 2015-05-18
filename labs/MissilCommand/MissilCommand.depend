@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1431818184 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\building.cpp
+1431901680 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\building.cpp
 	"Building.h"
 	<windows.h>
 	<cstdlib>
@@ -7,7 +7,6 @@
 	<SDL/SDL.h>
 	"SDL/SDL_opengl.h"
 	"Figure.h"
-	<GL/freeglut.h>
 	<GL/glu.h>
 
 1431195240 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\building.h
@@ -222,7 +221,7 @@
 	<windows.h>
 	<stddef.h>
 
-1431829255 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\camera.cpp
+1431903910 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\camera.cpp
 	"Camera.h"
 	"SDL/SDL.h"
 
@@ -245,7 +244,7 @@
 	"Vector.h"
 	"Constants.h"
 
-1431819962 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\misil.cpp
+1431901698 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\misil.cpp
 	"Misil.h"
 	<windows.h>
 	<cstdlib>
@@ -254,7 +253,6 @@
 	"SDL/SDL_opengl.h"
 	"Figure.h"
 	"Constants.h"
-	<GL/freeglut.h>
 
 1431286771 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\misil.h
 	<iostream>
@@ -263,12 +261,11 @@
 1431127291 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\vector.cpp
 	"Vector.h"
 
-1431829049 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\main.cpp
+1431904213 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\main.cpp
 	<windows.h>
 	<stdio.h>
 	<math.h>
 	<iostream>
-	<GL/freeglut.h>
 	<GL/glu.h>
 	"SDL/SDL.h"
 	"SDL/SDL_opengl.h"
@@ -287,7 +284,7 @@
 	"Game.h"
 	<list>
 
-1431820252 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\bullet.cpp
+1431901673 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\bullet.cpp
 	"Bullet.h"
 	<windows.h>
 	<cstdlib>
@@ -296,7 +293,6 @@
 	"SDL/SDL_opengl.h"
 	"Figure.h"
 	"Constants.h"
-	<GL/freeglut.h>
 
 1431286774 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\bullet.h
 	<iostream>
@@ -350,7 +346,7 @@
 	<stddef.h>
 	<cstddef>
 
-1431813451 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\game.h
+1431902563 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\game.h
 	<list>
 	<map>
 	<stdlib.h>
@@ -368,7 +364,7 @@
 
 1431813451 c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\level.h
 
-1431818349 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\game.cpp
+1431913304 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\game.cpp
 	"Game.h"
 
 1431813451 source:c:\users\leobaf\documents\grafica\2015-graf-lburgos-lazambuya-gtorte\labs\missilcommand\level.cpp
