@@ -1,14 +1,10 @@
 #ifndef CAMERA_H
 #define CAMERA_H
-#include <cmath>
-
-#include <iostream>
-
+#include <math.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
-
 #include "Vector.h"
-
+#include <iostream>
 using namespace std;
 
 class Camera

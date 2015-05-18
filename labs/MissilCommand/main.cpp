@@ -1,14 +1,9 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_opengl.h"
-#include <cstdlib>
-#include <vector>
-#include <string>
-#include <algorithm>
-#include <fstream>
-#include <cstdio>
-#include <Vfw.h>
 
+#ifdef __WIN32__
 #include <windows.h>
+#endif // __WIN32__
 #include <cstdio>
 #include <cmath>
 #include <cstdlib>
@@ -19,6 +14,10 @@
 #include <fstream>
 #include <iostream>
 #include <list>
+#include <exception>
+#include <string>
+#include <sstream>
+#include <stdexcept>
 
 #include <GL/freeglut.h>
 #include <GL/glu.h>
@@ -48,7 +47,8 @@ int xPosBeforePause, yPosBeforePause;
 
 
 
-void changeSize(int w, int h) {
+void changeSize(int w, int h)
+{
 
     // Prevent a divide by zero, when window is too short
     // (you cant make a window of zero width).
@@ -59,7 +59,7 @@ void changeSize(int w, int h) {
     // Use the Projection Matrix
     glMatrixMode(GL_PROJECTION);
 
-            // Reset Matrix
+    // Reset Matrix
     glLoadIdentity();
 
     // Set the viewport to be the entire window
@@ -72,16 +72,22 @@ void changeSize(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-void renderScene() {
+void renderScene()
+{
 
     // Clear Color and Depth Buffers
-    if (!isPaused) {
-        if (game->isGameOver()) {
+    if (!isPaused)
+    {
+        if (game->isGameOver())
+        {
             cout << "Perdio..";
-        }else {
+        }
+        else
+        {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            if (game->levelCompleted()) {
+            if (game->levelCompleted())
+            {
                 cout << "Pasastes de nivel CAPO!!!";
                 game->levelUp();
                 game->addBuildings();
@@ -97,54 +103,54 @@ void renderScene() {
             // Draw ground
             glColor3f(0.0f, 0.5f, 0.0f);
             glBegin(GL_QUADS);
-                glVertex3f(-100.0f, 0.0f, -100.0f);
-                glVertex3f(-100.0f, 0.0f,  100.0f);
-                glVertex3f( 100.0f, 0.0f,  100.0f);
-                glVertex3f( 100.0f, 0.0f, -100.0f);
+            glVertex3f(-100.0f, 0.0f, -100.0f);
+            glVertex3f(-100.0f, 0.0f,  100.0f);
+            glVertex3f( 100.0f, 0.0f,  100.0f);
+            glVertex3f( 100.0f, 0.0f, -100.0f);
             glEnd();
 
             glColor3f(0.5f, 0.0f, 0.5f);
-                glBegin(GL_QUADS);
-                glVertex3f( 100.0f, 50.0f,  100.0f);
-                glVertex3f( 100.0f, 50.0f, -100.0f);
-                glVertex3f(-100.0f, 50.0f, -100.0f);
-                glVertex3f(-100.0f, 50.0f,  100.0f);
+            glBegin(GL_QUADS);
+            glVertex3f( 100.0f, 50.0f,  100.0f);
+            glVertex3f( 100.0f, 50.0f, -100.0f);
+            glVertex3f(-100.0f, 50.0f, -100.0f);
+            glVertex3f(-100.0f, 50.0f,  100.0f);
             glEnd();
 
             // Draw borders
             glColor3f(0, 0, 1);
             glBegin(GL_QUADS);
-                glVertex3f(-100.0f,  0.0f, -100.0f);
-                glVertex3f(-100.0f,  0.0f,  100.0f);
-                glVertex3f(-100.0f, 50.0f,  100.0f);
-                glVertex3f(-100.0f, 50.0f, -100.0f);
+            glVertex3f(-100.0f,  0.0f, -100.0f);
+            glVertex3f(-100.0f,  0.0f,  100.0f);
+            glVertex3f(-100.0f, 50.0f,  100.0f);
+            glVertex3f(-100.0f, 50.0f, -100.0f);
             glEnd();
 
             // Draw borders
             glColor3f(1, 1, 1);
             glBegin(GL_QUADS);
-                glVertex3f(-100.0f, 50.0f, 100.0f);
-                glVertex3f( 100.0f, 50.0f, 100.0f);
-                glVertex3f( 100.0f,  0.0f, 100.0f);
-                glVertex3f(-100.0f,  0.0f, 100.0f);
+            glVertex3f(-100.0f, 50.0f, 100.0f);
+            glVertex3f( 100.0f, 50.0f, 100.0f);
+            glVertex3f( 100.0f,  0.0f, 100.0f);
+            glVertex3f(-100.0f,  0.0f, 100.0f);
             glEnd();
 
             // Draw borders
             glColor3f(1, 0, 0);
             glBegin(GL_QUADS);
-                glVertex3f(100.0f,  0.0f, 100.0f);
-                glVertex3f(100.0f,  0.0f,-100.0f);
-                glVertex3f(100.0f, 50.0f,-100.0f);
-                glVertex3f(100.0f, 50.0f, 100.0f);
+            glVertex3f(100.0f,  0.0f, 100.0f);
+            glVertex3f(100.0f,  0.0f,-100.0f);
+            glVertex3f(100.0f, 50.0f,-100.0f);
+            glVertex3f(100.0f, 50.0f, 100.0f);
             glEnd();
 
             // Draw borders
             glColor3f(0.5, 0.5, 0.5);
             glBegin(GL_QUADS);
-                glVertex3f( 100.0f,  0.0f, -100.0f);
-                glVertex3f(-100.0f,  0.0f, -100.0f);
-                glVertex3f(-100.0f, 50.0f, -100.0f);
-                glVertex3f( 100.0f, 50.0f, -100.0f);
+            glVertex3f( 100.0f,  0.0f, -100.0f);
+            glVertex3f(-100.0f,  0.0f, -100.0f);
+            glVertex3f(-100.0f, 50.0f, -100.0f);
+            glVertex3f( 100.0f, 50.0f, -100.0f);
             glEnd();
 
 
@@ -160,26 +166,32 @@ void renderScene() {
     }
 }
 
-void mouseButton(int button, int state, int x, int y) {
+void mouseButton(int button, int state, int x, int y)
+{
 
 // only start motion if the left button is pressed
-if (button == GLUT_LEFT_BUTTON) {
+    if (button == GLUT_LEFT_BUTTON)
+    {
 
 // when the button is released
-if (state == GLUT_UP) {
+        if (state == GLUT_UP)
+        {
 //            camera->endMove();
-}
-else  {// state = GLUT_DOWN
+        }
+        else   // state = GLUT_DOWN
+        {
 //camera->startMove(x,y);
 //camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,400.0f));
 
 //camera = new Camera(new Vector(-20.0f,1.0f,-80.0f), new Vector(0.0f,1.0f,4.0f));
-}
-}
+        }
+    }
 }
 
-void mouseMove(int x, int y) {
-    if (!isPaused) {
+void mouseMove(int x, int y)
+{
+    if (!isPaused)
+    {
         xPosBeforePause=x; //Mantengo posicion actual del mouse por si se pone pausa.
         yPosBeforePause=y;
         camera->moveCam(x,y);
@@ -188,32 +200,56 @@ void mouseMove(int x, int y) {
 
 
 
-void pressKey(int key, int xx, int yy) {
+void pressKey(int key, int xx, int yy)
+{
 
-switch (key) {
-case GLUT_KEY_LEFT : deltaAngle += -0.01f; break;
-case GLUT_KEY_RIGHT : deltaAngle += 0.01f; break;
-case GLUT_KEY_UP : deltaMove += 0.5f; break;
-case GLUT_KEY_DOWN : deltaMove += -0.5f; break;
+    switch (key)
+    {
+    case GLUT_KEY_LEFT :
+        deltaAngle += -0.01f;
+        break;
+    case GLUT_KEY_RIGHT :
+        deltaAngle += 0.01f;
+        break;
+    case GLUT_KEY_UP :
+        deltaMove += 0.5f;
+        break;
+    case GLUT_KEY_DOWN :
+        deltaMove += -0.5f;
+        break;
+    }
 }
+
+void releaseKey(int key, int x, int y)
+{
+
+    switch (key)
+    {
+    case GLUT_KEY_LEFT :
+        deltaAngle -= -0.01f;
+        break;
+    case GLUT_KEY_RIGHT :
+        deltaAngle -= 0.01f;
+        break;
+    case GLUT_KEY_UP :
+        deltaMove -= 0.5f;
+        break;
+    case GLUT_KEY_DOWN :
+        deltaMove -= -0.5f;
+        break;
+    }
 }
 
-void releaseKey(int key, int x, int y) {
 
-switch (key) {
-case GLUT_KEY_LEFT : deltaAngle -= -0.01f; break;
-case GLUT_KEY_RIGHT : deltaAngle -= 0.01f; break;
-case GLUT_KEY_UP : deltaMove -= 0.5f; break;
-case GLUT_KEY_DOWN : deltaMove -= -0.5f; break;
-}
-}
+void keyboard (unsigned char key, int x, int y)
+{
 
-
-void keyboard (unsigned char key, int x, int y) {
-
-	if (key == 27) {
+    if (key == 27)
+    {
         exit(0);
-	} else if (key==32) { // space bar
+    }
+    else if (key==32)     // space bar
+    {
         Vector* initPosition = new Vector(camera->getPosition()->getX()+1, camera->getPosition()->getY()-1, camera->getPosition()->getZ());
         Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*60,
                                           (camera->getPoint()->getY() - camera->getPosition()->getY())*60,
@@ -221,18 +257,23 @@ void keyboard (unsigned char key, int x, int y) {
         Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
 
         game->addBullet(initPosition, initVelocity, initAccel);
-	} else if (key==Constants::P || key==Constants::UP_P) {
-        if (isPaused) {
+    }
+    else if (key==Constants::P || key==Constants::UP_P)
+    {
+        if (isPaused)
+        {
             glutWarpPointer(xPosBeforePause, yPosBeforePause);
         }
         isPaused=!isPaused;
-	}
+    }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
 
 // init GLUT and create window
-if(SDL_Init(SDL_INIT_VIDEO)<0) {
+    if(SDL_Init(SDL_INIT_VIDEO)<0)
+    {
         cerr << "No se pudo iniciar SDL: " << SDL_GetError() << endl;
         exit(1);
     }
@@ -241,17 +282,19 @@ if(SDL_Init(SDL_INIT_VIDEO)<0) {
 
     Uint32 flags = SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_OPENGL;
 
-    if(SDL_SetVideoMode(640, 480, 32, flags)==NULL) {
+    if(SDL_SetVideoMode(640, 480, 32, flags)==NULL)
+    {
         cerr << "No se pudo establecer el modo de video: " << SDL_GetError() << endl;
         exit(1);
     }
 
-    if(SDL_EnableKeyRepeat(10, 10)<0) {
+    if(SDL_EnableKeyRepeat(10, 10)<0)
+    {
         cerr << "No se pudo establecer el modo key-repeat: " << SDL_GetError() << endl;
         exit(1);
     }
 
-glMatrixMode(GL_PROJECTION);
+    glMatrixMode(GL_PROJECTION);
 
     float color = 0;
     glClearColor(color, color, color, 1);
@@ -266,45 +309,50 @@ glMatrixMode(GL_PROJECTION);
 //glutInitWindowPosition(100,100);
 //glutInitWindowSize(320,320);
 //glutCreateWindow("Laboratorio1");
-bool fin = false;
-SDL_Event evento;
-game->addBuildings();
-SDL_EnableKeyRepeat(0,1);
- do{
-    int xm,ym;
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glLoadIdentity();
-    SDL_GetMouseState(&xm, &ym);
-    mouseMove(xm, ym);
-    renderScene();
+    bool fin = false;
+    SDL_Event evento;
+    game->addBuildings();
+    SDL_EnableKeyRepeat(0,1);
+    do
+    {
+        int xm,ym;
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        //glLoadIdentity();
+        SDL_GetMouseState(&xm, &ym);
+        mouseMove(xm, ym);
+        renderScene();
 
-    while(SDL_PollEvent(&evento)){
-            switch(evento.type){
+        while(SDL_PollEvent(&evento))
+        {
+            switch(evento.type)
+            {
 
             case SDL_QUIT:
                 fin = true;
                 break;
             case SDL_KEYDOWN:
-                switch(evento.key.keysym.sym){
+                switch(evento.key.keysym.sym)
+                {
                 case SDLK_ESCAPE:
                     fin = true;
                     break;
                 case SDLK_SPACE:
-                        Vector* initPosition = new Vector(camera->getPosition()->getX()+1, camera->getPosition()->getY()-1, camera->getPosition()->getZ());
-                        Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*100,
-                                                          (camera->getPoint()->getY() - camera->getPosition()->getY())*100,
-                                                          (camera->getPoint()->getZ() - camera->getPosition()->getZ())*100);
-                        Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
+                    Vector* initPosition = new Vector(camera->getPosition()->getX()+1, camera->getPosition()->getY()-1, camera->getPosition()->getZ());
+                    Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*100,
+                                                      (camera->getPoint()->getY() - camera->getPosition()->getY())*100,
+                                                      (camera->getPoint()->getZ() - camera->getPosition()->getZ())*100);
+                    Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
 
-                        game->addBullet(initPosition, initVelocity, initAccel);
-                        break;
+                    game->addBullet(initPosition, initVelocity, initAccel);
+                    break;
                 }
                 break;
             }
         }
         SDL_GL_SwapBuffers();
-    //changeSize();
- }while (!fin);
+        //changeSize();
+    }
+    while (!fin);
 // register callbacks
 //glutDisplayFunc(renderScene);
 //glutReshapeFunc(changeSize);
@@ -328,5 +376,5 @@ SDL_EnableKeyRepeat(0,1);
 // enter GLUT event processing cycle
 //glutMainLoop();
 
-return 1;
+    return 1;
 }

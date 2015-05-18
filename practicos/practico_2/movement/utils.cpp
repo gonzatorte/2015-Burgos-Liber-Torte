@@ -85,56 +85,56 @@ GLuint raw_texture_load(const char *filename, int width, int height)
     return texture;
 }
 
-int LoadBitmap(char *filename)
-{
-    FILE * file;
-    char temp;
-    long i;
-
-    BITMAPINFOHEADER infoheader;
-
-    num_texture++; // The counter of the current texture is increased
-
-    if( (file = fopen(filename, "rb"))==NULL) return (-1); // Open the file for reading
-
-    fseek(file, 18, SEEK_CUR);  /* start reading width & height */
-    fread(&infoheader.biWidth, sizeof(int), 1, file);
-
-    fread(&infoheader.biHeight, sizeof(int), 1, file);
-
-    fread(&infoheader.biPlanes, sizeof(short int), 1, file);
-    if (infoheader.biPlanes != 1) {
-	    printf("Planes from %s is not 1: %u\n", filename, infoheader.biPlanes);
-	    return 0;
-    }
-
-    // read the bpp
-    fread(&infoheader.biBitCount, sizeof(unsigned short int), 1, file);
-    if (infoheader.biBitCount != 24) {
-      printf("Bpp from %s is not 24: %d\n", filename, infoheader.biBitCount);
-      return 0;
-    }
-
-    fseek(file, 24, SEEK_CUR);
-
-    // read the data.
-    infoheader.data = (char *) malloc(infoheader.biWidth * infoheader.biHeight * 3);
-    if (infoheader.data == NULL) {
-	    printf("Error allocating memory for color-corrected image data\n");
-	    return 0;
-    }
-
-    if ((i = fread(infoheader.data, infoheader.biWidth * infoheader.biHeight * 3, 1, file)) != 1) {
-	    printf("Error reading image data from %s.\n", filename);
-	    return 0;
-    }
-
-    for (i=0; i<(infoheader.biWidth * infoheader.biHeight * 3); i+=3) { // reverse all of the colors. (bgr -> rgb)
-	    temp = infoheader.data[i];
-	    infoheader.data[i] = infoheader.data[i+2];
-	    infoheader.data[i+2] = temp;
-    }
-
-
-    fclose(file); // Closes the file stream
-}
+//int LoadBitmap(char *filename)
+//{
+//    FILE * file;
+//    char temp;
+//    long i;
+//
+//    BITMAPINFOHEADER infoheader;
+//
+//    num_texture++; // The counter of the current texture is increased
+//
+//    if( (file = fopen(filename, "rb"))==NULL) return (-1); // Open the file for reading
+//
+//    fseek(file, 18, SEEK_CUR);  /* start reading width & height */
+//    fread(&infoheader.biWidth, sizeof(int), 1, file);
+//
+//    fread(&infoheader.biHeight, sizeof(int), 1, file);
+//
+//    fread(&infoheader.biPlanes, sizeof(short int), 1, file);
+//    if (infoheader.biPlanes != 1) {
+//	    printf("Planes from %s is not 1: %u\n", filename, infoheader.biPlanes);
+//	    return 0;
+//    }
+//
+//    // read the bpp
+//    fread(&infoheader.biBitCount, sizeof(unsigned short int), 1, file);
+//    if (infoheader.biBitCount != 24) {
+//      printf("Bpp from %s is not 24: %d\n", filename, infoheader.biBitCount);
+//      return 0;
+//    }
+//
+//    fseek(file, 24, SEEK_CUR);
+//
+//    // read the data.
+//    infoheader.data = (char *) malloc(infoheader.biWidth * infoheader.biHeight * 3);
+//    if (infoheader.data == NULL) {
+//	    printf("Error allocating memory for color-corrected image data\n");
+//	    return 0;
+//    }
+//
+//    if ((i = fread(infoheader.data, infoheader.biWidth * infoheader.biHeight * 3, 1, file)) != 1) {
+//	    printf("Error reading image data from %s.\n", filename);
+//	    return 0;
+//    }
+//
+//    for (i=0; i<(infoheader.biWidth * infoheader.biHeight * 3); i+=3) { // reverse all of the colors. (bgr -> rgb)
+//	    temp = infoheader.data[i];
+//	    infoheader.data[i] = infoheader.data[i+2];
+//	    infoheader.data[i+2] = temp;
+//    }
+//
+//
+//    fclose(file); // Closes the file stream
+//}

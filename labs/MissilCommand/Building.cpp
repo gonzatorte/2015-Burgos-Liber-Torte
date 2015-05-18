@@ -1,6 +1,10 @@
 #include "Building.h"
 #include <windows.h>
-#include <cstdlib>
+#ifdef __cplusplus
+    #include <cstdlib>
+#else
+    #include <stdlib.h>
+#endif
 
 #include <SDL/SDL.h>
 #include "SDL/SDL_opengl.h"

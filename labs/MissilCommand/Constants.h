@@ -14,6 +14,7 @@ class Constants
         static const int BULLET_POINTS;
         static const char P;
         static const char UP_P;
+
     protected:
     private:
 };

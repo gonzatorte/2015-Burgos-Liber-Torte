@@ -1,3 +1,5 @@
+#include <cstdio>
+#include <cstring>
 #include "loader3ds.hpp"
 
 Model3D * Load3DS(const char * texture_name)
@@ -5,21 +7,25 @@ Model3D * Load3DS(const char * texture_name)
     Model3D * p_object = new Model3D();
     int i;
     FILE *l_file;
+    FILE *t_file;
     unsigned short l_chunk_id;
     unsigned int l_chunk_length;
     unsigned char l_char;
     unsigned short l_qty;
     unsigned short l_face_flags;
 
-    strcpy(, ".3ds");
+//    strcpy(, ".3ds");
 
-    sprintf(model_file, "%s.3ds")
     char * model_file = new char [strlen("../../rsc/models/")+strlen(texture_name)+strlen(".3ds")+1];
+    sprintf(model_file, "%s.3ds");
+
     char * texture_file = new char [strlen("../../rsc/models/textures")+strlen(texture_name)+strlen(".3ds")+1];
+    sprintf(texture_file, "%s.3ds");
+
     if ((l_file=fopen(model_file, "rb"))== NULL)
         throw "Cant open model file";
-    if ((t_file=fopen(p_filename, "rb"))!=NULL){
-        t_file
+    if ((t_file=fopen(texture_file, "rb"))!=NULL){
+        ;
     }
     while (ftell (l_file) < filelength (fileno (l_file)))
     {

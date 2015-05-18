@@ -35,7 +35,7 @@ typedef struct {
     bool has_mapcoord = false;
     Mapcoord3DS * mapcoord;
 
-    int * texture_ind = -1;
+    int * texture_ind = NULL;
 } Model3D;
 
 Model3D * Load3DS(const char *p_filename);

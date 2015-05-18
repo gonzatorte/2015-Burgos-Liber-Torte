@@ -11,7 +11,6 @@ Figure::Figure() {
     velocity = new Vector();
     acceleration = new Vector();
 }
-
 Vector* Figure::getPosition() {
     return position;
 }
@@ -37,13 +36,14 @@ void Figure::setAcceleration(Vector* a) {
 }
 
 void Figure::eulerIntegrate() {
+
 	position = *position + *velocity * Constants::dt;
 	velocity = *velocity + *acceleration * Constants::dt;
+
 }
+
 
 Figure::~Figure()
 {
-    delete position;
-    delete velocity;
-    delete acceleration;
+    //dtor
 }
