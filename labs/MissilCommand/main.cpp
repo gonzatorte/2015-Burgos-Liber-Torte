@@ -171,6 +171,7 @@ int main(int argc, char **argv)
     bool fin = false;
     SDL_Event evento;
     SDL_EnableKeyRepeat(0,1);
+    SDL_ShowCursor(SDL_DISABLE);
     game->addBuildings();
     do
     {
@@ -204,6 +205,15 @@ int main(int argc, char **argv)
                     game->addBullet(initPosition, initVelocity, initAccel);
                     break;
                 }
+                case 'p':
+                case 'P':
+                    {
+                        if (isPaused)
+                        {
+                            SDL_WarpMouse(xPosBeforePause, yPosBeforePause);
+                        }
+                        isPaused=!isPaused;
+                    }
                 default:
                     break;
                 }

@@ -36,6 +36,8 @@ class Game
         void drawLandscape();
         bool levelCompleted();
         void levelUp();
+        void drawAim();
+        void drawLife();
         void drawHud();
         virtual ~Game();
     protected:
