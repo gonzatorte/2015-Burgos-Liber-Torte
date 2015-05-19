@@ -75,11 +75,14 @@ int LoadBitmap(char *filename)
 
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE); // We don't combine the color with the original surface color, use only the texture map.
 
+    int mipmaplvl = 4;
+    int border_size = 0;
+
     // Finally we define the 2d texture
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, infoheader.biWidth, infoheader.biHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, l_texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, mipmaplvl, infoheader.biWidth, infoheader.biHeight, border_size, GL_RGBA, GL_UNSIGNED_BYTE, l_texture);
 
     // And create 2d mipmaps for the minifying function
-    gluBuild2DMipmaps(GL_TEXTURE_2D, 4, infoheader.biWidth, infoheader.biHeight, GL_RGBA, GL_UNSIGNED_BYTE, l_texture);
+    gluBuild2DMipmaps(GL_TEXTURE_2D, mipmaplvl, infoheader.biWidth, infoheader.biHeight, GL_RGBA, GL_UNSIGNED_BYTE, l_texture);
 
     free(l_texture); // Free the memory we used to load the texture
 

@@ -30,6 +30,6 @@ typedef struct {
     polygon_type polygon[MAX_POLYGONS];
     mapcoord_type mapcoord[MAX_VERTICES];
     int id_texture;
-} obj_type, *obj_type_ptr;
+} ModelType;
 
 #endif // MODELTYPE_H

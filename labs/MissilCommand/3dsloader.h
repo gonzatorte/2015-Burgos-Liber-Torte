@@ -12,5 +12,5 @@
  *
  *********************************************************/
 
-extern char Load3DS (obj_type_ptr ogg, char *filename);
+extern char Load3DS (ModelType* ogg, char *filename);
 
