@@ -106,8 +106,7 @@ void renderScene(Game* game, Camera* camera)
     }
 }
 
-void mouseMove(int x, int y){
-    Camera * camera = NULL;
+void mouseMove(int x, int y, Camera * camera){
     if (!isPaused)
     {
         xPosBeforePause=x; //Mantengo posicion actual del mouse por si se pone pausa.
@@ -241,7 +240,7 @@ int main(int argc, char **argv){
             int xm,ym;
             //glLoadIdentity();
             SDL_GetMouseState(&xm, &ym);
-            mouseMove(xm, ym);
+            mouseMove(xm, ym, camera);
             renderScene(game, camera);
         }
 
