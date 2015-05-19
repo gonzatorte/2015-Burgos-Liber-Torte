@@ -28,7 +28,7 @@
 #include "Bullet.h"
 #include "Constants.h"
 #include "Game.h"
-#include "Application.h"
+#include "Menu.h"
 #include "util.h"
 
 #define PI	3.14159265358979323846
@@ -36,16 +36,8 @@
 
 using namespace std;
 
-Camera* camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
-Game* game = new Game();
-float deltaAngle = 0.0f;
-float deltaAngleYY = 0.0f;
-float deltaMove = 0;
-
 boolean isPaused = false;
 int xPosBeforePause, yPosBeforePause;
-
-
 
 void changeSize(int w, int h)
 {
@@ -72,7 +64,7 @@ void changeSize(int w, int h)
     glMatrixMode(GL_MODELVIEW);
 }
 
-void renderScene()
+void renderScene(Game* game, Camera* camera)
 {
 
     // Clear Color and Depth Buffers
@@ -113,30 +105,8 @@ void renderScene()
     }
 }
 
-void mouseButton(int button, int state, int x, int y)
-{
-
-// only start motion if the left button is pressed
-    if (button == GLUT_LEFT_BUTTON)
-    {
-
-// when the button is released
-        if (state == GLUT_UP)
-        {
-//            camera->endMove();
-        }
-        else   // state = GLUT_DOWN
-        {
-//camera->startMove(x,y);
-//camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,400.0f));
-
-//camera = new Camera(new Vector(-20.0f,1.0f,-80.0f), new Vector(0.0f,1.0f,4.0f));
-        }
-    }
-}
-
-void mouseMove(int x, int y)
-{
+void mouseMove(int x, int y){
+    Camera * camera = NULL;
     if (!isPaused)
     {
         xPosBeforePause=x; //Mantengo posicion actual del mouse por si se pone pausa.
@@ -145,49 +115,8 @@ void mouseMove(int x, int y)
     }
 }
 
-void pressKey(int key, int xx, int yy)
-{
-
-    switch (key)
-    {
-    case GLUT_KEY_LEFT :
-        deltaAngle += -0.01f;
-        break;
-    case GLUT_KEY_RIGHT :
-        deltaAngle += 0.01f;
-        break;
-    case GLUT_KEY_UP :
-        deltaMove += 0.5f;
-        break;
-    case GLUT_KEY_DOWN :
-        deltaMove += -0.5f;
-        break;
-    }
-}
-
-void releaseKey(int key, int x, int y)
-{
-
-    switch (key)
-    {
-    case GLUT_KEY_LEFT :
-        deltaAngle -= -0.01f;
-        break;
-    case GLUT_KEY_RIGHT :
-        deltaAngle -= 0.01f;
-        break;
-    case GLUT_KEY_UP :
-        deltaMove -= 0.5f;
-        break;
-    case GLUT_KEY_DOWN :
-        deltaMove -= -0.5f;
-        break;
-    }
-}
-
-
-void keyboard (unsigned char key, int x, int y)
-{
+void keyboard (unsigned char key, int x, int y, Game* game){
+    Camera * camera = NULL;
 
     if (key == 27)
     {
@@ -213,15 +142,55 @@ void keyboard (unsigned char key, int x, int y)
     }
 }
 
-int main(int argc, char **argv)
-{
-//    freopen("CON", "w", stdout);
-//    freopen("CON", "w", stderr);
-//    fclose(stdout);
-//    fclose(stderr);
+void setUp_SDL(){
+    if(SDL_Init(SDL_INIT_VIDEO)<0)
+    {
+        std::stringstream ss;
+        ss << "Unable to inti SDL: " << SDL_GetError();
+        throw std::runtime_error(ss.str().c_str());
+    }
+
+    if (TTF_Init() < 0) {
+        std::stringstream ss;
+        ss << "Unable to inti TTF: " << SDL_GetError();
+        throw std::runtime_error(ss.str().c_str());
+    }
+
+    atexit(SDL_Quit);
+
+    Uint32 flags = SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_OPENGL;
+
+    if(SDL_SetVideoMode(800, 600, 32, flags)==NULL)
+    {
+        std::stringstream ss;
+        ss << "No se pudo establecer el modo de video: " << SDL_GetError();
+        throw std::runtime_error(ss.str().c_str());
+    }
+
+    if(SDL_EnableKeyRepeat(10, 10)<0)
+    {
+        std::stringstream ss;
+        ss << "No se pudo establecer el modo key-repeat: " << SDL_GetError();
+        throw std::runtime_error(ss.str().c_str());
+    }
+}
+
+void setUp_GL(){
+    glMatrixMode(GL_PROJECTION);
+
+    float color = 0;
+    glClearColor(color, color, color, 1);
+
+    gluPerspective(45, 640/480.f, 0.1, 100);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+void setUp(){
     try{
-        Application app;
-        app.setUp();
+        setUp_SDL();
+        setUp_GL();
     } catch (const char * e) {
         cout << "An exception occurred 1. " << e << endl;
     } catch (exception & e) {
@@ -229,45 +198,85 @@ int main(int argc, char **argv)
     } catch(...) {
         cout << "default exception";
     }
+}
+
+int main(int argc, char **argv){
+    setUp();
+    Menu * menu = new Menu();
+    Camera * camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
+    while(true){
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+        camera->setLookAt();
+        menu->drawMenu();
+        SDL_GL_SwapBuffers();
+    }
+    return 0;
+}
+
+int main2(int argc, char **argv){
+//    freopen("CON", "w", stdout);
+//    freopen("CON", "w", stderr);
+//    fclose(stdout);
+//    fclose(stderr);
+    setUp();
 
     bool fin = false;
+    bool menu_active = false;
     SDL_Event evento;
     SDL_EnableKeyRepeat(0,1);
+    Game * game = new Game();
+    Menu * menu = new Menu();
+    Camera* camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
     game->addBuildings();
-    do
-    {
-        int xm,ym;
+    do{
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //glLoadIdentity();
-        SDL_GetMouseState(&xm, &ym);
-        mouseMove(xm, ym);
-        renderScene();
+        if (menu_active){
+            menu->drawMenu();
+        }else{
+            int xm,ym;
+            //glLoadIdentity();
+            SDL_GetMouseState(&xm, &ym);
+            mouseMove(xm, ym);
+            renderScene(game, camera);
+        }
 
-        while(SDL_PollEvent(&evento))
-        {
-            switch(evento.type)
-            {
+        while(SDL_PollEvent(&evento)){
+            switch(evento.type){
             case SDL_QUIT:
                 fin = true;
                 break;
             case SDL_KEYDOWN:
-                switch(evento.key.keysym.sym)
-                {
+                switch(evento.key.keysym.sym){
                 case SDLK_ESCAPE:
                     fin = true;
                     break;
-                case SDLK_SPACE:{
-                    Vector* initPosition = new Vector(camera->getPosition()->getX()+1, camera->getPosition()->getY()-1, camera->getPosition()->getZ());
-                    Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*100,
-                                                      (camera->getPoint()->getY() - camera->getPosition()->getY())*100,
-                                                      (camera->getPoint()->getZ() - camera->getPosition()->getZ())*100);
-                    Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
-
-                    game->addBullet(initPosition, initVelocity, initAccel);
+                case SDLK_RETURN:
+                    menu_active = !menu_active;
+                    if (menu_active){
+                        menu->initMenu();
+                    }
                     break;
-                }
                 default:
-                    break;
+                    if (menu_active){
+                        menu->interactMenu(&evento);
+                    } else {
+                        switch(evento.key.keysym.sym){
+                        case SDLK_SPACE:{
+                            Vector* initPosition = new Vector(camera->getPosition()->getX()+1, camera->getPosition()->getY()-1, camera->getPosition()->getZ());
+                            Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*100,
+                                                              (camera->getPoint()->getY() - camera->getPosition()->getY())*100,
+                                                              (camera->getPoint()->getZ() - camera->getPosition()->getZ())*100);
+                            Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
+
+                            game->addBullet(initPosition, initVelocity, initAccel);
+                            break;
+                        }
+                        default:
+                            break;
+                        }
+                        break;
+                    }
                 }
                 break;
             default:
@@ -276,7 +285,6 @@ int main(int argc, char **argv)
         }
         SDL_GL_SwapBuffers();
         //changeSize();
-    }
-    while (!fin);
+    } while (!fin);
     return 1;
 }

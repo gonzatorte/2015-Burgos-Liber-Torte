@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <SDL_ttf.h>
+
 #include <list>
 #include <map>
 #include <stdlib.h>
@@ -15,6 +17,8 @@
 #include "Vector.h"
 #include "Level.h"
 #include "Constants.h"
+#include "ModelType.h"
+#include "ModelFigure.h"
 
 using namespace std;
 
@@ -40,6 +44,10 @@ class Game
         virtual ~Game();
     protected:
     private:
+        int textura_suelo, textura_cielo;
+        ModelType * model_building;
+        TTF_Font * font_end;
+        TTF_Font * font_hub;
         int level;
         int misilQuantity, maxMisilQuantity, simultMisilQuant, misilSpeed;
         int maxBuildQuantity;
@@ -49,12 +57,13 @@ class Game
         bool gameOver;
         clock_t lastMisilTime;
         list<Misil*>* misils;
-        list<Building*>* buildings;
+        list<ModelFigure*>* buildings;
         list<Bullet*>* bullets;
         map<int, Level*>* levels;
         void initLevel(int levelNumber);
         map<int, Level*>* getLevelsFromSetting(tinyxml2::XMLElement* gameSettings);
-        list<Building*>::iterator obtRandomIterator();
+        list<ModelFigure*>::iterator obtRandomIterator();
+        void load_rsc();
 
 };
 

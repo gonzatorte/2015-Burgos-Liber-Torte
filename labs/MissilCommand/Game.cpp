@@ -1,5 +1,14 @@
 #include "Game.h"
 
+#include <exception>
+#include <string>
+#include <sstream>
+#include <stdexcept>
+
+#include "texture.h"
+#include "3dsloader.h"
+
+
 //list<Building*>::iterator itBuildings;
 int multiplicador;
 
@@ -17,7 +26,7 @@ void Game::initLevel(int levelNumber) {
     this->bulletQuantity = maxBulletQuantity;
     this->lastMisilTime = clock();
     misils = new list<Misil*>();
-    buildings = new list<Building*>();
+    buildings = new list<ModelFigure*>();
     bullets = new list<Bullet*>();
     //addBuildings();
 
@@ -46,10 +55,10 @@ map<int, Level*>* Game::getLevelsFromSetting(tinyxml2::XMLElement* gameSettings)
     return levels;
 }
 
-list<Building*>::iterator Game::obtRandomIterator() {
+list<ModelFigure*>::iterator Game::obtRandomIterator() {
     int randomAccess = rand() % maxBuildQuantity;
     int cont = 0;
-    list<Building*>::iterator itB = buildings->begin();
+    list<ModelFigure*>::iterator itB = buildings->begin();
     while (cont < randomAccess) {
         ++itB;
         if (itB == buildings->end()) {
@@ -60,8 +69,24 @@ list<Building*>::iterator Game::obtRandomIterator() {
     return itB;
 }
 
+void Game::load_rsc(){
+    textura_suelo = LoadBitmap("../../rsc/textures/grass_1.bmp");
+    textura_cielo = LoadBitmap("../../rsc/textures/sky_1.bmp");
+    model_building = new ModelType();
+    Load3DS(model_building, "../../rsc/models/cubo.3ds");
+    model_building->id_texture = LoadBitmap("../../rsc/models/textures/cubo.bmp");
+    font_hub = TTF_OpenFont("../../rsc/fonts/leadcoat.ttf", 16);
+    font_end = TTF_OpenFont("../../rsc/fonts/leadcoat.ttf", 16);
+    if (!font_hub || !font_end){
+        std::stringstream ss;
+        ss << "Unable to load font: " << SDL_GetError();
+        throw std::runtime_error(ss.str().c_str());
+    }
+}
+
 //METODOS PUBLICOS
 Game::Game() {
+    load_rsc();
     tinyxml2::XMLDocument settings;
     settings.LoadFile("settings.xml");
     //if (loadOK) {
@@ -92,7 +117,7 @@ void Game::addMisil() {
     //if (itBuildings == buildings->end()) {
     //    itBuildings = buildings->begin();
     //}
-    list<Building*>::iterator itBuildings = obtRandomIterator();
+    list<ModelFigure*>::iterator itBuildings = obtRandomIterator();
 
     Misil* misil = new Misil();
     Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
@@ -135,7 +160,9 @@ void Game::addBuildings() {
     int n = maxBuildQuantity;
     for(int i = -3; i < 3; i++){
         for(int j=-3; j < 3; j++) {
-            Building* building = new Building();
+            ModelFigure* building = new ModelFigure();
+            building->orientation = new Vector(1, 1, 1);
+            building->model = model_building;
             Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
             building->setAcceleration(initAccel);
 
@@ -195,7 +222,7 @@ void Game::detectCollisions(){
         x_b = (*it)->getPosition()->getX();
         y_b = (*it)->getPosition()->getY();
         z_b = (*it)->getPosition()->getZ();
-        list<Building*>::iterator itB = buildings->begin();
+        list<ModelFigure*>::iterator itB = buildings->begin();
         while(itB!=buildings->end()){
             x_diff = x_b - (*itB)->getPosition()->getX();
             y_diff = y_b - (*itB)->getPosition()->getY();
@@ -268,7 +295,7 @@ void Game::drawBullets() {
 }
 
 void Game::drawBuildings() {
-    list<Building*>::iterator it;
+    list<ModelFigure*>::iterator it;
     for (it=buildings->begin(); it!=buildings->end(); ++it){
 		glPushMatrix();
 			(*it)->drawFigure();
@@ -278,57 +305,88 @@ void Game::drawBuildings() {
 
 void Game::drawLandscape(){
     // Draw ground
-    glColor3f(0.0f, 0.5f, 0.0f);
+//    glColor3f(0.0f, 0.5f, 0.0f);
+    glBindTexture(GL_TEXTURE_2D, textura_suelo);
+    glEnable(GL_TEXTURE_2D);
     glBegin(GL_QUADS);
+    glTexCoord2f(0, 0);
     glVertex3f(-100.0f, 0.0f, -100.0f);
+    glTexCoord2f(1, 0);
     glVertex3f(-100.0f, 0.0f,  100.0f);
+    glTexCoord2f(1, 1);
     glVertex3f( 100.0f, 0.0f,  100.0f);
+    glTexCoord2f(0, 1);
     glVertex3f( 100.0f, 0.0f, -100.0f);
     glEnd();
+    glDisable(GL_TEXTURE_2D);
 
-    glColor3f(0.5f, 0.0f, 0.5f);
+    // Draw roof
+//    glColor3f(0.5f, 0.0f, 0.5f);
+    glBindTexture(GL_TEXTURE_2D, textura_cielo);
+    glEnable(GL_TEXTURE_2D);
     glBegin(GL_QUADS);
+    glTexCoord2f(0, 0);
     glVertex3f( 100.0f, 50.0f,  100.0f);
+    glTexCoord2f(1, 0);
     glVertex3f( 100.0f, 50.0f, -100.0f);
+    glTexCoord2f(1, 1);
     glVertex3f(-100.0f, 50.0f, -100.0f);
+    glTexCoord2f(0, 1);
     glVertex3f(-100.0f, 50.0f,  100.0f);
     glEnd();
 
     // Draw borders
-    glColor3f(0, 0, 1);
+//    glColor3f(0, 0, 1);
     glBegin(GL_QUADS);
+    glTexCoord2f(0, 0);
     glVertex3f(-100.0f,  0.0f, -100.0f);
+    glTexCoord2f(1, 0);
     glVertex3f(-100.0f,  0.0f,  100.0f);
+    glTexCoord2f(1, 1);
     glVertex3f(-100.0f, 50.0f,  100.0f);
+    glTexCoord2f(0, 1);
     glVertex3f(-100.0f, 50.0f, -100.0f);
     glEnd();
 
     // Draw borders
     glColor3f(1, 1, 1);
     glBegin(GL_QUADS);
+    glTexCoord2f(0, 0);
     glVertex3f(-100.0f, 50.0f, 100.0f);
+    glTexCoord2f(1, 0);
     glVertex3f( 100.0f, 50.0f, 100.0f);
+    glTexCoord2f(1, 1);
     glVertex3f( 100.0f,  0.0f, 100.0f);
+    glTexCoord2f(0, 1);
     glVertex3f(-100.0f,  0.0f, 100.0f);
     glEnd();
 
     // Draw borders
     glColor3f(1, 0, 0);
     glBegin(GL_QUADS);
+    glTexCoord2f(0, 0);
     glVertex3f(100.0f,  0.0f, 100.0f);
+    glTexCoord2f(1, 0);
     glVertex3f(100.0f,  0.0f,-100.0f);
+    glTexCoord2f(1, 1);
     glVertex3f(100.0f, 50.0f,-100.0f);
+    glTexCoord2f(0, 1);
     glVertex3f(100.0f, 50.0f, 100.0f);
     glEnd();
 
     // Draw borders
     glColor3f(0.5, 0.5, 0.5);
     glBegin(GL_QUADS);
+    glTexCoord2f(0, 0);
     glVertex3f( 100.0f,  0.0f, -100.0f);
+    glTexCoord2f(1, 0);
     glVertex3f(-100.0f,  0.0f, -100.0f);
+    glTexCoord2f(1, 1);
     glVertex3f(-100.0f, 50.0f, -100.0f);
+    glTexCoord2f(0, 1);
     glVertex3f( 100.0f, 50.0f, -100.0f);
     glEnd();
+    glDisable(GL_TEXTURE_2D);
 }
 
 bool Game::levelCompleted() {

@@ -1,18 +1,24 @@
 #include <SDL/SDL.h>
 #include <SDL_ttf.h>
 #include <SDL/SDL_opengl.h>
+#include <GL/glu.h>
 
 #include "util.h"
 #include "Menu.h"
 
 void Menu::initMenu(){
-}
-
-void Menu::loopMenu(){
-    do
-    {
-        this->drawMenu();
-    } while(this->interactMenu());
+    glPushMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0.0f, 100, 100, 0.0f, 0.0f, 1.0f);
+    glBegin(GL_QUADS);
+    glVertex2f(10,10);
+    glVertex2f(10,15);
+    glVertex2f(15,15);
+    glVertex2f(15,10);
+    glEnd();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
 }
 
 void Menu::drawMenu(){
@@ -22,22 +28,13 @@ void Menu::drawMenu(){
     sleep(sleep_time - (tend - tstart));
 }
 
-bool Menu::interactMenu(){
-    SDL_Event evento;
-    while(SDL_PollEvent(&evento))
-    {
-        switch(evento.type)
-        {
-        case SDL_QUIT:
-            return false;
+void Menu::interactMenu(SDL_Event * evento){
+    while(SDL_PollEvent(evento)){
+        switch(evento->type){
         case SDL_KEYDOWN:
-            switch(evento.key.keysym.sym)
-            {
-            case SDLK_ESCAPE:
-                return false;
-            case SDLK_SPACE:{
+            switch(evento->key.keysym.sym){
+            case SDLK_SPACE:
                 break;
-            }
             default:
                 break;
             }
@@ -46,7 +43,4 @@ bool Menu::interactMenu(){
             break;
         }
     }
-    SDL_GL_SwapBuffers();
-    //changeSize();
-    return true;
 }

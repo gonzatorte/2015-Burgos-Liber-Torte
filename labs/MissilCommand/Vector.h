@@ -16,8 +16,6 @@ class Vector
         float getZ();
         Vector* operator +(const Vector* v);
         Vector* operator *(float num);
-    protected:
-    private:
         float x,y,z;
 };
 

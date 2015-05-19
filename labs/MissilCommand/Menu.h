@@ -1,14 +1,15 @@
 #ifndef MENU_INCLUDED_H
 #define MENU_INCLUDED_H
 
+#include <SDL/SDL.h>
+
 #include <ctime>
 
 class Menu{
     public:
         void initMenu();
         void drawMenu();
-        void loopMenu();
-        bool interactMenu();
+        void interactMenu(SDL_Event * evento);
 
     private:
         float frencuency = 0.5; // En hertz, vel angular
