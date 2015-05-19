@@ -82,6 +82,7 @@ void Game::load_rsc(){
         ss << "Unable to load font: " << SDL_GetError();
         throw std::runtime_error(ss.str().c_str());
     }
+    text_hud_vida = Load_string("Vida", {255,0,128,0}, font_hub);
 }
 
 //METODOS PUBLICOS
@@ -411,6 +412,8 @@ void Game::drawLife(){
         x1 += 6;
         x2 += 6;
     }
+    float coords[3] = {x2, y2, 0};
+    drawText(coords, text_hud_vida);
 }
 
 void Game::drawAim()

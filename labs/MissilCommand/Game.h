@@ -19,6 +19,7 @@
 #include "Constants.h"
 #include "ModelType.h"
 #include "ModelFigure.h"
+#include "TextGrafic.h"
 
 using namespace std;
 
@@ -50,6 +51,7 @@ class Game
         ModelType * model_building;
         TTF_Font * font_end;
         TTF_Font * font_hub;
+        TextGrafic text_hud_vida;
         int level;
         int misilQuantity, maxMisilQuantity, simultMisilQuant, misilSpeed;
         int maxBuildQuantity;
