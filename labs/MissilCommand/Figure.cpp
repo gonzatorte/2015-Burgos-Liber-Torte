@@ -37,9 +37,19 @@ void Figure::setAcceleration(Vector* a) {
 
 void Figure::eulerIntegrate() {
 
+    previews_position = position;
 	position = *position + *velocity * Constants::dt;
 	velocity = *velocity + *acceleration * Constants::dt;
 
+}
+
+
+void Figure::setPreviewsPosition(Vector* p) {
+    previews_position = p;
+}
+
+Vector* Figure::getPreviewsPosition() {
+    return previews_position;
 }
 
 

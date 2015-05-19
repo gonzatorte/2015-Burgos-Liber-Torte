@@ -22,8 +22,13 @@ void Bullet::drawFigure() {
 
     glTranslatef(this->getPosition()->getX(), this->getPosition()->getY(), this->getPosition()->getZ());
     glColor3f(1.0f,0.0f,0.0f);
-    //glutSolidSphere(Constants::BALLRADIUS,50,50);
     gluSphere(gluNewQuadric(), 2,50,50);
+    //glTranslatef(this->getPreviewsPosition()->getX(), this->getPreviewsPosition()->getY(), this->getPreviewsPosition()->getZ());
+    //gluSphere(gluNewQuadric(), 2,50,50);
+    //glTranslatef(this->getPosition()->getX()-2, this->getPosition()->getY()-2, this->getPosition()->getZ()-2);
+    //gluSphere(gluNewQuadric(), 1,50,50);
+    //glTranslatef(this->getPosition()->getX()-2, this->getPosition()->getY()-2, this->getPosition()->getZ()-2);
+    //gluSphere(gluNewQuadric(), 1,50,50);
 }
 
 void Bullet::moveFigure() {

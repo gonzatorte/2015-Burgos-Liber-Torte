@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "Figure.h"
+#include "Vector.h"
 
 using namespace std;
 
@@ -13,10 +14,12 @@ class Bullet: public Figure
         ~Bullet();
         void drawFigure();
         void moveFigure();
+
         void set_y(int y);
         bool get_y();
     protected:
         int y;
+
     private:
 };
 

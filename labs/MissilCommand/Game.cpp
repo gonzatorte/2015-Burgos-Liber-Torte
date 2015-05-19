@@ -148,6 +148,8 @@ void Game::addBullet(Vector* initPosition, Vector* initVelocity, Vector* initAcc
         Bullet* bullet = new Bullet();
         bullet->setAcceleration(initAccel);
         bullet->setPosition(initPosition);
+        Vector* prevPosition = new Vector(initPosition->getX(), initPosition->getY(), initPosition->getZ());
+        bullet->setPreviewsPosition(prevPosition);
         bullet->setVelocity(initVelocity);
         bullets->push_back(bullet);
 
@@ -399,42 +401,88 @@ void Game::levelUp() {
     initLevel(level);
 }
 
+void Game::drawLife(){
+    int x1 = -90;
+    int y1 = 90;
+    int x2 = -86;
+    int y2 = 80;
+    for (int i=0; i < life; i++){
+        glRecti(x1, y1, x2, y2);
+        x1 += 6;
+        x2 += 6;
+    }
+}
+
+void Game::drawAim()
+{
+    // Dibujar mira
+
+            glLineWidth(3);
+            glBegin(GL_LINES);
+                glColor3f(0.0f, 0.0f, 1.0f);
+                glVertex2f(-5, 0);
+                glVertex2f(5, 0);
+            glEnd();
+
+            glBegin(GL_LINES);
+                glColor3f(0.0f, 0.0f, 1.0f);
+                glVertex2f(0, -5);
+                glVertex2f(0, 5);
+            glEnd();
+            float cx = 0;
+            float cy = 0;
+            float r = 4;
+            int num_segments = 500;
+            float theta = 2 * 3.1415926 / float(num_segments);
+            float tangetial_factor = tanf(theta);//calculate the tangential factor
+            float radial_factor = cosf(theta);//calculate the radial factor
+            float x = r;//we start at angle = 0
+            float y = 0;
+            glBegin(GL_LINE_LOOP);
+            glLineWidth(3);
+            for(int ii = 0; ii < num_segments; ii++)
+            {
+                glVertex2f(x + cx, y + cy);//output vertex
+                //calculate the tangential vector
+                //remember, the radial vector is (x, y)
+                //to get the tangential vector we flip those coordinates and negate one of them
+                float tx = -y;
+                float ty = x;
+                //add the tangential vector
+                x += tx * tangetial_factor;
+                y += ty * tangetial_factor;
+                //correct using the radial factor
+                x *= radial_factor;
+                y *= radial_factor;
+            }
+            glEnd();
+// Termino mira
+}
+
 void Game::drawHud()
 {
     // Temporary disable lighting
-glPushMatrix();
-    glDisable( GL_DEPTH_TEST ) ;
-//glMatrixMode( GL_PROJECTION ) ;
-glLoadIdentity() ;
 
-
-/*
- * Upside-down square viewport: it maps the screen as if the (arbitrary-set) resolution were
- * 1000x1000 pixels.
- *
- */
-
-//glOrtho( /* left */ 0, /* right */ 1000, /* bottom */ 1000, /* top */ 0,
-//	/* near */ 0, /* far */ 1 ) ;
-
-	//- or, preferably to keep the 4/3 ratio like 800x600, 640x480, 1024x768, etc. -
-
-// Non-reversed 4/3 viewport:
-glOrtho( /* left */ -320.0f, /* right */ 320.0f, /* bottom */ -240.0f, /* top */ 240.0f,
-	/* near */ -1, /* far */ 1 ) ;
-glPushMatrix();
+    // Our HUD consists of a simple rectangle
+    glMatrixMode( GL_PROJECTION );
+    glPushMatrix();
+        glLoadIdentity();
+        glOrtho( -100.0f, 100.0f, -100.0f, 100.0f, -100.0f, 100.0f );
+        glMatrixMode( GL_MODELVIEW );
             glLoadIdentity();
-            glColor3f( 1.0f, 0.0f, 0.0f );
-            glBegin( GL_QUADS );
-                glVertex2f( -90.0f, 90.0f );
-                glVertex2f( -90.0f, 40.0f );
-                glVertex2f( -40.0f, 40.0f );
-                glVertex2f( -40.0f, 90.0f );
-            glEnd();
-        glPopMatrix();
-    // Reenable lighting
+
+            drawAim();
+            drawLife();
+
+
+    glMatrixMode( GL_PROJECTION );
     glPopMatrix();
+    glMatrixMode( GL_MODELVIEW );
+
+    // Reenable lighting
 }
+
+
 
 Game::~Game()
 {

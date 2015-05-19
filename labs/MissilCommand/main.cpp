@@ -98,6 +98,7 @@ void renderScene(Game* game, Camera* camera)
             game->misilDisplacement();
             game->detectCollisions();
             game->drawMisils();
+            game->drawHud();
 
 
             //glutSwapBuffers();
@@ -200,21 +201,21 @@ void setUp(){
     }
 }
 
-int main(int argc, char **argv){
-    setUp();
-    Menu * menu = new Menu();
-    Camera * camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
-    while(true){
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-        camera->setLookAt();
-        menu->drawMenu();
-        SDL_GL_SwapBuffers();
-    }
-    return 0;
-}
+//int main(int argc, char **argv){
+//    setUp();
+//    Menu * menu = new Menu();
+//    Camera * camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
+//    while(true){
+//        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//        glLoadIdentity();
+//        camera->setLookAt();
+//        menu->drawMenu();
+//        SDL_GL_SwapBuffers();
+//    }
+//    return 0;
+//}
 
-int main2(int argc, char **argv){
+int main(int argc, char **argv){
 //    freopen("CON", "w", stdout);
 //    freopen("CON", "w", stderr);
 //    fclose(stdout);
@@ -224,10 +225,13 @@ int main2(int argc, char **argv){
     bool fin = false;
     bool menu_active = false;
     SDL_Event evento;
-    SDL_EnableKeyRepeat(0,1);
+
     Game * game = new Game();
     Menu * menu = new Menu();
     Camera* camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
+
+    SDL_EnableKeyRepeat(0,1);
+    SDL_ShowCursor(SDL_DISABLE);
     game->addBuildings();
     do{
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -271,6 +275,14 @@ int main2(int argc, char **argv){
 
                             game->addBullet(initPosition, initVelocity, initAccel);
                             break;
+                        }
+                        case SDLK_p:
+                        {
+                            if (isPaused)
+                            {
+                                SDL_WarpMouse(xPosBeforePause, yPosBeforePause);
+                            }
+                            isPaused=!isPaused;
                         }
                         default:
                             break;

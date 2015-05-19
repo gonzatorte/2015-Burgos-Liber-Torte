@@ -18,6 +18,8 @@ class Figure
         void setVelocity(Vector* v);
         void setAcceleration(Vector* a);
         void eulerIntegrate();
+        void setPreviewsPosition(Vector*);
+        Vector* getPreviewsPosition();
         virtual void drawFigure() = 0;
         virtual void moveFigure() = 0;
 
@@ -26,6 +28,7 @@ class Figure
         Vector* position;
         Vector* velocity;
         Vector* acceleration;
+        Vector* previews_position;
 
     private:
 };
