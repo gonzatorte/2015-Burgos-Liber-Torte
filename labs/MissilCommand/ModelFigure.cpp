@@ -39,5 +39,7 @@ void ModelFigure::drawFigure(){
 
 void ModelFigure::moveFigure(){
     eulerIntegrate();
+    glPushMatrix();
     glTranslatef(x,y,z);
+    glPopMatrix();
 }

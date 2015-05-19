@@ -74,15 +74,17 @@ void Game::load_rsc(){
     textura_cielo = LoadBitmap("../../rsc/textures/sky_1.bmp");
     model_building = new ModelType();
     Load3DS(model_building, "../../rsc/models/cubo.3ds");
-    model_building->id_texture = LoadBitmap("../../rsc/models/textures/cubo.bmp");
-    font_hub = TTF_OpenFont("../../rsc/fonts/leadcoat.ttf", 16);
-    font_end = TTF_OpenFont("../../rsc/fonts/leadcoat.ttf", 16);
+    model_building->id_texture = LoadBitmap("../../rsc/models/textures/marble_0.bmp");
+    font_hub = TTF_OpenFont("../../rsc/fonts/04B31.ttf", 6);
+    font_end = TTF_OpenFont("../../rsc/fonts/destroy_the_enemy.ttf", 30);
     if (!font_hub || !font_end){
         std::stringstream ss;
         ss << "Unable to load font: " << SDL_GetError();
         throw std::runtime_error(ss.str().c_str());
     }
-    text_hud_vida = Load_string("Vida", {255,0,128,0}, font_hub);
+    text_hud_vida = Load_string("Vida", {128,64,64,0}, font_hub);
+    text_end_lost = Load_string("GAME OVER", {255,128,0,0}, font_end);
+    text_end_win = Load_string("VICTORY!", {128,0,255,0}, font_end);
 }
 
 //METODOS PUBLICOS
@@ -313,13 +315,13 @@ void Game::drawLandscape(){
     glEnable(GL_TEXTURE_2D);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f(-100.0f, 0.0f, -100.0f);
+    glVertex3f(-50.0f, 0.0f, -50.0f);
     glTexCoord2f(1, 0);
-    glVertex3f(-100.0f, 0.0f,  100.0f);
+    glVertex3f(-50.0f, 0.0f,  50.0f);
     glTexCoord2f(1, 1);
-    glVertex3f( 100.0f, 0.0f,  100.0f);
+    glVertex3f( 50.0f, 0.0f,  50.0f);
     glTexCoord2f(0, 1);
-    glVertex3f( 100.0f, 0.0f, -100.0f);
+    glVertex3f( 50.0f, 0.0f, -50.0f);
     glEnd();
     glDisable(GL_TEXTURE_2D);
 
@@ -329,65 +331,65 @@ void Game::drawLandscape(){
     glEnable(GL_TEXTURE_2D);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f( 100.0f, 50.0f,  100.0f);
+    glVertex3f( 50.0f, 25.0f,  50.0f);
     glTexCoord2f(1, 0);
-    glVertex3f( 100.0f, 50.0f, -100.0f);
+    glVertex3f( 50.0f, 25.0f, -50.0f);
     glTexCoord2f(1, 1);
-    glVertex3f(-100.0f, 50.0f, -100.0f);
+    glVertex3f(-50.0f, 25.0f, -50.0f);
     glTexCoord2f(0, 1);
-    glVertex3f(-100.0f, 50.0f,  100.0f);
+    glVertex3f(-50.0f, 25.0f,  50.0f);
     glEnd();
 
     // Draw borders
 //    glColor3f(0, 0, 1);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f(-100.0f,  0.0f, -100.0f);
+    glVertex3f(-50.0f, 25.0f, -50.0f);
     glTexCoord2f(1, 0);
-    glVertex3f(-100.0f,  0.0f,  100.0f);
+    glVertex3f(-50.0f, 25.0f,  50.0f);
     glTexCoord2f(1, 1);
-    glVertex3f(-100.0f, 50.0f,  100.0f);
+    glVertex3f(-50.0f,  0.0f,  50.0f);
     glTexCoord2f(0, 1);
-    glVertex3f(-100.0f, 50.0f, -100.0f);
+    glVertex3f(-50.0f,  0.0f, -50.0f);
     glEnd();
 
     // Draw borders
     glColor3f(1, 1, 1);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f(-100.0f, 50.0f, 100.0f);
+    glVertex3f(-50.0f, 25.0f, 50.0f);
     glTexCoord2f(1, 0);
-    glVertex3f( 100.0f, 50.0f, 100.0f);
+    glVertex3f( 50.0f, 25.0f, 50.0f);
     glTexCoord2f(1, 1);
-    glVertex3f( 100.0f,  0.0f, 100.0f);
+    glVertex3f( 50.0f,  0.0f, 50.0f);
     glTexCoord2f(0, 1);
-    glVertex3f(-100.0f,  0.0f, 100.0f);
+    glVertex3f(-50.0f,  0.0f, 50.0f);
     glEnd();
 
     // Draw borders
     glColor3f(1, 0, 0);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f(100.0f,  0.0f, 100.0f);
+    glVertex3f(50.0f, 25.0f, 50.0f);
     glTexCoord2f(1, 0);
-    glVertex3f(100.0f,  0.0f,-100.0f);
+    glVertex3f(50.0f, 25.0f,-50.0f);
     glTexCoord2f(1, 1);
-    glVertex3f(100.0f, 50.0f,-100.0f);
+    glVertex3f(50.0f,  0.0f,-50.0f);
     glTexCoord2f(0, 1);
-    glVertex3f(100.0f, 50.0f, 100.0f);
+    glVertex3f(50.0f,  0.0f, 50.0f);
     glEnd();
 
     // Draw borders
     glColor3f(0.5, 0.5, 0.5);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f( 100.0f,  0.0f, -100.0f);
+    glVertex3f( 50.0f,  0.0f, -50.0f);
     glTexCoord2f(1, 0);
-    glVertex3f(-100.0f,  0.0f, -100.0f);
+    glVertex3f(-50.0f,  0.0f, -50.0f);
     glTexCoord2f(1, 1);
-    glVertex3f(-100.0f, 50.0f, -100.0f);
+    glVertex3f(-50.0f, 25.0f, -50.0f);
     glTexCoord2f(0, 1);
-    glVertex3f( 100.0f, 50.0f, -100.0f);
+    glVertex3f( 50.0f, 25.0f, -50.0f);
     glEnd();
     glDisable(GL_TEXTURE_2D);
 }

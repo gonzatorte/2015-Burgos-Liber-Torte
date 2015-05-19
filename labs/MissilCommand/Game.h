@@ -52,6 +52,8 @@ class Game
         TTF_Font * font_end;
         TTF_Font * font_hub;
         TextGrafic text_hud_vida;
+        TextGrafic text_end_lost;
+        TextGrafic text_end_win;
         int level;
         int misilQuantity, maxMisilQuantity, simultMisilQuant, misilSpeed;
         int maxBuildQuantity;
