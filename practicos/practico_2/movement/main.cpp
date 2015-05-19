@@ -38,6 +38,7 @@ class Game{
     SDL_Surface* bmp;
     SDL_Surface* screen;
     Model3D * model1;
+    SDL_Rect text_rect;
 
     public:
 
@@ -75,6 +76,8 @@ class Game{
             ss << "Unable to load font: " << SDL_GetError();
             throw std::runtime_error(ss.str().c_str());
         }
+        SDL_Color color = {0,0,255,0};
+        text_rect = Load_string("TATAT", color, &(texs[3]), font);
     }
 
     void setUp_bmp(){
@@ -110,7 +113,7 @@ class Game{
     }
 
     void setUp_model(){
-        model1 = Load3DS("../../../../rsc/models/cubo.3ds");
+//        model1 = Load3DS("../../../../rsc/models/cubo.3ds");
     }
 
     void tearDown_model(){
@@ -128,76 +131,51 @@ class Game{
     void setUp(){
         setUp_SDL();
         setUp_bmp();
-        setUp_font();
         setUp_textures();
+        setUp_font();
         setUp_model();
         setUp_modelview();
     }
 
-    void tearDown_font(){
-    }
-
-    void tearDown_bmp(){
-        SDL_FreeSurface(bmp);
-    }
-
-    void tearDown_SDL(){
-        SDL_FreeSurface(screen);
-    }
-
-    void tearDown_textures(){
-        glDeleteTextures(3, texs);
-    }
-
-    void tearDown(){
-        tearDown_font();
-        tearDown_textures();
-        tearDown_model();
-        tearDown_bmp();
-        tearDown_SDL();
-    }
-
     int loop_count = 0;
 
-    void rendering() {
+    void rendering_basic() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
 
         glTranslatef(0,0,-0.1*this->loop_count);
+        glScaled(1+0.001*this->loop_count,-(1-0.001*this->loop_count),1);
         this->loop_count = (this->loop_count+1) % 1000;
 
         angle = angle + angle_per_frame;
         if (angle >= 360.0f) {
             angle = angle_per_frame;
         }
-
         glRotatef(angle, 0, 0, 1);
-//        glRotatef(angle*0.2, 0, 0.2, 0);
-//        glRotatef(angle*0.3, 0.3, 0, 0);
-//        glScalef(sin(angle), sin(angle), 1);
-//        glScalef(angle/(360.0), angle/(360.0), 1);
-//        glScalef(1.0/6, 1.0/6, 1);
 
-//        glPushMatrix();
-//        glEnable(GL_TEXTURE_2D);
-//
-//        glBegin(GL_TRIANGLES);
-//        glTexCoord2d(1, 1);
-//        glVertex3f(-1.5,2,-8);
-//        glTexCoord2d(1, 0);
-//        glVertex3f(-2.5,-1,-8);
-//        glTexCoord2d(0, 0);
-//        glVertex3f(-0.5,-1,-8);
-//        glEnd();
-//
-//        glDisable(GL_TEXTURE_2D);
+        glPushMatrix();
+        glEnable(GL_TEXTURE_2D);
 
+        glBegin(GL_TRIANGLES);
+        glTexCoord2d(1, 1);
+        glVertex3f(-1.5,2,-8);
+        glTexCoord2d(1, 0);
+        glVertex3f(-2.5,-1,-8);
+        glTexCoord2d(0, 0);
+        glVertex3f(-0.5,-1,-8);
+        glEnd();
+
+        glDisable(GL_TEXTURE_2D);
 //        glBegin(GL_TRIANGLES);
 //        glVertex3f(-1.1,2,-1);
 //        glVertex3f(-1.5,-1,-2);
 //        glVertex3f(-1.5,-1,-2);
 //        glEnd();
 
+        glPopMatrix();
+    }
+
+    void rendering_model() {
         glEnable(GL_TEXTURE_2D);
         for(unsigned int i=0;i<this->model1->polygons_qty;i++){
             glBegin(GL_TRIANGLES);
@@ -224,9 +202,21 @@ class Game{
             glEnd();
         }
         glDisable(GL_TEXTURE_2D);
+    }
 
-//        glPopMatrix();
-        DrawTexto(font, "Hola", &(texs[2]));
+    void rendering_text(){
+        glClearColor( 0.1, 0.2, 0.2, 1);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho( 0, 600, 300, 0, -1, 1 );
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glEnable(GL_BLEND);
+//        glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
+
+//        drawText("HOLA", this->font);
+        float coor [3] = {0,0,0};
+        drawText(coor, text_rect, &(texs[3]));
     }
 
     bool main_loop(){
@@ -248,7 +238,7 @@ class Game{
             }
         }
 
-        rendering();
+        rendering_text();
 
         SDL_GL_SwapBuffers();
 
@@ -266,7 +256,6 @@ int main ( int argc, char** argv )
         Game g = Game();
         g.setUp();
         while (g.main_loop());
-        g.tearDown();
         return 0;
     } catch (const char * e) {
         cout << "An exception occurred 1. " << e << endl;
@@ -277,6 +266,7 @@ int main ( int argc, char** argv )
     }
 //    fclose(stdout);
 //    fclose(stderr);
+    return 0;
 }
 
 
