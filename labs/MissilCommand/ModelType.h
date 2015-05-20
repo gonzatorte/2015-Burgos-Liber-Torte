@@ -20,16 +20,19 @@ typedef struct{
 }mapcoord_type;
 
 // The object type
-typedef struct {
-	char name[20];
+class ModelType {
+    public:
+        char name[20];
 
-	int vertices_qty;
-    int polygons_qty;
+        int vertices_qty;
+        int polygons_qty;
 
-    vertex_type vertex[MAX_VERTICES];
-    polygon_type polygon[MAX_POLYGONS];
-    mapcoord_type mapcoord[MAX_VERTICES];
-    int id_texture;
-} ModelType;
+        vertex_type vertex[MAX_VERTICES];
+        polygon_type polygon[MAX_POLYGONS];
+        mapcoord_type mapcoord[MAX_VERTICES];
+        int id_texture;
+
+        char LoadFrom3DS (char *filename);
+};
 
 #endif // MODELTYPE_H

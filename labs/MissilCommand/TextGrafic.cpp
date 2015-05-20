@@ -17,7 +17,12 @@ TextGrafic Load_string(char * text, SDL_Color clr, TTF_Font* tmpfont){
     return tg;
 }
 
+void Unload_string(TextGrafic tg){
+    glDeleteTextures(1, tg.txtNum);
+}
+
 void drawText(float coords[3], TextGrafic tg) {
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
      glBindTexture(GL_TEXTURE_2D, *(tg.txtNum));
      glEnable(GL_TEXTURE_2D);
      glBegin(GL_QUADS); {

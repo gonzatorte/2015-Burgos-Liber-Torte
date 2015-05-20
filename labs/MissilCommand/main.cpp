@@ -38,31 +38,8 @@ using namespace std;
 
 boolean isPaused = false;
 int xPosBeforePause, yPosBeforePause;
-
-void changeSize(int w, int h)
-{
-
-    // Prevent a divide by zero, when window is too short
-    // (you cant make a window of zero width).
-    if(h == 0)
-        h = 1;
-    float ratio = 1.0* w / h;
-
-    // Use the Projection Matrix
-    glMatrixMode(GL_PROJECTION);
-
-    // Reset Matrix
-    glLoadIdentity();
-
-    // Set the viewport to be the entire window
-    glViewport(0, 0, w, h);
-
-    // Set the correct perspective.
-    gluPerspective(45,ratio,1,1000);
-
-    // Get Back to the Modelview
-    glMatrixMode(GL_MODELVIEW);
-}
+int screen_h = 600;
+int screen_w = 800;
 
 void renderScene(Game* game, Camera* camera)
 {
@@ -160,17 +137,10 @@ void setUp_SDL(){
 
     Uint32 flags = SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_OPENGL;
 
-    if(SDL_SetVideoMode(800, 600, 32, flags)==NULL)
+    if(SDL_SetVideoMode(screen_w, screen_h, 32, flags)==NULL)
     {
         std::stringstream ss;
         ss << "No se pudo establecer el modo de video: " << SDL_GetError();
-        throw std::runtime_error(ss.str().c_str());
-    }
-
-    if(SDL_EnableKeyRepeat(10, 10)<0)
-    {
-        std::stringstream ss;
-        ss << "No se pudo establecer el modo key-repeat: " << SDL_GetError();
         throw std::runtime_error(ss.str().c_str());
     }
 }
@@ -181,10 +151,12 @@ void setUp_GL(){
     float color = 0;
     glClearColor(color, color, color, 1);
 
-    gluPerspective(45, 640/480.f, 0.1, 100);
+    gluPerspective(45, float(screen_w)/float(screen_h), 0.1, 100);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glMatrixMode(GL_MODELVIEW);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 void setUp(){
@@ -199,20 +171,6 @@ void setUp(){
         cout << "default exception";
     }
 }
-
-//int main(int argc, char **argv){
-//    setUp();
-//    Menu * menu = new Menu();
-//    Camera * camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
-//    while(true){
-//        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//        glLoadIdentity();
-//        camera->setLookAt();
-//        menu->drawMenu();
-//        SDL_GL_SwapBuffers();
-//    }
-//    return 0;
-//}
 
 int main(int argc, char **argv){
 //    freopen("CON", "w", stdout);
