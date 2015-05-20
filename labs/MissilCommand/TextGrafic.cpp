@@ -9,8 +9,8 @@ TextGrafic Load_string(char * text, SDL_Color clr, TTF_Font* tmpfont){
     glGenTextures(1, txtNum);
     glBindTexture(GL_TEXTURE_2D, *txtNum);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, sText->w, sText->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sText->pixels);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_REPEAT);
     SDL_FreeSurface( sText );
     tg.area = area;
     tg.txtNum = txtNum;
