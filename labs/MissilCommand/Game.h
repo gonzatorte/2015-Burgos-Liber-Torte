@@ -51,10 +51,12 @@ class Game
         void drawHud();
         virtual ~Game();
         void renderScene(Camera* camera);
+        void init();
         bool isPaused;
+        int screen_w, screen_h;
     protected:
     private:
-        int textura_suelo, textura_cielo;
+        GLuint textura_suelo, textura_cielo;
         ModelType * model_building;
         TTF_Font * font_end;
         TTF_Font * font_hub;

@@ -121,11 +121,14 @@ int main(int argc, char **argv){
     SDL_Event evento;
 
     Game * game = new Game();
+    game->screen_h = screen_h;
+    game->screen_w = screen_w;
     Menu * menu = new Menu();
     Camera* camera = new Camera(new Vector(0.0f,1.0f,-40.0f), new Vector(8.0f,1.0f,4.0f));
 
     SDL_EnableKeyRepeat(0,1);
     SDL_ShowCursor(SDL_DISABLE);
+    game->init();
     game->addBuildings();
     do{
         if (wireframe){
@@ -155,9 +158,6 @@ int main(int argc, char **argv){
             glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
             //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
         }
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT0);
-        glShadeModel(GL_SMOOTH);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         if (menu_active){
@@ -193,6 +193,8 @@ int main(int argc, char **argv){
                     menu_active = !menu_active;
                     if (menu_active){
                         menu->init();
+                    } else {
+                        game->init();
                     }
                     break;
                 default:

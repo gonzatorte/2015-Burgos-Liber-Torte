@@ -40,7 +40,8 @@ void Menu::init(){
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0.0f, 100, 100, 0.0f, 0.0f, 1.0f);
+    glOrtho( -100.0f, 100.0f, -100.0f, 100.0f, -100.0f, 100.0f );
+//    glOrtho(0.0f, 100, 100, 0.0f, 0.0f, 1.0f);
     glBegin(GL_QUADS);
     glVertex2f(10,10);
     glVertex2f(10,15);

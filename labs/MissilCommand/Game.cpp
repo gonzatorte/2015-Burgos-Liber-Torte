@@ -77,8 +77,6 @@ void Game::renderScene(Camera* camera){
             cout << "Perdio..";
             this->drawHud();
         } else {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
             if (this->levelCompleted()) {
                 cout << "Pasastes de nivel CAPO!!!";
                 this->levelUp();
@@ -101,14 +99,20 @@ void Game::renderScene(Camera* camera){
             this->drawHud();
         }
     } else {
-            glLoadIdentity();
-            camera->setLookAt();
-            this->drawLandscape();
-            this->drawBuildings();
-            this->drawBullets();
-            this->drawMisils();
-            this->drawHud();
+        glLoadIdentity();
+        camera->setLookAt();
+        this->drawLandscape();
+        this->drawBuildings();
+        this->drawBullets();
+        this->drawMisils();
+        this->drawHud();
     }
+}
+
+void Game::init(){
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glShadeModel(GL_SMOOTH);
 }
 
 void Game::load_rsc(){
@@ -493,6 +497,9 @@ void Game::drawBulletsQuantity(){
     text_hud_bullets = Load_string(aux, {128,64,64,0}, font_hub);
     drawText(coords, text_hud_bullets);
 }
+
+
+
 void Game::drawLevel(){
     int x = 50;
     int y = 80;
@@ -572,6 +579,7 @@ void Game::drawHud()
     glPushMatrix();
         glLoadIdentity();
         glOrtho( -100.0f, 100.0f, -100.0f, 100.0f, -100.0f, 100.0f );
+//        glOrtho(0.0f, this->screen_w, this->screen_h, 0.0f, 0.0f, 100.0f);
         glMatrixMode( GL_MODELVIEW );
             glLoadIdentity();
 
