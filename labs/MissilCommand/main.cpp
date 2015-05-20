@@ -212,6 +212,12 @@ int main(int argc, char **argv){
                 case SDLK_q:
                     fin = true;
                     break;
+                case SDLK_w:
+                    wireframe = !wireframe;
+                    break;
+                case SDLK_t:
+                    textures = !textures;
+                    break;
                 case SDLK_RETURN:
                     menu_active = !menu_active;
                     if (menu_active){

@@ -74,7 +74,7 @@ void Game::load_rsc(){
     textura_suelo = LoadBitmap("../../rsc/textures/grass_1.bmp");
     textura_cielo = LoadBitmap("../../rsc/textures/sky_1.bmp");
     model_building = new ModelType();
-    model_building->LoadFrom3DS("../../rsc/models/cubo.3ds");
+    model_building->LoadFrom3DS("../../rsc/models/house4.3ds");
     model_building->id_texture = LoadBitmap("../../rsc/models/textures/marble_0.bmp");
     font_hub = TTF_OpenFont("../../rsc/fonts/04B31.ttf", 6);
     font_end = TTF_OpenFont("../../rsc/fonts/destroy_the_enemy.ttf", 30);
@@ -169,12 +169,24 @@ void Game::addBuildings() {
     for(int i = -3; i < 3; i++){
         for(int j=-3; j < 3; j++) {
             ModelFigure* building = new ModelFigure();
-            building->orientation = new Vector(1, 1, 1);
             building->model = model_building;
+            building->aspect = new Vector(
+                                            2/(model_building->x_top_limit - model_building->x_bot_limit),
+                                            2/(model_building->y_top_limit - model_building->y_bot_limit),
+                                            2/(model_building->z_top_limit - model_building->z_bot_limit)
+                                            );
+            building->orientation = new Vector(
+                                            45,
+                                            0,
+                                            90
+                                            );
+            int x_correct_pos = (model_building->x_top_limit + model_building->x_bot_limit)/2;
+            int y_correct_pos = (model_building->y_top_limit + model_building->y_bot_limit)/2;
+            int z_correct_pos = (model_building->z_top_limit + model_building->z_bot_limit)/2;
             Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
             building->setAcceleration(initAccel);
 
-            Vector* initPosition = new Vector(i*5.0,0,j * 5.0);
+            Vector* initPosition = new Vector(i*5.0-x_correct_pos,0-y_correct_pos,j*5.0-y_correct_pos);
             building->setPosition(initPosition);
 
             Vector* initVelocity = new Vector(0 , 0 ,0.0);
@@ -312,87 +324,85 @@ void Game::drawBuildings() {
 }
 
 void Game::drawLandscape(){
+    int box_size = 50.0f;
     // Draw ground
-//    glColor3f(0.0f, 0.5f, 0.0f);
+    glColor3f(0.0f, 0.0f, 0.0f);
     glBindTexture(GL_TEXTURE_2D, textura_suelo);
-    //glEnable(GL_TEXTURE_2D);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f(-50.0f, 0.0f, -50.0f);
+    glVertex3f(-box_size, 0.0f, -box_size);
     glTexCoord2f(1, 0);
-    glVertex3f(-50.0f, 0.0f,  50.0f);
+    glVertex3f(-box_size, 0.0f,  box_size);
     glTexCoord2f(1, 1);
-    glVertex3f( 50.0f, 0.0f,  50.0f);
+    glVertex3f( box_size, 0.0f,  box_size);
     glTexCoord2f(0, 1);
-    glVertex3f( 50.0f, 0.0f, -50.0f);
+    glVertex3f( box_size, 0.0f, -box_size);
     glEnd();
-    //glDisable(GL_TEXTURE_2D);
 
     // Draw roof
-//    glColor3f(0.5f, 0.0f, 0.5f);
+    glColor3f(1.0f, 0.0f, 0.0f);
     glBindTexture(GL_TEXTURE_2D, textura_cielo);
-    //glEnable(GL_TEXTURE_2D);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f( 50.0f, 25.0f,  50.0f);
+    glVertex3f( box_size, box_size/2,  box_size);
     glTexCoord2f(1, 0);
-    glVertex3f( 50.0f, 25.0f, -50.0f);
+    glVertex3f( box_size, box_size/2, -box_size);
     glTexCoord2f(1, 1);
-    glVertex3f(-50.0f, 25.0f, -50.0f);
+    glVertex3f(-box_size, box_size/2, -box_size);
     glTexCoord2f(0, 1);
-    glVertex3f(-50.0f, 25.0f,  50.0f);
+    glVertex3f(-box_size, box_size/2,  box_size);
     glEnd();
 
     // Draw borders
-//    glColor3f(0, 0, 1);
+    glColor3f(0.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f(-50.0f, 25.0f, -50.0f);
+    glVertex3f(-box_size, box_size/2, -box_size);
     glTexCoord2f(1, 0);
-    glVertex3f(-50.0f, 25.0f,  50.0f);
+    glVertex3f(-box_size, box_size/2,  box_size);
     glTexCoord2f(1, 1);
-    glVertex3f(-50.0f,  0.0f,  50.0f);
+    glVertex3f(-box_size,  0.0f,  box_size);
     glTexCoord2f(0, 1);
-    glVertex3f(-50.0f,  0.0f, -50.0f);
+    glVertex3f(-box_size,  0.0f, -box_size);
     glEnd();
 
     // Draw borders
-    glColor3f(1, 1, 1);
+    glColor3f(1.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f(-50.0f, 25.0f, 50.0f);
+    glVertex3f(-box_size, box_size/2, box_size);
     glTexCoord2f(1, 0);
-    glVertex3f( 50.0f, 25.0f, 50.0f);
+    glVertex3f( box_size, box_size/2, box_size);
     glTexCoord2f(1, 1);
-    glVertex3f( 50.0f,  0.0f, 50.0f);
+    glVertex3f( box_size,  0.0f, box_size);
     glTexCoord2f(0, 1);
-    glVertex3f(-50.0f,  0.0f, 50.0f);
+    glVertex3f(-box_size,  0.0f, box_size);
     glEnd();
 
     // Draw borders
-    glColor3f(1, 0, 0);
+    glColor3f(0.0f, 0.0f, 1.0f);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f(50.0f, 25.0f, 50.0f);
+    glVertex3f(box_size, box_size/2, box_size);
     glTexCoord2f(1, 0);
-    glVertex3f(50.0f, 25.0f,-50.0f);
+    glVertex3f(box_size, box_size/2,-box_size);
     glTexCoord2f(1, 1);
-    glVertex3f(50.0f,  0.0f,-50.0f);
+    glVertex3f(box_size,  0.0f,-box_size);
     glTexCoord2f(0, 1);
-    glVertex3f(50.0f,  0.0f, 50.0f);
+    glVertex3f(box_size,  0.0f, box_size);
     glEnd();
 
     // Draw borders
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(1.0f, 0.0f, 1.0f);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f( 50.0f,  0.0f, -50.0f);
+    glVertex3f( box_size,  0.0f, -box_size);
     glTexCoord2f(1, 0);
-    glVertex3f(-50.0f,  0.0f, -50.0f);
+    glVertex3f(-box_size,  0.0f, -box_size);
     glTexCoord2f(1, 1);
-    glVertex3f(-50.0f, 25.0f, -50.0f);
+    glVertex3f(-box_size, box_size/2, -box_size);
     glTexCoord2f(0, 1);
-    glVertex3f( 50.0f, 25.0f, -50.0f);
+    glVertex3f( box_size, box_size/2, -box_size);
     glEnd();
     //glDisable(GL_TEXTURE_2D);
 }

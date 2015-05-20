@@ -12,6 +12,10 @@ main(){
 
 }
 
+Hacer algo con los modelos para que se pongan en una posición relativa media útil.
+
+Arreglar mapeo de texturas en modelos.
+
 Hacer que los proy de grafica sean al menos un poco portables (Constante POSIX o WIN32...)
 
 Se esta haciendo mucho new y ningun delete
@@ -27,3 +31,5 @@ Haacer GlGet para obtener los parametros anteriores antes de setear algun parame
 Luces
 
 Falta el panel (el menu)
+
+Falta los FPS

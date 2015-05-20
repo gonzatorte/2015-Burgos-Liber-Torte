@@ -34,7 +34,10 @@ void ModelFigure::drawFigure(){
 
     //glDisable(GL_TEXTURE_2D);
 
-    glScalef(orientation->x, orientation->y, orientation->z);
+    glRotatef(orientation->x, 1,0,0);
+    glRotatef(orientation->y, 0,1,0);
+    glRotatef(orientation->z, 0,0,1);
+    glScalef(aspect->x, aspect->y, aspect->z);
 }
 
 void ModelFigure::moveFigure(){

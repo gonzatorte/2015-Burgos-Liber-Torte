@@ -1,6 +1,8 @@
 #ifndef MODELTYPE_H
 #define MODELTYPE_H
 
+#include <climits>
+
 #define MAX_VERTICES 8000 // Max number of vertices (for each object)
 #define MAX_POLYGONS 8000 // Max number of polygons (for each object)
 
@@ -31,6 +33,13 @@ class ModelType {
         polygon_type polygon[MAX_POLYGONS];
         mapcoord_type mapcoord[MAX_VERTICES];
         int id_texture;
+
+        int z_bot_limit = INT_MAX;
+        int z_top_limit = INT_MIN;
+        int y_bot_limit = INT_MAX;
+        int y_top_limit = INT_MIN;
+        int x_bot_limit = INT_MAX;
+        int x_top_limit = INT_MIN;
 
         char LoadFrom3DS (char *filename);
 };
