@@ -13,9 +13,6 @@ using namespace std;
 //list<Building*>::iterator itBuildings;
 int multiplicador;
 char* level_str;
-TextGrafic text_hud_lvl;
-TextGrafic text_hud_score;
-TextGrafic text_hud_bullets;
 
 //METODOS PRIVADOS
 void Game::initLevel(int levelNumber) {
@@ -73,11 +70,56 @@ list<ModelFigure*>::iterator Game::obtRandomIterator() {
     return itB;
 }
 
+void Game::renderScene(Camera* camera){
+    // Clear Color and Depth Buffers
+    if (!this->isPaused){
+        if (this->isGameOver()){
+            cout << "Perdio..";
+            this->drawHud();
+        } else {
+            if (this->levelCompleted()) {
+                cout << "Pasaste de nivel CAPO!!!";
+                this->levelUp();
+                this->addBuildings();
+            }
+
+            this->manageGame();
+
+            // Reset transformations
+            glLoadIdentity();
+            // Set the camera
+            camera->setLookAt();
+
+            this->drawLandscape();
+            this->drawBuildings();
+            this->drawBullets();
+            this->misilDisplacement();
+            this->detectCollisions();
+            this->drawMisils();
+            this->drawHud();
+        }
+    } else {
+        glLoadIdentity();
+        camera->setLookAt();
+        this->drawLandscape();
+        this->drawBuildings();
+        this->drawBullets();
+        this->drawMisils();
+        this->drawHud();
+    }
+}
+
+void Game::init(){
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glShadeModel(GL_SMOOTH);
+}
+
 void Game::load_rsc(){
     textura_suelo = LoadBitmap("../../rsc/textures/stone_1.bmp");
     textura_cielo = LoadBitmap("../../rsc/textures/sky_1.bmp");
     model_building = new ModelType();
-    model_building->LoadFrom3DS("../../rsc/models/cubo.3ds");
+    model_building->LoadFrom3DS("../../rsc/models/house4.3ds");
     model_building->id_texture = LoadBitmap("../../rsc/models/textures/marble_0.bmp");
     font_hub = TTF_OpenFont("../../rsc/fonts/SEASRN__.ttf", 10);
     font_end = TTF_OpenFont("../../rsc/fonts/destroy_the_enemy.ttf", 30);
@@ -89,6 +131,8 @@ void Game::load_rsc(){
     text_hud_vida = Load_string("LIFE", {128,64,64,0}, font_hub);
     text_end_lost = Load_string("GAME OVER", {255,128,0,0}, font_end);
     text_end_win = Load_string("VICTORY!", {128,0,255,0}, font_end);
+    text_hud_lvl = Load_string("lvl:", {128,0,255,0}, font_hub);;
+    text_hud_score = Load_string("Score:", {128,0,255,0}, font_hub);;
 }
 
 //METODOS PUBLICOS
@@ -170,12 +214,21 @@ void Game::addBuildings() {
     for(int i = -4; i < 2; i++){
         for(int j=-4; j < 2; j++) {
             ModelFigure* building = new ModelFigure();
-            building->orientation = new Vector(1, 1, 1);
             building->model = model_building;
+            building->aspect = new Vector(
+                                            2/(model_building->x_top_limit - model_building->x_bot_limit),
+                                            2/(model_building->y_top_limit - model_building->y_bot_limit),
+                                            2/(model_building->z_top_limit - model_building->z_bot_limit)
+                                            );
+            building->orientation = new Vector(
+                                            45,
+                                            0,
+                                            90
+                                            );
             Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
             building->setAcceleration(initAccel);
 
-            Vector* initPosition = new Vector((i*9.0)+30+j,0,(j * 9.0)+i+20);
+            Vector* initPosition = new Vector(i*5.0+10,0,j*5.0+5);
             building->setPosition(initPosition);
 
             Vector* initVelocity = new Vector(0 , 0 ,0.0);
@@ -313,87 +366,85 @@ void Game::drawBuildings() {
 }
 
 void Game::drawLandscape(){
+    int box_size = 50.0f;
     // Draw ground
-//    glColor3f(0.0f, 0.5f, 0.0f);
+    glColor3f(0.0f, 0.0f, 0.0f);
     glBindTexture(GL_TEXTURE_2D, textura_suelo);
-    //glEnable(GL_TEXTURE_2D);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f(-50.0f, 0.0f, -50.0f);
+    glVertex3f(-box_size, 0.0f, -box_size);
     glTexCoord2f(1, 0);
-    glVertex3f(-50.0f, 0.0f,  50.0f);
+    glVertex3f(-box_size, 0.0f,  box_size);
     glTexCoord2f(1, 1);
-    glVertex3f( 50.0f, 0.0f,  50.0f);
+    glVertex3f( box_size, 0.0f,  box_size);
     glTexCoord2f(0, 1);
-    glVertex3f( 50.0f, 0.0f, -50.0f);
+    glVertex3f( box_size, 0.0f, -box_size);
     glEnd();
-    //glDisable(GL_TEXTURE_2D);
 
     // Draw roof
-//    glColor3f(0.5f, 0.0f, 0.5f);
+    glColor3f(1.0f, 0.0f, 0.0f);
     glBindTexture(GL_TEXTURE_2D, textura_cielo);
-    //glEnable(GL_TEXTURE_2D);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f( 50.0f, 25.0f,  50.0f);
+    glVertex3f( box_size, box_size/2,  box_size);
     glTexCoord2f(1, 0);
-    glVertex3f( 50.0f, 25.0f, -50.0f);
+    glVertex3f( box_size, box_size/2, -box_size);
     glTexCoord2f(1, 1);
-    glVertex3f(-50.0f, 25.0f, -50.0f);
+    glVertex3f(-box_size, box_size/2, -box_size);
     glTexCoord2f(0, 1);
-    glVertex3f(-50.0f, 25.0f,  50.0f);
+    glVertex3f(-box_size, box_size/2,  box_size);
     glEnd();
 
     // Draw borders
-//    glColor3f(0, 0, 1);
+    glColor3f(0.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f(-50.0f, 25.0f, -50.0f);
+    glVertex3f(-box_size, box_size/2, -box_size);
     glTexCoord2f(1, 0);
-    glVertex3f(-50.0f, 25.0f,  50.0f);
+    glVertex3f(-box_size, box_size/2,  box_size);
     glTexCoord2f(1, 1);
-    glVertex3f(-50.0f,  0.0f,  50.0f);
+    glVertex3f(-box_size,  0.0f,  box_size);
     glTexCoord2f(0, 1);
-    glVertex3f(-50.0f,  0.0f, -50.0f);
+    glVertex3f(-box_size,  0.0f, -box_size);
     glEnd();
 
     // Draw borders
-    glColor3f(1, 1, 1);
+    glColor3f(1.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f(-50.0f, 25.0f, 50.0f);
+    glVertex3f(-box_size, box_size/2, box_size);
     glTexCoord2f(1, 0);
-    glVertex3f( 50.0f, 25.0f, 50.0f);
+    glVertex3f( box_size, box_size/2, box_size);
     glTexCoord2f(1, 1);
-    glVertex3f( 50.0f,  0.0f, 50.0f);
+    glVertex3f( box_size,  0.0f, box_size);
     glTexCoord2f(0, 1);
-    glVertex3f(-50.0f,  0.0f, 50.0f);
+    glVertex3f(-box_size,  0.0f, box_size);
     glEnd();
 
     // Draw borders
-    glColor3f(1, 0, 0);
+    glColor3f(0.0f, 0.0f, 1.0f);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f(50.0f, 25.0f, 50.0f);
+    glVertex3f(box_size, box_size/2, box_size);
     glTexCoord2f(1, 0);
-    glVertex3f(50.0f, 25.0f,-50.0f);
+    glVertex3f(box_size, box_size/2,-box_size);
     glTexCoord2f(1, 1);
-    glVertex3f(50.0f,  0.0f,-50.0f);
+    glVertex3f(box_size,  0.0f,-box_size);
     glTexCoord2f(0, 1);
-    glVertex3f(50.0f,  0.0f, 50.0f);
+    glVertex3f(box_size,  0.0f, box_size);
     glEnd();
 
     // Draw borders
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(1.0f, 0.0f, 1.0f);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f( 50.0f,  0.0f, -50.0f);
+    glVertex3f( box_size,  0.0f, -box_size);
     glTexCoord2f(1, 0);
-    glVertex3f(-50.0f,  0.0f, -50.0f);
+    glVertex3f(-box_size,  0.0f, -box_size);
     glTexCoord2f(1, 1);
-    glVertex3f(-50.0f, 25.0f, -50.0f);
+    glVertex3f(-box_size, box_size/2, -box_size);
     glTexCoord2f(0, 1);
-    glVertex3f( 50.0f, 25.0f, -50.0f);
+    glVertex3f( box_size, box_size/2, -box_size);
     glEnd();
     //glDisable(GL_TEXTURE_2D);
 }
@@ -431,6 +482,7 @@ void Game::drawScore(){
     float coords[3] = {x1, y1, 0};
     char aux[128];
     sprintf(aux, "Score : %i", score);
+    Unload_string(text_hud_score);
     text_hud_score = Load_string(aux, {128,64,64,0}, font_hub);
     drawText(coords, text_hud_score);
 }
@@ -445,6 +497,9 @@ void Game::drawBulletsQuantity(){
     text_hud_bullets = Load_string(aux, {128,64,64,0}, font_hub);
     drawText(coords, text_hud_bullets);
 }
+
+
+
 void Game::drawLevel(){
     int x = 50;
     int y = 80;
@@ -524,6 +579,7 @@ void Game::drawHud()
     glPushMatrix();
         glLoadIdentity();
         glOrtho( -100.0f, 100.0f, -100.0f, 100.0f, -100.0f, 100.0f );
+//        glOrtho(0.0f, this->screen_w, this->screen_h, 0.0f, 0.0f, 100.0f);
         glMatrixMode( GL_MODELVIEW );
             glLoadIdentity();
 

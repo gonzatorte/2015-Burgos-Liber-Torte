@@ -10,6 +10,7 @@ class ModelFigure: public Figure{
         void drawFigure();
         void moveFigure();
         Vector * orientation;
+        Vector * aspect;
         ModelType * model;
         int x,y,z;
 };

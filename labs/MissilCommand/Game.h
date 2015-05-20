@@ -20,6 +20,7 @@
 #include "ModelType.h"
 #include "ModelFigure.h"
 #include "TextGrafic.h"
+#include "Camera.h"
 
 using namespace std;
 
@@ -49,15 +50,22 @@ class Game
         void drawBulletsQuantity();
         void drawHud();
         virtual ~Game();
+        void renderScene(Camera* camera);
+        void init();
+        bool isPaused;
+        int screen_w, screen_h;
     protected:
     private:
-        int textura_suelo, textura_cielo;
+        GLuint textura_suelo, textura_cielo;
         ModelType * model_building;
         TTF_Font * font_end;
         TTF_Font * font_hub;
         TextGrafic text_hud_vida;
         TextGrafic text_end_lost;
         TextGrafic text_end_win;
+        TextGrafic text_hud_score;
+        TextGrafic text_hud_lvl;
+        TextGrafic text_hud_bullets;
         int level;
         int misilQuantity, maxMisilQuantity, simultMisilQuant, misilSpeed;
         int maxBuildQuantity;

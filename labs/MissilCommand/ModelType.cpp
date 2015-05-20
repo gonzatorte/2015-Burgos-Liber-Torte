@@ -102,6 +102,26 @@ char ModelType::LoadFrom3DS(char *p_filename)
 // 					printf("Vertices list y: %f\n",this->vertex[i].y);
 					fread (&this->vertex[i].z, sizeof(float), 1, l_file);
 // 					printf("Vertices list z: %f\n",this->vertex[i].z);
+
+                    if (this->vertex[i].x > x_top_limit){
+                        x_top_limit = this->vertex[i].x;
+                    }
+                    if (this->vertex[i].x < x_bot_limit){
+                        x_bot_limit = this->vertex[i].x;
+                    }
+                    if (this->vertex[i].y > y_top_limit){
+                        y_top_limit = this->vertex[i].y;
+                    }
+                    if (this->vertex[i].y < y_bot_limit){
+                        y_bot_limit = this->vertex[i].y;
+                    }
+                    if (this->vertex[i].z > z_top_limit){
+                        z_top_limit = this->vertex[i].z;
+                    }
+                    if (this->vertex[i].z < z_bot_limit){
+                        z_bot_limit = this->vertex[i].z;
+                    }
+
 				}
 				break;
 

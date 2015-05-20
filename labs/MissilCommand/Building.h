@@ -12,9 +12,6 @@ class Building: public Figure
         Building();
         virtual ~Building();
         void drawFigure();
-        void moveFigure();
-        void set_y(int y);
-        bool get_y();
     protected:
         int y;
     private:
