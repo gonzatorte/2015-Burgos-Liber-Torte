@@ -20,6 +20,7 @@
 #include "ModelType.h"
 #include "ModelFigure.h"
 #include "TextGrafic.h"
+#include "Camera.h"
 
 using namespace std;
 
@@ -48,6 +49,8 @@ class Game
         void drawScore();
         void drawHud();
         virtual ~Game();
+        void renderScene(Camera* camera);
+        bool isPaused;
     protected:
     private:
         int textura_suelo, textura_cielo;

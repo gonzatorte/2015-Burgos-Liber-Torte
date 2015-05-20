@@ -12,24 +12,17 @@ main(){
 
 }
 
-Hacer algo con los modelos para que se pongan en una posición relativa media útil.
-
 Arreglar mapeo de texturas en modelos.
 
-Hacer que los proy de grafica sean al menos un poco portables (Constante POSIX o WIN32...)
-
-Se esta haciendo mucho new y ningun delete
-
-Recordar hace unload de las texturas cada vez que se regeneran (para textos variables).
-
-Usar blendmode replace para las texturas de imagen (en el metodo de drawText)
-
-Hacer rotate con las orientation a las modelFigure
+Se esta haciendo mucho new y ningun delete.
 
 Haacer GlGet para obtener los parametros anteriores antes de setear algun parametro, para luego restaurarlo.
 
-Luces
-
 Falta el panel (el menu)
+	Set Velocidad del juego
+	Set Wireframe on/off
+	Set Textures on/off
+	Set lights arriba/abajo
+	Set lights color1/color2
 
 Falta los FPS

@@ -12,10 +12,7 @@
 //#include <GL/freeglut.h>
 #include <GL/glu.h>
 
-Building::Building()
-{
-    this->y=0;
-}
+Building::Building(){}
 
 void Building::drawFigure() {
 
@@ -110,18 +107,6 @@ glEnd();
 
 
 
-}
-
-void Building::moveFigure() {
-    glTranslatef(0,y,0);
-}
-
-void Building::set_y(int y) {
-    this->y=y;
-}
-
-bool Building::get_y() {
-    return y;
 }
 
 Building::~Building()

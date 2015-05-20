@@ -70,6 +70,47 @@ list<ModelFigure*>::iterator Game::obtRandomIterator() {
     return itB;
 }
 
+void Game::renderScene(Camera* camera){
+    // Clear Color and Depth Buffers
+    if (!this->isPaused){
+        if (this->isGameOver()){
+            cout << "Perdio..";
+            this->drawHud();
+        } else {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            if (this->levelCompleted()) {
+                cout << "Pasastes de nivel CAPO!!!";
+                this->levelUp();
+                this->addBuildings();
+            }
+
+            this->manageGame();
+
+            // Reset transformations
+            glLoadIdentity();
+            // Set the camera
+            camera->setLookAt();
+
+            this->drawLandscape();
+            this->drawBuildings();
+            this->drawBullets();
+            this->misilDisplacement();
+            this->detectCollisions();
+            this->drawMisils();
+            this->drawHud();
+        }
+    } else {
+            glLoadIdentity();
+            camera->setLookAt();
+            this->drawLandscape();
+            this->drawBuildings();
+            this->drawBullets();
+            this->drawMisils();
+            this->drawHud();
+    }
+}
+
 void Game::load_rsc(){
     textura_suelo = LoadBitmap("../../rsc/textures/grass_1.bmp");
     textura_cielo = LoadBitmap("../../rsc/textures/sky_1.bmp");
@@ -166,8 +207,8 @@ void Game::addBullet(Vector* initPosition, Vector* initVelocity, Vector* initAcc
 
 void Game::addBuildings() {
     int n = maxBuildQuantity;
-    for(int i = -3; i < 3; i++){
-        for(int j=-3; j < 3; j++) {
+    for(int i = -4; i < 2; i++){
+        for(int j=-4; j < 2; j++) {
             ModelFigure* building = new ModelFigure();
             building->model = model_building;
             building->aspect = new Vector(
@@ -180,13 +221,10 @@ void Game::addBuildings() {
                                             0,
                                             90
                                             );
-            int x_correct_pos = (model_building->x_top_limit + model_building->x_bot_limit)/2;
-            int y_correct_pos = (model_building->y_top_limit + model_building->y_bot_limit)/2;
-            int z_correct_pos = (model_building->z_top_limit + model_building->z_bot_limit)/2;
             Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
             building->setAcceleration(initAccel);
 
-            Vector* initPosition = new Vector(i*5.0-x_correct_pos,0-y_correct_pos,j*5.0-y_correct_pos);
+            Vector* initPosition = new Vector(i*5.0+10,0,j*5.0+5);
             building->setPosition(initPosition);
 
             Vector* initVelocity = new Vector(0 , 0 ,0.0);

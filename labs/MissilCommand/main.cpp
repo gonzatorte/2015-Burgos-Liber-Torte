@@ -44,61 +44,7 @@ int screen_w = 800;
 
 boolean wireframe = false;
 boolean textures = true;
-
-void renderScene(Game* game, Camera* camera)
-{
-
-    // Clear Color and Depth Buffers
-    if (!isPaused)
-    {
-        if (game->isGameOver())
-        {
-            cout << "Perdio..";
-            game->drawHud();
-        }
-        else
-        {
-
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            if (game->levelCompleted())
-            {
-                cout << "Pasastes de nivel CAPO!!!";
-                game->levelUp();
-                game->addBuildings();
-            }
-
-            game->manageGame();
-
-            // Reset transformations
-            glLoadIdentity();
-            // Set the camera
-            camera->setLookAt();
-
-            game->drawLandscape();
-            game->drawBuildings();
-            game->drawBullets();
-            game->misilDisplacement();
-            game->detectCollisions();
-            game->drawMisils();
-            game->drawHud();
-            if (!textures)
-                glDisable(GL_TEXTURE_2D);
-            else
-                glEnable(GL_TEXTURE_2D);
-            //glutSwapBuffers();
-        }
-    }
-    else{
-            glLoadIdentity();
-            camera->setLookAt();
-            game->drawLandscape();
-            game->drawBuildings();
-            game->drawBullets();
-            game->drawMisils();
-            game->drawHud();
-    }
-}
+boolean light_up = true;
 
 void mouseMove(int x, int y, Camera * camera){
     if (!isPaused)
@@ -176,7 +122,7 @@ int main(int argc, char **argv){
 
     Game * game = new Game();
     Menu * menu = new Menu();
-    Camera* camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
+    Camera* camera = new Camera(new Vector(0.0f,1.0f,-40.0f), new Vector(8.0f,1.0f,4.0f));
 
     SDL_EnableKeyRepeat(0,1);
     SDL_ShowCursor(SDL_DISABLE);
@@ -187,16 +133,41 @@ int main(int argc, char **argv){
         }else{
             glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
         }
+        if (!textures){
+            glDisable(GL_TEXTURE_2D);
+        } else {
+            glEnable(GL_TEXTURE_2D);
+        }
+        glColorMaterial ( GL_FRONT_AND_BACK, GL_EMISSION ) ;
+        glEnable(GL_COLOR_MATERIAL);
+        if (!light_up){
+            float light_position[] = { 0, -1,0, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            float mat_ambient[] = { 0.6f, 0.0f, 0.5f, 1.0f };
+            //float mat_diffuse[] = { 0.0f, 0.9f, 0.8f, 1.0f };
+            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+            //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+        }else{
+            float light_position[] = { 0, 1,0, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            float mat_ambient[] = { 0.0f, 0.8f, 0.3f, 1.0f };
+            //float mat_diffuse[] = { 0.0f, 0.7f, 0.9f, 0.0f };
+            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+            //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+        }
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+        glShadeModel(GL_SMOOTH);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         if (menu_active){
-            menu->drawMenu();
+            menu->draw();
         }else{
             int xm,ym;
             //glLoadIdentity();
             SDL_GetMouseState(&xm, &ym);
             mouseMove(xm, ym, camera);
-            renderScene(game, camera);
+            game->renderScene(camera);
         }
 
         while(SDL_PollEvent(&evento)){
@@ -221,12 +192,12 @@ int main(int argc, char **argv){
                 case SDLK_RETURN:
                     menu_active = !menu_active;
                     if (menu_active){
-                        menu->initMenu();
+                        menu->init();
                     }
                     break;
                 default:
                     if (menu_active){
-                        menu->interactMenu(&evento);
+                        menu->interact(&evento);
                     } else {
                         switch(evento.key.keysym.sym){
                         case SDLK_SPACE:{
@@ -246,7 +217,25 @@ int main(int argc, char **argv){
                                 SDL_WarpMouse(xPosBeforePause, yPosBeforePause);
                             }
                             isPaused=!isPaused;
+                            game->isPaused = isPaused;
+                            break;
                         }
+                        case SDLK_LEFT:
+                            if (camera->getPosition()->getX() < 30)
+                                camera->setPosition(new Vector(camera->getPosition()->getX()+5, camera->getPosition()->getY(), camera->getPosition()->getZ()));
+                            break;
+                        case SDLK_RIGHT:
+                            if (camera->getPosition()->getX() > -40)
+                                camera->setPosition(new Vector(camera->getPosition()->getX()-5, camera->getPosition()->getY(), camera->getPosition()->getZ()));
+                            break;
+                        case SDLK_DOWN:
+                            if (camera->getPosition()->getZ() > -40)
+                                camera->setPosition(new Vector(camera->getPosition()->getX(), camera->getPosition()->getY(), camera->getPosition()->getZ()-5));
+                            break;
+                        case SDLK_UP:
+                            if (camera->getPosition()->getZ() < 20)
+                                camera->setPosition(new Vector(camera->getPosition()->getX(), camera->getPosition()->getY(), camera->getPosition()->getZ()+5));
+                            break;
                         default:
                             break;
                         }

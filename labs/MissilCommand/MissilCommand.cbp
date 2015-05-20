@@ -53,8 +53,6 @@
 			<Add library="dxguid" />
 			<Add directory="C:/Users/leobaf/Documents/Grafica/2015-Graf-Lburgos-LAzambuya-Gtorte/SDL-devel-1.2.15-mingw32/SDL-1.2.15/lib" />
 		</Linker>
-		<Unit filename="3dsloader.cpp" />
-		<Unit filename="3dsloader.h" />
 		<Unit filename="Building.cpp" />
 		<Unit filename="Building.h" />
 		<Unit filename="Bullet.cpp" />
@@ -75,6 +73,7 @@
 		<Unit filename="Misil.h" />
 		<Unit filename="ModelFigure.cpp" />
 		<Unit filename="ModelFigure.h" />
+		<Unit filename="ModelType.cpp" />
 		<Unit filename="ModelType.h" />
 		<Unit filename="TextGrafic.cpp" />
 		<Unit filename="TextGrafic.h" />

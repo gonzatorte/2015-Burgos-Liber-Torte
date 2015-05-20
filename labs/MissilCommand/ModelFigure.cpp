@@ -34,6 +34,10 @@ void ModelFigure::drawFigure(){
 
     //glDisable(GL_TEXTURE_2D);
 
+    int x_correct_pos = (this->model->x_top_limit + this->model->x_bot_limit)/2;
+    int y_correct_pos = (this->model->y_top_limit + this->model->y_bot_limit)/2;
+    int z_correct_pos = (this->model->z_top_limit + this->model->z_bot_limit)/2;
+    glTranslatef(-x_correct_pos, -y_correct_pos, -z_correct_pos);
     glRotatef(orientation->x, 1,0,0);
     glRotatef(orientation->y, 0,1,0);
     glRotatef(orientation->z, 0,0,1);
