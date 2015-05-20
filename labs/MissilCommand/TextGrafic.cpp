@@ -19,13 +19,13 @@ TextGrafic Load_string(char * text, SDL_Color clr, TTF_Font* tmpfont){
 
 void drawText(float coords[3], TextGrafic tg) {
      glBindTexture(GL_TEXTURE_2D, *(tg.txtNum));
-     glEnable(GL_TEXTURE_2D);
+     //glEnable(GL_TEXTURE_2D);
      glBegin(GL_QUADS); {
      glTexCoord2f(0, 1); glVertex3f(coords[0], coords[1], coords[2]);
      glTexCoord2f(1, 1); glVertex3f(coords[0] + tg.area.w, coords[1], coords[2]);
      glTexCoord2f(1, 0); glVertex3f(coords[0] + tg.area.w, coords[1] + tg.area.h, coords[2]);
      glTexCoord2f(0, 0); glVertex3f(coords[0], coords[1] + tg.area.h, coords[2]);
      } glEnd();
-     glDisable(GL_TEXTURE_2D);
+     //glDisable(GL_TEXTURE_2D);
 }
 
