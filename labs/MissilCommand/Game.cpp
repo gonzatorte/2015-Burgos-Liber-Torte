@@ -116,13 +116,13 @@ void Game::init(){
 }
 
 void Game::load_rsc(){
-    textura_suelo = LoadBitmap("../../rsc/textures/stone_1.bmp");
-    textura_cielo = LoadBitmap("../../rsc/textures/sky_1.bmp");
+    textura_suelo = LoadBitmap("rsc/textures/stone_1.bmp");
+    textura_cielo = LoadBitmap("rsc/textures/sky_1.bmp");
     model_building = new ModelType();
-    model_building->LoadFrom3DS("../../rsc/models/house4.3ds");
-    model_building->id_texture = LoadBitmap("../../rsc/models/textures/marble_0.bmp");
-    font_hub = TTF_OpenFont("../../rsc/fonts/SEASRN__.ttf", 10);
-    font_end = TTF_OpenFont("../../rsc/fonts/destroy_the_enemy.ttf", 30);
+    model_building->LoadFrom3DS("rsc/models/house4.3ds");
+    model_building->id_texture = LoadBitmap("rsc/models/textures/marble_0.bmp");
+    font_hub = TTF_OpenFont("rsc/fonts/SEASRN__.ttf", 10);
+    font_end = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 30);
     if (!font_hub || !font_end){
         std::stringstream ss;
         ss << "Unable to load font: " << SDL_GetError();
