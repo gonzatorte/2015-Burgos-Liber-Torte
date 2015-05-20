@@ -13,8 +13,6 @@ using namespace std;
 //list<Building*>::iterator itBuildings;
 int multiplicador;
 char* level_str;
-TextGrafic text_hud_lvl;
-TextGrafic text_hud_score;
 
 //METODOS PRIVADOS
 void Game::initLevel(int levelNumber) {
@@ -88,6 +86,8 @@ void Game::load_rsc(){
     text_hud_vida = Load_string("LIFE", {128,64,64,0}, font_hub);
     text_end_lost = Load_string("GAME OVER", {255,128,0,0}, font_end);
     text_end_win = Load_string("VICTORY!", {128,0,255,0}, font_end);
+    text_hud_lvl = Load_string("lvl:", {128,0,255,0}, font_hub);;
+    text_hud_score = Load_string("Score:", {128,0,255,0}, font_hub);;
 }
 
 //METODOS PUBLICOS
@@ -428,6 +428,7 @@ void Game::drawScore(){
     float coords[3] = {x1, y1, 0};
     char aux[128];
     sprintf(aux, "Score: %i", score);
+    Unload_string(text_hud_score);
     text_hud_score = Load_string(aux, {128,64,64,0}, font_hub);
     drawText(coords, text_hud_score);
 }

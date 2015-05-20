@@ -57,6 +57,8 @@ class Game
         TextGrafic text_hud_vida;
         TextGrafic text_end_lost;
         TextGrafic text_end_win;
+        TextGrafic text_hud_score;
+        TextGrafic text_hud_lvl;
         int level;
         int misilQuantity, maxMisilQuantity, simultMisilQuant, misilSpeed;
         int maxBuildQuantity;

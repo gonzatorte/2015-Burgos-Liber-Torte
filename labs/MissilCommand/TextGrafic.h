@@ -16,5 +16,6 @@ class TextGrafic{
 
 void drawText(float coords[3], TextGrafic tg);
 TextGrafic Load_string(char * text, SDL_Color clr, TTF_Font* tmpfont);
+void Unload_string(TextGrafic tg);
 
 #endif // TEXT_COMPGRAF_H
