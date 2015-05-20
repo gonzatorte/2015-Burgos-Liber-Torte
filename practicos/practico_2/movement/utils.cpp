@@ -11,34 +11,6 @@
 #include "SDL/SDL_opengl.h"
 #include <GL/glut.h>
 
-//GLuint texture[100];
-//SDL_Rect area[100];
-//void Load_string(char * text, SDL_Color clr, int txtNum, const char* file, int ptsize){
-//    TTF_Font* tmpfont;
-//    tmpfont = TTF_OpenFont(file, ptsize);
-//    SDL_Surface *sText = SDL_DisplayFormatAlpha(TTF_RenderUTF8_Solid( tmpfont, text, clr ));
-//    area[txtNum].x = 0;area[txtNum].y = 0;area[txtNum].w = sText->w;area[txtNum].h = sText->h;
-//    glGenTextures(1, &texture[txtNum]);
-//    glBindTexture(GL_TEXTURE_2D, texture[txtNum]);
-//    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, sText->w, sText->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sText->pixels);
-//    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-//    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-//    SDL_FreeSurface( sText );
-//    TTF_CloseFont(tmpfont);
-//}
-//
-//void drawText(float coords[3], int txtNum) {
-//    glBindTexture(GL_TEXTURE_2D, texture[txtNum]);
-//    glEnable(GL_TEXTURE_2D);
-//    glBegin(GL_QUADS); {
-//    glTexCoord2f(0, 0); glVertex3f(coords[0], coords[1], coords[2]);
-//    glTexCoord2f(1, 0); glVertex3f(coords[0] + area[txtNum].w, coords[1], coords[2]);
-//    glTexCoord2f(1, 1); glVertex3f(coords[0] + area[txtNum].w, coords[1] + area[txtNum].h, coords[2]);
-//    glTexCoord2f(0, 1); glVertex3f(coords[0], coords[1] + area[txtNum].h, coords[2]);
-//    } glEnd();
-//    glDisable(GL_TEXTURE_2D);
-//}
-
 SDL_Rect Load_string(char * text, SDL_Color clr, GLuint * txtNum, TTF_Font* tmpfont){
     SDL_Rect area;
     SDL_Surface *sText = SDL_DisplayFormatAlpha(TTF_RenderUTF8_Solid( tmpfont, text, clr ));
@@ -62,58 +34,6 @@ void drawText(float coords[3], SDL_Rect area, GLuint * txtNum) {
      glTexCoord2f(0, 1); glVertex3f(coords[0], coords[1] + area.h, coords[2]);
      } glEnd();
      glDisable(GL_TEXTURE_2D);
-}
-
-
-void drawText_2(char * text, TTF_Font* tmpfont, GLuint * texture){
-    SDL_Rect area;
-    SDL_Color clrFg = {0,0,255,0};
-    SDL_Surface *sText = SDL_DisplayFormatAlpha(TTF_RenderUTF8_Blended( tmpfont, text, clrFg ));
-    area.x = 0;
-    area.y = 0;
-    area.w = sText->w;
-    area.h = sText->h;
-    SDL_Surface* temp = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCALPHA,sText->w,sText->h,32,0x000000ff,0x0000ff00,0x00ff0000,0x000000ff);
-    SDL_BlitSurface(sText, &area, temp, NULL);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sText->w, sText->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, temp->pixels);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    glEnable(GL_TEXTURE_2D);
-    glBegin(GL_QUADS);
-    {
-        glTexCoord2d(0, 0);
-        glVertex3f(0, 0, 0);
-        glTexCoord2d(1, 0);
-        glVertex3f(0 + sText->w, 0, 0);
-        glTexCoord2d(1, 1);
-        glVertex3f(0 + sText->w, 0 + sText->h, 0);
-        glTexCoord2d(0, 1);
-        glVertex3f(0, 0 + sText->h, 0);
-    }
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
-    SDL_FreeSurface( sText );
-    SDL_FreeSurface( temp );
-}
-
-void DrawTexto_2(TTF_Font * font, const char* text, GLuint * texture){
-    SDL_Color color = {0,0,0};
-    SDL_Surface * text_surface;
-    text_surface = TTF_RenderText_Solid(font, text, color);
-    if (text_surface == NULL)
-    {
-        throw "No pude cargar el texto";
-    }
-    int w = pow(2,ceil(log(text_surface->w)/log(2)));
-    SDL_Surface * myNewSurface;
-    myNewSurface = SDL_CreateRGBSurface(0,w,w,24,0xff000000,0x00ff0000,0x0000ff00,0);
-    SDL_BlitSurface(text_surface,0,myNewSurface,0);
-    SDL_FreeSurface(text_surface);
-
-    glBindTexture(GL_TEXTURE_2D, *texture);
-    glTexImage2D( GL_TEXTURE_2D, 0, 3, w, w, 0, GL_RGB, GL_UNSIGNED_BYTE, myNewSurface->pixels );
-    //ToDo: No se si puedo hacerle free...
-    SDL_FreeSurface(myNewSurface);
 }
 
 GLuint raw_texture_load(const char *filename, int width, int height){
@@ -162,56 +82,69 @@ GLuint raw_texture_load(const char *filename, int width, int height){
     return texture;
 }
 
-//int LoadBitmap(char *filename)
-//{
-//    FILE * file;
-//    char temp;
-//    long i;
-//
-//    BITMAPINFOHEADER infoheader;
-//
-//    num_texture++; // The counter of the current texture is increased
-//
-//    if( (file = fopen(filename, "rb"))==NULL) return (-1); // Open the file for reading
-//
-//    fseek(file, 18, SEEK_CUR);  /* start reading width & height */
-//    fread(&infoheader.biWidth, sizeof(int), 1, file);
-//
-//    fread(&infoheader.biHeight, sizeof(int), 1, file);
-//
-//    fread(&infoheader.biPlanes, sizeof(short int), 1, file);
-//    if (infoheader.biPlanes != 1) {
-//	    printf("Planes from %s is not 1: %u\n", filename, infoheader.biPlanes);
-//	    return 0;
-//    }
-//
-//    // read the bpp
-//    fread(&infoheader.biBitCount, sizeof(unsigned short int), 1, file);
-//    if (infoheader.biBitCount != 24) {
-//      printf("Bpp from %s is not 24: %d\n", filename, infoheader.biBitCount);
-//      return 0;
-//    }
-//
-//    fseek(file, 24, SEEK_CUR);
-//
-//    // read the data.
-//    infoheader.data = (char *) malloc(infoheader.biWidth * infoheader.biHeight * 3);
-//    if (infoheader.data == NULL) {
-//	    printf("Error allocating memory for color-corrected image data\n");
-//	    return 0;
-//    }
-//
-//    if ((i = fread(infoheader.data, infoheader.biWidth * infoheader.biHeight * 3, 1, file)) != 1) {
-//	    printf("Error reading image data from %s.\n", filename);
-//	    return 0;
-//    }
-//
-//    for (i=0; i<(infoheader.biWidth * infoheader.biHeight * 3); i+=3) { // reverse all of the colors. (bgr -> rgb)
-//	    temp = infoheader.data[i];
-//	    infoheader.data[i] = infoheader.data[i+2];
-//	    infoheader.data[i+2] = temp;
-//    }
-//
-//
-//    fclose(file); // Closes the file stream
-//}
+GLuint num_texture=10; //Counter to keep track of the last loaded texture
+GLuint LoadBitmap(char *filename)
+{
+    int i, j=0; //Index variables
+    FILE *l_file; //File pointer
+    unsigned char *l_texture; //The pointer to the memory zone in which we will load the texture
+
+    // windows.h gives us these types to work with the Bitmap files
+    BITMAPFILEHEADER fileheader;
+    BITMAPINFOHEADER infoheader;
+    RGBTRIPLE rgb;
+
+    num_texture++; // The counter of the current texture is increased
+
+    if( (l_file = fopen(filename, "rb"))==NULL) return (-1); // Open the file for reading
+
+    fread(&fileheader, sizeof(fileheader), 1, l_file); // Read the fileheader
+
+    fseek(l_file, sizeof(fileheader), SEEK_SET); // Jump the fileheader
+    fread(&infoheader, sizeof(infoheader), 1, l_file); // and read the infoheader
+
+    // Now we need to allocate the memory for our image (width * height * color deep)
+    l_texture = (byte *) malloc(infoheader.biWidth * infoheader.biHeight * 4);
+    // And fill it with zeros
+    memset(l_texture, 0, infoheader.biWidth * infoheader.biHeight * 4);
+
+    // At this point we can read every pixel of the image
+    for (i=0; i < infoheader.biWidth*infoheader.biHeight; i++)
+    {
+            // We load an RGB value from the file
+            fread(&rgb, sizeof(rgb), 1, l_file);
+
+            // And store it
+            l_texture[j+0] = rgb.rgbtRed; // Red component
+            l_texture[j+1] = rgb.rgbtGreen; // Green component
+            l_texture[j+2] = rgb.rgbtBlue; // Blue component
+            l_texture[j+3] = 255; // Alpha value
+            j += 4; // Go to the next position
+    }
+
+    fclose(l_file); // Closes the file stream
+
+    glBindTexture(GL_TEXTURE_2D, num_texture); // Bind the ID texture specified by the 2nd parameter
+
+    // The next commands sets the texture parameters
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // If the u,v coordinates overflow the range 0,1 the image is repeated
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // The magnification function ("linear" produces better results)
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST); //The minifying function
+
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE); // We don't combine the color with the original surface color, use only the texture map.
+
+    int mipmaplvl = 4;
+    int border_size = 0;
+
+    // Finally we define the 2d texture
+    glTexImage2D(GL_TEXTURE_2D, 0, mipmaplvl, infoheader.biWidth, infoheader.biHeight, border_size, GL_RGBA, GL_UNSIGNED_BYTE, l_texture);
+
+    // And create 2d mipmaps for the minifying function
+    gluBuild2DMipmaps(GL_TEXTURE_2D, mipmaplvl, infoheader.biWidth, infoheader.biHeight, GL_RGBA, GL_UNSIGNED_BYTE, l_texture);
+
+    free(l_texture); // Free the memory we used to load the texture
+
+    return (num_texture); // Returns the current texture OpenGL ID
+}
+

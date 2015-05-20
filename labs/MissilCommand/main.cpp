@@ -50,6 +50,7 @@ void renderScene(Game* game, Camera* camera)
         if (game->isGameOver())
         {
             cout << "Perdio..";
+            game->drawHud();
         }
         else
         {
@@ -253,7 +254,6 @@ int main(int argc, char **argv){
             }
         }
         SDL_GL_SwapBuffers();
-        //changeSize();
     } while (!fin);
     return 1;
 }
