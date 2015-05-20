@@ -165,15 +165,15 @@ void Game::addBullet(Vector* initPosition, Vector* initVelocity, Vector* initAcc
 
 void Game::addBuildings() {
     int n = maxBuildQuantity;
-    for(int i = -3; i < 3; i++){
-        for(int j=-3; j < 3; j++) {
+    for(int i = -4; i < 2; i++){
+        for(int j=-4; j < 2; j++) {
             ModelFigure* building = new ModelFigure();
             building->orientation = new Vector(1, 1, 1);
             building->model = model_building;
             Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
             building->setAcceleration(initAccel);
 
-            Vector* initPosition = new Vector(i*5.0,0,j * 5.0);
+            Vector* initPosition = new Vector((i*9.0)+30+j,0,(j * 9.0)+i+20);
             building->setPosition(initPosition);
 
             Vector* initVelocity = new Vector(0 , 0 ,0.0);

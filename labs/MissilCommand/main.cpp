@@ -188,20 +188,6 @@ void setUp(){
     }
 }
 
-//int main(int argc, char **argv){
-//    setUp();
-//    Menu * menu = new Menu();
-//    Camera * camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
-//    while(true){
-//        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//        glLoadIdentity();
-//        camera->setLookAt();
-//        menu->drawMenu();
-//        SDL_GL_SwapBuffers();
-//    }
-//    return 0;
-//}
-
 int main(int argc, char **argv){
 //    freopen("CON", "w", stdout);
 //    freopen("CON", "w", stderr);
@@ -215,7 +201,7 @@ int main(int argc, char **argv){
 
     Game * game = new Game();
     Menu * menu = new Menu();
-    Camera* camera = new Camera(new Vector(20.0f,1.0f,0.0f), new Vector(0.0f,1.0f,4.0f));
+    Camera* camera = new Camera(new Vector(0.0f,1.0f,-40.0f), new Vector(8.0f,1.0f,4.0f));
 
     SDL_EnableKeyRepeat(0,1);
     SDL_ShowCursor(SDL_DISABLE);
@@ -279,7 +265,24 @@ int main(int argc, char **argv){
                                 SDL_WarpMouse(xPosBeforePause, yPosBeforePause);
                             }
                             isPaused=!isPaused;
+                            break;
                         }
+                        case SDLK_LEFT:
+                            if (camera->getPosition()->getX() < 30)
+                                camera->setPosition(new Vector(camera->getPosition()->getX()+5, camera->getPosition()->getY(), camera->getPosition()->getZ()));
+                            break;
+                        case SDLK_RIGHT:
+                            if (camera->getPosition()->getX() > -40)
+                                camera->setPosition(new Vector(camera->getPosition()->getX()-5, camera->getPosition()->getY(), camera->getPosition()->getZ()));
+                            break;
+                        case SDLK_DOWN:
+                            if (camera->getPosition()->getZ() > -40)
+                                camera->setPosition(new Vector(camera->getPosition()->getX(), camera->getPosition()->getY(), camera->getPosition()->getZ()-5));
+                            break;
+                        case SDLK_UP:
+                            if (camera->getPosition()->getZ() < 20)
+                                camera->setPosition(new Vector(camera->getPosition()->getX(), camera->getPosition()->getY(), camera->getPosition()->getZ()+5));
+                            break;
                         default:
                             break;
                         }
