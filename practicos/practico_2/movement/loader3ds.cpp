@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstring>
 #include "loader3ds.hpp"
+#include "utils.hpp"
 
 Model3D * Load3DS(const char * texture_name)
 {
@@ -16,16 +17,17 @@ Model3D * Load3DS(const char * texture_name)
 
 //    strcpy(, ".3ds");
 
-    char * model_file = new char [strlen("../../rsc/models/")+strlen(texture_name)+strlen(".3ds")+1];
-    sprintf(model_file, "%s.3ds");
+    char * model_file = new char [strlen("../../../rsc/models/")+strlen(texture_name)+strlen(".3ds")+1];
+    sprintf(model_file, "../../../rsc/models/%s.3ds", texture_name);
 
-    char * texture_file = new char [strlen("../../rsc/models/textures")+strlen(texture_name)+strlen(".3ds")+1];
-    sprintf(texture_file, "%s.3ds");
+    char * texture_file = new char [strlen("../../../rsc/models/textures/")+strlen(texture_name)+strlen(".bmp")+1];
+    sprintf(texture_file, "../../../rsc/models/textures/%s.bmp", texture_name);
 
     if ((l_file=fopen(model_file, "rb"))== NULL)
         throw "Cant open model file";
     if ((t_file=fopen(texture_file, "rb"))!=NULL){
-        ;
+        p_object->texture_ind = new int [1];
+        *(p_object->texture_ind) = LoadBitmap(texture_file);
     }
     while (ftell (l_file) < filelength (fileno (l_file)))
     {

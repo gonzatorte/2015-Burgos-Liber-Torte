@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <io.h>
-#include "3dsloader.h"
-
-
+#include "ModelType.h"
 
 
 /**********************************************************
@@ -18,7 +16,8 @@
  *
  *********************************************************/
 
-char Load3DS (ModelType* model, char *p_filename)
+
+char ModelType::LoadFrom3DS(char *p_filename)
 {
 	int i; //Index variable
 
@@ -71,7 +70,7 @@ char Load3DS (ModelType* model, char *p_filename)
 				do
 				{
 					fread (&l_char, 1, 1, l_file);
-                    model->name[i]=l_char;
+                    this->name[i]=l_char;
 					i++;
                 }while(l_char != '\0' && i<20);
 			break;
@@ -93,16 +92,16 @@ char Load3DS (ModelType* model, char *p_filename)
 			//-------------------------------------------
 			case 0x4110:
 				fread (&l_qty, sizeof (unsigned short), 1, l_file);
-                model->vertices_qty = l_qty;
+                this->vertices_qty = l_qty;
 //                printf("Number of vertices: %d\n",l_qty);
                 for (i=0; i<l_qty; i++)
                 {
-					fread (&model->vertex[i].x, sizeof(float), 1, l_file);
-// 					printf("Vertices list x: %f\n",model->vertex[i].x);
-                    fread (&model->vertex[i].y, sizeof(float), 1, l_file);
-// 					printf("Vertices list y: %f\n",model->vertex[i].y);
-					fread (&model->vertex[i].z, sizeof(float), 1, l_file);
-// 					printf("Vertices list z: %f\n",model->vertex[i].z);
+					fread (&this->vertex[i].x, sizeof(float), 1, l_file);
+// 					printf("Vertices list x: %f\n",this->vertex[i].x);
+                    fread (&this->vertex[i].y, sizeof(float), 1, l_file);
+// 					printf("Vertices list y: %f\n",this->vertex[i].y);
+					fread (&this->vertex[i].z, sizeof(float), 1, l_file);
+// 					printf("Vertices list z: %f\n",this->vertex[i].z);
 				}
 				break;
 
@@ -115,16 +114,16 @@ char Load3DS (ModelType* model, char *p_filename)
 			//-------------------------------------------
 			case 0x4120:
 				fread (&l_qty, sizeof (unsigned short), 1, l_file);
-                model->polygons_qty = l_qty;
+                this->polygons_qty = l_qty;
 //                printf("Number of polygons: %d\n",l_qty);
                 for (i=0; i<l_qty; i++)
                 {
-					fread (&model->polygon[i].a, sizeof (unsigned short), 1, l_file);
-//					printf("Polygon point a: %d\n",model->polygon[i].a);
-					fread (&model->polygon[i].b, sizeof (unsigned short), 1, l_file);
-//					printf("Polygon point b: %d\n",model->polygon[i].b);
-					fread (&model->polygon[i].c, sizeof (unsigned short), 1, l_file);
-//					printf("Polygon point c: %d\n",model->polygon[i].c);
+					fread (&this->polygon[i].a, sizeof (unsigned short), 1, l_file);
+//					printf("Polygon point a: %d\n",this->polygon[i].a);
+					fread (&this->polygon[i].b, sizeof (unsigned short), 1, l_file);
+//					printf("Polygon point b: %d\n",this->polygon[i].b);
+					fread (&this->polygon[i].c, sizeof (unsigned short), 1, l_file);
+//					printf("Polygon point c: %d\n",this->polygon[i].c);
 					fread (&l_face_flags, sizeof (unsigned short), 1, l_file);
 //					printf("Face flags: %x\n",l_face_flags);
 				}
@@ -141,10 +140,10 @@ char Load3DS (ModelType* model, char *p_filename)
 				fread (&l_qty, sizeof (unsigned short), 1, l_file);
 				for (i=0; i<l_qty; i++)
 				{
-					fread (&model->mapcoord[i].u, sizeof (float), 1, l_file);
-//					printf("Mapping list u: %f\n",model->mapcoord[i].u);
-                    fread (&model->mapcoord[i].v, sizeof (float), 1, l_file);
-//					printf("Mapping list v: %f\n",model->mapcoord[i].v);
+					fread (&this->mapcoord[i].u, sizeof (float), 1, l_file);
+//					printf("Mapping list u: %f\n",this->mapcoord[i].u);
+                    fread (&this->mapcoord[i].v, sizeof (float), 1, l_file);
+//					printf("Mapping list v: %f\n",this->mapcoord[i].v);
 				}
                 break;
 

@@ -6,7 +6,8 @@
 #include <stdexcept>
 
 #include "texture.h"
-#include "3dsloader.h"
+#include "ModelType.h"
+
 using namespace std;
 
 //list<Building*>::iterator itBuildings;
@@ -75,7 +76,7 @@ void Game::load_rsc(){
     textura_suelo = LoadBitmap("../../rsc/textures/grass_1.bmp");
     textura_cielo = LoadBitmap("../../rsc/textures/sky_1.bmp");
     model_building = new ModelType();
-    Load3DS(model_building, "../../rsc/models/cubo.3ds");
+    model_building->LoadFrom3DS("../../rsc/models/cubo.3ds");
     model_building->id_texture = LoadBitmap("../../rsc/models/textures/marble_0.bmp");
     font_hub = TTF_OpenFont("../../rsc/fonts/04B31.ttf", 6);
     font_end = TTF_OpenFont("../../rsc/fonts/destroy_the_enemy.ttf", 30);

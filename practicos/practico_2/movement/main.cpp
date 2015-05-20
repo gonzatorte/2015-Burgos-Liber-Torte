@@ -15,7 +15,7 @@
 #include <SDL/SDL.h>
 #include <SDL_ttf.h>
 #include <SDL/SDL_opengl.h>
-#include <GL/glut.h>
+#include <GL/glu.h>
 
 #include "loader3ds.hpp"
 #include "utils.hpp"
@@ -53,12 +53,6 @@ class Game{
             throw std::runtime_error(ss.str().c_str());
         }
 
-        if (TTF_Init() < 0) {
-            std::stringstream ss;
-            ss << "Unable to inti TTF: " << SDL_GetError();
-            throw std::runtime_error(ss.str().c_str());
-        }
-
         atexit(SDL_Quit);
 
         screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_OPENGL);
@@ -67,17 +61,6 @@ class Game{
             ss << "Unable to set video: " << SDL_GetError();
             throw std::runtime_error(ss.str().c_str());
         }
-    }
-
-    void setUp_font(){
-        font = TTF_OpenFont("../../../../rsc/fonts/leadcoat.ttf", 16);
-        if (!font){
-            std::stringstream ss;
-            ss << "Unable to load font: " << SDL_GetError();
-            throw std::runtime_error(ss.str().c_str());
-        }
-        SDL_Color color = {0,0,255,0};
-        text_rect = Load_string("TATAT", color, &(texs[3]), font);
     }
 
     void setUp_bmp(){
@@ -97,7 +80,6 @@ class Game{
     //    glGenTextures(3, texs);
         //Veo si puedo generar de a poco...
         glGenTextures(1, &(texs[0]));
-        glGenTextures(1, &(texs[1]));
 
         glBindTexture(GL_TEXTURE_2D, texs[0]);
         int mipmaplvl = 0;
@@ -113,7 +95,10 @@ class Game{
     }
 
     void setUp_model(){
-//        model1 = Load3DS("../../../../rsc/models/cubo.3ds");
+//        model1 = Load3DS("house4");
+//        model1 = Load3DS("cubo");
+//        model1 = Load3DS("raro");
+        model1 = Load3DS("spaceship");
     }
 
     void tearDown_model(){
@@ -123,16 +108,18 @@ class Game{
     void setUp_modelview(){
         glMatrixMode(GL_PROJECTION);
         glClearColor(0, 0, 0, 1);
-        gluPerspective(45, 640/480.f, 0.1, 200);
+        gluPerspective(45, 800/600.f, 0.1, 600);
         glViewport(0, 0, (GLsizei) 800, (GLsizei) 600);
         glMatrixMode(GL_MODELVIEW);
+
+        glEnable(GL_DEPTH_TEST);
+        glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
     }
 
     void setUp(){
         setUp_SDL();
         setUp_bmp();
         setUp_textures();
-        setUp_font();
         setUp_model();
         setUp_modelview();
     }
@@ -154,15 +141,18 @@ class Game{
         glRotatef(angle, 0, 0, 1);
 
         glPushMatrix();
+        glBindTexture(GL_TEXTURE_2D, texs[0]);
         glEnable(GL_TEXTURE_2D);
 
-        glBegin(GL_TRIANGLES);
+        glBegin(GL_QUADS);
         glTexCoord2d(1, 1);
         glVertex3f(-1.5,2,-8);
         glTexCoord2d(1, 0);
         glVertex3f(-2.5,-1,-8);
         glTexCoord2d(0, 0);
         glVertex3f(-0.5,-1,-8);
+        glTexCoord2d(0, 1);
+        glVertex3f(-1.5,-1,-8);
         glEnd();
 
         glDisable(GL_TEXTURE_2D);
@@ -175,7 +165,74 @@ class Game{
         glPopMatrix();
     }
 
+    void rendering_texture() {
+        glMatrixMode(GL_TEXTURE);
+//        glMatrixMode(GL_MODELVIEW);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+
+        angle = angle + angle_per_frame;
+        if (angle >= 360.0f) {
+            angle = angle_per_frame;
+        }
+        glRotatef(angle, 0, 0, 1);
+
+//        glTranslatef(0,0,-0.1*this->loop_count);
+        glScaled(2,2,2);
+        this->loop_count = (this->loop_count+1) % 1000;
+
+        glPushMatrix();
+//        glBindTexture(GL_TEXTURE_2D, texs[0]);
+        glBindTexture(GL_TEXTURE_2D, *(this->model1->texture_ind));
+        glEnable(GL_TEXTURE_2D);
+
+        glBegin(GL_TRIANGLES);
+        glTexCoord2d(1, 1);
+        glVertex3f(-1.5,2,-8);
+        glTexCoord2d(1, 0);
+        glVertex3f(-2.5,-1,-8);
+        glTexCoord2d(0, 0);
+        glVertex3f(-0.5,-1,-8);
+        glEnd();
+
+        glDisable(GL_TEXTURE_2D);
+        glPopMatrix();
+    }
+
     void rendering_model() {
+//        glMatrixMode(GL_TEXTURE);
+//        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//        glLoadIdentity();
+//        glRotatef(45, 0, 0, 1);
+//        glRotatef(10, 1, 0, 0);
+//        glTranslatef(0,0,-10);
+
+        glPushMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+//        glTranslatef(0,0,-0.1*this->loop_count);
+//        this->loop_count++;
+//        glScalef(1/30,1/30,1/30);
+
+//        glTranslatef(0,0,-100);
+//        glScalef(10,10,10);
+
+        glTranslatef(0.0,0.0,-300);
+
+//        angle = angle + angle_per_frame;
+//        if (angle >= 360.0f) {
+//            angle = angle_per_frame;
+//        }
+//        glRotatef(angle, 0, 0, 1);
+
+        glBindTexture(GL_TEXTURE_2D, *(this->model1->texture_ind));
+
+//        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);  // Repeat the pattern
+//        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+//        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);   // Clamped to 0.0 or 1.0
+//        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
         glEnable(GL_TEXTURE_2D);
         for(unsigned int i=0;i<this->model1->polygons_qty;i++){
             glBegin(GL_TRIANGLES);
@@ -186,22 +243,24 @@ class Game{
                 glTexCoord2f(this->model1->mapcoord[p.a].u,
                              this->model1->mapcoord[p.a].v);
             //ToDo: Sacar el -10 que es un hotfix para que se vea
-            glVertex3f(v.x,v.y,v.z-10);
+            glVertex3f(v.x,v.y,v.z);
 
             v = this->model1->vertex[p.b];
             if (this->model1->has_mapcoord)
                 glTexCoord2f(this->model1->mapcoord[p.b].u,
                              this->model1->mapcoord[p.b].v);
-            glVertex3f(v.x,v.y,v.z-10);
+            glVertex3f(v.x,v.y,v.z);
 
             v = this->model1->vertex[p.c];
             if (this->model1->has_mapcoord)
                 glTexCoord2f(this->model1->mapcoord[p.c].u,
                              this->model1->mapcoord[p.c].v);
-            glVertex3f(v.x,v.y,v.z-10);
+            glVertex3f(v.x,v.y,v.z);
             glEnd();
         }
         glDisable(GL_TEXTURE_2D);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
     }
 
     void rendering_text(){
@@ -238,7 +297,8 @@ class Game{
             }
         }
 
-        rendering_text();
+        rendering_model();
+//        rendering_texture();
 
         SDL_GL_SwapBuffers();
 
