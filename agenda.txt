@@ -26,3 +26,8 @@ Falta el panel (el menu)
 	Set lights color1/color2
 
 Falta los FPS
+
+
+Preguntas:
+	Las fuentes
+	Interpolación

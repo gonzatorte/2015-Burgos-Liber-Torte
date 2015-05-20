@@ -112,12 +112,12 @@ void Game::renderScene(Camera* camera){
 }
 
 void Game::load_rsc(){
-    textura_suelo = LoadBitmap("../../rsc/textures/grass_1.bmp");
+    textura_suelo = LoadBitmap("../../rsc/textures/stone_1.bmp");
     textura_cielo = LoadBitmap("../../rsc/textures/sky_1.bmp");
     model_building = new ModelType();
     model_building->LoadFrom3DS("../../rsc/models/house4.3ds");
     model_building->id_texture = LoadBitmap("../../rsc/models/textures/marble_0.bmp");
-    font_hub = TTF_OpenFont("../../rsc/fonts/04B31.ttf", 6);
+    font_hub = TTF_OpenFont("../../rsc/fonts/SEASRN__.ttf", 10);
     font_end = TTF_OpenFont("../../rsc/fonts/destroy_the_enemy.ttf", 30);
     if (!font_hub || !font_end){
         std::stringstream ss;
@@ -457,15 +457,17 @@ void Game::levelUp() {
 
 void Game::drawLife(){
     int x1 = -90;
-    int y1 = 90;
+    int y1 = 80;
     int x2 = -86;
-    int y2 = 80;
+    int y2 = 70;
+
     for (int i=0; i < life; i++){
         glRecti(x1, y1, x2, y2);
         x1 += 6;
         x2 += 6;
     }
-    float coords[3] = {x2, y2, 0};
+    y2 += 10;
+    float coords[3] = {-90, y2, 0};
     drawText(coords, text_hud_vida);
 }
 
@@ -475,7 +477,7 @@ void Game::drawScore(){
 
     float coords[3] = {x1, y1, 0};
     char aux[128];
-    sprintf(aux, "Score: %i", score);
+    sprintf(aux, "Score : %i", score);
     Unload_string(text_hud_score);
     text_hud_score = Load_string(aux, {128,64,64,0}, font_hub);
     drawText(coords, text_hud_score);
@@ -487,7 +489,7 @@ void Game::drawBulletsQuantity(){
 
     float coords[3] = {x1, y1, 0};
     char aux[128];
-    sprintf(aux, "Bullets: %i", bulletQuantity);
+    sprintf(aux, "Bullets : %i", bulletQuantity);
     text_hud_bullets = Load_string(aux, {128,64,64,0}, font_hub);
     drawText(coords, text_hud_bullets);
 }

@@ -249,5 +249,5 @@ int main(int argc, char **argv){
         }
         SDL_GL_SwapBuffers();
     } while (!fin);
-    return 1;
+    return 0;
 }

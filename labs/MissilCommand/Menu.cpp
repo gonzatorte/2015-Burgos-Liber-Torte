@@ -23,7 +23,21 @@ Menu::Menu(){
 }
 
 void Menu::init(){
+//    GLenum old_matrix_mode;
+//    glGetIntegerv(GL_MATRIX_MODE, &old_matrix_mode);
+//    GLboolean old_light_enab;
+//    glGetBooleanv(GL_MATRIX_MODE, &old_light_enab);
+//    GLboolean old_blend_enab;
+//    glGetBooleanv(GL_BLEND, &old_blend_enab);
+//    GL_CULL_FACE
+//    GL_CULL_FACE_MODE
+//    GL_LIGHT1
+//    GL_LIGHTING
+
+    glDisable(GL_LIGHTING);
+
     glPushMatrix();
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0.0f, 100, 100, 0.0f, 0.0f, 1.0f);
@@ -33,8 +47,17 @@ void Menu::init(){
     glVertex2f(15,15);
     glVertex2f(15,10);
     glEnd();
-    glMatrixMode(GL_MODELVIEW);
+
     glPopMatrix();
+//    glMatrixMode(old_mode);
+//    glEnable(GL_TEXTURE_2D);
+//    glEnable(GL_COLOR_MATERIAL);
+//    glEnable(GL_LIGHTING);
+//    glEnable(GL_LIGHT0);
+//    glShadeModel(GL_SMOOTH);
+//    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    //Cambiar en otros lugares tb.
+//    glOrtho(0.0f, windowWidth, windowHeight, 0.0f, 0.0f, 1.0f);
 }
 
 void Menu::draw(){
