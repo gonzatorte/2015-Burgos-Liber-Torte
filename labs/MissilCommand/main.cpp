@@ -64,7 +64,7 @@ void renderScene(Game* game, Camera* camera)
 
             if (game->levelCompleted())
             {
-                cout << "Pasastes de nivel CAPO!!!";
+                cout << "Pasaste de nivel CAPO!!!";
                 game->levelUp();
                 game->addBuildings();
             }
