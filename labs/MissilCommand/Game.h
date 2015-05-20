@@ -47,6 +47,7 @@ class Game
         void drawLife();
         void drawLevel();
         void drawScore();
+        void drawBulletsQuantity();
         void drawHud();
         virtual ~Game();
         void renderScene(Camera* camera);
@@ -62,6 +63,7 @@ class Game
         TextGrafic text_end_win;
         TextGrafic text_hud_score;
         TextGrafic text_hud_lvl;
+        TextGrafic text_hud_bullets;
         int level;
         int misilQuantity, maxMisilQuantity, simultMisilQuant, misilSpeed;
         int maxBuildQuantity;

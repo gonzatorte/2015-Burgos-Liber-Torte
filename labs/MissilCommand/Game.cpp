@@ -471,7 +471,7 @@ void Game::drawLife(){
 
 void Game::drawScore(){
     int x1 = -86;
-    int y1 = -80;
+    int y1 = -90;
 
     float coords[3] = {x1, y1, 0};
     char aux[128];
@@ -479,6 +479,17 @@ void Game::drawScore(){
     Unload_string(text_hud_score);
     text_hud_score = Load_string(aux, {128,64,64,0}, font_hub);
     drawText(coords, text_hud_score);
+}
+
+void Game::drawBulletsQuantity(){
+    int x1 = 30;
+    int y1 = -90;
+
+    float coords[3] = {x1, y1, 0};
+    char aux[128];
+    sprintf(aux, "Bullets: %i", bulletQuantity);
+    text_hud_bullets = Load_string(aux, {128,64,64,0}, font_hub);
+    drawText(coords, text_hud_bullets);
 }
 void Game::drawLevel(){
     int x = 50;
@@ -571,6 +582,7 @@ void Game::drawHud()
                 drawLife();
                 drawLevel();
                 drawScore();
+                drawBulletsQuantity();
             }
 
     glMatrixMode( GL_PROJECTION );
