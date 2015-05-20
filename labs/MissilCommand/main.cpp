@@ -44,7 +44,7 @@ int screen_w = 800;
 
 boolean wireframe = false;
 boolean textures = true;
-boolean light_up = true;
+boolean light_up = false;
 
 
 void mouseMove(int x, int y, Camera * camera){
@@ -120,14 +120,14 @@ int main(int argc, char **argv){
     bool fin = false;
     bool menu_active = false;
     SDL_Event evento;
-
+ Uint8 *keystate;
     Game * game = new Game();
     game->screen_h = screen_h;
     game->screen_w = screen_w;
     Menu * menu = new Menu();
     Camera* camera = new Camera(new Vector(0.0f,1.0f,-40.0f), new Vector(8.0f,1.0f,4.0f));
 
-    SDL_EnableKeyRepeat(0,1);
+    SDL_EnableKeyRepeat(200,1);
     SDL_ShowCursor(SDL_DISABLE);
     game->init();
     game->addBuildings();
@@ -142,23 +142,25 @@ int main(int argc, char **argv){
         } else {
             glEnable(GL_TEXTURE_2D);
         }
-        glColorMaterial ( GL_FRONT_AND_BACK, GL_EMISSION ) ;
-        glEnable(GL_COLOR_MATERIAL);
-        if (!light_up){
-            float light_position[] = { 0, -1,0, 0.0f };
-            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-            float mat_ambient[] = { 0.6f, 0.0f, 0.5f, 1.0f };
+
+// Create light components
+float ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+float diffuseLight[] = { 0.8f, 0.8f, 0.8, 1.0f };
+float specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
+
+// Assign created components to GL_LIGHT0
+//glLightfv(GL_LIGHT1, GL_AMBIENT, ambientLight);
+//glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuseLight);
+//glLightfv(GL_LIGHT1, GL_SPECULAR, specularLight);
+//glLightfv(GL_LIGHT1, GL_POSITION, position);
+
+        //float light_position[] = { 0, 1,0, 0.0f };
+            //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            //float mat_ambient[] = { 0.0f, 0.2f, 0.3f, 1.0f };
             //float mat_diffuse[] = { 0.0f, 0.9f, 0.8f, 1.0f };
-            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+            //glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
             //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
-        }else{
-            float light_position[] = { 0, 1,0, 0.0f };
-            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-            float mat_ambient[] = { 0.0f, 0.8f, 0.3f, 1.0f };
-            //float mat_diffuse[] = { 0.0f, 0.7f, 0.9f, 0.0f };
-            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
-            //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
-        }
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         if (menu_active){
@@ -173,6 +175,17 @@ int main(int argc, char **argv){
 
         while(SDL_PollEvent(&evento)){
             switch(evento.type){
+            case SDL_MOUSEBUTTONDOWN:
+                    if (evento.button.button == SDL_BUTTON_LEFT){
+                            Vector* initPosition = new Vector(camera->getPosition()->getX(), camera->getPosition()->getY()-1, camera->getPosition()->getZ());
+                            Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*100,
+                                                              (camera->getPoint()->getY() - camera->getPosition()->getY())*100,
+                                                              (camera->getPoint()->getZ() - camera->getPosition()->getZ())*100);
+                            Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
+
+                            game->addBullet(initPosition, initVelocity, initAccel);
+                    }
+                    break;
             case SDL_QUIT:
                 fin = true;
                 break;
@@ -203,16 +216,6 @@ int main(int argc, char **argv){
                         menu->interact(&evento);
                     } else {
                         switch(evento.key.keysym.sym){
-                        case SDLK_SPACE:{
-                            Vector* initPosition = new Vector(camera->getPosition()->getX()+1, camera->getPosition()->getY()-1, camera->getPosition()->getZ());
-                            Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*100,
-                                                              (camera->getPoint()->getY() - camera->getPosition()->getY())*100,
-                                                              (camera->getPoint()->getZ() - camera->getPosition()->getZ())*100);
-                            Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
-
-                            game->addBullet(initPosition, initVelocity, initAccel);
-                            break;
-                        }
                         case SDLK_p:
                         {
                             if (isPaused)
@@ -223,22 +226,6 @@ int main(int argc, char **argv){
                             game->isPaused = isPaused;
                             break;
                         }
-                        case SDLK_LEFT:
-                            if (camera->getPosition()->getX() < 30)
-                                camera->setPosition(new Vector(camera->getPosition()->getX()+5, camera->getPosition()->getY(), camera->getPosition()->getZ()));
-                            break;
-                        case SDLK_RIGHT:
-                            if (camera->getPosition()->getX() > -40)
-                                camera->setPosition(new Vector(camera->getPosition()->getX()-5, camera->getPosition()->getY(), camera->getPosition()->getZ()));
-                            break;
-                        case SDLK_DOWN:
-                            if (camera->getPosition()->getZ() > -40)
-                                camera->setPosition(new Vector(camera->getPosition()->getX(), camera->getPosition()->getY(), camera->getPosition()->getZ()-5));
-                            break;
-                        case SDLK_UP:
-                            if (camera->getPosition()->getZ() < 20)
-                                camera->setPosition(new Vector(camera->getPosition()->getX(), camera->getPosition()->getY(), camera->getPosition()->getZ()+5));
-                            break;
                         default:
                             break;
                         }
@@ -246,9 +233,28 @@ int main(int argc, char **argv){
                     }
                 }
                 break;
+
+
             default:
                 break;
             }
+        }
+        keystate = SDL_GetKeyState(NULL);
+        if (keystate[SDLK_LEFT] ) {
+          if (camera->getPosition()->getX() < 30)
+            camera->setPosition(new Vector(camera->getPosition()->getX()+0.05f, camera->getPosition()->getY(), camera->getPosition()->getZ()));
+        }
+        if (keystate[SDLK_RIGHT] ) {
+            if (camera->getPosition()->getX() > -40)
+                camera->setPosition(new Vector(camera->getPosition()->getX()-0.05f, camera->getPosition()->getY(), camera->getPosition()->getZ()));
+        }
+        if (keystate[SDLK_UP] ) {
+          if (camera->getPosition()->getZ() < 20)
+            camera->setPosition(new Vector(camera->getPosition()->getX(), camera->getPosition()->getY(), camera->getPosition()->getZ()+0.05f));
+        }
+        if (keystate[SDLK_DOWN] ) {
+          if (camera->getPosition()->getZ() > -40)
+            camera->setPosition(new Vector(camera->getPosition()->getX(), camera->getPosition()->getY(), camera->getPosition()->getZ()-0.05f));
         }
         SDL_GL_SwapBuffers();
     } while (!fin);
