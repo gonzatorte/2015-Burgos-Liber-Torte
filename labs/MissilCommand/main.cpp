@@ -39,6 +39,7 @@ using namespace std;
 boolean isPaused = false;
 int xPosBeforePause, yPosBeforePause;
 
+
 void changeSize(int w, int h)
 {
 
@@ -73,6 +74,7 @@ void renderScene(Game* game, Camera* camera)
         if (game->isGameOver())
         {
             cout << "Perdio..";
+            game->drawHud();
         }
         else
         {

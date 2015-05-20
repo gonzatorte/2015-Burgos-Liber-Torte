@@ -11,7 +11,7 @@
 #include "Figure.h"
 #include "Constants.h"
 //#include <GL/freeglut.h>
-
+#include <math.h>
 Bullet::Bullet()
 {
     this->y=0;
@@ -19,16 +19,18 @@ Bullet::Bullet()
 
 void Bullet::drawFigure() {
 
-
-    glTranslatef(this->getPosition()->getX(), this->getPosition()->getY(), this->getPosition()->getZ());
+    if (fabs(this->getPosition()->getZ() - this->getPreviewsPosition()->getZ()) < 20 || fabs(this->getPosition()->getX() - this->getPreviewsPosition()->getX()) < 20){
+    glBegin(GL_LINES);
     glColor3f(1.0f,0.0f,0.0f);
-    gluSphere(gluNewQuadric(), 2,50,50);
-    //glTranslatef(this->getPreviewsPosition()->getX(), this->getPreviewsPosition()->getY(), this->getPreviewsPosition()->getZ());
-    //gluSphere(gluNewQuadric(), 2,50,50);
-    //glTranslatef(this->getPosition()->getX()-2, this->getPosition()->getY()-2, this->getPosition()->getZ()-2);
+    glVertex3f( this->getPreviewsPosition()->getX(), this->getPreviewsPosition()->getY(), this->getPreviewsPosition()->getZ() );
+    glVertex3f( this->getPosition()->getX(), this->getPosition()->getY(), this->getPosition()->getZ() );
+    glEnd();
+    }
+    //glTranslatef(this->getPosition()->getX(), this->getPosition()->getY(), this->getPosition()->getZ());
+    //glColor3f(1.0f,0.0f,0.0f);
     //gluSphere(gluNewQuadric(), 1,50,50);
-    //glTranslatef(this->getPosition()->getX()-2, this->getPosition()->getY()-2, this->getPosition()->getZ()-2);
-    //gluSphere(gluNewQuadric(), 1,50,50);
+
+
 }
 
 void Bullet::moveFigure() {

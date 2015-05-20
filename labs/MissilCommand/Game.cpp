@@ -7,11 +7,11 @@
 
 #include "texture.h"
 #include "3dsloader.h"
-
+using namespace std;
 
 //list<Building*>::iterator itBuildings;
 int multiplicador;
-
+char* level_str;
 
 //METODOS PRIVADOS
 void Game::initLevel(int levelNumber) {
@@ -82,7 +82,7 @@ void Game::load_rsc(){
         ss << "Unable to load font: " << SDL_GetError();
         throw std::runtime_error(ss.str().c_str());
     }
-    text_hud_vida = Load_string("Vida", {128,64,64,0}, font_hub);
+    text_hud_vida = Load_string("LIFE", {128,64,64,0}, font_hub);
     text_end_lost = Load_string("GAME OVER", {255,128,0,0}, font_end);
     text_end_win = Load_string("VICTORY!", {128,0,255,0}, font_end);
 }
@@ -151,8 +151,8 @@ void Game::addBullet(Vector* initPosition, Vector* initVelocity, Vector* initAcc
         Bullet* bullet = new Bullet();
         bullet->setAcceleration(initAccel);
         bullet->setPosition(initPosition);
-        Vector* prevPosition = new Vector(initPosition->getX(), initPosition->getY(), initPosition->getZ());
-        bullet->setPreviewsPosition(prevPosition);
+        Vector* aux = new Vector(initPosition->getX(), initPosition->getY(), initPosition->getZ());
+        bullet->setPreviewsPosition(aux);
         bullet->setVelocity(initVelocity);
         bullets->push_back(bullet);
 
@@ -232,7 +232,7 @@ void Game::detectCollisions(){
             x_diff = x_b - (*itB)->getPosition()->getX();
             y_diff = y_b - (*itB)->getPosition()->getY();
             z_diff = z_b - (*itB)->getPosition()->getZ();
-            if (fabs(x_diff) < 2.0f && fabs(y_diff) < 2.0f && fabs(z_diff) < 2.0f){
+            if (fabs(x_diff) < 1.5f && fabs(y_diff) < 1.5f && fabs(z_diff) < 1.5f){
                 itB = buildings->erase(itB);
                 decreaseLife();
                 delete_misil = true;
@@ -417,6 +417,27 @@ void Game::drawLife(){
     float coords[3] = {x2, y2, 0};
     drawText(coords, text_hud_vida);
 }
+void Game::drawLevel(){
+    int x = 50;
+    int y = 80;
+
+
+    if (level == 1)
+        level_str = "Level 1";
+    else
+        if (level == 2)
+            level_str = "Level 2";
+        else
+            if (level == 3)
+                level_str = "Level 3";
+            else
+                if (level == 4)
+                    level_str = "Level 4";
+                    else
+                        level_str = "Level 5";
+    float coords[3] = {x, y, 0};
+    drawText(coords, Load_string(level_str, {128,64,64,0}, font_hub));
+}
 
 void Game::drawAim()
 {
@@ -476,15 +497,27 @@ void Game::drawHud()
         glMatrixMode( GL_MODELVIEW );
             glLoadIdentity();
 
-            drawAim();
-            drawLife();
 
+            if (gameOver){
+                drawGameOver();
+            }
+            else {
+                drawAim();
+                drawLife();
+                drawLevel();
+            }
 
     glMatrixMode( GL_PROJECTION );
     glPopMatrix();
     glMatrixMode( GL_MODELVIEW );
 
     // Reenable lighting
+}
+
+void Game::drawGameOver()
+{
+    float coords[3] = {-80, 0, 0};
+    drawText(coords, text_end_lost);
 }
 
 

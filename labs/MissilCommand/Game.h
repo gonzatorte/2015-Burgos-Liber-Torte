@@ -39,10 +39,12 @@ class Game
         void drawBullets();
         void drawBuildings();
         void drawLandscape();
+        void drawGameOver();
         bool levelCompleted();
         void levelUp();
         void drawAim();
         void drawLife();
+        void drawLevel();
         void drawHud();
         virtual ~Game();
     protected:
