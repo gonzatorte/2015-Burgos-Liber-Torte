@@ -55,8 +55,6 @@
 		</Linker>
 		<Unit filename="3dsloader.cpp" />
 		<Unit filename="3dsloader.h" />
-		<Unit filename="Application.cpp" />
-		<Unit filename="Application.h" />
 		<Unit filename="Building.cpp" />
 		<Unit filename="Building.h" />
 		<Unit filename="Bullet.cpp" />
@@ -75,7 +73,11 @@
 		<Unit filename="Menu.h" />
 		<Unit filename="Misil.cpp" />
 		<Unit filename="Misil.h" />
+		<Unit filename="ModelFigure.cpp" />
+		<Unit filename="ModelFigure.h" />
 		<Unit filename="ModelType.h" />
+		<Unit filename="TextGrafic.cpp" />
+		<Unit filename="TextGrafic.h" />
 		<Unit filename="Vector.cpp" />
 		<Unit filename="Vector.h" />
 		<Unit filename="main.cpp" />

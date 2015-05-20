@@ -55,7 +55,6 @@
 		<Unit filename="loader3ds.hpp" />
 		<Unit filename="loader3ds_sample_use.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="samples.cpp" />
 		<Unit filename="utils.cpp" />
 		<Unit filename="utils.hpp" />
 		<Extensions>
