@@ -44,6 +44,7 @@ int screen_w = 800;
 
 boolean wireframe = false;
 boolean textures = true;
+boolean light_up = true;
 
 void renderScene(Game* game, Camera* camera)
 {
@@ -189,6 +190,31 @@ int main(int argc, char **argv){
         }
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glColorMaterial ( GL_FRONT_AND_BACK, GL_EMISSION ) ;
+        glEnable(GL_COLOR_MATERIAL);
+
+        if (!light_up){
+            float light_position[] = { 0, -1,0, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            float mat_ambient[] = { 0.6f, 0.0f, 0.5f, 1.0f };
+            //float mat_diffuse[] = { 0.0f, 0.9f, 0.8f, 1.0f };
+            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+            //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+        }else{
+            float light_position[] = { 0, 1,0, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            float mat_ambient[] = { 0.0f, 0.8f, 0.3f, 1.0f };
+            //float mat_diffuse[] = { 0.0f, 0.7f, 0.9f, 0.0f };
+            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+            //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+        }
+
+
+
+
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+        glShadeModel(GL_SMOOTH);
         if (menu_active){
             menu->drawMenu();
         }else{

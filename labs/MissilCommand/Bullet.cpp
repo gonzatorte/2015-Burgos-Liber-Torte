@@ -19,7 +19,8 @@ Bullet::Bullet()
 
 void Bullet::drawFigure() {
 
-    if (fabs(this->getPosition()->getZ() - this->getPreviewsPosition()->getZ()) < 20 || fabs(this->getPosition()->getX() - this->getPreviewsPosition()->getX()) < 20){
+    if (fabs(this->getPosition()->getZ() - this->getPreviewsPosition()->getZ()) < 80 && fabs(this->getPosition()->getX() - this->getPreviewsPosition()->getX()) < 80){
+    glLineWidth(3);
     glBegin(GL_LINES);
     glColor3f(1.0f,0.0f,0.0f);
     glVertex3f( this->getPreviewsPosition()->getX(), this->getPreviewsPosition()->getY(), this->getPreviewsPosition()->getZ() );

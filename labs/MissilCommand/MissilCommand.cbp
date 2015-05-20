@@ -55,6 +55,7 @@
 		</Linker>
 		<Unit filename="3dsloader.cpp" />
 		<Unit filename="3dsloader.h" />
+		<Unit filename="Application.h" />
 		<Unit filename="Building.cpp" />
 		<Unit filename="Building.h" />
 		<Unit filename="Bullet.cpp" />
@@ -81,6 +82,7 @@
 		<Unit filename="Vector.cpp" />
 		<Unit filename="Vector.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="settings.xml" />
 		<Unit filename="texture.cpp" />
 		<Unit filename="texture.h" />
 		<Unit filename="tinyxml2.cpp" />
