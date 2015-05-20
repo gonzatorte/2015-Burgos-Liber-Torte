@@ -3,9 +3,9 @@
 #include <GL/glu.h>
 
 void ModelFigure::drawFigure(){
-    glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, model->id_texture);
-
+    glTranslatef(this->getPosition()->getX(), this->getPosition()->getY(), this->getPosition()->getZ());
     glBegin(GL_TRIANGLES);
     for (int l_index=0;l_index<model->polygons_qty;l_index++)
     {
@@ -32,7 +32,7 @@ void ModelFigure::drawFigure(){
     }
     glEnd();
 
-    glDisable(GL_TEXTURE_2D);
+    //glDisable(GL_TEXTURE_2D);
 
     glScalef(orientation->x, orientation->y, orientation->z);
 }

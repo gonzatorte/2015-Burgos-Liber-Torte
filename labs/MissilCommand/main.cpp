@@ -38,8 +38,12 @@ using namespace std;
 
 boolean isPaused = false;
 int xPosBeforePause, yPosBeforePause;
+
 int screen_h = 600;
 int screen_w = 800;
+
+boolean wireframe = false;
+boolean textures = true;
 
 void renderScene(Game* game, Camera* camera)
 {
@@ -54,6 +58,7 @@ void renderScene(Game* game, Camera* camera)
         }
         else
         {
+
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             if (game->levelCompleted())
@@ -77,10 +82,21 @@ void renderScene(Game* game, Camera* camera)
             game->detectCollisions();
             game->drawMisils();
             game->drawHud();
-
-
+            if (!textures)
+                glDisable(GL_TEXTURE_2D);
+            else
+                glEnable(GL_TEXTURE_2D);
             //glutSwapBuffers();
         }
+    }
+    else{
+            glLoadIdentity();
+            camera->setLookAt();
+            game->drawLandscape();
+            game->drawBuildings();
+            game->drawBullets();
+            game->drawMisils();
+            game->drawHud();
     }
 }
 
@@ -93,32 +109,6 @@ void mouseMove(int x, int y, Camera * camera){
     }
 }
 
-void keyboard (unsigned char key, int x, int y, Game* game){
-    Camera * camera = NULL;
-
-    if (key == 27)
-    {
-        exit(0);
-    }
-    else if (key==32)     // space bar
-    {
-        Vector* initPosition = new Vector(camera->getPosition()->getX()+1, camera->getPosition()->getY()-1, camera->getPosition()->getZ());
-        Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*60,
-                                          (camera->getPoint()->getY() - camera->getPosition()->getY())*60,
-                                          (camera->getPoint()->getZ() - camera->getPosition()->getZ())*60);
-        Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
-
-        game->addBullet(initPosition, initVelocity, initAccel);
-    }
-    else if (key==Constants::P || key==Constants::UP_P)
-    {
-        if (isPaused)
-        {
-            glutWarpPointer(xPosBeforePause, yPosBeforePause);
-        }
-        isPaused=!isPaused;
-    }
-}
 
 void setUp_SDL(){
     if(SDL_Init(SDL_INIT_VIDEO)<0)
@@ -192,6 +182,12 @@ int main(int argc, char **argv){
     SDL_ShowCursor(SDL_DISABLE);
     game->addBuildings();
     do{
+        if (wireframe){
+            glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+        }else{
+            glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+        }
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         if (menu_active){
             menu->drawMenu();
@@ -211,6 +207,9 @@ int main(int argc, char **argv){
             case SDL_KEYDOWN:
                 switch(evento.key.keysym.sym){
                 case SDLK_ESCAPE:
+                    fin = true;
+                    break;
+                case SDLK_q:
                     fin = true;
                     break;
                 case SDLK_RETURN:

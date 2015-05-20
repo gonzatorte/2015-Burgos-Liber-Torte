@@ -13,6 +13,8 @@ using namespace std;
 //list<Building*>::iterator itBuildings;
 int multiplicador;
 char* level_str;
+TextGrafic text_hud_lvl;
+TextGrafic text_hud_score;
 
 //METODOS PRIVADOS
 void Game::initLevel(int levelNumber) {
@@ -233,7 +235,7 @@ void Game::detectCollisions(){
             x_diff = x_b - (*itB)->getPosition()->getX();
             y_diff = y_b - (*itB)->getPosition()->getY();
             z_diff = z_b - (*itB)->getPosition()->getZ();
-            if (fabs(x_diff) < 1.5f && fabs(y_diff) < 1.5f && fabs(z_diff) < 1.5f){
+            if (fabs(x_diff) < 1 && fabs(y_diff) < 1 && fabs(z_diff) < 1){
                 itB = buildings->erase(itB);
                 decreaseLife();
                 delete_misil = true;
@@ -313,7 +315,7 @@ void Game::drawLandscape(){
     // Draw ground
 //    glColor3f(0.0f, 0.5f, 0.0f);
     glBindTexture(GL_TEXTURE_2D, textura_suelo);
-    glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_2D);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
     glVertex3f(-50.0f, 0.0f, -50.0f);
@@ -324,12 +326,12 @@ void Game::drawLandscape(){
     glTexCoord2f(0, 1);
     glVertex3f( 50.0f, 0.0f, -50.0f);
     glEnd();
-    glDisable(GL_TEXTURE_2D);
+    //glDisable(GL_TEXTURE_2D);
 
     // Draw roof
 //    glColor3f(0.5f, 0.0f, 0.5f);
     glBindTexture(GL_TEXTURE_2D, textura_cielo);
-    glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_2D);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
     glVertex3f( 50.0f, 25.0f,  50.0f);
@@ -392,7 +394,7 @@ void Game::drawLandscape(){
     glTexCoord2f(0, 1);
     glVertex3f( 50.0f, 25.0f, -50.0f);
     glEnd();
-    glDisable(GL_TEXTURE_2D);
+    //glDisable(GL_TEXTURE_2D);
 }
 
 bool Game::levelCompleted() {
@@ -418,6 +420,17 @@ void Game::drawLife(){
     float coords[3] = {x2, y2, 0};
     drawText(coords, text_hud_vida);
 }
+
+void Game::drawScore(){
+    int x1 = -86;
+    int y1 = -80;
+
+    float coords[3] = {x1, y1, 0};
+    char aux[128];
+    sprintf(aux, "Score: %i", score);
+    text_hud_score = Load_string(aux, {128,64,64,0}, font_hub);
+    drawText(coords, text_hud_score);
+}
 void Game::drawLevel(){
     int x = 50;
     int y = 80;
@@ -436,15 +449,17 @@ void Game::drawLevel(){
                     level_str = "Level 4";
                     else
                         level_str = "Level 5";
+
+    text_hud_lvl = Load_string(level_str, {128,64,64,0}, font_hub);
     float coords[3] = {x, y, 0};
-    drawText(coords, Load_string(level_str, {128,64,64,0}, font_hub));
+    drawText(coords, text_hud_lvl);
 }
 
 void Game::drawAim()
 {
     // Dibujar mira
 
-            glLineWidth(3);
+            glLineWidth(2);
             glBegin(GL_LINES);
                 glColor3f(0.0f, 0.0f, 1.0f);
                 glVertex2f(-5, 0);
@@ -466,7 +481,7 @@ void Game::drawAim()
             float x = r;//we start at angle = 0
             float y = 0;
             glBegin(GL_LINE_LOOP);
-            glLineWidth(3);
+            glLineWidth(2);
             for(int ii = 0; ii < num_segments; ii++)
             {
                 glVertex2f(x + cx, y + cy);//output vertex
@@ -506,6 +521,7 @@ void Game::drawHud()
                 drawAim();
                 drawLife();
                 drawLevel();
+                drawScore();
             }
 
     glMatrixMode( GL_PROJECTION );

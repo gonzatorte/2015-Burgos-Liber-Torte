@@ -45,6 +45,7 @@ class Game
         void drawAim();
         void drawLife();
         void drawLevel();
+        void drawScore();
         void drawHud();
         virtual ~Game();
     protected:
