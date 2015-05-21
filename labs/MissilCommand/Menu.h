@@ -14,6 +14,7 @@ class Menu{
         void draw();
         void interact(SDL_Event * evento);
 
+        int screen_h, screen_w;
     private:
         float frencuency = 0.5; // En hertz, vel angular
         float fps = 30;
@@ -32,6 +33,8 @@ class Menu{
         TextGrafic text_light_color;
         TextGrafic text_on;
         TextGrafic text_off;
+
+        GLuint texture_back;
 
         time_t tstart, tend;
 };

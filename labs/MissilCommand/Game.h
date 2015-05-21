@@ -9,7 +9,6 @@
 #include <algorithm>
 #include <math.h>
 #include <time.h>
-#include <GL/freeglut.h>
 #include "tinyxml2.h"
 #include "Misil.h"
 #include "Building.h"

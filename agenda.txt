@@ -27,7 +27,19 @@ Falta el panel (el menu)
 
 Falta los FPS
 
+Verificar que el hud se renderiza siempre despues que todo (por tener transparencias y que estas se ignoran).
 
 Preguntas:
-	Las fuentes
-	Interpolación
+	Interpolación y Facetado
+		Son cosas de iluminación
+	Probar en las maquinas
+
+ToDo:
+	Cambiar el reverse de los punteros.
+	Cambiar 2 luces fijas y 1 movil.
+	Luz puntual y direccional.
+	Aumentar la resolucion del bmp del suelo.
+	Iluminacion en modelos y normal mapping.
+	Buscar una fuente linda.
+
+Hacer el techo mas alto y ponerle una luna

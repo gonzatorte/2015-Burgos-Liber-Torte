@@ -20,7 +20,7 @@ Menu::Menu(){
     text_light_color = Load_string("Velocidad", {128,64,64,0}, font_small);
     text_on = Load_string("ON", {128,64,64,0}, font_small);
     text_off = Load_string("OFF", {128,64,64,0}, font_small);
-//    texture_back = Load_string("OFF", {128,64,64,0}, font_small);
+    texture_back = LoadBitmap("rsc/textures/marble_0.bmp");
 }
 
 void Menu::init(){
@@ -34,7 +34,6 @@ void Menu::init(){
 //    GL_CULL_FACE_MODE
 //    GL_LIGHT1
 //    GL_LIGHTING
-
     glDisable(GL_LIGHTING);
 
     glPushMatrix();
@@ -43,15 +42,6 @@ void Menu::init(){
     glLoadIdentity();
     glOrtho( -100.0f, 100.0f, -100.0f, 100.0f, -100.0f, 100.0f );
 //    glOrtho(0.0f, 100, 100, 0.0f, 0.0f, 1.0f);
-    glMatrixMode(GL_MODELVIEW);
-    glBegin(GL_QUADS);
-    glVertex2f(10,10);
-    glVertex2f(10,15);
-    glVertex2f(15,15);
-    glVertex2f(15,10);
-    glEnd();
-
-
     glPopMatrix();
 //    glMatrixMode(old_mode);
 //    glEnable(GL_TEXTURE_2D);
@@ -62,12 +52,30 @@ void Menu::init(){
 //    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     //Cambiar en otros lugares tb.
 //    glOrtho(0.0f, windowWidth, windowHeight, 0.0f, 0.0f, 1.0f);
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void Menu::draw(){
     tstart = time(0);
 
+    int menu_size_h = 150;
+    int menu_size_w = 150;
 
+//    float coors1 [3] = {-menu_size_h/4,-menu_size_w/4,0};
+    float coors1 [3] = {text_menu.area.h/2,text_menu.area.w/2,0};
+    drawText(coors1, text_menu);
+
+    glBindTexture(GL_TEXTURE_2D, texture_back);
+    glBegin(GL_QUADS);
+    glTexCoord2f(1,1);
+    glVertex2f(-menu_size_h/2,-menu_size_w/2);
+    glTexCoord2f(1,0);
+    glVertex2f(-menu_size_h/2,menu_size_w/2);
+    glTexCoord2f(0,0);
+    glVertex2f(menu_size_h/2,menu_size_w/2);
+    glTexCoord2f(0,1);
+    glVertex2f(menu_size_h/2,-menu_size_w/2);
+    glEnd();
 
     tend = time(0);
     sleep(sleep_time - (tend - tstart));

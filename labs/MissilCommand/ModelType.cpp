@@ -3,6 +3,68 @@
 #include <conio.h>
 #include <io.h>
 #include "ModelType.h"
+#include "Vector.h"
+
+
+
+void ObjCalcNormals(ModelType * model){
+	int i;
+	Vector l_vect1,l_vect2,l_vect3,l_vect_b1,l_vect_b2,l_normal;  //Some local vectors
+	int l_connections_qty[MAX_VERTICES]; //Number of poligons around each vertex
+
+    // Resetting vertices' normals...
+	for (i=0; i<model->vertices_qty; i++)
+	{
+		model->normal[i].x = 0.0;
+		model->normal[i].y = 0.0;
+		model->normal[i].z = 0.0;
+		l_connections_qty[i]=0;
+	}
+
+	for (i=0; i<model->polygons_qty; i++)
+	{
+        l_vect1.x = model->vertex[model->polygon[i].a].x;
+        l_vect1.y = model->vertex[model->polygon[i].a].y;
+        l_vect1.z = model->vertex[model->polygon[i].a].z;
+        l_vect2.x = model->vertex[model->polygon[i].b].x;
+        l_vect2.y = model->vertex[model->polygon[i].b].y;
+        l_vect2.z = model->vertex[model->polygon[i].b].z;
+        l_vect3.x = model->vertex[model->polygon[i].c].x;
+        l_vect3.y = model->vertex[model->polygon[i].c].y;
+        l_vect3.z = model->vertex[model->polygon[i].c].z;
+
+        // Polygon normal calculation
+		Vector::VectCreate (&l_vect1, &l_vect2, &l_vect_b1); // Vector from the first vertex to the second one
+        Vector::VectCreate (&l_vect1, &l_vect3, &l_vect_b2); // Vector from the first vertex to the third one
+        Vector::VectDotProduct (&l_vect_b1, &l_vect_b2, &l_normal); // Dot product between the two vectors
+        Vector::VectNormalize (&l_normal); //Normalizing the resultant we obtain the polygon normal
+
+		l_connections_qty[model->polygon[i].a]+=1; // For each vertex shared by this polygon we increase the number of connections
+		l_connections_qty[model->polygon[i].b]+=1;
+		l_connections_qty[model->polygon[i].c]+=1;
+
+		model->normal[model->polygon[i].a].x+=l_normal.x; // For each vertex shared by this polygon we add the polygon normal
+		model->normal[model->polygon[i].a].y+=l_normal.y;
+		model->normal[model->polygon[i].a].z+=l_normal.z;
+		model->normal[model->polygon[i].b].x+=l_normal.x;
+		model->normal[model->polygon[i].b].y+=l_normal.y;
+		model->normal[model->polygon[i].b].z+=l_normal.z;
+		model->normal[model->polygon[i].c].x+=l_normal.x;
+		model->normal[model->polygon[i].c].y+=l_normal.y;
+		model->normal[model->polygon[i].c].z+=l_normal.z;
+	}
+
+    for (i=0; i<model->vertices_qty; i++)
+	{
+		if (l_connections_qty[i]>0)
+		{
+			model->normal[i].x /= l_connections_qty[i]; // Let's now average the polygons' normals to obtain the vertex normal!
+			model->normal[i].y /= l_connections_qty[i];
+			model->normal[i].z /= l_connections_qty[i];
+		}
+	}
+}
+
 
 
 /**********************************************************
@@ -177,5 +239,6 @@ char ModelType::LoadFrom3DS(char *p_filename)
         }
 	}
 	fclose (l_file); // Closes the file stream
+	ObjCalcNormals(this);
 	return (1); // Returns ok
 }

@@ -32,6 +32,7 @@ class ModelType {
         vertex_type vertex[MAX_VERTICES];
         polygon_type polygon[MAX_POLYGONS];
         mapcoord_type mapcoord[MAX_VERTICES];
+        vertex_type normal[MAX_VERTICES];
         int id_texture;
 
         int z_bot_limit = INT_MAX;

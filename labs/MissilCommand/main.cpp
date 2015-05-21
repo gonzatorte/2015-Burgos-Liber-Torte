@@ -17,7 +17,6 @@
 #include <sstream>
 #include <stdexcept>
 
-//#include <GL/freeglut.h>
 #include <GL/glu.h>
 
 #include <Vfw.h>
@@ -124,6 +123,8 @@ int main(int argc, char **argv){
     game->screen_h = screen_h;
     game->screen_w = screen_w;
     Menu * menu = new Menu();
+    menu->screen_h = screen_h;
+    menu->screen_w = screen_w;
     Camera* camera = new Camera(new Vector(0.0f,1.0f,-40.0f), new Vector(8.0f,1.0f,4.0f));
 
     SDL_EnableKeyRepeat(0,1);

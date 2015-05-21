@@ -269,7 +269,6 @@ void Game::misilDisplacement() {
 	 (*itB)->setVelocity(velocity); // Guardo nueva velocidad
     }
 
-	//glutPostRedisplay();
 }
 
 void Game::detectCollisions(){
