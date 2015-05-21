@@ -11,26 +11,14 @@ class Figure
     public:
         Figure();
         virtual ~Figure();
-        Vector* getPosition();
-        Vector* getVelocity();
-        Vector* getAcceleration();
-        void setPosition(Vector* p);
-        void setVelocity(Vector* v);
-        void setAcceleration(Vector* a);
         void eulerIntegrate();
-        void setPreviewsPosition(Vector*);
-        Vector* getPreviewsPosition();
         virtual void drawFigure() = 0;
-        virtual void moveFigure() = 0;
 
+        Vector position;
+        Vector velocity;
+        Vector acceleration;
+        Vector previews_position;
 
-    protected:
-        Vector* position;
-        Vector* velocity;
-        Vector* acceleration;
-        Vector* previews_position;
-
-    private:
 };
 
 #endif // FIGURE_H

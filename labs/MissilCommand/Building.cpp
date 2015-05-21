@@ -15,7 +15,7 @@ Building::Building(){}
 
 void Building::drawFigure() {
 
-    glTranslatef(this->getPosition()->getX(), this->getPosition()->getY(), this->getPosition()->getZ());
+    glTranslatef(this->position.x, this->position.y, this->position.z);
 
     glColor3f(1.0f, 1.0f, 1.0f);
 

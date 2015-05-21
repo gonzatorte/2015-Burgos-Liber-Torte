@@ -12,9 +12,6 @@ class Building: public Figure
         Building();
         virtual ~Building();
         void drawFigure();
-    protected:
-        int y;
-    private:
 };
 
 #endif // MISIL_H

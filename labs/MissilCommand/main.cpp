@@ -35,9 +35,6 @@
 
 using namespace std;
 
-boolean isPaused = false;
-int xPosBeforePause, yPosBeforePause;
-
 int screen_h = 600;
 int screen_w = 800;
 
@@ -45,61 +42,31 @@ boolean wireframe = false;
 boolean textures = true;
 boolean light_up = false;
 
-
-void mouseMove(int x, int y, Camera * camera){
-    if (!isPaused)
-    {
-        xPosBeforePause=x; //Mantengo posicion actual del mouse por si se pone pausa.
-        yPosBeforePause=y;
-        camera->moveCam(x,y);
-    }
-}
-
-
-void setUp_SDL(){
-    if(SDL_Init(SDL_INIT_VIDEO)<0)
-    {
-        std::stringstream ss;
-        ss << "Unable to inti SDL: " << SDL_GetError();
-        throw std::runtime_error(ss.str().c_str());
-    }
-
-    if (TTF_Init() < 0) {
-        std::stringstream ss;
-        ss << "Unable to inti TTF: " << SDL_GetError();
-        throw std::runtime_error(ss.str().c_str());
-    }
-
-    atexit(SDL_Quit);
-
-    Uint32 flags = SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_OPENGL;
-
-    if(SDL_SetVideoMode(screen_w, screen_h, 32, flags)==NULL)
-    {
-        std::stringstream ss;
-        ss << "No se pudo establecer el modo de video: " << SDL_GetError();
-        throw std::runtime_error(ss.str().c_str());
-    }
-}
-
-void setUp_GL(){
-    glMatrixMode(GL_PROJECTION);
-
-    float color = 0;
-    glClearColor(color, color, color, 1);
-
-    gluPerspective(45, float(screen_w)/float(screen_h), 0.1, 100);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glMatrixMode(GL_MODELVIEW);
-
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-}
-
 void setUp(){
     try{
-        setUp_SDL();
-        setUp_GL();
+        if(SDL_Init(SDL_INIT_VIDEO)<0)
+        {
+            std::stringstream ss;
+            ss << "Unable to inti SDL: " << SDL_GetError();
+            throw std::runtime_error(ss.str().c_str());
+        }
+
+        if (TTF_Init() < 0) {
+            std::stringstream ss;
+            ss << "Unable to inti TTF: " << SDL_GetError();
+            throw std::runtime_error(ss.str().c_str());
+        }
+
+        atexit(SDL_Quit);
+
+        Uint32 flags = SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_OPENGL;
+
+        if(SDL_SetVideoMode(screen_w, screen_h, 32, flags)==NULL)
+        {
+            std::stringstream ss;
+            ss << "No se pudo establecer el modo de video: " << SDL_GetError();
+            throw std::runtime_error(ss.str().c_str());
+        }
     } catch (const char * e) {
         cout << "An exception occurred 1. " << e << endl;
     } catch (exception & e) {
@@ -119,19 +86,21 @@ int main(int argc, char **argv){
     bool fin = false;
     bool menu_active = false;
     SDL_Event evento;
- Uint8 *keystate;
+    Uint8 *keystate;
+    Camera* camera = new Camera(Vector(0.0f,1.0f,-40.0f), Vector(8.0f,1.0f,4.0f), screen_w, screen_h);
     Game * game = new Game();
     game->screen_h = screen_h;
     game->screen_w = screen_w;
+    game->camera = camera;
     Menu * menu = new Menu();
     menu->screen_h = screen_h;
     menu->screen_w = screen_w;
-    Camera* camera = new Camera(new Vector(0.0f,1.0f,-40.0f), new Vector(8.0f,1.0f,4.0f));
 
     SDL_EnableKeyRepeat(200,1);
     SDL_ShowCursor(SDL_DISABLE);
     game->init();
     game->addBuildings();
+    bool wasPaused = false;
     do{
         if (wireframe){
             glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -167,26 +136,11 @@ float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
         if (menu_active){
             menu->draw();
         }else{
-            int xm,ym;
-            //glLoadIdentity();
-            SDL_GetMouseState(&xm, &ym);
-            mouseMove(xm, ym, camera);
-            game->renderScene(camera);
+            game->renderScene();
         }
 
         while(SDL_PollEvent(&evento)){
             switch(evento.type){
-            case SDL_MOUSEBUTTONDOWN:
-                    if (evento.button.button == SDL_BUTTON_LEFT){
-                            Vector* initPosition = new Vector(camera->getPosition()->getX(), camera->getPosition()->getY()-1, camera->getPosition()->getZ());
-                            Vector* initVelocity = new Vector((camera->getPoint()->getX() - camera->getPosition()->getX())*100,
-                                                              (camera->getPoint()->getY() - camera->getPosition()->getY())*100,
-                                                              (camera->getPoint()->getZ() - camera->getPosition()->getZ())*100);
-                            Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
-
-                            game->addBullet(initPosition, initVelocity, initAccel);
-                    }
-                    break;
             case SDL_QUIT:
                 fin = true;
                 break;
@@ -208,54 +162,29 @@ float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
                     menu_active = !menu_active;
                     if (menu_active){
                         menu->init();
+                        wasPaused = game->isPaused;
+                        game->isPaused = true;
                     } else {
                         game->init();
+                        game->isPaused = wasPaused;
                     }
                     break;
                 default:
                     if (menu_active){
                         menu->interact(&evento);
                     } else {
-                        switch(evento.key.keysym.sym){
-                        case SDLK_p:
-                        {
-                            if (isPaused)
-                            {
-                                SDL_WarpMouse(xPosBeforePause, yPosBeforePause);
-                            }
-                            isPaused=!isPaused;
-                            game->isPaused = isPaused;
-                            break;
-                        }
-                        default:
-                            break;
-                        }
-                        break;
+                        game->interact(&evento);
                     }
                 }
                 break;
-
-
             default:
+                if (menu_active){
+                    menu->interact(&evento);
+                } else {
+                    game->interact(&evento);
+                }
                 break;
             }
-        }
-        keystate = SDL_GetKeyState(NULL);
-        if (keystate[SDLK_LEFT] ) {
-          if (camera->getPosition()->getX() < 30)
-            camera->setPosition(new Vector(camera->getPosition()->getX()+0.05f, camera->getPosition()->getY(), camera->getPosition()->getZ()));
-        }
-        if (keystate[SDLK_RIGHT] ) {
-            if (camera->getPosition()->getX() > -40)
-                camera->setPosition(new Vector(camera->getPosition()->getX()-0.05f, camera->getPosition()->getY(), camera->getPosition()->getZ()));
-        }
-        if (keystate[SDLK_UP] ) {
-          if (camera->getPosition()->getZ() < 20)
-            camera->setPosition(new Vector(camera->getPosition()->getX(), camera->getPosition()->getY(), camera->getPosition()->getZ()+0.05f));
-        }
-        if (keystate[SDLK_DOWN] ) {
-          if (camera->getPosition()->getZ() > -40)
-            camera->setPosition(new Vector(camera->getPosition()->getX(), camera->getPosition()->getY(), camera->getPosition()->getZ()-0.05f));
         }
         SDL_GL_SwapBuffers();
     } while (!fin);

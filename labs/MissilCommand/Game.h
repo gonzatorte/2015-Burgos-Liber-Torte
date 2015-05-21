@@ -30,11 +30,12 @@ class Game
         void decreaseLife();
         bool isGameOver();
         void addMisil();
-        void addBullet(Vector* initPosition, Vector* initVelocity, Vector* initAccel);
+        void addBullet(Vector initPosition, Vector initVelocity, Vector initAccel);
         void addBuildings();
         void misilDisplacement();
         void detectCollisions();
         void manageGame();
+        void interact(SDL_Event * evento);
         void drawMisils();
         void drawBullets();
         void drawBuildings();
@@ -49,10 +50,12 @@ class Game
         void drawBulletsQuantity();
         void drawHud();
         virtual ~Game();
-        void renderScene(Camera* camera);
+        void renderScene();
         void init();
         bool isPaused;
         int screen_w, screen_h;
+        int xPosBeforePause, yPosBeforePause;
+        Camera* camera;
     protected:
     private:
         GLuint textura_suelo, textura_cielo;
@@ -80,8 +83,6 @@ class Game
         void initLevel(int levelNumber);
         map<int, Level*>* getLevelsFromSetting(tinyxml2::XMLElement* gameSettings);
         list<ModelFigure*>::iterator obtRandomIterator();
-        void load_rsc();
-
 };
 
 #endif // GAME_H

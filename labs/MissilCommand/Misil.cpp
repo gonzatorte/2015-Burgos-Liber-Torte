@@ -14,28 +14,13 @@
 
 Misil::Misil()
 {
-    this->y=0;
 }
 
 void Misil::drawFigure() {
-
-
-    glTranslatef(this->getPosition()->getX(), this->getPosition()->getY(), this->getPosition()->getZ());
+    glTranslatef(this->position.x, this->position.y, this->position.z);
     glColor3f(1.0f,0.0f,0.0f);
     //glutSolidSphere(Constants::BALLRADIUS,50,50);
     gluSphere(gluNewQuadric(), Constants::BALLRADIUS,50,50);
-}
-
-void Misil::moveFigure() {
-    glTranslatef(0,y,0);
-}
-
-void Misil::set_y(int y) {
-    this->y=y;
-}
-
-bool Misil::get_y() {
-    return y;
 }
 
 Misil::~Misil()

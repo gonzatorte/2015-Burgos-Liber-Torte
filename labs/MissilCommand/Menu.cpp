@@ -42,6 +42,7 @@ void Menu::init(){
     glLoadIdentity();
     glOrtho( -100.0f, 100.0f, -100.0f, 100.0f, -100.0f, 100.0f );
 //    glOrtho(0.0f, 100, 100, 0.0f, 0.0f, 1.0f);
+
     glPopMatrix();
 //    glMatrixMode(old_mode);
 //    glEnable(GL_TEXTURE_2D);

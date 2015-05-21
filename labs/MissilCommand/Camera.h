@@ -10,18 +10,13 @@ class Camera
 {
     public:
         Camera();
-        Camera(Vector* position, Vector* point);
-        Vector* getPosition();
-        Vector* getPoint();
-        void setPosition(Vector* position);
-        void setPoint(Vector* point);
+        Camera(Vector position, Vector point, int screen_w, int screen_h);
         void moveCam(int x, int y);
         void setLookAt();
         virtual ~Camera();
-    protected:
-    private:
-        Vector* position; //Posicion de la camara
-        Vector* point; //Punto al que mira la camara.
+        Vector position; //Posicion de la camara
+        Vector point; //Punto al que mira la camara.
+        int screen_w, screen_h;
 };
 
 #endif // CAMERA_H

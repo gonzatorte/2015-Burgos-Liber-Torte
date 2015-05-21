@@ -6,11 +6,11 @@
 
 class ModelFigure: public Figure{
     public:
-        ModelFigure(){};
+        ModelFigure(ModelType * m);
         void drawFigure();
         void moveFigure();
-        Vector * orientation;
-        Vector * aspect;
+        Vector orientation;
+        Vector aspect;
         ModelType * model;
         int x,y,z;
 };
