@@ -2,7 +2,6 @@
 #define CAMERA_H
 #include <math.h>
 #include <GL/glu.h>
-#include <GL/freeglut.h>
 #include "Vector.h"
 #include <iostream>
 using namespace std;

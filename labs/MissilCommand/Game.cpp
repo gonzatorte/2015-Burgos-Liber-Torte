@@ -78,7 +78,7 @@ void Game::renderScene(Camera* camera){
             this->drawHud();
         } else {
             if (this->levelCompleted()) {
-                cout << "Pasastes de nivel CAPO!!!";
+                cout << "Pasaste de nivel CAPO!!!";
                 this->levelUp();
                 this->addBuildings();
             }
@@ -113,26 +113,28 @@ void Game::init(){
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glShadeModel(GL_SMOOTH);
+    glColorMaterial ( GL_FRONT_AND_BACK, GL_EMISSION ) ;
+    glEnable(GL_COLOR_MATERIAL);
 }
 
 void Game::load_rsc(){
-    textura_suelo = LoadBitmap("rsc/textures/stone_1.bmp");
+    textura_suelo = LoadBitmap("rsc/textures/grass.bmp");
     textura_cielo = LoadBitmap("rsc/textures/sky_1.bmp");
     model_building = new ModelType();
-    model_building->LoadFrom3DS("rsc/models/house4.3ds");
+    model_building->LoadFrom3DS("rsc/models/cubo.3ds");
     model_building->id_texture = LoadBitmap("rsc/models/textures/marble_0.bmp");
-    font_hub = TTF_OpenFont("rsc/fonts/SEASRN__.ttf", 10);
+    font_hub = TTF_OpenFont("rsc/fonts/OpenSans-Regular.ttf", 10);
     font_end = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 30);
     if (!font_hub || !font_end){
         std::stringstream ss;
         ss << "Unable to load font: " << SDL_GetError();
         throw std::runtime_error(ss.str().c_str());
     }
-    text_hud_vida = Load_string("LIFE", {128,64,64,0}, font_hub);
+    text_hud_vida = Load_string("LIFE", {12,90,32,0}, font_hub);
     text_end_lost = Load_string("GAME OVER", {255,128,0,0}, font_end);
     text_end_win = Load_string("VICTORY!", {128,0,255,0}, font_end);
     text_hud_lvl = Load_string("lvl:", {128,0,255,0}, font_hub);;
-    text_hud_score = Load_string("Score:", {128,0,255,0}, font_hub);;
+    text_hud_score = Load_string("SCORE:", {128,0,255,0}, font_hub);;
 }
 
 //METODOS PUBLICOS
@@ -211,6 +213,7 @@ void Game::addBullet(Vector* initPosition, Vector* initVelocity, Vector* initAcc
 
 void Game::addBuildings() {
     int n = maxBuildQuantity;
+    int a = 1;
     for(int i = -4; i < 2; i++){
         for(int j=-4; j < 2; j++) {
             ModelFigure* building = new ModelFigure();
@@ -228,7 +231,7 @@ void Game::addBuildings() {
             Vector* initAccel = new Vector(0.0 ,0.0 ,0.0);
             building->setAcceleration(initAccel);
 
-            Vector* initPosition = new Vector(i*5.0+10,0,j*5.0+5);
+            Vector* initPosition = new Vector(i*5.0+10+(j*a),1,j*5.0+5+(j*a));
             building->setPosition(initPosition);
 
             Vector* initVelocity = new Vector(0 , 0 ,0.0);
@@ -236,6 +239,7 @@ void Game::addBuildings() {
 
             buildings->push_back(building);
             n--;
+            a *= -1;
             if (n==0)
                 break;
         }
@@ -480,9 +484,9 @@ void Game::drawScore(){
 
     float coords[3] = {x1, y1, 0};
     char aux[128];
-    sprintf(aux, "Score : %i", score);
+    sprintf(aux, "SCORE : %i", score);
     Unload_string(text_hud_score);
-    text_hud_score = Load_string(aux, {128,64,64,0}, font_hub);
+    text_hud_score = Load_string(aux, {12,90,32,0}, font_hub);
     drawText(coords, text_hud_score);
 }
 
@@ -492,8 +496,8 @@ void Game::drawBulletsQuantity(){
 
     float coords[3] = {x1, y1, 0};
     char aux[128];
-    sprintf(aux, "Bullets : %i", bulletQuantity);
-    text_hud_bullets = Load_string(aux, {128,64,64,0}, font_hub);
+    sprintf(aux, "BULLETS : %i", bulletQuantity);
+    text_hud_bullets = Load_string(aux, {12,90,32,0}, font_hub);
     drawText(coords, text_hud_bullets);
 }
 
@@ -505,20 +509,20 @@ void Game::drawLevel(){
 
 
     if (level == 1)
-        level_str = "Level 1";
+        level_str = "LEVEL 1";
     else
         if (level == 2)
-            level_str = "Level 2";
+            level_str = "LEVEL 2";
         else
             if (level == 3)
-                level_str = "Level 3";
+                level_str = "LEVEL 3";
             else
                 if (level == 4)
-                    level_str = "Level 4";
+                    level_str = "LEVEL 4";
                     else
-                        level_str = "Level 5";
+                        level_str = "LEVEL 5";
 
-    text_hud_lvl = Load_string(level_str, {128,64,64,0}, font_hub);
+    text_hud_lvl = Load_string(level_str, {12,90,32,0}, font_hub);
     float coords[3] = {x, y, 0};
     drawText(coords, text_hud_lvl);
 }

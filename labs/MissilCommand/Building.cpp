@@ -9,7 +9,6 @@
 #include <SDL/SDL.h>
 #include "SDL/SDL_opengl.h"
 #include "Figure.h"
-//#include <GL/freeglut.h>
 #include <GL/glu.h>
 
 Building::Building(){}
