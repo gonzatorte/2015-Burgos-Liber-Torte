@@ -10,6 +10,9 @@ void ModelFigure::drawFigure(){
     for (int l_index=0;l_index<model->polygons_qty;l_index++)
     {
         //----------------- FIRST VERTEX -----------------
+        glNormal3f( model->normal[ model->polygon[l_index].a ].x,
+					model->normal[ model->polygon[l_index].a ].y,
+					model->normal[ model->polygon[l_index].a ].z);
         glTexCoord2f( model->mapcoord[ model->polygon[l_index].a ].u,
                       model->mapcoord[ model->polygon[l_index].a ].v);
         glVertex3f( model->vertex[ model->polygon[l_index].a ].x,
@@ -17,6 +20,9 @@ void ModelFigure::drawFigure(){
                     model->vertex[ model->polygon[l_index].a ].z);
 
         //----------------- SECOND VERTEX -----------------
+        glNormal3f( model->normal[ model->polygon[l_index].b ].x,
+					model->normal[ model->polygon[l_index].b ].y,
+					model->normal[ model->polygon[l_index].b ].z);
         glTexCoord2f( model->mapcoord[ model->polygon[l_index].b ].u,
                       model->mapcoord[ model->polygon[l_index].b ].v);
         glVertex3f( model->vertex[ model->polygon[l_index].b ].x,
@@ -24,6 +30,9 @@ void ModelFigure::drawFigure(){
                     model->vertex[ model->polygon[l_index].b ].z);
 
         //----------------- THIRD VERTEX -----------------
+        glNormal3f( model->normal[ model->polygon[l_index].c ].x,
+					model->normal[ model->polygon[l_index].c ].y,
+					model->normal[ model->polygon[l_index].c ].z);
         glTexCoord2f( model->mapcoord[ model->polygon[l_index].c ].u,
                       model->mapcoord[ model->polygon[l_index].c ].v);
         glVertex3f( model->vertex[ model->polygon[l_index].c ].x,

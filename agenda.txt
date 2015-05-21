@@ -32,7 +32,6 @@ Verificar que el hud se renderiza siempre despues que todo (por tener transparen
 Preguntas:
 	Interpolación y Facetado
 		Son cosas de iluminación
-	Probar en las maquinas
 
 ToDo:
 	Cambiar el reverse de los punteros.
@@ -43,3 +42,4 @@ ToDo:
 	Buscar una fuente linda.
 
 Hacer el techo mas alto y ponerle una luna
+No puedo eliminar glut
