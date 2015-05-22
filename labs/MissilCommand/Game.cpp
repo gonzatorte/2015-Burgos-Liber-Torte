@@ -10,10 +10,9 @@
 
 using namespace std;
 
-//list<Building*>::iterator itBuildings;
 int multiplicador;
+int vel_adjust_factor = 700;
 
-//METODOS PRIVADOS
 void Game::initLevel(int levelNumber) {
     Level* level = levels->find(levelNumber)->second;
     this->maxMisilQuantity = level->getMaxMisilQuantity();
@@ -28,8 +27,7 @@ void Game::initLevel(int levelNumber) {
     misils = new list<Misil*>();
     buildings = new list<ModelFigure*>();
     bullets = new list<Bullet*>();
-    //addBuildings();
-
+    addBuildings();
 }
 
 map<int, Level*>* Game::getLevelsFromSetting(tinyxml2::XMLElement* gameSettings) {
@@ -71,6 +69,7 @@ list<ModelFigure*>::iterator Game::obtRandomIterator() {
 
 void Game::renderScene(){
     // Clear Color and Depth Buffers
+    glLoadIdentity();
     if (!this->isPaused){
         if (this->isGameOver()){
             cout << "Perdio..";
@@ -79,13 +78,9 @@ void Game::renderScene(){
             if (this->levelCompleted()) {
                 cout << "Pasaste de nivel CAPO!!!";
                 this->levelUp();
-                this->addBuildings();
             }
 
             this->manageGame();
-
-            // Reset transformations
-            glLoadIdentity();
             // Set the camera
             camera->setLookAt();
 
@@ -98,7 +93,6 @@ void Game::renderScene(){
             this->drawHud();
         }
     } else {
-        glLoadIdentity();
         camera->setLookAt();
         this->drawLandscape();
         this->drawBuildings();
@@ -109,6 +103,7 @@ void Game::renderScene(){
 }
 
 void Game::init(){
+    SDL_ShowCursor(SDL_DISABLE);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glShadeModel(GL_SMOOTH);
@@ -118,7 +113,8 @@ void Game::init(){
     glEnable(GL_BLEND);
 
     glMatrixMode(GL_PROJECTION);
-    gluPerspective(45, float(screen_w)/float(screen_h), 0.1, 200);
+    glLoadIdentity();
+    gluPerspective(45, float(screen_w)/float(screen_h), 0.1, 1000);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -130,6 +126,7 @@ void Game::interact(SDL_Event * evento){
             Vector initVelocity = Vector((camera->point.x - camera->position.x)*100,
                                               (camera->point.y - camera->position.y)*100,
                                               (camera->point.z - camera->position.z)*100);
+            initVelocity = initVelocity*vel_adjust_factor;
             Vector initAccel = Vector(0.0 ,0.0 ,0.0);
 
             this->addBullet(initPosition, initVelocity, initAccel);
@@ -174,13 +171,12 @@ void Game::interact(SDL_Event * evento){
     }
 }
 
-//METODOS PUBLICOS
 Game::Game() {
     textura_suelo = LoadBitmap("rsc/textures/grass.bmp");
     textura_cielo = LoadBitmap("rsc/textures/sky_1.bmp");
     model_building = new ModelType();
-//    model_building->LoadFrom3DS("rsc/models/cubo.3ds");
-    model_building->LoadFrom3DS("rsc/models/house4.3ds");
+    model_building->LoadFrom3DS("rsc/models/cubo.3ds");
+//    model_building->LoadFrom3DS("rsc/models/house4.3ds");
     model_building->id_texture = LoadBitmap("rsc/models/textures/marble_0.bmp");
     font_hub = TTF_OpenFont("rsc/fonts/OpenSans-Regular.ttf", 10);
     font_end = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 30);
@@ -199,6 +195,10 @@ Game::Game() {
     settings.LoadFile("settings.xml");
     tinyxml2::XMLElement* gameSettings = settings.FirstChildElement("GAME");
     levels = getLevelsFromSetting(gameSettings);
+    reset();
+}
+
+void Game::reset(){
     score = 0;
     gameOver = false;
     isPaused = false;
@@ -236,6 +236,7 @@ void Game::addMisil() {
     misil->velocity = Vector((*itBuildings)->position.x/misilSpeed - rand_x/misilSpeed,
                              (*itBuildings)->position.y/misilSpeed - y/misilSpeed,
                              (*itBuildings)->position.z/misilSpeed - rand_z/misilSpeed);
+    misil->velocity = misil->velocity*vel_adjust_factor;
     misils->push_back(misil);
 
     misilQuantity++;
@@ -265,9 +266,9 @@ void Game::addBuildings() {
     for(int i = -4; i < 2; i++){
         for(int j=-4; j < 2; j++) {
             ModelFigure * building = new ModelFigure(model_building);
-            building->orientation = Vector(90,
+            building->orientation = Vector(0,
                                            0,
-                                           90);
+                                           0);
             building->aspect = Vector(2/(building->model->x_top_limit - building->model->x_bot_limit),
                                       2/(building->model->y_top_limit - building->model->y_bot_limit),
                                       2/(building->model->z_top_limit - building->model->z_bot_limit));
@@ -295,9 +296,9 @@ void Game::addBuildings() {
 void Game::misilDisplacement() {
     list<Misil*>::iterator it;
     for (it=misils->begin(); it!=misils->end(); ++it){
-        Vector* Ygravity = new Vector(0, 0, 0);
+//        Vector Ygravity = Vector(0, 0, 0);
 
-        (*it)->eulerIntegrate();
+        (*it)->eulerIntegrate(fps);
 
 //        Vector* velocity = (*it)->getVelocity(); // Guardo velocidad vieja
 //
@@ -306,9 +307,9 @@ void Game::misilDisplacement() {
 
     list<Bullet*>::iterator itB;
     for (itB=bullets->begin(); itB!=bullets->end(); ++itB){
-        Vector* Ygravity = new Vector(0, 0, 0);
+//        Vector Ygravity = Vector(0, 0, 0);
 
-        (*itB)->eulerIntegrate();
+        (*itB)->eulerIntegrate(fps);
 
 //        Vector* velocity = (*itB)->getVelocity(); // Guardo velocidad vieja
 //
@@ -404,6 +405,7 @@ void Game::drawBuildings() {
     list<ModelFigure*>::iterator it;
     for (it=buildings->begin(); it!=buildings->end(); ++it){
 		glPushMatrix();
+//		glLoadIdentity();
 			(*it)->drawFigure();
 		glPopMatrix();
     }
@@ -412,7 +414,7 @@ void Game::drawBuildings() {
 void Game::drawLandscape(){
     int box_size = 50.0f;
     // Draw ground
-    glColor3f(0.0f, 0.0f, 0.0f);
+    glColor3f(1.0f, 1.0f, 1.0f);
     glBindTexture(GL_TEXTURE_2D, textura_suelo);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
@@ -611,8 +613,8 @@ void Game::drawHud()
         glOrtho( -100.0f, 100.0f, -100.0f, 100.0f, -100.0f, 100.0f );
 //        glOrtho(0.0f, this->screen_w, this->screen_h, 0.0f, 0.0f, 100.0f);
         glMatrixMode( GL_MODELVIEW );
-            glLoadIdentity();
-
+        glPushMatrix();
+        glLoadIdentity();
             if (gameOver){
                 drawGameOver();
             } else {
@@ -626,6 +628,7 @@ void Game::drawHud()
     glMatrixMode( GL_PROJECTION );
     glPopMatrix();
     glMatrixMode( GL_MODELVIEW );
+    glPopMatrix();
 
     // Reenable lighting
 }

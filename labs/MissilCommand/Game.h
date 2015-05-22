@@ -56,6 +56,8 @@ class Game
         int screen_w, screen_h;
         int xPosBeforePause, yPosBeforePause;
         Camera* camera;
+        int fps;
+        void reset();
     protected:
     private:
         GLuint textura_suelo, textura_cielo;

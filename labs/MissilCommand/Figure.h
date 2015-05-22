@@ -11,7 +11,7 @@ class Figure
     public:
         Figure();
         virtual ~Figure();
-        void eulerIntegrate();
+        void eulerIntegrate(int fps);
         virtual void drawFigure() = 0;
 
         Vector position;

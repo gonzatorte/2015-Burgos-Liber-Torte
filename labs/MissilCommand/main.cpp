@@ -41,6 +41,9 @@ int screen_w = 800;
 boolean wireframe = false;
 boolean textures = true;
 boolean light_up = false;
+int fps = 400;
+int sleep_time = (int)(1000.0f/fps);
+time_t tstart, tend;
 
 void setUp(){
     try{
@@ -92,16 +95,16 @@ int main(int argc, char **argv){
     game->screen_h = screen_h;
     game->screen_w = screen_w;
     game->camera = camera;
+    game->fps = fps;
     Menu * menu = new Menu();
     menu->screen_h = screen_h;
     menu->screen_w = screen_w;
 
     SDL_EnableKeyRepeat(200,1);
-    SDL_ShowCursor(SDL_DISABLE);
     game->init();
-    game->addBuildings();
     bool wasPaused = false;
     do{
+        tstart = time(0);
         if (wireframe){
             glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
         }else{
@@ -158,6 +161,9 @@ float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
                 case SDLK_t:
                     textures = !textures;
                     break;
+                case SDLK_r:
+                    game->reset();
+                    break;
                 case SDLK_RETURN:
                     menu_active = !menu_active;
                     if (menu_active){
@@ -175,6 +181,7 @@ float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
                     } else {
                         game->interact(&evento);
                     }
+                    break;
                 }
                 break;
             default:
@@ -187,6 +194,8 @@ float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
             }
         }
         SDL_GL_SwapBuffers();
+        tend = time(0);
+        sleep(sleep_time - (tend - tstart));
     } while (!fin);
     return 0;
 }
