@@ -123,6 +123,7 @@ void Game::init(){
 }
 
 void Game::interact(SDL_Event * evento){
+
     switch(evento->type){
     case SDL_MOUSEBUTTONDOWN:
         if (evento->button.button == SDL_BUTTON_LEFT){
@@ -142,33 +143,7 @@ void Game::interact(SDL_Event * evento){
             camera->moveCam(evento->motion.x,evento->motion.y);
         }
         break;
-    case SDL_KEYDOWN:
-        switch(evento->key.keysym.sym){
-        case SDLK_p:
-            if (isPaused){
-                SDL_WarpMouse(xPosBeforePause, yPosBeforePause);
-            }
-            isPaused = !isPaused;
-            break;
-        case SDLK_LEFT:
-            if (camera->position.x < 30)
-                camera->position.x += 0.05f;
-            break;
-        case SDLK_RIGHT:
-            if (camera->position.x > -40)
-                camera->position.x -= 0.05f;
-            break;
-        case SDLK_UP:
-            if (camera->position.z < 20)
-                camera->position.z += 0.05f;
-            break;
-        case SDLK_DOWN:
-            if (camera->position.z > -40)
-                camera->position.z -= 0.05f;
-            break;
-        default:
-            break;
-        }
+
     default:
         break;
     }

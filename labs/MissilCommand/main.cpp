@@ -26,6 +26,7 @@
 #include "Building.h"
 #include "Bullet.h"
 #include "Constants.h"
+#include "Vector.h"
 #include "Game.h"
 #include "Menu.h"
 #include "util.h"
@@ -37,7 +38,7 @@ using namespace std;
 
 int screen_h = 600;
 int screen_w = 800;
-
+Uint8 *keystate;
 boolean wireframe = false;
 boolean textures = true;
 boolean light_up = false;
@@ -146,6 +147,15 @@ float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
                 break;
             case SDL_KEYDOWN:
                 switch(evento.key.keysym.sym){
+                case SDLK_p:
+                        {
+                            if (game->isPaused)
+                            {
+                                SDL_WarpMouse(game->xPosBeforePause, game->yPosBeforePause);
+                            }
+                            game->isPaused = !game->isPaused;
+                            break;
+                        }
                 case SDLK_ESCAPE:
                     fin = true;
                     break;
@@ -186,6 +196,23 @@ float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
                 break;
             }
         }
+        keystate = SDL_GetKeyState(NULL);
+        if (keystate[SDLK_LEFT] ) {
+          if (camera->position.x < 30)
+            camera->position.x +0.05f;
+        }
+        if (keystate[SDLK_RIGHT] ) {
+            if (camera->position.x > -40)
+                camera->position.x-0.05f;
+        }
+        if (keystate[SDLK_UP] ) {
+          if (camera->position.z < 20)
+            camera->position.z+0.05f;
+        }
+        if (keystate[SDLK_DOWN] ) {
+          if (camera->position.z > -40)
+            camera->position.z-0.05f;
+         }
         SDL_GL_SwapBuffers();
     } while (!fin);
     return 0;
