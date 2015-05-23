@@ -41,7 +41,10 @@ int screen_w = 800;
 Uint8 *keystate;
 boolean wireframe = false;
 boolean textures = true;
-boolean light_up = false;
+boolean light_up = true;
+int fps = 400;
+int sleep_time = (int)(1000.0f/fps);
+time_t tstart, tend;
 
 void setUp(){
     try{
@@ -83,7 +86,7 @@ int main(int argc, char **argv){
 //    fclose(stdout);
 //    fclose(stderr);
     setUp();
-
+    //glEnable(GL_NORMALIZE);
     bool fin = false;
     bool menu_active = false;
     SDL_Event evento;
@@ -93,16 +96,16 @@ int main(int argc, char **argv){
     game->screen_h = screen_h;
     game->screen_w = screen_w;
     game->camera = camera;
+    game->fps = fps;
     Menu * menu = new Menu();
     menu->screen_h = screen_h;
     menu->screen_w = screen_w;
 
     SDL_EnableKeyRepeat(200,1);
-    SDL_ShowCursor(SDL_DISABLE);
     game->init();
-    game->addBuildings();
     bool wasPaused = false;
     do{
+        tstart = time(0);
         if (wireframe){
             glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
         }else{
@@ -119,19 +122,35 @@ float ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 float diffuseLight[] = { 0.8f, 0.8f, 0.8, 1.0f };
 float specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
 float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
+//
+//if (!light_up){
+//            float light_position[] = { 0, -1,0, 0.0f };
+//            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+//            float mat_ambient[] = { 0.6f, 0.0f, 0.5f, 1.0f };
+//            //float mat_diffuse[] = { 0.0f, 0.9f, 0.8f, 1.0f };
+//            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+//            //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+//        }else{
+//            float light_position[] = { 0, 1,0, 0.0f };
+//            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+//            float mat_ambient[] = { 0.0f, 0.8f, 0.3f, 1.0f };
+//            //float mat_diffuse[] = { 0.0f, 0.7f, 0.9f, 0.0f };
+//            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+//            //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+//        }
 
 // Assign created components to GL_LIGHT0
-//glLightfv(GL_LIGHT1, GL_AMBIENT, ambientLight);
-//glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuseLight);
-//glLightfv(GL_LIGHT1, GL_SPECULAR, specularLight);
-//glLightfv(GL_LIGHT1, GL_POSITION, position);
+glLightfv(GL_LIGHT1, GL_AMBIENT, ambientLight);
+glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuseLight);
+glLightfv(GL_LIGHT1, GL_SPECULAR, specularLight);
+glLightfv(GL_LIGHT1, GL_POSITION, position);
 
-        //float light_position[] = { 0, 1,0, 0.0f };
-            //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-            //float mat_ambient[] = { 0.0f, 0.2f, 0.3f, 1.0f };
-            //float mat_diffuse[] = { 0.0f, 0.9f, 0.8f, 1.0f };
-            //glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-            //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+        float light_position[] = { 0, -1,-1, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            float mat_ambient[] = { 0.0f, 0.2f, 0.3f, 1.0f };
+            float mat_diffuse[] = { 0.0f, 0.9f, 0.8f, 1.0f };
+            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         if (menu_active){
@@ -168,6 +187,9 @@ float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
                 case SDLK_t:
                     textures = !textures;
                     break;
+                case SDLK_r:
+                    game->reset();
+                    break;
                 case SDLK_RETURN:
                     menu_active = !menu_active;
                     if (menu_active){
@@ -185,6 +207,7 @@ float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
                     } else {
                         game->interact(&evento);
                     }
+                    break;
                 }
                 break;
             default:
@@ -195,25 +218,11 @@ float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
                 }
                 break;
             }
+
         }
-        keystate = SDL_GetKeyState(NULL);
-        if (keystate[SDLK_LEFT] ) {
-          if (camera->position.x < 30)
-            camera->position.x +0.05f;
-        }
-        if (keystate[SDLK_RIGHT] ) {
-            if (camera->position.x > -40)
-                camera->position.x-0.05f;
-        }
-        if (keystate[SDLK_UP] ) {
-          if (camera->position.z < 20)
-            camera->position.z+0.05f;
-        }
-        if (keystate[SDLK_DOWN] ) {
-          if (camera->position.z > -40)
-            camera->position.z-0.05f;
-         }
         SDL_GL_SwapBuffers();
+        tend = time(0);
+        sleep(sleep_time - (tend - tstart));
     } while (!fin);
     return 0;
 }

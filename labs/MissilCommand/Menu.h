@@ -7,6 +7,8 @@
 
 #include "TextGrafic.h"
 
+typedef enum {texture_mode_opt=0, wireframe_mode_opt, light_src_opt, light_color_opt, speed_opt} menu_opts;
+
 class Menu{
     public:
         Menu();
@@ -14,15 +16,15 @@ class Menu{
         void draw();
         void interact(SDL_Event * evento);
 
+        int curr_opt = 0;
+
         int screen_h, screen_w;
+        bool wireframe_mode;
+        bool texture_mode;
+        int light_src;
+        SDL_Color light_color;
+        unsigned int speed;
     private:
-        float frencuency = 0.5; // En hertz, vel angular
-        float fps = 30;
-
-        int sleep_time = (int)(1000.0f/fps);
-        float angle_per_frame = 360.0*(frencuency/fps);
-        float angle = 0;
-
         TTF_Font * font_big;
         TTF_Font * font_small;
         TextGrafic text_game_speed;

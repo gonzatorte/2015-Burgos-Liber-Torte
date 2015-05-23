@@ -9,10 +9,10 @@ using namespace std;
 Figure::Figure() {
 }
 
-void Figure::eulerIntegrate() {
+void Figure::eulerIntegrate(int fps) {
     //previews_position = position;
-	position = position + velocity * Constants::dt;
-	velocity = velocity + acceleration * Constants::dt;
+	position = position + velocity * (Constants::dt/fps);
+	velocity = velocity + acceleration * (Constants::dt/fps);
 }
 
 Figure::~Figure()

@@ -8,10 +8,8 @@ ModelFigure::ModelFigure(ModelType * model_in){
 
 void ModelFigure::drawFigure(){
     //glEnable(GL_TEXTURE_2D);
+//    glLoadIdentity();
 
-    glPushMatrix();
-
-    glLoadIdentity();
     int x_correct_pos = (this->model->x_top_limit + this->model->x_bot_limit)/2;
     int y_correct_pos = (this->model->y_top_limit + this->model->y_bot_limit)/2;
     int z_correct_pos = (this->model->z_top_limit + this->model->z_bot_limit)/2;
@@ -57,12 +55,9 @@ void ModelFigure::drawFigure(){
                     model->vertex[ model->polygon[l_index].c ].z);
     }
     glEnd();
-
-    glPopMatrix();
-
     //glDisable(GL_TEXTURE_2D);
 }
 
-void ModelFigure::moveFigure(){
-    eulerIntegrate();
+void ModelFigure::moveFigure(int fps){
+    eulerIntegrate(fps);
 }
