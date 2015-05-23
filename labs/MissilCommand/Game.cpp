@@ -13,6 +13,7 @@ using namespace std;
 int multiplicador;
 int vel_adjust_factor = 700;
 Vector auxPos;
+float x1,x2,z1,z2;
 
 void Game::initLevel(int levelNumber) {
     Level* level = levels->find(levelNumber)->second;
@@ -21,7 +22,7 @@ void Game::initLevel(int levelNumber) {
     this->maxBulletQuantity = level->getMaxBulletQuantity();
     this->simultMisilQuant = level->getSimultMisilQuant();
     this->misilSpeed = level->getMisilSpeed();
-    this->life = maxBuildQuantity-2;
+    this->life = maxBuildQuantity-4;
     this->misilQuantity = 0;
     this->light_position = 0;
     this->light_direction = 1;
@@ -201,14 +202,24 @@ void Game::init(){
 }
 
 void Game::leftKeyPressed() {
-    auxPos = Vector( camera->point.z - camera->position.z, 0, (camera->point.x - camera->position.x)*-1) * Constants::CAMERA_SPEED;
-    camera->position = camera->position + auxPos * (Constants::dt);
-    camera->point = camera->point + auxPos * (Constants::dt);
+
+    float newXPoint = camera->position.x + (camera->point.z - camera->position.z) * Constants::dt * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + ((camera->point.x - camera->position.x)*-1) * Constants::dt * Constants::CAMERA_SPEED;
+
+    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
+        auxPos = Vector( camera->point.z - camera->position.z, 0, (camera->point.x - camera->position.x)*-1) * Constants::CAMERA_SPEED;
+        camera->position = camera->position + auxPos * (Constants::dt);
+        camera->point = camera->point + auxPos * (Constants::dt);
+    }
     //SDL_WarpMouse(xPosBeforePause - 4,yPosBeforePause); Esta parte se descomenta si se quiere rotar la mira.
 }
 
 void Game::upKeyPressed() {
-    if (camera->position.z < 20) {
+
+    float newXPoint = camera->position.x + (camera->point.x - camera->position.x) * Constants::dt * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + (camera->point.z - camera->position.z) * Constants::dt * Constants::CAMERA_SPEED;
+
+    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
         auxPos = Vector(camera->point.x - camera->position.x, 0, camera->point.z - camera->position.z) * Constants::CAMERA_SPEED;
         camera->position = camera->position + auxPos * (Constants::dt);
         camera->point = camera->point + auxPos * (Constants::dt);
@@ -216,14 +227,24 @@ void Game::upKeyPressed() {
 }
 
 void Game::rightKeyPressed() {
-    auxPos = Vector( (camera->point.z - camera->position.z)*-1, 0, camera->point.x - camera->position.x) * Constants::CAMERA_SPEED;
-    camera->position = camera->position + auxPos * (Constants::dt);
-    camera->point = camera->point + auxPos * (Constants::dt);
+
+    float newXPoint = camera->position.x + ((camera->point.z - camera->position.z)*-1) * Constants::dt * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + (camera->point.x - camera->position.x) * Constants::dt * Constants::CAMERA_SPEED;
+
+    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
+        auxPos = Vector( (camera->point.z - camera->position.z)*-1, 0, camera->point.x - camera->position.x) * Constants::CAMERA_SPEED;
+        camera->position = camera->position + auxPos * (Constants::dt);
+        camera->point = camera->point + auxPos * (Constants::dt);
+    }
     //SDL_WarpMouse(xPosBeforePause + 4,yPosBeforePause); Esta parte se descomenta si se quiere rotar la mira.
 }
 
 void Game::downKeyPressed() {
-    if (camera->position.z > -40) {
+
+    float newXPoint = camera->position.x + (camera->position.x - camera->point.x) * Constants::dt * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + (camera->position.z - camera->point.z) * Constants::dt * Constants::CAMERA_SPEED;
+
+    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
         auxPos = Vector(camera->position.x - camera->point.x ,0,camera->position.z - camera->point.z) * Constants::CAMERA_SPEED;
         camera->position = camera->position + auxPos * (Constants::dt);
         camera->point = camera->point + auxPos * (Constants::dt);
@@ -399,6 +420,35 @@ void Game::addBullet(Vector initPosition, Vector initVelocity, Vector initAccel)
 
 }
 
+void Game::setMovementLimits() {
+
+    list<ModelFigure*>::iterator itB;
+    x1=-100;
+    x2=100;
+    z1=100;
+    z2=-100;
+    for (itB=buildings->begin(); itB!=buildings->end(); ++itB){
+
+        float xPos = (*itB)->position.x;
+        float zPos = (*itB)->position.z;
+        if (xPos > x1) {
+            x1 = xPos;
+        }
+        if (xPos < x2) {
+            x2 = xPos;
+        }
+        if (zPos < z1) {
+            z1 = zPos;
+        }
+        if (zPos > z2) {
+            z2 = zPos;
+        }
+    }
+    x1 += 8;
+    x2 -= 8;
+    z1 -= 8;
+    z2 += 8;
+}
 void Game::addBuildings() {
     int n = maxBuildQuantity;
     int a = 1;
@@ -429,7 +479,9 @@ void Game::addBuildings() {
         if (n==0)
             break;
     }
-    //itBuildings = buildings->begin();
+
+    //Agregar limites de movimiento
+    setMovementLimits();
 }
 
 void Game::misilDisplacement() {
@@ -488,7 +540,7 @@ void Game::detectCollisions(){
                 a = x_b - (*itBullet)->position.x;
                 b = y_b - (*itBullet)->position.y;
                 c = z_b - (*itBullet)->position.z;
-                if (fabs(a) < 1.5f && fabs(b) < 1.5f && fabs(c) < 1.5f){
+                if (fabs(a) < 1.0f && fabs(b) < 1.0f && fabs(c) < 1.0f){
                     itBullet = bullets->erase(itBullet);
                     delete_misil = true;
                     score += Constants::MISIL_POINTS;
@@ -777,8 +829,6 @@ void Game::drawGameOver()
     float coords[3] = {-80, 0, 0};
     drawText(text_end_lost, coords);
 }
-
-
 
 Game::~Game()
 {
