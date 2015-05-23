@@ -22,8 +22,10 @@ void Game::initLevel(int levelNumber) {
     this->maxBulletQuantity = level->getMaxBulletQuantity();
     this->simultMisilQuant = level->getSimultMisilQuant();
     this->misilSpeed = level->getMisilSpeed();
-    this->life = maxBuildQuantity-2;
+    this->life = maxBuildQuantity-4;
     this->misilQuantity = 0;
+    this->light_position = 0;
+    this->light_direction = 1;
     this->bulletQuantity = maxBulletQuantity;
     this->lastMisilTime = clock();
     misils = new list<Misil*>();
@@ -69,9 +71,87 @@ list<ModelFigure*>::iterator Game::obtRandomIterator() {
     return itB;
 }
 
+void Game::setLight(){
+
+    if (this->light_position){
+        switch (this->light_direction){
+            case 0:
+                {float light_position[] = { 0, 1, 1, 0.0f };
+                glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+                break;}
+            case 1:
+                {float light_position[] = { 0, 1, -1, 0.0f };
+                glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+                break;}
+            case 2:
+                {float light_position[] = { 1, 1, 0, 0.0f };
+                glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+                break;}
+            case 3:
+                {float light_position[] = { -1, 1, 0, 0.0f };
+                glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+                break;}
+            default:
+                break;
+        }
+    }else{
+        switch (this->light_direction){
+        case 0:
+            {float light_position[] = { 0.0f, -1.0f, 1.0f, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        case 1:
+            {float light_position[] = { 0.0f, -1.0f, -1.0f, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        case 2:
+            {float light_position[] = { 1.0f, -1.0f, 0.0f, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        case 3:
+            {float light_position[] = { -1.0f, -1.0f, 0.0f, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        default:
+            break;
+        }
+    }
+
+
+    switch (this->light_color){
+        case 0:
+            {float mat_ambient[] = { 0.0f, 0.2f, 0.3f, 1.0f };
+            float mat_diffuse[] = { 0.0f, 0.9f, 0.8f, 1.0f };
+            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+            break;}
+        case 1:
+            {float mat_ambient[] = { 0.0f, 5.2f, 0.3f, 1.0f };
+            float mat_diffuse[] = { 0.0f, 6.9f, 0.8f, 1.0f };
+            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+            break;}
+        case 2:
+            {float mat_ambient[] = { 9.0f, 0.2f, 0.3f, 1.0f };
+            float mat_diffuse[] = { 9.0f, 0.9f, 0.8f, 1.0f };
+            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+            break;}
+        case 3:
+            {float mat_ambient[] = { 4.0f, 0.2f, 0.3f, 1.0f };
+            float mat_diffuse[] = { 0.0f, 0.9f, 8.8f, 1.0f };
+            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+            break;}
+        }
+
+}
+
 void Game::renderScene(){
-    // Clear Color and Depth Buffers
+
+    this->setLight();
     glLoadIdentity();
+
     if (!this->isPaused){
         if (this->isGameOver()){
             cout << "Perdio..";
@@ -81,6 +161,7 @@ void Game::renderScene(){
                 cout << "Pasaste de nivel CAPO!!!";
                 this->levelUp();
             }
+            // Create light components
 
             this->manageGame();
             // Set the camera
@@ -202,23 +283,41 @@ void Game::interact(SDL_Event * evento){
                 isPaused = !isPaused;
                 break;
             case SDLK_LEFT:
-
                 leftKeyPressed();
                 break;
-
             case SDLK_RIGHT:
 
                 rightKeyPressed();
                break;
-
             case SDLK_UP:
-
                 upKeyPressed();
                 break;
-
             case SDLK_DOWN:
-
                 downKeyPressed();
+                break;
+            case SDLK_1:
+                this->light_color = 0;
+                break;
+            case SDLK_2:
+                this->light_color = 1;
+                break;
+            case SDLK_3:
+                this->light_color = 2;
+                break;
+            case SDLK_4:
+                this->light_color = 3;
+                break;
+            case SDLK_w:
+                this->light_direction = 0;
+                break;
+            case SDLK_s:
+                this->light_direction = 1;
+                break;
+            case SDLK_a:
+                this->light_direction = 2;
+                break;
+            case SDLK_d:
+                this->light_direction = 3;
                 break;
 
             default:
@@ -233,6 +332,7 @@ void Game::interact(SDL_Event * evento){
 }
 /*
 void Game::interact(SDL_Event * evento){
+
     switch(evento->type){
     case SDL_MOUSEBUTTONDOWN:
         if (evento->button.button == SDL_BUTTON_LEFT){
@@ -253,7 +353,7 @@ void Game::interact(SDL_Event * evento){
             camera->moveCam(evento->motion.x,evento->motion.y);
         }
         break;
-    case SDL_KEYDOWN:
+   case SDL_KEYDOWN:
         switch(evento->key.keysym.sym){
         case SDLK_p:
             if (isPaused){
@@ -494,7 +594,7 @@ void Game::detectCollisions(){
                 a = x_b - (*itBullet)->position.x;
                 b = y_b - (*itBullet)->position.y;
                 c = z_b - (*itBullet)->position.z;
-                if (fabs(a) < 1.5f && fabs(b) < 1.5f && fabs(c) < 1.5f){
+                if (fabs(a) < 1.0f && fabs(b) < 1.0f && fabs(c) < 1.0f){
                     itBullet = bullets->erase(itBullet);
                     delete_misil = true;
                     score += Constants::MISIL_POINTS;
@@ -783,8 +883,6 @@ void Game::drawGameOver()
     float coords[3] = {-80, 0, 0};
     drawText(coords, text_end_lost);
 }
-
-
 
 Game::~Game()
 {

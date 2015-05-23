@@ -26,6 +26,7 @@
 #include "Building.h"
 #include "Bullet.h"
 #include "Constants.h"
+#include "Vector.h"
 #include "Game.h"
 #include "Menu.h"
 #include "util.h"
@@ -37,10 +38,10 @@ using namespace std;
 
 int screen_h = 600;
 int screen_w = 800;
-
+Uint8 *keystate;
 boolean wireframe = false;
 boolean textures = true;
-boolean light_up = false;
+boolean light_up = true;
 int fps = 400;
 int sleep_time = (int)(1000.0f/fps);
 time_t tstart, tend;
@@ -85,7 +86,7 @@ int main(int argc, char **argv){
 //    fclose(stdout);
 //    fclose(stderr);
     setUp();
-
+    //glEnable(GL_NORMALIZE);
     bool fin = false;
     bool menu_active = false;
     SDL_Event evento;
@@ -116,24 +117,6 @@ int main(int argc, char **argv){
             glEnable(GL_TEXTURE_2D);
         }
 
-// Create light components
-float ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
-float diffuseLight[] = { 0.8f, 0.8f, 0.8, 1.0f };
-float specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
-
-// Assign created components to GL_LIGHT0
-//glLightfv(GL_LIGHT1, GL_AMBIENT, ambientLight);
-//glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuseLight);
-//glLightfv(GL_LIGHT1, GL_SPECULAR, specularLight);
-//glLightfv(GL_LIGHT1, GL_POSITION, position);
-
-        //float light_position[] = { 0, 1,0, 0.0f };
-            //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-            //float mat_ambient[] = { 0.0f, 0.2f, 0.3f, 1.0f };
-            //float mat_diffuse[] = { 0.0f, 0.9f, 0.8f, 1.0f };
-            //glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-            //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         if (menu_active){
@@ -149,15 +132,24 @@ float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
                 break;
             case SDL_KEYDOWN:
                 switch(evento.key.keysym.sym){
+                case SDLK_p:
+                        {
+                            if (game->isPaused)
+                            {
+                                SDL_WarpMouse(game->xPosBeforePause, game->yPosBeforePause);
+                            }
+                            game->isPaused = !game->isPaused;
+                            break;
+                        }
                 case SDLK_ESCAPE:
                     fin = true;
                     break;
                 case SDLK_q:
                     fin = true;
                     break;
-                case SDLK_w:
-                    wireframe = !wireframe;
-                    break;
+//                case SDLK_w:
+//                    wireframe = !wireframe;
+//                    break;
                 case SDLK_t:
                     textures = !textures;
                     break;
@@ -192,6 +184,7 @@ float position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
                 }
                 break;
             }
+
         }
         SDL_GL_SwapBuffers();
         tend = time(0);
