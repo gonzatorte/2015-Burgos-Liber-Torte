@@ -23,6 +23,7 @@ void Game::initLevel(int levelNumber) {
     this->simultMisilQuant = level->getSimultMisilQuant();
     this->misilSpeed = level->getMisilSpeed();
     this->life = maxBuildQuantity-4;
+    this->life = maxBuildQuantity-4;
     this->misilQuantity = 0;
     this->light_position = 0;
     this->light_direction = 1;
@@ -355,7 +356,8 @@ Game::Game(int screen_w_in, int screen_h_in, Camera * camera_in, int fps_in, boo
     wireframe_mode = wireframe_mode_in;
     texture_mode = texture_mode_in;
     textura_suelo = LoadBitmap("rsc/textures/grass.bmp");
-    textura_cielo = LoadBitmap("rsc/textures/sky_1.bmp");
+    textura_cielo = LoadBitmap("rsc/textures/sky_107.bmp");
+    textura_paredes = LoadBitmap("rsc/textures/mountains.bmp");
     model_building = new ModelType();
     model_building->LoadFrom3DS("rsc/models/cubo.3ds");
 //    model_building->LoadFrom3DS("rsc/models/house4.3ds");
@@ -624,8 +626,51 @@ void Game::drawBuildings() {
     }
 }
 
+void drawHalfSphere(int lats, int longs, GLfloat r) {
+    glPushMatrix();
+    glRotatef(90,1.0,0.0,0.0);
+    float length=2;
+    float hl = length * 0.5f;
+    glTranslatef(0.0,0.0,hl);
+    int i, j;
+    int halfLats = lats / 2;
+    for(i = 0; i <= halfLats; i++)
+    {
+        double lat0 = M_PI * (-0.5 + (double) (i - 1) / lats);
+        double z0 = sin(lat0);
+        double zr0 = cos(lat0);
+
+        double lat1 = M_PI * (-0.5 + (double) i / lats);
+        double z1 = sin(lat1);
+        double zr1 = cos(lat1);
+
+        glBegin(GL_QUAD_STRIP);
+        for(j = 0; j <= longs; j++)
+        {
+            double lng = 2 * M_PI * (double) (j - 1) / longs;
+            double x = cos(lng);
+            double y = sin(lng);
+
+            double s1, s2, t;
+            s1 = ((double) i) / halfLats;
+            s2 = ((double) i + 1) / halfLats;
+            t = ((double) j) / longs;
+
+            glTexCoord2d(s1, t);
+            glNormal3d(x * zr0, y * zr0, z0);
+            glVertex3d(r*x * zr0, r*y * zr0, r*z0);
+
+            glTexCoord2d(s2, t);
+            glNormal3d(x * zr1, y * zr1, z1);
+            glVertex3d(r*x * zr1,r* y * zr1, r*z1);
+        }
+        glEnd();
+    }
+    glPopMatrix();
+ }
+
 void Game::drawLandscape(){
-    int box_size = 50.0f;
+    int box_size = 60.0f;
     // Draw ground
     glColor3f(1.0f, 1.0f, 1.0f);
     glBindTexture(GL_TEXTURE_2D, textura_suelo);
@@ -640,71 +685,75 @@ void Game::drawLandscape(){
     glVertex3f( box_size, 0.0f, -box_size);
     glEnd();
 
-    // Draw roof
     glColor3f(1.0f, 0.0f, 0.0f);
     glBindTexture(GL_TEXTURE_2D, textura_cielo);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0, 0);
-    glVertex3f( box_size, box_size/2,  box_size);
-    glTexCoord2f(1, 0);
-    glVertex3f( box_size, box_size/2, -box_size);
-    glTexCoord2f(1, 1);
-    glVertex3f(-box_size, box_size/2, -box_size);
-    glTexCoord2f(0, 1);
-    glVertex3f(-box_size, box_size/2,  box_size);
-    glEnd();
-
-    // Draw borders
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0, 0);
-    glVertex3f(-box_size, box_size/2, -box_size);
-    glTexCoord2f(1, 0);
-    glVertex3f(-box_size, box_size/2,  box_size);
-    glTexCoord2f(1, 1);
-    glVertex3f(-box_size,  0.0f,  box_size);
-    glTexCoord2f(0, 1);
-    glVertex3f(-box_size,  0.0f, -box_size);
-    glEnd();
-
-    // Draw borders
-    glColor3f(1.0f, 1.0f, 0.0f);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0, 0);
-    glVertex3f(-box_size, box_size/2, box_size);
-    glTexCoord2f(1, 0);
-    glVertex3f( box_size, box_size/2, box_size);
-    glTexCoord2f(1, 1);
-    glVertex3f( box_size,  0.0f, box_size);
-    glTexCoord2f(0, 1);
-    glVertex3f(-box_size,  0.0f, box_size);
-    glEnd();
-
-    // Draw borders
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0, 0);
-    glVertex3f(box_size, box_size/2, box_size);
-    glTexCoord2f(1, 0);
-    glVertex3f(box_size, box_size/2,-box_size);
-    glTexCoord2f(1, 1);
-    glVertex3f(box_size,  0.0f,-box_size);
-    glTexCoord2f(0, 1);
-    glVertex3f(box_size,  0.0f, box_size);
-    glEnd();
-
-    // Draw borders
-    glColor3f(1.0f, 0.0f, 1.0f);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0, 0);
-    glVertex3f( box_size,  0.0f, -box_size);
-    glTexCoord2f(1, 0);
-    glVertex3f(-box_size,  0.0f, -box_size);
-    glTexCoord2f(1, 1);
-    glVertex3f(-box_size, box_size/2, -box_size);
-    glTexCoord2f(0, 1);
-    glVertex3f( box_size, box_size/2, -box_size);
-    glEnd();
+    //glBindTexture(GL_TEXTURE_2D, textura_paredes);
+    drawHalfSphere(50,50, 90);
+    // Draw roof
+//    glColor3f(1.0f, 0.0f, 0.0f);
+//    glBindTexture(GL_TEXTURE_2D, textura_cielo);
+//    glBegin(GL_QUADS);
+//    glTexCoord2f(0, 0);
+//    glVertex3f( box_size, box_size/2,  box_size);
+//    glTexCoord2f(1, 0);
+//    glVertex3f( box_size, box_size/2, -box_size);
+//    glTexCoord2f(1, 1);
+//    glVertex3f(-box_size, box_size/2, -box_size);
+//    glTexCoord2f(0, 1);
+//    glVertex3f(-box_size, box_size/2,  box_size);
+//    glEnd();
+//
+//    // Draw borders
+//    glColor3f(0.0f, 1.0f, 0.0f);
+//    glBegin(GL_QUADS);
+//    glTexCoord2f(0, 0);
+//    glVertex3f(-box_size, box_size/2, -box_size);
+//    glTexCoord2f(1, 0);
+//    glVertex3f(-box_size, box_size/2,  box_size);
+//    glTexCoord2f(1, 1);
+//    glVertex3f(-box_size,  0.0f,  box_size);
+//    glTexCoord2f(0, 1);
+//    glVertex3f(-box_size,  0.0f, -box_size);
+//    glEnd();
+//
+//    // Draw borders
+//    glColor3f(1.0f, 1.0f, 0.0f);
+//    glBegin(GL_QUADS);
+//    glTexCoord2f(0, 0);
+//    glVertex3f(-box_size, box_size/2, box_size);
+//    glTexCoord2f(1, 0);
+//    glVertex3f( box_size, box_size/2, box_size);
+//    glTexCoord2f(1, 1);
+//    glVertex3f( box_size,  0.0f, box_size);
+//    glTexCoord2f(0, 1);
+//    glVertex3f(-box_size,  0.0f, box_size);
+//    glEnd();
+//
+//    // Draw borders
+//    glColor3f(0.0f, 0.0f, 1.0f);
+//    glBegin(GL_QUADS);
+//    glTexCoord2f(0, 0);
+//    glVertex3f(box_size, box_size/2, box_size);
+//    glTexCoord2f(1, 0);
+//    glVertex3f(box_size, box_size/2,-box_size);
+//    glTexCoord2f(1, 1);
+//    glVertex3f(box_size,  0.0f,-box_size);
+//    glTexCoord2f(0, 1);
+//    glVertex3f(box_size,  0.0f, box_size);
+//    glEnd();
+//
+//    // Draw borders
+//    glColor3f(1.0f, 0.0f, 1.0f);
+//    glBegin(GL_QUADS);
+//    glTexCoord2f(0, 0);
+//    glVertex3f( box_size,  0.0f, -box_size);
+//    glTexCoord2f(1, 0);
+//    glVertex3f(-box_size,  0.0f, -box_size);
+//    glTexCoord2f(1, 1);
+//    glVertex3f(-box_size, box_size/2, -box_size);
+//    glTexCoord2f(0, 1);
+//    glVertex3f( box_size, box_size/2, -box_size);
+//    glEnd();
     //glDisable(GL_TEXTURE_2D);
 }
 

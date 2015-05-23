@@ -66,7 +66,7 @@ class Game
         float game_speed;
     protected:
     private:
-        GLuint textura_suelo, textura_cielo;
+        GLuint textura_suelo, textura_cielo, textura_paredes;
         ModelType * model_building;
         TTF_Font * font_end;
         TTF_Font * font_hub;
