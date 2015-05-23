@@ -39,9 +39,6 @@ using namespace std;
 int screen_h = 600;
 int screen_w = 800;
 Uint8 *keystate;
-boolean wireframe = false;
-boolean textures = true;
-boolean light_up = true;
 int fps = 400;
 int sleep_time = (int)(1000.0f/fps);
 time_t tstart, tend;
@@ -92,29 +89,13 @@ int main(int argc, char **argv){
     SDL_Event evento;
     Uint8 *keystate;
     Camera* camera = new Camera(Vector(0.0f,1.0f,-40.0f), Vector(8.0f,1.0f,4.0f), screen_w, screen_h);
-    Game * game = new Game();
-    game->screen_h = screen_h;
-    game->screen_w = screen_w;
-    game->camera = camera;
-    game->fps = fps;
-    Menu * menu = new Menu(screen_h, screen_w);
+    Game * game = new Game(screen_w, screen_h, camera, fps);
+    Menu * menu = new Menu(screen_h, screen_w, game);
     SDL_EnableKeyRepeat(200,1);
     game->init();
     bool wasPaused = false;
     do{
         tstart = time(0);
-        if (wireframe){
-            glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-        }else{
-            glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-        }
-        if (!textures){
-            glDisable(GL_TEXTURE_2D);
-        } else {
-            glEnable(GL_TEXTURE_2D);
-        }
-
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         if (menu_active){
             menu->draw();
@@ -134,12 +115,6 @@ int main(int argc, char **argv){
                     break;
                 case SDLK_q:
                     fin = true;
-                    break;
-//                case SDLK_w:
-//                    wireframe = !wireframe;
-//                    break;
-                case SDLK_t:
-                    textures = !textures;
                     break;
                 case SDLK_r:
                     game->reset();

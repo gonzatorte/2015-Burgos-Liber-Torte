@@ -9,14 +9,18 @@
 #include "TextGrafic.h"
 #include "texture.h"
 
-Menu::Menu(int screen_w_in, int screen_h_in){
+using namespace std;
+
+Menu::Menu(int screen_w_in, int screen_h_in, Game * game_in){
     screen_w = screen_w_in;
     screen_h = screen_h_in;
+    game = game_in;
 
     texture_back = LoadBitmap("rsc/textures/marble_0.bmp");
 
-    font_big = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 20);
-    font_small = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 12);
+    const char * font_type = "rsc/fonts/OpenSans-Regular.ttf";
+    font_big = TTF_OpenFont(font_type, 20);
+    font_small = TTF_OpenFont(font_type, 12);
     text_menu = Load_string("MENU", {128,64,64,0}, font_big);
 
     text_game_speed = Load_string("Speed", {128,64,64,0}, font_small);
@@ -29,9 +33,9 @@ Menu::Menu(int screen_w_in, int screen_h_in){
     text_texture_on = Load_string("ON", {128,64,64,0}, font_small);
     text_texture_off = Load_string("OFF", {128,64,64,0}, font_small);
 
-    text_light_source = Load_string("LIGHT FROM", {128,64,64,0}, font_small);
+    text_light_source = Load_string("Light src", {128,64,64,0}, font_small);
 
-    text_light_color = Load_string("LIGHT COLOR", {128,64,64,0}, font_small);
+    text_light_color = Load_string("Light clr", {128,64,64,0}, font_small);
     text_light_color_1 = Load_string("1", {128,64,64,0}, font_small);
     text_light_color_2 = Load_string("2", {128,64,64,0}, font_small);
     text_light_color_3 = Load_string("3", {128,64,64,0}, font_small);
@@ -39,6 +43,8 @@ Menu::Menu(int screen_w_in, int screen_h_in){
 }
 
 void Menu::init(){
+    this->curr_opt = texture_mode_opt;
+
     SDL_ShowCursor(SDL_ENABLE);
 //    GLenum old_matrix_mode;
 //    glGetIntegerv(GL_MATRIX_MODE, &old_matrix_mode);
@@ -52,6 +58,9 @@ void Menu::init(){
 //    GL_LIGHTING
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    glEnable(GL_TEXTURE_2D);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -72,11 +81,11 @@ void Menu::init(){
 
 }
 
-void drawBox(SDL_Rect box, GLuint texture = -1, bool filled = false){
+void drawBox(SDL_Rect box, GLuint texture = -1){
+//    glDisable(GL_BLEND);
+//    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
     if (texture != -1)
         glBindTexture(GL_TEXTURE_2D, texture);
-    if (!filled)
-        glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     glColor3f(0.0f, 0.0f, 1.0f);
     glBegin(GL_QUADS);
     if (texture != -1)
@@ -92,8 +101,7 @@ void drawBox(SDL_Rect box, GLuint texture = -1, bool filled = false){
         glTexCoord2f(0,1);
     glVertex2f(box.x, box.y + box.h);
     glEnd();
-    if (!filled)
-        glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+//    glEnable(GL_BLEND);
 }
 
 void positionate_box(float place_w, float place_h, float padding_w, float padding_h, SDL_Rect relative_box, SDL_Rect & box){
@@ -111,7 +119,7 @@ void Menu::draw(){
     main_box.w = menu_size_w;
     main_box.h = menu_size_h;
 
-//    drawBox(main_box, texture_back, true);
+    drawBox(main_box, texture_back);
 
     positionate_box(1.0/2,  1,      0, 0, main_box, text_menu.area);
     positionate_box(0,      4.0/5,  0, 0, main_box, text_texture_mode.area);
@@ -133,19 +141,52 @@ void Menu::draw(){
 
     switch(curr_opt){
     case (texture_mode_opt):
-        if (texture_mode){
+        if (game->wireframe_mode){
             drawBox(text_wireframe_on.area);
         } else {
             drawBox(text_wireframe_off.area);
         }
         break;
     case (wireframe_mode_opt):
+        if (game->texture_mode){
+            drawBox(text_texture_on.area);
+        } else {
+            drawBox(text_texture_off.area);
+        }
         break;
     case (light_src_opt):
         break;
     case (light_color_opt):
+        switch(game->light_color){
+        case (0):
+            drawBox(text_light_color_4.area);
+            break;
+        case (1):
+            drawBox(text_light_color_1.area);
+            break;
+        case (2):
+            drawBox(text_light_color_2.area);
+            break;
+        case (3):
+            drawBox(text_light_color_3.area);
+            break;
+        }
         break;
     case (speed_opt):
+//        switch(game->game_speed){
+//        case (0):
+//            drawBox(text_light_color_4.area);
+//            break;
+//        case (1):
+//            drawBox(text_light_color_1.area);
+//            break;
+//        case (2):
+//            drawBox(text_light_color_2.area);
+//            break;
+//        case (3):
+//            drawBox(text_light_color_3.area);
+//            break;
+//        }
         break;
     default:
         break;
@@ -178,26 +219,30 @@ void Menu::interact(SDL_Event * evento){
             switch(evento->key.keysym.sym){
             case SDLK_UP:
                 curr_opt++;
+                cout << curr_opt << endl;
                 break;
             case SDLK_DOWN:
                 curr_opt--;
+                cout << curr_opt << endl;
                 break;
             case SDLK_LEFT:
                 switch(curr_opt){
                 case (texture_mode_opt):
-                    texture_mode = !texture_mode;
+                    game->texture_mode = !game->texture_mode;
+                    cout << game->texture_mode << endl;
                     break;
                 case (wireframe_mode_opt):
-                    wireframe_mode = !wireframe_mode;
+                    game->wireframe_mode = !game->wireframe_mode;
+                    cout << game->wireframe_mode << endl;
                     break;
                 case (light_src_opt):
-                    light_src--;
+//                    game->light_position--;
                     break;
                 case (light_color_opt):
-//                    light_color--;
+                    game->light_color = (game->light_color - 1) % 4;
                     break;
                 case (speed_opt):
-                    speed--;
+                    game->game_speed--;
                     break;
                 default:
                     break;
@@ -206,19 +251,21 @@ void Menu::interact(SDL_Event * evento){
             case SDLK_RIGHT:
                 switch(curr_opt){
                 case (texture_mode_opt):
-                    texture_mode = !texture_mode;
+                    game->texture_mode = !game->texture_mode;
+                    cout << game->texture_mode << endl;
                     break;
                 case (wireframe_mode_opt):
-                    wireframe_mode = !wireframe_mode;
+                    game->wireframe_mode = !game->wireframe_mode;
+                    cout << game->wireframe_mode << endl;
                     break;
                 case (light_src_opt):
-                    light_src++;
+//                    game->light_position++;
                     break;
                 case (light_color_opt):
-//                    light_color++;
+                    game->light_color = (game->light_color + 1) % 4;
                     break;
                 case (speed_opt):
-                    speed++;
+                    game->game_speed++;
                     break;
                 default:
                     break;

@@ -6,12 +6,13 @@
 #include <ctime>
 
 #include "TextGrafic.h"
+#include "Game.h"
 
 typedef enum {texture_mode_opt=0, wireframe_mode_opt, light_src_opt, light_color_opt, speed_opt} menu_opts;
 
 class Menu{
     public:
-        Menu(int screen_w, int screen_h);
+        Menu(int screen_w, int screen_h, Game * game);
         void init();
         void draw();
         void interact(SDL_Event * evento);
@@ -19,11 +20,7 @@ class Menu{
         int curr_opt = 0;
 
         int screen_h, screen_w;
-        bool wireframe_mode;
-        bool texture_mode;
-        int light_src;
-        SDL_Color light_color;
-        unsigned int speed;
+        Game * game;
     private:
         TTF_Font * font_big;
         TTF_Font * font_small;
