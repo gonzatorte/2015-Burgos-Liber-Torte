@@ -21,16 +21,23 @@ void Unload_string(TextGrafic tg){
     glDeleteTextures(1, tg.txtNum);
 }
 
-void drawText(float coords[3], TextGrafic tg) {
+void drawText(TextGrafic tg, float coords[3]) {
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
     glBindTexture(GL_TEXTURE_2D, *(tg.txtNum));
     //glEnable(GL_TEXTURE_2D);
     glBegin(GL_QUADS); {
-    glTexCoord2f(0, 1); glVertex3f(coords[0], coords[1], coords[2]);
-    glTexCoord2f(1, 1); glVertex3f(coords[0] + tg.area.w, coords[1], coords[2]);
-    glTexCoord2f(1, 0); glVertex3f(coords[0] + tg.area.w, coords[1] + tg.area.h, coords[2]);
-    glTexCoord2f(0, 0); glVertex3f(coords[0], coords[1] + tg.area.h, coords[2]);
+        if (coords == NULL){
+            glTexCoord2f(0, 1); glVertex3f(tg.area.x, tg.area.y, 0);
+            glTexCoord2f(1, 1); glVertex3f(tg.area.x + tg.area.w, tg.area.y, 0);
+            glTexCoord2f(1, 0); glVertex3f(tg.area.x + tg.area.w, tg.area.y + tg.area.h, 0);
+            glTexCoord2f(0, 0); glVertex3f(tg.area.x, tg.area.y + tg.area.h, 0);
+        } else {
+            glTexCoord2f(0, 1); glVertex3f(coords[0], coords[1], coords[2]);
+            glTexCoord2f(1, 1); glVertex3f(coords[0] + tg.area.w, coords[1], coords[2]);
+            glTexCoord2f(1, 0); glVertex3f(coords[0] + tg.area.w, coords[1] + tg.area.h, coords[2]);
+            glTexCoord2f(0, 0); glVertex3f(coords[0], coords[1] + tg.area.h, coords[2]);
+        }
     } glEnd();
     //glDisable(GL_TEXTURE_2D);
 }
