@@ -120,7 +120,10 @@ void Game::init(){
 }
 
 void Game::leftKeyPressed() {
-    SDL_WarpMouse(xPosBeforePause - 4,yPosBeforePause);
+    auxPos = Vector( camera->point.z - camera->position.z, 0, (camera->point.x - camera->position.x)*-1) * Constants::CAMERA_SPEED;
+    camera->position = camera->position + auxPos * (Constants::dt);
+    camera->point = camera->point + auxPos * (Constants::dt);
+    //SDL_WarpMouse(xPosBeforePause - 4,yPosBeforePause); Esta parte se descomenta si se quiere rotar la mira.
 }
 
 void Game::upKeyPressed() {
@@ -132,7 +135,10 @@ void Game::upKeyPressed() {
 }
 
 void Game::rightKeyPressed() {
-    SDL_WarpMouse(xPosBeforePause + 4,yPosBeforePause);
+    auxPos = Vector( (camera->point.z - camera->position.z)*-1, 0, camera->point.x - camera->position.x) * Constants::CAMERA_SPEED;
+    camera->position = camera->position + auxPos * (Constants::dt);
+    camera->point = camera->point + auxPos * (Constants::dt);
+    //SDL_WarpMouse(xPosBeforePause + 4,yPosBeforePause); Esta parte se descomenta si se quiere rotar la mira.
 }
 
 void Game::downKeyPressed() {
