@@ -204,66 +204,13 @@ void Game::interact(SDL_Event * evento){
         break;
     }
 }
-/*
-void Game::interact(SDL_Event * evento){
-    switch(evento->type){
-    case SDL_MOUSEBUTTONDOWN:
-        if (evento->button.button == SDL_BUTTON_LEFT){
-            Vector initPosition = Vector(camera->position.x, camera->position.y-1, camera->position.z);
-            Vector initVelocity = Vector((camera->point.x - camera->position.x)*100,
-                                              (camera->point.y - camera->position.y)*100,
-                                              (camera->point.z - camera->position.z)*100);
-            initVelocity = initVelocity*vel_adjust_factor;
-            Vector initAccel = Vector(0.0 ,0.0 ,0.0);
 
-            this->addBullet(initPosition, initVelocity, initAccel);
-        }
-        break;
-    case SDL_MOUSEMOTION:
-        if (!isPaused){
-            xPosBeforePause = evento->motion.x; //Mantengo posicion actual del mouse por si se pone pausa.
-            yPosBeforePause = evento->motion.y;
-            camera->moveCam(evento->motion.x,evento->motion.y);
-        }
-        break;
-    case SDL_KEYDOWN:
-        switch(evento->key.keysym.sym){
-        case SDLK_p:
-            if (isPaused){
-                SDL_WarpMouse(xPosBeforePause, yPosBeforePause);
-            }
-            isPaused = !isPaused;
-            break;
-        case SDLK_LEFT:
-            if (camera->position.x < 30)
-                camera->position.x += 0.05f;
-            break;
-        case SDLK_RIGHT:
-            if (camera->position.x > -40)
-                camera->position.x -= 0.05f;
-            break;
-        case SDLK_UP:
-            if (camera->position.z < 20)
-                camera->position.z += 0.05f;
-            break;
-        case SDLK_DOWN:
-            if (camera->position.z > -40)
-                camera->position.z -= 0.05f;
-            break;
-        default:
-            break;
-        }
-    default:
-        break;
-    }
-}
-*/
 Game::Game() {
     textura_suelo = LoadBitmap("rsc/textures/grass.bmp");
     textura_cielo = LoadBitmap("rsc/textures/sky_1.bmp");
     model_building = new ModelType();
-    model_building->LoadFrom3DS("rsc/models/cubo.3ds");
-//    model_building->LoadFrom3DS("rsc/models/house4.3ds");
+//    model_building->LoadFrom3DS("rsc/models/cubo.3ds");
+    model_building->LoadFrom3DS("rsc/models/house4.3ds");
     model_building->id_texture = LoadBitmap("rsc/models/textures/marble_0.bmp");
     font_hub = TTF_OpenFont("rsc/fonts/OpenSans-Regular.ttf", 10);
     font_end = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 30);
@@ -605,7 +552,7 @@ void Game::drawLife(){
     }
     y2 += 10;
     float coords[3] = {-90, y2, 0};
-    drawText(coords, text_hud_vida);
+    drawText(text_hud_vida, coords);
 }
 
 void Game::drawScore(){
@@ -617,7 +564,7 @@ void Game::drawScore(){
     sprintf(aux, "SCORE : %i", score);
     Unload_string(text_hud_score);
     text_hud_score = Load_string(aux, {12,90,32,0}, font_hub);
-    drawText(coords, text_hud_score);
+    drawText(text_hud_score, coords);
 }
 
 void Game::drawBulletsQuantity(){
@@ -628,7 +575,7 @@ void Game::drawBulletsQuantity(){
     char aux[128];
     sprintf(aux, "BULLETS : %i", bulletQuantity);
     text_hud_bullets = Load_string(aux, {12,90,32,0}, font_hub);
-    drawText(coords, text_hud_bullets);
+    drawText(text_hud_bullets, coords);
 }
 
 void Game::drawLevel(){
@@ -640,7 +587,7 @@ void Game::drawLevel(){
 
     text_hud_lvl = Load_string(level_str, {12,90,32,0}, font_hub);
     float coords[3] = {x, y, 0};
-    drawText(coords, text_hud_lvl);
+    drawText(text_hud_lvl, coords);
 }
 
 void Game::drawAim()
@@ -723,7 +670,7 @@ void Game::drawHud()
 void Game::drawGameOver()
 {
     float coords[3] = {-80, 0, 0};
-    drawText(coords, text_end_lost);
+    drawText(text_end_lost, coords);
 }
 
 
