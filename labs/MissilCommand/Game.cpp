@@ -12,6 +12,7 @@ using namespace std;
 
 int multiplicador;
 int vel_adjust_factor = 700;
+Vector auxPos;
 
 void Game::initLevel(int levelNumber) {
     Level* level = levels->find(levelNumber)->second;
@@ -118,6 +119,98 @@ void Game::init(){
     glMatrixMode(GL_MODELVIEW);
 }
 
+void Game::leftKeyPressed() {
+    auxPos = Vector( camera->point.z - camera->position.z, 0, (camera->point.x - camera->position.x)*-1) * Constants::CAMERA_SPEED;
+    camera->position = camera->position + auxPos * (Constants::dt);
+    camera->point = camera->point + auxPos * (Constants::dt);
+    //SDL_WarpMouse(xPosBeforePause - 4,yPosBeforePause); Esta parte se descomenta si se quiere rotar la mira.
+}
+
+void Game::upKeyPressed() {
+    if (camera->position.z < 20) {
+        auxPos = Vector(camera->point.x - camera->position.x, 0, camera->point.z - camera->position.z) * Constants::CAMERA_SPEED;
+        camera->position = camera->position + auxPos * (Constants::dt);
+        camera->point = camera->point + auxPos * (Constants::dt);
+    }
+}
+
+void Game::rightKeyPressed() {
+    auxPos = Vector( (camera->point.z - camera->position.z)*-1, 0, camera->point.x - camera->position.x) * Constants::CAMERA_SPEED;
+    camera->position = camera->position + auxPos * (Constants::dt);
+    camera->point = camera->point + auxPos * (Constants::dt);
+    //SDL_WarpMouse(xPosBeforePause + 4,yPosBeforePause); Esta parte se descomenta si se quiere rotar la mira.
+}
+
+void Game::downKeyPressed() {
+    if (camera->position.z > -40) {
+        auxPos = Vector(camera->position.x - camera->point.x ,0,camera->position.z - camera->point.z) * Constants::CAMERA_SPEED;
+        camera->position = camera->position + auxPos * (Constants::dt);
+        camera->point = camera->point + auxPos * (Constants::dt);
+    }
+}
+
+void Game::interact(SDL_Event * evento){
+
+    switch(evento->type){
+    case SDL_MOUSEBUTTONDOWN:
+        if (evento->button.button == SDL_BUTTON_LEFT){
+            Vector initPosition = Vector(camera->position.x, camera->position.y-1, camera->position.z);
+            Vector initVelocity = Vector((camera->point.x - camera->position.x)*100,
+                                              (camera->point.y - camera->position.y)*100,
+                                              (camera->point.z - camera->position.z)*100);
+            initVelocity = initVelocity*vel_adjust_factor;
+            Vector initAccel = Vector(0.0 ,0.0 ,0.0);
+
+            this->addBullet(initPosition, initVelocity, initAccel);
+        }
+        break;
+    case SDL_MOUSEMOTION:
+        if (!isPaused){
+            xPosBeforePause = evento->motion.x; //Mantengo posicion actual del mouse por si se pone pausa.
+            yPosBeforePause = evento->motion.y;
+            camera->moveCam(evento->motion.x,evento->motion.y);
+        }
+        break;
+    case SDL_KEYDOWN:
+
+        switch(evento->key.keysym.sym){
+            case SDLK_p:
+                if (isPaused){
+                    SDL_WarpMouse(xPosBeforePause, yPosBeforePause);
+                }
+                isPaused = !isPaused;
+                break;
+            case SDLK_LEFT:
+
+                leftKeyPressed();
+                break;
+
+            case SDLK_RIGHT:
+
+                rightKeyPressed();
+               break;
+
+            case SDLK_UP:
+
+                upKeyPressed();
+                break;
+
+            case SDLK_DOWN:
+
+                downKeyPressed();
+                break;
+
+            default:
+
+                break;
+        }
+
+    default:
+
+        break;
+    }
+}
+/*
 void Game::interact(SDL_Event * evento){
 
     switch(evento->type){
@@ -171,7 +264,7 @@ void Game::interact(SDL_Event * evento){
         break;
     }
 }
-
+*/
 Game::Game() {
     textura_suelo = LoadBitmap("rsc/textures/grass.bmp");
     textura_cielo = LoadBitmap("rsc/textures/sky_1.bmp");
