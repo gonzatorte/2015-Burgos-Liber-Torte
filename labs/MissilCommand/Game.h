@@ -26,7 +26,8 @@ using namespace std;
 class Game
 {
     public:
-        Game();
+        Game(int screen_w, int screen_h, Camera * camera, int fps, bool wireframe_mode=true, bool texture_mode=true);
+        bool wireframe_mode, texture_mode;
         void decreaseLife();
         bool isGameOver();
         void addMisil();
@@ -59,6 +60,10 @@ class Game
         Camera* camera;
         int fps;
         void reset();
+        int light_position;
+        int light_direction;
+        int light_color;
+        float game_speed;
     protected:
     private:
         GLuint textura_suelo, textura_cielo;
@@ -77,9 +82,6 @@ class Game
         int bulletQuantity, maxBulletQuantity;
         int score;
         int life;
-        int light_position;
-        int light_direction;
-        int light_color;
         bool gameOver;
         clock_t lastMisilTime;
         list<Misil*>* misils;

@@ -148,6 +148,16 @@ void Game::setLight(){
 }
 
 void Game::renderScene(){
+    if (!wireframe_mode){
+        glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    }else{
+        glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    }
+    if (!texture_mode){
+        glDisable(GL_TEXTURE_2D);
+    } else {
+        glEnable(GL_TEXTURE_2D);
+    }
 
     this->setLight();
     glLoadIdentity();
@@ -276,6 +286,12 @@ void Game::interact(SDL_Event * evento){
     case SDL_KEYDOWN:
 
         switch(evento->key.keysym.sym){
+            case SDLK_y:
+                wireframe_mode = !wireframe_mode;
+                break;
+            case SDLK_t:
+                texture_mode = !texture_mode;
+                break;
             case SDLK_p:
                 if (isPaused){
                     SDL_WarpMouse(xPosBeforePause, yPosBeforePause);
@@ -331,7 +347,13 @@ void Game::interact(SDL_Event * evento){
     }
 }
 
-Game::Game() {
+Game::Game(int screen_w_in, int screen_h_in, Camera * camera_in, int fps_in, bool wireframe_mode_in, bool texture_mode_in) {
+    screen_w = screen_w_in;
+    screen_h = screen_h_in;
+    camera = camera_in;
+    fps = fps_in;
+    wireframe_mode = wireframe_mode_in;
+    texture_mode = texture_mode_in;
     textura_suelo = LoadBitmap("rsc/textures/grass.bmp");
     textura_cielo = LoadBitmap("rsc/textures/sky_1.bmp");
     model_building = new ModelType();
