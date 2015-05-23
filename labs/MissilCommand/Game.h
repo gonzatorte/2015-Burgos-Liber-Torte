@@ -89,6 +89,7 @@ class Game
         void upKeyPressed();
         void rightKeyPressed();
         void downKeyPressed();
+        void setMovementLimits();
 
 };
 
