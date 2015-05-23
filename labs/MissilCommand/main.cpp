@@ -97,10 +97,7 @@ int main(int argc, char **argv){
     game->screen_w = screen_w;
     game->camera = camera;
     game->fps = fps;
-    Menu * menu = new Menu();
-    menu->screen_h = screen_h;
-    menu->screen_w = screen_w;
-
+    Menu * menu = new Menu(screen_h, screen_w);
     SDL_EnableKeyRepeat(200,1);
     game->init();
     bool wasPaused = false;

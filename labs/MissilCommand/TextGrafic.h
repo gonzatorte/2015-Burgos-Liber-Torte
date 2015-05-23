@@ -10,7 +10,7 @@
 class TextGrafic{
     public:
         SDL_Rect area;
-        GLuint * txtNum;
+        GLuint txtNum;
 //        void draw();
 };
 

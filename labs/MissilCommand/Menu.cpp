@@ -9,7 +9,12 @@
 #include "TextGrafic.h"
 #include "texture.h"
 
-Menu::Menu(){
+Menu::Menu(int screen_w_in, int screen_h_in){
+    screen_w = screen_w_in;
+    screen_h = screen_h_in;
+
+    texture_back = LoadBitmap("rsc/textures/marble_0.bmp");
+
     font_big = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 20);
     font_small = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 12);
     text_menu = Load_string("MENU", {128,64,64,0}, font_big);
@@ -31,8 +36,6 @@ Menu::Menu(){
     text_light_color_2 = Load_string("2", {128,64,64,0}, font_small);
     text_light_color_3 = Load_string("3", {128,64,64,0}, font_small);
     text_light_color_4 = Load_string("4", {128,64,64,0}, font_small);
-
-    texture_back = LoadBitmap("rsc/textures/marble_0.bmp");
 }
 
 void Menu::init(){

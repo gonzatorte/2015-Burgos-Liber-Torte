@@ -316,7 +316,7 @@ Game::Game() {
     model_building = new ModelType();
     model_building->LoadFrom3DS("rsc/models/cubo.3ds");
 //    model_building->LoadFrom3DS("rsc/models/house4.3ds");
-    model_building->id_texture = LoadBitmap("rsc/models/textures/marble_0.bmp");
+    model_building->id_texture = LoadBitmap("rsc/models/textures/stone_1.bmp");
     font_hub = TTF_OpenFont("rsc/fonts/OpenSans-Regular.ttf", 10);
     font_end = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 30);
     if (!font_hub || !font_end){

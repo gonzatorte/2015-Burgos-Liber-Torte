@@ -11,7 +11,7 @@ typedef enum {texture_mode_opt=0, wireframe_mode_opt, light_src_opt, light_color
 
 class Menu{
     public:
-        Menu();
+        Menu(int screen_w, int screen_h);
         void init();
         void draw();
         void interact(SDL_Event * evento);

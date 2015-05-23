@@ -4,17 +4,6 @@
 #include "texture.h"
 
 
-
-/**********************************************************
- *
- * VARIABLES DECLARATION
- *
- *********************************************************/
-
-int num_texture=-1; //Counter to keep track of the last loaded texture
-
-
-
 /**********************************************************
  *
  * FUNCTION LoadBitmap(char *)
@@ -33,8 +22,6 @@ int LoadBitmap(char *filename)
     BITMAPFILEHEADER fileheader;
     BITMAPINFOHEADER infoheader;
     RGBTRIPLE rgb;
-
-    num_texture++; // The counter of the current texture is increased
 
     if( (l_file = fopen(filename, "rb"))==NULL) return (-1); // Open the file for reading
 
@@ -64,6 +51,8 @@ int LoadBitmap(char *filename)
 
     fclose(l_file); // Closes the file stream
 
+    GLuint num_texture;
+    glGenTextures(1, &num_texture);
     glBindTexture(GL_TEXTURE_2D, num_texture); // Bind the ID texture specified by the 2nd parameter
 
     // The next commands sets the texture parameters
