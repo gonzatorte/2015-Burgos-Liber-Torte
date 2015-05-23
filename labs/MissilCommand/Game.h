@@ -85,6 +85,11 @@ class Game
         void initLevel(int levelNumber);
         map<int, Level*>* getLevelsFromSetting(tinyxml2::XMLElement* gameSettings);
         list<ModelFigure*>::iterator obtRandomIterator();
+        void leftKeyPressed();
+        void upKeyPressed();
+        void rightKeyPressed();
+        void downKeyPressed();
+
 };
 
 #endif // GAME_H
