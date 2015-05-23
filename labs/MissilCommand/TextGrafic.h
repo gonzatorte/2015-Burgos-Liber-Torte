@@ -10,11 +10,11 @@
 class TextGrafic{
     public:
         SDL_Rect area;
-        GLuint * txtNum;
+        GLuint txtNum;
 //        void draw();
 };
 
-void drawText(float coords[3], TextGrafic tg);
+void drawText(TextGrafic tg, float coords[3] = NULL);
 TextGrafic Load_string(char * text, SDL_Color clr, TTF_Font* tmpfont);
 void Unload_string(TextGrafic tg);
 

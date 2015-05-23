@@ -13,6 +13,7 @@ using namespace std;
 int multiplicador;
 int vel_adjust_factor = 700;
 Vector auxPos;
+float x1,x2,z1,z2;
 
 void Game::initLevel(int levelNumber) {
     Level* level = levels->find(levelNumber)->second;
@@ -202,14 +203,24 @@ void Game::init(){
 }
 
 void Game::leftKeyPressed() {
-    auxPos = Vector( camera->point.z - camera->position.z, 0, (camera->point.x - camera->position.x)*-1) * Constants::CAMERA_SPEED;
-    camera->position = camera->position + auxPos * (Constants::dt);
-    camera->point = camera->point + auxPos * (Constants::dt);
+
+    float newXPoint = camera->position.x + (camera->point.z - camera->position.z) * Constants::dt * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + ((camera->point.x - camera->position.x)*-1) * Constants::dt * Constants::CAMERA_SPEED;
+
+    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
+        auxPos = Vector( camera->point.z - camera->position.z, 0, (camera->point.x - camera->position.x)*-1) * Constants::CAMERA_SPEED;
+        camera->position = camera->position + auxPos * (Constants::dt);
+        camera->point = camera->point + auxPos * (Constants::dt);
+    }
     //SDL_WarpMouse(xPosBeforePause - 4,yPosBeforePause); Esta parte se descomenta si se quiere rotar la mira.
 }
 
 void Game::upKeyPressed() {
-    if (camera->position.z < 20) {
+
+    float newXPoint = camera->position.x + (camera->point.x - camera->position.x) * Constants::dt * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + (camera->point.z - camera->position.z) * Constants::dt * Constants::CAMERA_SPEED;
+
+    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
         auxPos = Vector(camera->point.x - camera->position.x, 0, camera->point.z - camera->position.z) * Constants::CAMERA_SPEED;
         camera->position = camera->position + auxPos * (Constants::dt);
         camera->point = camera->point + auxPos * (Constants::dt);
@@ -217,14 +228,24 @@ void Game::upKeyPressed() {
 }
 
 void Game::rightKeyPressed() {
-    auxPos = Vector( (camera->point.z - camera->position.z)*-1, 0, camera->point.x - camera->position.x) * Constants::CAMERA_SPEED;
-    camera->position = camera->position + auxPos * (Constants::dt);
-    camera->point = camera->point + auxPos * (Constants::dt);
+
+    float newXPoint = camera->position.x + ((camera->point.z - camera->position.z)*-1) * Constants::dt * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + (camera->point.x - camera->position.x) * Constants::dt * Constants::CAMERA_SPEED;
+
+    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
+        auxPos = Vector( (camera->point.z - camera->position.z)*-1, 0, camera->point.x - camera->position.x) * Constants::CAMERA_SPEED;
+        camera->position = camera->position + auxPos * (Constants::dt);
+        camera->point = camera->point + auxPos * (Constants::dt);
+    }
     //SDL_WarpMouse(xPosBeforePause + 4,yPosBeforePause); Esta parte se descomenta si se quiere rotar la mira.
 }
 
 void Game::downKeyPressed() {
-    if (camera->position.z > -40) {
+
+    float newXPoint = camera->position.x + (camera->position.x - camera->point.x) * Constants::dt * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + (camera->position.z - camera->point.z) * Constants::dt * Constants::CAMERA_SPEED;
+
+    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
         auxPos = Vector(camera->position.x - camera->point.x ,0,camera->position.z - camera->point.z) * Constants::CAMERA_SPEED;
         camera->position = camera->position + auxPos * (Constants::dt);
         camera->point = camera->point + auxPos * (Constants::dt);
@@ -310,61 +331,7 @@ void Game::interact(SDL_Event * evento){
         break;
     }
 }
-/*
-void Game::interact(SDL_Event * evento){
 
-    switch(evento->type){
-    case SDL_MOUSEBUTTONDOWN:
-        if (evento->button.button == SDL_BUTTON_LEFT){
-            Vector initPosition = Vector(camera->position.x, camera->position.y-1, camera->position.z);
-            Vector initVelocity = Vector((camera->point.x - camera->position.x)*100,
-                                              (camera->point.y - camera->position.y)*100,
-                                              (camera->point.z - camera->position.z)*100);
-            initVelocity = initVelocity*vel_adjust_factor;
-            Vector initAccel = Vector(0.0 ,0.0 ,0.0);
-
-            this->addBullet(initPosition, initVelocity, initAccel);
-        }
-        break;
-    case SDL_MOUSEMOTION:
-        if (!isPaused){
-            xPosBeforePause = evento->motion.x; //Mantengo posicion actual del mouse por si se pone pausa.
-            yPosBeforePause = evento->motion.y;
-            camera->moveCam(evento->motion.x,evento->motion.y);
-        }
-        break;
-   case SDL_KEYDOWN:
-        switch(evento->key.keysym.sym){
-        case SDLK_p:
-            if (isPaused){
-                SDL_WarpMouse(xPosBeforePause, yPosBeforePause);
-            }
-            isPaused = !isPaused;
-            break;
-        case SDLK_LEFT:
-            if (camera->position.x < 30)
-                camera->position.x += 0.05f;
-            break;
-        case SDLK_RIGHT:
-            if (camera->position.x > -40)
-                camera->position.x -= 0.05f;
-            break;
-        case SDLK_UP:
-            if (camera->position.z < 20)
-                camera->position.z += 0.05f;
-            break;
-        case SDLK_DOWN:
-            if (camera->position.z > -40)
-                camera->position.z -= 0.05f;
-            break;
-        default:
-            break;
-        }
-    default:
-        break;
-    }
-}
-*/
 Game::Game() {
     textura_suelo = LoadBitmap("rsc/textures/grass.bmp");
     textura_cielo = LoadBitmap("rsc/textures/sky_107.bmp");
@@ -372,7 +339,7 @@ Game::Game() {
     model_building = new ModelType();
     model_building->LoadFrom3DS("rsc/models/cubo.3ds");
 //    model_building->LoadFrom3DS("rsc/models/house4.3ds");
-    model_building->id_texture = LoadBitmap("rsc/models/textures/marble_0.bmp");
+    model_building->id_texture = LoadBitmap("rsc/models/textures/stone_1.bmp");
     font_hub = TTF_OpenFont("rsc/fonts/OpenSans-Regular.ttf", 10);
     font_end = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 30);
     if (!font_hub || !font_end){
@@ -455,6 +422,35 @@ void Game::addBullet(Vector initPosition, Vector initVelocity, Vector initAccel)
 
 }
 
+void Game::setMovementLimits() {
+
+    list<ModelFigure*>::iterator itB;
+    x1=-100;
+    x2=100;
+    z1=100;
+    z2=-100;
+    for (itB=buildings->begin(); itB!=buildings->end(); ++itB){
+
+        float xPos = (*itB)->position.x;
+        float zPos = (*itB)->position.z;
+        if (xPos > x1) {
+            x1 = xPos;
+        }
+        if (xPos < x2) {
+            x2 = xPos;
+        }
+        if (zPos < z1) {
+            z1 = zPos;
+        }
+        if (zPos > z2) {
+            z2 = zPos;
+        }
+    }
+    x1 += 8;
+    x2 -= 8;
+    z1 -= 8;
+    z2 += 8;
+}
 void Game::addBuildings() {
     int n = maxBuildQuantity;
     int a = 1;
@@ -485,7 +481,9 @@ void Game::addBuildings() {
         if (n==0)
             break;
     }
-    //itBuildings = buildings->begin();
+
+    //Agregar limites de movimiento
+    setMovementLimits();
 }
 
 void Game::misilDisplacement() {
@@ -760,7 +758,7 @@ void Game::drawLife(){
     }
     y2 += 10;
     float coords[3] = {-90, y2, 0};
-    drawText(coords, text_hud_vida);
+    drawText(text_hud_vida, coords);
 }
 
 void Game::drawScore(){
@@ -772,7 +770,7 @@ void Game::drawScore(){
     sprintf(aux, "SCORE : %i", score);
     Unload_string(text_hud_score);
     text_hud_score = Load_string(aux, {12,90,32,0}, font_hub);
-    drawText(coords, text_hud_score);
+    drawText(text_hud_score, coords);
 }
 
 void Game::drawBulletsQuantity(){
@@ -783,7 +781,7 @@ void Game::drawBulletsQuantity(){
     char aux[128];
     sprintf(aux, "BULLETS : %i", bulletQuantity);
     text_hud_bullets = Load_string(aux, {12,90,32,0}, font_hub);
-    drawText(coords, text_hud_bullets);
+    drawText(text_hud_bullets, coords);
 }
 
 void Game::drawLevel(){
@@ -795,7 +793,7 @@ void Game::drawLevel(){
 
     text_hud_lvl = Load_string(level_str, {12,90,32,0}, font_hub);
     float coords[3] = {x, y, 0};
-    drawText(coords, text_hud_lvl);
+    drawText(text_hud_lvl, coords);
 }
 
 void Game::drawAim()
@@ -878,7 +876,7 @@ void Game::drawHud()
 void Game::drawGameOver()
 {
     float coords[3] = {-80, 0, 0};
-    drawText(coords, text_end_lost);
+    drawText(text_end_lost, coords);
 }
 
 Game::~Game()

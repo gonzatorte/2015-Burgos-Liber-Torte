@@ -9,18 +9,33 @@
 #include "TextGrafic.h"
 #include "texture.h"
 
-Menu::Menu(){
+Menu::Menu(int screen_w_in, int screen_h_in){
+    screen_w = screen_w_in;
+    screen_h = screen_h_in;
+
+    texture_back = LoadBitmap("rsc/textures/marble_0.bmp");
+
     font_big = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 20);
     font_small = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 12);
     text_menu = Load_string("MENU", {128,64,64,0}, font_big);
+
     text_game_speed = Load_string("Speed", {128,64,64,0}, font_small);
+
     text_wireframe_mode = Load_string("Wireframes", {128,64,64,0}, font_small);
+    text_wireframe_on = Load_string("ON", {128,64,64,0}, font_small);
+    text_wireframe_off = Load_string("OFF", {128,64,64,0}, font_small);
+
     text_texture_mode = Load_string("Textures", {128,64,64,0}, font_small);
+    text_texture_on = Load_string("ON", {128,64,64,0}, font_small);
+    text_texture_off = Load_string("OFF", {128,64,64,0}, font_small);
+
     text_light_source = Load_string("LIGHT FROM", {128,64,64,0}, font_small);
+
     text_light_color = Load_string("LIGHT COLOR", {128,64,64,0}, font_small);
-    text_on = Load_string("ON", {128,64,64,0}, font_small);
-    text_off = Load_string("OFF", {128,64,64,0}, font_small);
-    texture_back = LoadBitmap("rsc/textures/marble_0.bmp");
+    text_light_color_1 = Load_string("1", {128,64,64,0}, font_small);
+    text_light_color_2 = Load_string("2", {128,64,64,0}, font_small);
+    text_light_color_3 = Load_string("3", {128,64,64,0}, font_small);
+    text_light_color_4 = Load_string("4", {128,64,64,0}, font_small);
 }
 
 void Menu::init(){
@@ -57,16 +72,33 @@ void Menu::init(){
 
 }
 
-void drawBox(SDL_Rect box){
-    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    glColor3f(1.0f, 0.0f, 1.0f);
+void drawBox(SDL_Rect box, GLuint texture = -1, bool filled = false){
+    if (texture != -1)
+        glBindTexture(GL_TEXTURE_2D, texture);
+    if (!filled)
+        glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    glColor3f(0.0f, 0.0f, 1.0f);
     glBegin(GL_QUADS);
+    if (texture != -1)
+        glTexCoord2f(1,1);
     glVertex2f(box.x, box.y);
+    if (texture != -1)
+        glTexCoord2f(1,0);
     glVertex2f(box.x + box.w, box.y);
+    if (texture != -1)
+        glTexCoord2f(0,0);
     glVertex2f(box.x + box.w, box.y + box.h);
+    if (texture != -1)
+        glTexCoord2f(0,1);
     glVertex2f(box.x, box.y + box.h);
     glEnd();
-    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    if (!filled)
+        glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+}
+
+void positionate_box(float place_w, float place_h, float padding_w, float padding_h, SDL_Rect relative_box, SDL_Rect & box){
+    box.x = relative_box.x + ((relative_box.w - box.w)*place_w) + padding_w;
+    box.y = relative_box.y + ((relative_box.h - box.h)*place_h) + padding_h;
 }
 
 void Menu::draw(){
@@ -79,33 +111,32 @@ void Menu::draw(){
     main_box.w = menu_size_w;
     main_box.h = menu_size_h;
 
-    glBindTexture(GL_TEXTURE_2D, texture_back);
-    glBegin(GL_QUADS);
-    glTexCoord2f(1,1);
-    glVertex2f(main_box.x, main_box.y);
-    glTexCoord2f(1,0);
-    glVertex2f(main_box.x, main_box.y + main_box.h);
-    glTexCoord2f(0,0);
-    glVertex2f(main_box.x + main_box.w, main_box.y + main_box.h);
-    glTexCoord2f(0,1);
-    glVertex2f(main_box.x + main_box.w, main_box.y);
-    glEnd();
+//    drawBox(main_box, texture_back, true);
 
-    SDL_Rect texture_mode_box = text_texture_mode.area;
-    texture_mode_box.x = main_box.x + main_box.w/6 + padding;
-    texture_mode_box.y = main_box.y + main_box.h + padding;
-    SDL_Rect texture_mode_on_box = text_on.area;
-    texture_mode_on_box.x = texture_mode_box.x;
-    texture_mode_on_box.y = texture_mode_box.y + texture_mode_box.w + padding;
-    SDL_Rect texture_mode_off_box = texture_mode_on_box;
-    texture_mode_off_box.x = texture_mode_on_box.x + padding;
+    positionate_box(1.0/2,  1,      0, 0, main_box, text_menu.area);
+    positionate_box(0,      4.0/5,  0, 0, main_box, text_texture_mode.area);
+    positionate_box(2.0/4,  4.0/5,  0, 0, main_box, text_texture_on.area);
+    positionate_box(3.0/4,  4.0/5,  0, 0, main_box, text_texture_off.area);
+
+    positionate_box(0,      3.0/5,  0, 0, main_box, text_wireframe_mode.area);
+    positionate_box(2.0/4,  4.0/5,  0, 0, main_box, text_wireframe_on.area);
+    positionate_box(3.0/4,  4.0/5,  0, 0, main_box, text_wireframe_off.area);
+
+    positionate_box(0,      2.0/5,  0, 0, main_box, text_light_color.area);
+    positionate_box(4.0/8,  2.0/5,  0, 0, main_box, text_light_color_1.area);
+    positionate_box(5.0/8,  2.0/5,  0, 0, main_box, text_light_color_2.area);
+    positionate_box(6.0/8,  2.0/5,  0, 0, main_box, text_light_color_3.area);
+    positionate_box(7.0/8,  2.0/5,  0, 0, main_box, text_light_color_4.area);
+
+    positionate_box(0,      1.0/5,  0, 0, main_box, text_light_source.area);
+    positionate_box(0,      0.0/5,  0, 0, main_box, text_game_speed.area);
 
     switch(curr_opt){
     case (texture_mode_opt):
         if (texture_mode){
-            drawBox(texture_mode_on_box);
+            drawBox(text_wireframe_on.area);
         } else {
-            drawBox(texture_mode_off_box);
+            drawBox(text_wireframe_off.area);
         }
         break;
     case (wireframe_mode_opt):
@@ -120,18 +151,24 @@ void Menu::draw(){
         break;
     }
 
-//    float coors1 [3] = {-menu_size_h/4,-menu_size_w/4,0};
-    float coors1 [3] = {text_menu.area.h/2,text_menu.area.w/2,0};
-    drawText(coors1, text_menu);
+    drawText(text_menu);
 
-    float coors2 [3] = {texture_mode_on_box.x,texture_mode_on_box.y,0};
-    drawText(coors1, text_on);
+    drawText(text_light_color);
+    drawText(text_light_color_1);
+    drawText(text_light_color_2);
+    drawText(text_light_color_3);
+    drawText(text_light_color_4);
 
-    float coors3 [3] = {texture_mode_off_box.x,texture_mode_off_box.y,0};
-    drawText(coors1, text_off);
+    drawText(text_light_source);
+    drawText(text_game_speed);
 
-    float coors4 [3] = {texture_mode_box.x,texture_mode_box.y,0};
-    drawText(coors1, text_texture_mode);
+    drawText(text_wireframe_mode);
+    drawText(text_wireframe_on);
+    drawText(text_wireframe_off);
+
+    drawText(text_texture_mode);
+    drawText(text_texture_on);
+    drawText(text_texture_off);
 }
 
 void Menu::interact(SDL_Event * evento){
