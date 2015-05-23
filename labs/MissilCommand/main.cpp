@@ -129,15 +129,6 @@ int main(int argc, char **argv){
                 break;
             case SDL_KEYDOWN:
                 switch(evento.key.keysym.sym){
-                case SDLK_p:
-                        {
-                            if (game->isPaused)
-                            {
-                                SDL_WarpMouse(game->xPosBeforePause, game->yPosBeforePause);
-                            }
-                            game->isPaused = !game->isPaused;
-                            break;
-                        }
                 case SDLK_ESCAPE:
                     fin = true;
                     break;
