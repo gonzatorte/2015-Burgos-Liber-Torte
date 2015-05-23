@@ -23,6 +23,8 @@ void Game::initLevel(int levelNumber) {
     this->misilSpeed = level->getMisilSpeed();
     this->life = maxBuildQuantity-2;
     this->misilQuantity = 0;
+    this->light_position = 0;
+    this->light_direction = 1;
     this->bulletQuantity = maxBulletQuantity;
     this->lastMisilTime = clock();
     misils = new list<Misil*>();
@@ -68,9 +70,87 @@ list<ModelFigure*>::iterator Game::obtRandomIterator() {
     return itB;
 }
 
+void Game::setLight(){
+
+    if (this->light_position){
+        switch (this->light_direction){
+            case 0:
+                {float light_position[] = { 0, 1, 1, 0.0f };
+                glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+                break;}
+            case 1:
+                {float light_position[] = { 0, 1, -1, 0.0f };
+                glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+                break;}
+            case 2:
+                {float light_position[] = { 1, 1, 0, 0.0f };
+                glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+                break;}
+            case 3:
+                {float light_position[] = { -1, 1, 0, 0.0f };
+                glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+                break;}
+            default:
+                break;
+        }
+    }else{
+        switch (this->light_direction){
+        case 0:
+            {float light_position[] = { 0.0f, -1.0f, 1.0f, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        case 1:
+            {float light_position[] = { 0.0f, -1.0f, -1.0f, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        case 2:
+            {float light_position[] = { 1.0f, -1.0f, 0.0f, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        case 3:
+            {float light_position[] = { -1.0f, -1.0f, 0.0f, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        default:
+            break;
+        }
+    }
+
+
+    switch (this->light_color){
+        case 0:
+            {float mat_ambient[] = { 0.0f, 0.2f, 0.3f, 1.0f };
+            float mat_diffuse[] = { 0.0f, 0.9f, 0.8f, 1.0f };
+            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+            break;}
+        case 1:
+            {float mat_ambient[] = { 0.0f, 5.2f, 0.3f, 1.0f };
+            float mat_diffuse[] = { 0.0f, 6.9f, 0.8f, 1.0f };
+            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+            break;}
+        case 2:
+            {float mat_ambient[] = { 9.0f, 0.2f, 0.3f, 1.0f };
+            float mat_diffuse[] = { 9.0f, 0.9f, 0.8f, 1.0f };
+            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+            break;}
+        case 3:
+            {float mat_ambient[] = { 4.0f, 0.2f, 0.3f, 1.0f };
+            float mat_diffuse[] = { 0.0f, 0.9f, 8.8f, 1.0f };
+            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+            break;}
+        }
+
+}
+
 void Game::renderScene(){
-    // Clear Color and Depth Buffers
+
+    this->setLight();
     glLoadIdentity();
+
     if (!this->isPaused){
         if (this->isGameOver()){
             cout << "Perdio..";
@@ -80,6 +160,7 @@ void Game::renderScene(){
                 cout << "Pasaste de nivel CAPO!!!";
                 this->levelUp();
             }
+            // Create light components
 
             this->manageGame();
             // Set the camera
@@ -120,7 +201,10 @@ void Game::init(){
 }
 
 void Game::leftKeyPressed() {
-    SDL_WarpMouse(xPosBeforePause - 4,yPosBeforePause);
+    auxPos = Vector( camera->point.z - camera->position.z, 0, (camera->point.x - camera->position.x)*-1) * Constants::CAMERA_SPEED;
+    camera->position = camera->position + auxPos * (Constants::dt);
+    camera->point = camera->point + auxPos * (Constants::dt);
+    //SDL_WarpMouse(xPosBeforePause - 4,yPosBeforePause); Esta parte se descomenta si se quiere rotar la mira.
 }
 
 void Game::upKeyPressed() {
@@ -132,7 +216,10 @@ void Game::upKeyPressed() {
 }
 
 void Game::rightKeyPressed() {
-    SDL_WarpMouse(xPosBeforePause + 4,yPosBeforePause);
+    auxPos = Vector( (camera->point.z - camera->position.z)*-1, 0, camera->point.x - camera->position.x) * Constants::CAMERA_SPEED;
+    camera->position = camera->position + auxPos * (Constants::dt);
+    camera->point = camera->point + auxPos * (Constants::dt);
+    //SDL_WarpMouse(xPosBeforePause + 4,yPosBeforePause); Esta parte se descomenta si se quiere rotar la mira.
 }
 
 void Game::downKeyPressed() {
@@ -175,23 +262,41 @@ void Game::interact(SDL_Event * evento){
                 isPaused = !isPaused;
                 break;
             case SDLK_LEFT:
-
                 leftKeyPressed();
                 break;
-
             case SDLK_RIGHT:
 
                 rightKeyPressed();
                break;
-
             case SDLK_UP:
-
                 upKeyPressed();
                 break;
-
             case SDLK_DOWN:
-
                 downKeyPressed();
+                break;
+            case SDLK_1:
+                this->light_color = 0;
+                break;
+            case SDLK_2:
+                this->light_color = 1;
+                break;
+            case SDLK_3:
+                this->light_color = 2;
+                break;
+            case SDLK_4:
+                this->light_color = 3;
+                break;
+            case SDLK_w:
+                this->light_direction = 0;
+                break;
+            case SDLK_s:
+                this->light_direction = 1;
+                break;
+            case SDLK_a:
+                this->light_direction = 2;
+                break;
+            case SDLK_d:
+                this->light_direction = 3;
                 break;
 
             default:
@@ -209,8 +314,8 @@ Game::Game() {
     textura_suelo = LoadBitmap("rsc/textures/grass.bmp");
     textura_cielo = LoadBitmap("rsc/textures/sky_1.bmp");
     model_building = new ModelType();
-//    model_building->LoadFrom3DS("rsc/models/cubo.3ds");
-    model_building->LoadFrom3DS("rsc/models/house4.3ds");
+    model_building->LoadFrom3DS("rsc/models/cubo.3ds");
+//    model_building->LoadFrom3DS("rsc/models/house4.3ds");
     model_building->id_texture = LoadBitmap("rsc/models/textures/marble_0.bmp");
     font_hub = TTF_OpenFont("rsc/fonts/OpenSans-Regular.ttf", 10);
     font_end = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 30);

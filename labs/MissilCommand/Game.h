@@ -52,6 +52,7 @@ class Game
         virtual ~Game();
         void renderScene();
         void init();
+        void setLight();
         bool isPaused;
         int screen_w, screen_h;
         int xPosBeforePause, yPosBeforePause;
@@ -76,6 +77,9 @@ class Game
         int bulletQuantity, maxBulletQuantity;
         int score;
         int life;
+        int light_position;
+        int light_direction;
+        int light_color;
         bool gameOver;
         clock_t lastMisilTime;
         list<Misil*>* misils;
