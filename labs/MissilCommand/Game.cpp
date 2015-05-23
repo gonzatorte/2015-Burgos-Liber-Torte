@@ -21,7 +21,7 @@ void Game::initLevel(int levelNumber) {
     this->maxBulletQuantity = level->getMaxBulletQuantity();
     this->simultMisilQuant = level->getSimultMisilQuant();
     this->misilSpeed = level->getMisilSpeed();
-    this->life = maxBuildQuantity-2;
+    this->life = maxBuildQuantity-4;
     this->misilQuantity = 0;
     this->light_position = 0;
     this->light_direction = 1;
@@ -542,7 +542,7 @@ void Game::detectCollisions(){
                 a = x_b - (*itBullet)->position.x;
                 b = y_b - (*itBullet)->position.y;
                 c = z_b - (*itBullet)->position.z;
-                if (fabs(a) < 1.5f && fabs(b) < 1.5f && fabs(c) < 1.5f){
+                if (fabs(a) < 1.0f && fabs(b) < 1.0f && fabs(c) < 1.0f){
                     itBullet = bullets->erase(itBullet);
                     delete_misil = true;
                     score += Constants::MISIL_POINTS;
@@ -831,8 +831,6 @@ void Game::drawGameOver()
     float coords[3] = {-80, 0, 0};
     drawText(coords, text_end_lost);
 }
-
-
 
 Game::~Game()
 {
