@@ -512,36 +512,49 @@ void Game::addBuildings() {
 void Game::misilDisplacement() {
     list<Misil*>::iterator it;
     for (it=misils->begin(); it!=misils->end(); ++it){
-//        Vector Ygravity = Vector(0, 0, 0);
-
         (*it)->eulerIntegrate(fps/((float)game_speed));
-
-//        Vector* velocity = (*it)->getVelocity(); // Guardo velocidad vieja
-//
-//        (*it)->setVelocity(velocity); // Guardo nueva velocidad
     }
 
     list<Bullet*>::iterator itB;
     for (itB=bullets->begin(); itB!=bullets->end(); ++itB){
-//        Vector Ygravity = Vector(0, 0, 0);
-
         (*itB)->eulerIntegrate(fps);
-
-//        Vector* velocity = (*itB)->getVelocity(); // Guardo velocidad vieja
-//
-//        (*itB)->setVelocity(velocity); // Guardo nueva velocidad
     }
 }
 
-bool interval_intersect(float a1, float b1, float a2, float b2){
-    return ((a1 <= a2) && (a2 <= b1)) || ((a1 <= b2) && (b2 <= b1));
+inline bool point_inside_interval(float e, float a, float b){
+    return ((a <= e) && (e <= b));
+}
+
+bool point_inside(float x, float y, float z, Vector ini_coord2, Vector end_coord2){
+    return
+        point_inside_interval(x, ini_coord2.x, end_coord2.x) &&
+        point_inside_interval(y, ini_coord2.y, end_coord2.y) &&
+        point_inside_interval(z, ini_coord2.z, end_coord2.z);
 }
 
 bool prism_intersect(Vector ini_coord1, Vector end_coord1, Vector ini_coord2, Vector end_coord2){
-    return ((end_coord1) < (end_coord2 - ini_coord2)) || ((ini_coord1) < (end_coord2 - ini_coord2));
-//    return  (interval_intersect(ini_coord1.x, end_coord1.x, ini_coord2.x, end_coord2.x)) &&
-//            (interval_intersect(ini_coord1.y, end_coord1.y, ini_coord2.y, end_coord2.y)) &&
-//            (interval_intersect(ini_coord1.z, end_coord1.z, ini_coord2.z, end_coord2.z));
+    return
+        point_inside(ini_coord1.x, ini_coord1.y, ini_coord1.z, ini_coord2, end_coord2) ||
+        point_inside(ini_coord1.x, ini_coord1.y, end_coord1.z, ini_coord2, end_coord2) ||
+        point_inside(ini_coord1.x, end_coord1.y, ini_coord1.z, ini_coord2, end_coord2) ||
+        point_inside(ini_coord1.x, end_coord1.y, end_coord1.z, ini_coord2, end_coord2) ||
+        point_inside(end_coord1.x, ini_coord1.y, ini_coord1.z, ini_coord2, end_coord2) ||
+        point_inside(end_coord1.x, ini_coord1.y, end_coord1.z, ini_coord2, end_coord2) ||
+        point_inside(end_coord1.x, end_coord1.y, ini_coord1.z, ini_coord2, end_coord2) ||
+        point_inside(end_coord1.x, end_coord1.y, end_coord1.z, ini_coord2, end_coord2);
+}
+
+bool simple_intrsect(Vector position1, Vector position2){
+    float x_b, y_b, z_b, x_diff, y_diff, z_diff;
+    x_b = position1.x;
+    y_b = position1.y;
+    z_b = position1.z;
+
+    x_diff = x_b - position2.x;
+    y_diff = y_b - position2.y;
+    z_diff = z_b - position2.z;
+
+    return (fabs(x_diff) < 1 && fabs(y_diff) < 1 && fabs(z_diff) < 1);
 }
 
 void Game::detectCollisions(){
@@ -549,15 +562,11 @@ void Game::detectCollisions(){
     list<Misil*>::iterator it = misils->begin();
     bool delete_misil;
 
-    Vector aa1 = Vector(1,1,1);
-    Vector aa2 = Vector(2,2,2);
-    Vector bb1 = Vector(3,3,3);
-    Vector bb2 = Vector(4,4,4);
-    Vector v1 = Vector(1.0, 1.0, 1.0);
+    Vector v1 = Vector(0.5, 0.5, 0.5);
 
     while (it != misils->end()){
         Misil * curr_misil = (*it);
-        Vector misil_next_position = curr_misil->position + curr_misil->velocity * (Constants::dt/fps);
+        Vector misil_next_position = curr_misil->position + curr_misil->velocity * (Constants::dt/(fps*((float)game_speed)));
 
         delete_misil = false;
         list<ModelFigure*>::iterator itB = buildings->begin();
@@ -565,8 +574,9 @@ void Game::detectCollisions(){
             ModelFigure * curr_building = (*itB);
 
             bool building_intersect =
-                (curr_misil->position - curr_building->position) < (v1);
-//                prism_intersect(curr_misil->position, misil_next_position + v1, curr_building->position, curr_building->position + v1);
+                simple_intrsect(curr_misil->position, curr_building->position);
+//                (curr_misil->position - curr_building->position) < (v1);
+//                prism_intersect(curr_misil->position, misil_next_position, curr_building->position, curr_building->position);
 
             if (building_intersect){
                 itB = buildings->erase(itB);
@@ -582,11 +592,12 @@ void Game::detectCollisions(){
             list<Bullet*>::iterator itBullet = bullets->begin();
             while(itBullet!=bullets->end()){
                 Bullet * curr_bullet = (*itBullet);
-                Vector bullet_next_position = curr_bullet->position + curr_bullet->velocity * (Constants::dt/fps);
+                Vector bullet_next_position = curr_bullet->position + curr_bullet->velocity * (Constants::dt/(fps*((float)game_speed)));
 
                 bool bullet_intersect =
-                    (curr_misil->position - curr_bullet->position) < (v1);
-//                    prism_intersect(curr_misil->position, misil_next_position + v1, curr_bullet->position, bullet_next_position + v1);
+                    simple_intrsect(curr_misil->position, curr_bullet->position);
+//                    (curr_misil->position - curr_bullet->position) < (v1);
+//                    prism_intersect(curr_misil->position, misil_next_position, curr_bullet->position, bullet_next_position);
 
                 if (bullet_intersect){
                     itBullet = bullets->erase(itBullet);
@@ -715,77 +726,12 @@ void Game::drawLandscape(){
     glBindTexture(GL_TEXTURE_2D, textura_cielo);
     //glBindTexture(GL_TEXTURE_2D, textura_paredes);
     drawHalfSphere(130,130, 100);
-    // Draw roof
-//    glColor3f(1.0f, 0.0f, 0.0f);
-//    glBindTexture(GL_TEXTURE_2D, textura_cielo);
-//    glBegin(GL_QUADS);
-//    glTexCoord2f(0, 0);
-//    glVertex3f( box_size, box_size/2,  box_size);
-//    glTexCoord2f(1, 0);
-//    glVertex3f( box_size, box_size/2, -box_size);
-//    glTexCoord2f(1, 1);
-//    glVertex3f(-box_size, box_size/2, -box_size);
-//    glTexCoord2f(0, 1);
-//    glVertex3f(-box_size, box_size/2,  box_size);
-//    glEnd();
-//
-//    // Draw borders
-//    glColor3f(0.0f, 1.0f, 0.0f);
-//    glBegin(GL_QUADS);
-//    glTexCoord2f(0, 0);
-//    glVertex3f(-box_size, box_size/2, -box_size);
-//    glTexCoord2f(1, 0);
-//    glVertex3f(-box_size, box_size/2,  box_size);
-//    glTexCoord2f(1, 1);
-//    glVertex3f(-box_size,  0.0f,  box_size);
-//    glTexCoord2f(0, 1);
-//    glVertex3f(-box_size,  0.0f, -box_size);
-//    glEnd();
-//
-//    // Draw borders
-//    glColor3f(1.0f, 1.0f, 0.0f);
-//    glBegin(GL_QUADS);
-//    glTexCoord2f(0, 0);
-//    glVertex3f(-box_size, box_size/2, box_size);
-//    glTexCoord2f(1, 0);
-//    glVertex3f( box_size, box_size/2, box_size);
-//    glTexCoord2f(1, 1);
-//    glVertex3f( box_size,  0.0f, box_size);
-//    glTexCoord2f(0, 1);
-//    glVertex3f(-box_size,  0.0f, box_size);
-//    glEnd();
-//
-//    // Draw borders
-//    glColor3f(0.0f, 0.0f, 1.0f);
-//    glBegin(GL_QUADS);
-//    glTexCoord2f(0, 0);
-//    glVertex3f(box_size, box_size/2, box_size);
-//    glTexCoord2f(1, 0);
-//    glVertex3f(box_size, box_size/2,-box_size);
-//    glTexCoord2f(1, 1);
-//    glVertex3f(box_size,  0.0f,-box_size);
-//    glTexCoord2f(0, 1);
-//    glVertex3f(box_size,  0.0f, box_size);
-//    glEnd();
-//
-//    // Draw borders
-//    glColor3f(1.0f, 0.0f, 1.0f);
-//    glBegin(GL_QUADS);
-//    glTexCoord2f(0, 0);
-//    glVertex3f( box_size,  0.0f, -box_size);
-//    glTexCoord2f(1, 0);
-//    glVertex3f(-box_size,  0.0f, -box_size);
-//    glTexCoord2f(1, 1);
-//    glVertex3f(-box_size, box_size/2, -box_size);
-//    glTexCoord2f(0, 1);
-//    glVertex3f( box_size, box_size/2, -box_size);
-//    glEnd();
-    //glDisable(GL_TEXTURE_2D);
 }
 
 bool Game::levelCompleted() {
     return maxMisilQuantity==0 && misilQuantity==0;
 }
+
 void Game::levelUp() {
     score += life * Constants::LIFE_POINTS;
     score += bulletQuantity * Constants::BULLET_POINTS;
@@ -918,7 +864,6 @@ void Game::drawHud()
     glMatrixMode( GL_MODELVIEW );
     glPopMatrix();
 
-    // Reenable lighting
 }
 
 void Game::drawGameOver()
