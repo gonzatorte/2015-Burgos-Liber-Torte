@@ -215,8 +215,8 @@ void Game::init(){
 
 void Game::leftKeyPressed() {
 
-    float newXPoint = camera->position.x + (camera->point.z - camera->position.z) * Constants::dt * Constants::CAMERA_SPEED;
-    float newZPoint = camera->position.z + ((camera->point.x - camera->position.x)*-1) * Constants::dt * Constants::CAMERA_SPEED;
+    float newXPoint = camera->position.x + (camera->point.z - camera->position.z) * Constants::dt/fps * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + ((camera->point.x - camera->position.x)*-1) * Constants::dt/fps * Constants::CAMERA_SPEED;
 
     if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
         auxPos = Vector( camera->point.z - camera->position.z, 0, (camera->point.x - camera->position.x)*-1) * Constants::CAMERA_SPEED;
@@ -228,8 +228,8 @@ void Game::leftKeyPressed() {
 
 void Game::upKeyPressed() {
 
-    float newXPoint = camera->position.x + (camera->point.x - camera->position.x) * Constants::dt * Constants::CAMERA_SPEED;
-    float newZPoint = camera->position.z + (camera->point.z - camera->position.z) * Constants::dt * Constants::CAMERA_SPEED;
+    float newXPoint = camera->position.x + (camera->point.x - camera->position.x) * Constants::dt/fps * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + (camera->point.z - camera->position.z) * Constants::dt/fps * Constants::CAMERA_SPEED;
 
     if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
         auxPos = Vector(camera->point.x - camera->position.x, 0, camera->point.z - camera->position.z) * Constants::CAMERA_SPEED;
@@ -240,8 +240,8 @@ void Game::upKeyPressed() {
 
 void Game::rightKeyPressed() {
 
-    float newXPoint = camera->position.x + ((camera->point.z - camera->position.z)*-1) * Constants::dt * Constants::CAMERA_SPEED;
-    float newZPoint = camera->position.z + (camera->point.x - camera->position.x) * Constants::dt * Constants::CAMERA_SPEED;
+    float newXPoint = camera->position.x + ((camera->point.z - camera->position.z)*-1) * Constants::dt/fps * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + (camera->point.x - camera->position.x) * Constants::dt/fps * Constants::CAMERA_SPEED;
 
     if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
         auxPos = Vector( (camera->point.z - camera->position.z)*-1, 0, camera->point.x - camera->position.x) * Constants::CAMERA_SPEED;
@@ -253,8 +253,8 @@ void Game::rightKeyPressed() {
 
 void Game::downKeyPressed() {
 
-    float newXPoint = camera->position.x + (camera->position.x - camera->point.x) * Constants::dt * Constants::CAMERA_SPEED;
-    float newZPoint = camera->position.z + (camera->position.z - camera->point.z) * Constants::dt * Constants::CAMERA_SPEED;
+    float newXPoint = camera->position.x + (camera->position.x - camera->point.x) * Constants::dt/fps * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + (camera->position.z - camera->point.z) * Constants::dt/fps * Constants::CAMERA_SPEED;
 
     if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
         auxPos = Vector(camera->position.x - camera->point.x ,0,camera->position.z - camera->point.z) * Constants::CAMERA_SPEED;
