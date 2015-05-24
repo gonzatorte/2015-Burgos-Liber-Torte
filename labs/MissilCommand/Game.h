@@ -42,6 +42,7 @@ class Game
         void drawBuildings();
         void drawLandscape();
         void drawGameOver();
+        void drawVictory();
         bool levelCompleted();
         void levelUp();
         void drawAim();
@@ -83,6 +84,7 @@ class Game
         int score;
         int life;
         bool gameOver;
+        bool victory;
         clock_t lastMisilTime;
         list<Misil*>* misils;
         list<ModelFigure*>* buildings;

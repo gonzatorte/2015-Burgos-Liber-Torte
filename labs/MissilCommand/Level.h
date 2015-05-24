@@ -18,6 +18,7 @@ class Level
         int getMaxBuildQuantity();
         int getMaxBulletQuantity();
         int getMisilSpeed();
+        int life;
         virtual ~Level();
     protected:
     private:

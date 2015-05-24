@@ -22,8 +22,7 @@ void Game::initLevel(int levelNumber) {
     this->maxBulletQuantity = level->getMaxBulletQuantity();
     this->simultMisilQuant = level->getSimultMisilQuant();
     this->misilSpeed = level->getMisilSpeed();
-    this->life = maxBuildQuantity-4;
-    this->life = maxBuildQuantity-4;
+    this->life = level->life;
     this->misilQuantity = 0;
     this->light_position = 0;
     this->light_direction = 1;
@@ -44,10 +43,12 @@ map<int, Level*>* Game::getLevelsFromSetting(tinyxml2::XMLElement* gameSettings)
         int misilSpeed = atoi(levelElement->FirstChildElement("MISSILE_SPEED")->GetText());
         int maxBuildQuantity = atoi(levelElement->FirstChildElement("CANT_BUILDINGS")->GetText());
         int maxMisilQuantity = atoi(levelElement->FirstChildElement("CANT_MISSILES")->GetText());
+        int life = atoi(levelElement->FirstChildElement("LIFE")->GetText());
         int simultMisilQuant = atoi(levelElement->FirstChildElement("CANT_SIMULTANEOUS_MISSILES")->GetText());
         int maxBulletQuantity = atoi(levelElement->FirstChildElement("CANT_BULLETS")->GetText());
         Level* level = new Level();
         level->setLevelNumber(levelNumber);
+        level->life = life;
         level->setMisilSpeed(misilSpeed);
         level->setMaxBuildQuantity(maxBuildQuantity);
         level->setMaxMisilQuantity(maxMisilQuantity);
@@ -164,12 +165,10 @@ void Game::renderScene(){
     glLoadIdentity();
 
     if (!this->isPaused){
-        if (this->isGameOver()){
-//            cout << "Perdio..";
+        if (this->isGameOver() || this->victory){
             this->drawHud();
         } else {
             if (this->levelCompleted()) {
-                cout << "Pasaste de nivel CAPO!!!";
                 this->levelUp();
             }
             // Create light components
@@ -214,52 +213,56 @@ void Game::init(){
 }
 
 void Game::leftKeyPressed() {
+    float fps_f = fps/((float)game_speed);
+    float dt_f = Constants::dt/fps/((float)game_speed);
+    float newXPoint = camera->position.x + (camera->point.z - camera->position.z) * dt_f * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + ((camera->point.x - camera->position.x)*-1) * dt_f * Constants::CAMERA_SPEED;
 
-    float newXPoint = camera->position.x + (camera->point.z - camera->position.z) * Constants::dt/fps * Constants::CAMERA_SPEED;
-    float newZPoint = camera->position.z + ((camera->point.x - camera->position.x)*-1) * Constants::dt/fps * Constants::CAMERA_SPEED;
-
-    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
+    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1 || newZPoint > 70 || newZPoint < -70 || newXPoint > 70 || newXPoint < -70)) {
         auxPos = Vector( camera->point.z - camera->position.z, 0, (camera->point.x - camera->position.x)*-1) * Constants::CAMERA_SPEED;
-        camera->position = camera->position + auxPos * (Constants::dt);
-        camera->point = camera->point + auxPos * (Constants::dt);
+        camera->position = camera->position + auxPos * dt_f;
+        camera->point = camera->point + auxPos * dt_f;
     }
     //SDL_WarpMouse(xPosBeforePause - 4,yPosBeforePause); Esta parte se descomenta si se quiere rotar la mira.
 }
 
 void Game::upKeyPressed() {
+    float fps_f = fps/((float)game_speed);
+    float dt_f = Constants::dt/fps_f;
+    float newXPoint = camera->position.x + (camera->point.x - camera->position.x) * dt_f * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + (camera->point.z - camera->position.z) * dt_f * Constants::CAMERA_SPEED;
 
-    float newXPoint = camera->position.x + (camera->point.x - camera->position.x) * Constants::dt/fps * Constants::CAMERA_SPEED;
-    float newZPoint = camera->position.z + (camera->point.z - camera->position.z) * Constants::dt/fps * Constants::CAMERA_SPEED;
-
-    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
+    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1 || newZPoint > 70 || newZPoint < -70 || newXPoint > 70 || newXPoint < -70)) {
         auxPos = Vector(camera->point.x - camera->position.x, 0, camera->point.z - camera->position.z) * Constants::CAMERA_SPEED;
-        camera->position = camera->position + auxPos * (Constants::dt);
-        camera->point = camera->point + auxPos * (Constants::dt);
+        camera->position = camera->position + auxPos * dt_f;
+        camera->point = camera->point + auxPos * dt_f;
     }
 }
 
 void Game::rightKeyPressed() {
+    float fps_f = fps/((float)game_speed);
+    float dt_f = Constants::dt/fps_f;
+    float newXPoint = camera->position.x + ((camera->point.z - camera->position.z)*-1) * dt_f * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + (camera->point.x - camera->position.x) * dt_f * Constants::CAMERA_SPEED;
 
-    float newXPoint = camera->position.x + ((camera->point.z - camera->position.z)*-1) * Constants::dt/fps * Constants::CAMERA_SPEED;
-    float newZPoint = camera->position.z + (camera->point.x - camera->position.x) * Constants::dt/fps * Constants::CAMERA_SPEED;
-
-    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
+    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1 || newZPoint > 70 || newZPoint < -70 || newXPoint > 70 || newXPoint < -70)) {
         auxPos = Vector( (camera->point.z - camera->position.z)*-1, 0, camera->point.x - camera->position.x) * Constants::CAMERA_SPEED;
-        camera->position = camera->position + auxPos * (Constants::dt);
-        camera->point = camera->point + auxPos * (Constants::dt);
+        camera->position = camera->position + auxPos * dt_f;
+        camera->point = camera->point + auxPos * dt_f;
     }
     //SDL_WarpMouse(xPosBeforePause + 4,yPosBeforePause); Esta parte se descomenta si se quiere rotar la mira.
 }
 
 void Game::downKeyPressed() {
+    float fps_f = fps/((float)game_speed);
+    float dt_f = Constants::dt/fps_f;
+    float newXPoint = camera->position.x + (camera->position.x - camera->point.x) * dt_f * Constants::CAMERA_SPEED;
+    float newZPoint = camera->position.z + (camera->position.z - camera->point.z) * dt_f * Constants::CAMERA_SPEED;
 
-    float newXPoint = camera->position.x + (camera->position.x - camera->point.x) * Constants::dt/fps * Constants::CAMERA_SPEED;
-    float newZPoint = camera->position.z + (camera->position.z - camera->point.z) * Constants::dt/fps * Constants::CAMERA_SPEED;
-
-    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1)) {
+    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1 || newZPoint > 70 || newZPoint < -70 || newXPoint > 70 || newXPoint < -70)) {
         auxPos = Vector(camera->position.x - camera->point.x ,0,camera->position.z - camera->point.z) * Constants::CAMERA_SPEED;
-        camera->position = camera->position + auxPos * (Constants::dt);
-        camera->point = camera->point + auxPos * (Constants::dt);
+        camera->position = camera->position + auxPos * dt_f;
+        camera->point = camera->point + auxPos * dt_f;
     }
 }
 
@@ -270,7 +273,7 @@ void Game::interact(SDL_Event * evento){
         if (evento->button.button == SDL_BUTTON_LEFT){
             Vector initPosition = Vector(camera->position.x, camera->position.y-1, camera->position.z);
             Vector initVelocity = Vector((camera->point.x - camera->position.x)*100,
-                                              (camera->point.y - camera->position.y)*100,
+                                              (camera->point.y - camera->position.y)*100+2,
                                               (camera->point.z - camera->position.z)*100);
             initVelocity = initVelocity*vel_adjust_factor;
             Vector initAccel = Vector(0.0 ,0.0 ,0.0);
@@ -356,9 +359,8 @@ Game::Game(int screen_w_in, int screen_h_in, Camera * camera_in, int fps_in, boo
     wireframe_mode = wireframe_mode_in;
     game_speed = 1;
     texture_mode = texture_mode_in;
-    textura_suelo = LoadBitmap("rsc/textures/grass.bmp");
-    textura_cielo = LoadBitmap("rsc/textures/sky_107.bmp");
-    textura_paredes = LoadBitmap("rsc/textures/mountains.bmp");
+    textura_suelo = LoadBitmap("rsc/textures/GrassES4.bmp");
+    textura_cielo = LoadBitmap("rsc/textures/RIPPLES.bmp");
     model_building = new ModelType();
     model_building->LoadFrom3DS("rsc/models/cubo.3ds");
 //    model_building->LoadFrom3DS("rsc/models/house4.3ds");
@@ -386,6 +388,7 @@ Game::Game(int screen_w_in, int screen_h_in, Camera * camera_in, int fps_in, boo
 void Game::reset(){
     score = 0;
     gameOver = false;
+    victory = false;
     isPaused = false;
     multiplicador = -1;
     level = 1;
@@ -489,7 +492,7 @@ void Game::addBuildings() {
             Vector initAccel = Vector(0.0 ,0.0 ,0.0);
             building->acceleration = initAccel;
 
-            Vector initPosition = Vector(i*5.0+10+(j*a),1,j*5.0+5+(j*a));
+            Vector initPosition = Vector(i*5.0+10,1,j*5.0+5);
             building->position = initPosition;
 
             Vector initVelocity = Vector(0 , 0 ,0.0);
@@ -707,7 +710,7 @@ void drawHalfSphere(int lats, int longs, GLfloat r) {
  }
 
 void Game::drawLandscape(){
-    int box_size = 70.0f;
+    int box_size = 100.0f;
     // Draw ground
     glColor3f(1.0f, 1.0f, 1.0f);
     glBindTexture(GL_TEXTURE_2D, textura_suelo);
@@ -736,7 +739,12 @@ void Game::levelUp() {
     score += life * Constants::LIFE_POINTS;
     score += bulletQuantity * Constants::BULLET_POINTS;
     level++;
-    initLevel(level);
+    if (level > levels->size()){
+        this->victory = true;
+        level--;
+    }
+    else
+        initLevel(level);
 }
 
 void Game::drawLife(){
@@ -851,6 +859,10 @@ void Game::drawHud()
         glLoadIdentity();
             if (gameOver){
                 drawGameOver();
+            } else if (victory){
+                drawVictory();
+                drawLevel();
+                drawScore();
             } else {
                 drawAim();
                 drawLife();
@@ -870,6 +882,11 @@ void Game::drawGameOver()
 {
     float coords[3] = {-80, 0, 0};
     drawText(text_end_lost, coords);
+}
+void Game::drawVictory()
+{
+    float coords[3] = {-60, 0, 0};
+    drawText(text_end_win, coords);
 }
 
 Game::~Game()
