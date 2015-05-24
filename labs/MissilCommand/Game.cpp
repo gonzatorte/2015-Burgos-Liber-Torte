@@ -354,6 +354,7 @@ Game::Game(int screen_w_in, int screen_h_in, Camera * camera_in, int fps_in, boo
     camera = camera_in;
     fps = fps_in;
     wireframe_mode = wireframe_mode_in;
+    game_speed = 1;
     texture_mode = texture_mode_in;
     textura_suelo = LoadBitmap("rsc/textures/grass.bmp");
     textura_cielo = LoadBitmap("rsc/textures/sky_107.bmp");
@@ -513,7 +514,7 @@ void Game::misilDisplacement() {
     for (it=misils->begin(); it!=misils->end(); ++it){
 //        Vector Ygravity = Vector(0, 0, 0);
 
-        (*it)->eulerIntegrate(fps);
+        (*it)->eulerIntegrate(fps/((float)game_speed));
 
 //        Vector* velocity = (*it)->getVelocity(); // Guardo velocidad vieja
 //

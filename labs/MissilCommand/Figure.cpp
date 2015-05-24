@@ -9,7 +9,7 @@ using namespace std;
 Figure::Figure() {
 }
 
-void Figure::eulerIntegrate(int fps) {
+void Figure::eulerIntegrate(float fps) {
     //previews_position = position;
 	position = position + velocity * (Constants::dt/fps);
 	velocity = velocity + acceleration * (Constants::dt/fps);

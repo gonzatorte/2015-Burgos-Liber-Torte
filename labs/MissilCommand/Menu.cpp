@@ -138,45 +138,45 @@ void Menu::draw(){
 
     positionate_box(1.0/2,  1,      0, 0, main_box, text_menu.area);
 
-    positionate_box(0,      4.0/5,  0, 0, main_box, text_texture_mode.area);
-    positionate_box(2.0/4,  4.0/5,  0, 0, main_box, text_texture_on.area);
-    positionate_box(3.0/4,  4.0/5,  0, 0, main_box, text_texture_off.area);
+    positionate_box(0,      (texture_mode_opt)*(1.0/5),     0, 0, main_box, text_texture_mode.area);
+    positionate_box(2.0/4,  (texture_mode_opt)*(1.0/5),     0, 0, main_box, text_texture_on.area);
+    positionate_box(3.0/4,  (texture_mode_opt)*(1.0/5),     0, 0, main_box, text_texture_off.area);
 
-    positionate_box(0,      3.0/5,  0, 0, main_box, text_wireframe_mode.area);
-    positionate_box(2.0/4,  3.0/5,  0, 0, main_box, text_wireframe_on.area);
-    positionate_box(3.0/4,  3.0/5,  0, 0, main_box, text_wireframe_off.area);
+    positionate_box(0,      (wireframe_mode_opt)*(1.0/5),   0, 0, main_box, text_wireframe_mode.area);
+    positionate_box(2.0/4,  (wireframe_mode_opt)*(1.0/5),   0, 0, main_box, text_wireframe_on.area);
+    positionate_box(3.0/4,  (wireframe_mode_opt)*(1.0/5),   0, 0, main_box, text_wireframe_off.area);
 
-    positionate_box(0,      2.0/5,  0, 0, main_box, text_light_color.area);
-    positionate_box(4.0/8,  2.0/5,  0, 0, main_box, text_light_color_1.area);
-    positionate_box(5.0/8,  2.0/5,  0, 0, main_box, text_light_color_2.area);
-    positionate_box(6.0/8,  2.0/5,  0, 0, main_box, text_light_color_3.area);
-    positionate_box(7.0/8,  2.0/5,  0, 0, main_box, text_light_color_4.area);
+    positionate_box(0,      (light_color_opt)*(1.0/5),      0, 0, main_box, text_light_color.area);
+    positionate_box(4.0/8,  (light_color_opt)*(1.0/5),      0, 0, main_box, text_light_color_1.area);
+    positionate_box(5.0/8,  (light_color_opt)*(1.0/5),      0, 0, main_box, text_light_color_2.area);
+    positionate_box(6.0/8,  (light_color_opt)*(1.0/5),      0, 0, main_box, text_light_color_3.area);
+    positionate_box(7.0/8,  (light_color_opt)*(1.0/5),      0, 0, main_box, text_light_color_4.area);
 
-    positionate_box(0,      1.0/5,  0, 0, main_box, text_light_source.area);
-    positionate_box(4.0/8,  1.0/5,  0, 0, main_box, text_light_source_1.area);
-    positionate_box(5.0/8,  1.0/5,  0, 0, main_box, text_light_source_2.area);
-    positionate_box(6.0/8,  1.0/5,  0, 0, main_box, text_light_source_3.area);
-    positionate_box(7.0/8,  1.0/5,  0, 0, main_box, text_light_source_4.area);
+    positionate_box(0,      (light_src_opt)*(1.0/5),        0, 0, main_box, text_light_source.area);
+    positionate_box(4.0/8,  (light_src_opt)*(1.0/5),        0, 0, main_box, text_light_source_1.area);
+    positionate_box(5.0/8,  (light_src_opt)*(1.0/5),        0, 0, main_box, text_light_source_2.area);
+    positionate_box(6.0/8,  (light_src_opt)*(1.0/5),        0, 0, main_box, text_light_source_3.area);
+    positionate_box(7.0/8,  (light_src_opt)*(1.0/5),        0, 0, main_box, text_light_source_4.area);
 
-    positionate_box(0,      0.0/5,  0, 0, main_box, text_game_speed.area);
-    positionate_box(4.0/8,      0.0/5,  0, 0, main_box, text_game_speed_1.area);
-    positionate_box(5.0/8,      0.0/5,  0, 0, main_box, text_game_speed_2.area);
-    positionate_box(6.0/8,      0.0/5,  0, 0, main_box, text_game_speed_3.area);
-    positionate_box(7.0/8,      0.0/5,  0, 0, main_box, text_game_speed_4.area);
+    positionate_box(0,      (speed_opt)*(1.0/5),            0, 0, main_box, text_game_speed.area);
+    positionate_box(4.0/8,  (speed_opt)*(1.0/5),            0, 0, main_box, text_game_speed_1.area);
+    positionate_box(5.0/8,  (speed_opt)*(1.0/5),            0, 0, main_box, text_game_speed_2.area);
+    positionate_box(6.0/8,  (speed_opt)*(1.0/5),            0, 0, main_box, text_game_speed_3.area);
+    positionate_box(7.0/8,  (speed_opt)*(1.0/5),            0, 0, main_box, text_game_speed_4.area);
 
     switch(curr_opt){
     case (texture_mode_opt):
         if (game->texture_mode){
-            drawBox(text_wireframe_on.area);
+            drawBox(text_texture_on.area);
         } else {
-            drawBox(text_wireframe_off.area);
+            drawBox(text_texture_off.area);
         }
         break;
     case (wireframe_mode_opt):
         if (game->wireframe_mode){
-            drawBox(text_texture_on.area);
+            drawBox(text_wireframe_on.area);
         } else {
-            drawBox(text_texture_off.area);
+            drawBox(text_wireframe_off.area);
         }
         break;
     case (light_src_opt):
@@ -192,6 +192,9 @@ void Menu::draw(){
             break;
         case (3):
             drawBox(text_light_source_3.area);
+            break;
+        default:
+            cout << "Unrrec light_position " << game->light_position << endl;
             break;
         }
         break;
@@ -209,6 +212,9 @@ void Menu::draw(){
         case (3):
             drawBox(text_light_color_3.area);
             break;
+        default:
+            cout << "Unrrec light_color " << game->light_color << endl;
+            break;
         }
         break;
     case (speed_opt):
@@ -225,9 +231,13 @@ void Menu::draw(){
         case (4):
             drawBox(text_game_speed_4.area);
             break;
+        default:
+            cout << "Unrrec game_speed " << game->game_speed << endl;
+            break;
         }
         break;
     default:
+        cout << "Unrrec opt " << curr_opt << endl;
         break;
     }
 
@@ -260,17 +270,34 @@ void Menu::draw(){
     drawText(text_texture_off);
 }
 
+const char * opt_2_string(int opt){
+    switch(opt){
+    case texture_mode_opt:
+        return "texture_mode_opt";
+    case wireframe_mode_opt:
+        return "wireframe_mode_opt";
+    case light_color_opt:
+        return "light_color_opt";
+    case light_src_opt:
+        return "light_src_opt";
+    case speed_opt:
+        return "speed_opt";
+    default:
+        return "UNRREC_OPT";
+    }
+}
+
 void Menu::interact(SDL_Event * evento){
     switch(evento->type){
     case SDL_KEYDOWN:
         switch(evento->key.keysym.sym){
         case SDLK_UP:
             curr_opt = MOD((curr_opt + 1),5);
-            cout << "curr_opt " << curr_opt << endl;
+            cout << "curr_opt " << curr_opt << opt_2_string(curr_opt) << endl;
             break;
         case SDLK_DOWN:
             curr_opt = MOD((curr_opt - 1),5);
-            cout << "curr_opt " << curr_opt << endl;
+            cout << "curr_opt " << curr_opt << opt_2_string(curr_opt) << endl;
             break;
         case SDLK_LEFT:
             switch(curr_opt){
@@ -295,7 +322,7 @@ void Menu::interact(SDL_Event * evento){
                 cout << "game_speed " << game->game_speed << endl;
                 break;
             default:
-//                cout << "default1 " << curr_opt << endl;
+                cout << "default1 " << curr_opt << endl;
                 break;
             }
             break;
@@ -322,7 +349,7 @@ void Menu::interact(SDL_Event * evento){
                 cout << "game_speed " << game->game_speed << endl;
                 break;
             default:
-//                cout << "default2" << curr_opt << endl;
+                cout << "default2" << opt_2_string(curr_opt) << curr_opt << endl;
                 break;
             }
             break;
