@@ -1,6 +1,3 @@
-#include <SDL/SDL.h>
-#include <SDL_ttf.h>
-#include <SDL/SDL_opengl.h>
 
 #include <cstdio>
 #include <cmath>
@@ -16,6 +13,10 @@
 #include <string>
 #include <sstream>
 #include <stdexcept>
+
+#include <SDL/SDL.h>
+#include <SDL_ttf.h>
+#include <SDL/SDL_opengl.h>
 
 #include <GL/glu.h>
 
@@ -78,6 +79,8 @@ void setUp(){
 }
 
 int main(int argc, char **argv){
+    FILE * oldstdout = stdout;
+    FILE * oldstderr = stderr;
 //    freopen("CON", "w", stdout);
 //    freopen("CON", "w", stderr);
 //    fclose(stdout);
@@ -91,7 +94,6 @@ int main(int argc, char **argv){
     Camera* camera = new Camera(Vector(0.0f,1.0f,-40.0f), Vector(8.0f,1.0f,4.0f), screen_w, screen_h);
     Game * game = new Game(screen_w, screen_h, camera, fps);
     Menu * menu = new Menu(screen_h, screen_w, game);
-    SDL_EnableKeyRepeat(200,1);
     game->init();
     bool wasPaused = false;
     do{
@@ -153,5 +155,9 @@ int main(int argc, char **argv){
         tend = time(0);
         sleep(sleep_time - (tend - tstart));
     } while (!fin);
+
+//    freopen("CON", "w", stdout);
+//    freopen("CON", "w", stderr);
+
     return 0;
 }

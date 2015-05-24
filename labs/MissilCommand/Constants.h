@@ -15,6 +15,8 @@ class Constants
         static const char P;
         static const char UP_P;
         static const float CAMERA_SPEED;
+        static const int MAX_SPEED;
+        static const int MIN_SPEED;
     protected:
     private:
 };

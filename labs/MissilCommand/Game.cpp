@@ -197,6 +197,7 @@ void Game::renderScene(){
 }
 
 void Game::init(){
+    SDL_EnableKeyRepeat(200,1);
     SDL_ShowCursor(SDL_DISABLE);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);

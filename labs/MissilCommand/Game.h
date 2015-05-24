@@ -63,7 +63,7 @@ class Game
         int light_position;
         int light_direction;
         int light_color;
-        float game_speed;
+        int game_speed;
     protected:
     private:
         GLuint textura_suelo, textura_cielo, textura_paredes;

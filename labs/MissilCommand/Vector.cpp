@@ -25,15 +25,39 @@ Vector::Vector(float x, float y, float z)
     this->z = z;
 }
 
-Vector & Vector::operator+(const Vector & v) {
-    Vector result = Vector(x + v.x, y + v.y, z + v.z);
+Vector Vector::operator+(const Vector & v) {
+    Vector result = Vector(this->x + v.x, this->y + v.y, this->z + v.z);
     return result;
 }
 
-Vector & Vector::operator*(float num) {
-
-    Vector result = Vector(x * num, y * num, z * num);
+Vector Vector::operator-(const Vector & v) {
+    Vector result = Vector(this->x - v.x, this->y - v.y, this->z - v.z);
     return result;
+}
+
+Vector Vector::operator*(float num) {
+    Vector result = Vector(this->x * num, this->y * num, this->z * num);
+    return result;
+}
+
+bool Vector::operator==(const Vector & v){
+    return ((this->x == v.x) && (this->y == v.y) && (this->z == v.z));
+}
+
+bool Vector::operator<(const Vector & v){
+    return ((this->x < v.x) && (this->y < v.y) && (this->z < v.z));
+}
+
+bool Vector::operator<=(const Vector & v){
+    return ((this->x <= v.x) && (this->y <= v.y) && (this->z <= v.z));
+}
+
+bool Vector::operator>=(const Vector & v){
+    return ((this->x >= v.x) && (this->y >= v.y) && (this->z >= v.z));
+}
+
+bool Vector::operator>(const Vector & v){
+    return ((this->x > v.x) && (this->y > v.y) && (this->z > v.z));
 }
 
 void Vector::VectCreate(Vector * p_start, Vector * p_end, Vector * p_vector){

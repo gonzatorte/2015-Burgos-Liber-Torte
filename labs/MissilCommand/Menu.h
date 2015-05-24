@@ -8,7 +8,7 @@
 #include "TextGrafic.h"
 #include "Game.h"
 
-typedef enum {texture_mode_opt=0, wireframe_mode_opt, light_src_opt, light_color_opt, speed_opt} menu_opts;
+typedef enum {texture_mode_opt=0, wireframe_mode_opt, light_color_opt, light_src_opt, speed_opt} menu_opts;
 
 class Menu{
     public:
@@ -24,11 +24,20 @@ class Menu{
     private:
         TTF_Font * font_big;
         TTF_Font * font_small;
-        TextGrafic text_game_speed;
 
         TextGrafic text_menu;
 
+        TextGrafic text_game_speed;
+        TextGrafic text_game_speed_1;
+        TextGrafic text_game_speed_2;
+        TextGrafic text_game_speed_3;
+        TextGrafic text_game_speed_4;
+
         TextGrafic text_light_source;
+        TextGrafic text_light_source_1;
+        TextGrafic text_light_source_2;
+        TextGrafic text_light_source_3;
+        TextGrafic text_light_source_4;
 
         TextGrafic text_light_color;
         TextGrafic text_light_color_1;

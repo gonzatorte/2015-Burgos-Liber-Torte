@@ -9,3 +9,5 @@ const int Constants::BULLET_POINTS = 150;
 const char Constants::P	= 'p';
 const char Constants::UP_P = 'P';
 const float Constants::CAMERA_SPEED = 5.0;
+const int Constants::MAX_SPEED = 5;
+const int Constants::MIN_SPEED = 1;

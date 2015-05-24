@@ -9,6 +9,11 @@
 #include "TextGrafic.h"
 #include "texture.h"
 
+#define MAX(X,Y) (X<Y)?(Y):(X)
+#define MIN(X,Y) (X<Y)?(X):(Y)
+#define ABS(X) (0<=X)?(X):(-(X))
+#define MOD(X,N) (0<=(X))?((X)%(N)):(((N)+(X))%(N))
+
 using namespace std;
 
 Menu::Menu(int screen_w_in, int screen_h_in, Game * game_in){
@@ -24,6 +29,10 @@ Menu::Menu(int screen_w_in, int screen_h_in, Game * game_in){
     text_menu = Load_string("MENU", {128,64,64,0}, font_big);
 
     text_game_speed = Load_string("Speed", {128,64,64,0}, font_small);
+    text_game_speed_1 = Load_string("1", {128,64,64,0}, font_small);
+    text_game_speed_2 = Load_string("2", {128,64,64,0}, font_small);
+    text_game_speed_3 = Load_string("3", {128,64,64,0}, font_small);
+    text_game_speed_4 = Load_string("4", {128,64,64,0}, font_small);
 
     text_wireframe_mode = Load_string("Wireframes", {128,64,64,0}, font_small);
     text_wireframe_on = Load_string("ON", {128,64,64,0}, font_small);
@@ -34,6 +43,10 @@ Menu::Menu(int screen_w_in, int screen_h_in, Game * game_in){
     text_texture_off = Load_string("OFF", {128,64,64,0}, font_small);
 
     text_light_source = Load_string("Light src", {128,64,64,0}, font_small);
+    text_light_source_1 = Load_string("1", {128,64,64,0}, font_small);
+    text_light_source_2 = Load_string("2", {128,64,64,0}, font_small);
+    text_light_source_3 = Load_string("3", {128,64,64,0}, font_small);
+    text_light_source_4 = Load_string("4", {128,64,64,0}, font_small);
 
     text_light_color = Load_string("Light clr", {128,64,64,0}, font_small);
     text_light_color_1 = Load_string("1", {128,64,64,0}, font_small);
@@ -44,7 +57,9 @@ Menu::Menu(int screen_w_in, int screen_h_in, Game * game_in){
 
 void Menu::init(){
     this->curr_opt = texture_mode_opt;
+    cout << "Initial opt " << this->curr_opt << endl;
 
+    SDL_EnableKeyRepeat(1000,500);
     SDL_ShowCursor(SDL_ENABLE);
 //    GLenum old_matrix_mode;
 //    glGetIntegerv(GL_MATRIX_MODE, &old_matrix_mode);
@@ -122,13 +137,14 @@ void Menu::draw(){
     drawBox(main_box, texture_back);
 
     positionate_box(1.0/2,  1,      0, 0, main_box, text_menu.area);
+
     positionate_box(0,      4.0/5,  0, 0, main_box, text_texture_mode.area);
     positionate_box(2.0/4,  4.0/5,  0, 0, main_box, text_texture_on.area);
     positionate_box(3.0/4,  4.0/5,  0, 0, main_box, text_texture_off.area);
 
     positionate_box(0,      3.0/5,  0, 0, main_box, text_wireframe_mode.area);
-    positionate_box(2.0/4,  4.0/5,  0, 0, main_box, text_wireframe_on.area);
-    positionate_box(3.0/4,  4.0/5,  0, 0, main_box, text_wireframe_off.area);
+    positionate_box(2.0/4,  3.0/5,  0, 0, main_box, text_wireframe_on.area);
+    positionate_box(3.0/4,  3.0/5,  0, 0, main_box, text_wireframe_off.area);
 
     positionate_box(0,      2.0/5,  0, 0, main_box, text_light_color.area);
     positionate_box(4.0/8,  2.0/5,  0, 0, main_box, text_light_color_1.area);
@@ -137,24 +153,47 @@ void Menu::draw(){
     positionate_box(7.0/8,  2.0/5,  0, 0, main_box, text_light_color_4.area);
 
     positionate_box(0,      1.0/5,  0, 0, main_box, text_light_source.area);
+    positionate_box(4.0/8,  1.0/5,  0, 0, main_box, text_light_source_1.area);
+    positionate_box(5.0/8,  1.0/5,  0, 0, main_box, text_light_source_2.area);
+    positionate_box(6.0/8,  1.0/5,  0, 0, main_box, text_light_source_3.area);
+    positionate_box(7.0/8,  1.0/5,  0, 0, main_box, text_light_source_4.area);
+
     positionate_box(0,      0.0/5,  0, 0, main_box, text_game_speed.area);
+    positionate_box(4.0/8,      0.0/5,  0, 0, main_box, text_game_speed_1.area);
+    positionate_box(5.0/8,      0.0/5,  0, 0, main_box, text_game_speed_2.area);
+    positionate_box(6.0/8,      0.0/5,  0, 0, main_box, text_game_speed_3.area);
+    positionate_box(7.0/8,      0.0/5,  0, 0, main_box, text_game_speed_4.area);
 
     switch(curr_opt){
     case (texture_mode_opt):
-        if (game->wireframe_mode){
+        if (game->texture_mode){
             drawBox(text_wireframe_on.area);
         } else {
             drawBox(text_wireframe_off.area);
         }
         break;
     case (wireframe_mode_opt):
-        if (game->texture_mode){
+        if (game->wireframe_mode){
             drawBox(text_texture_on.area);
         } else {
             drawBox(text_texture_off.area);
         }
         break;
     case (light_src_opt):
+        switch(game->light_position){
+        case (0):
+            drawBox(text_light_source_4.area);
+            break;
+        case (1):
+            drawBox(text_light_source_1.area);
+            break;
+        case (2):
+            drawBox(text_light_source_2.area);
+            break;
+        case (3):
+            drawBox(text_light_source_3.area);
+            break;
+        }
         break;
     case (light_color_opt):
         switch(game->light_color){
@@ -173,20 +212,20 @@ void Menu::draw(){
         }
         break;
     case (speed_opt):
-//        switch(game->game_speed){
-//        case (0):
-//            drawBox(text_light_color_4.area);
-//            break;
-//        case (1):
-//            drawBox(text_light_color_1.area);
-//            break;
-//        case (2):
-//            drawBox(text_light_color_2.area);
-//            break;
-//        case (3):
-//            drawBox(text_light_color_3.area);
-//            break;
-//        }
+        switch(game->game_speed){
+        case (1):
+            drawBox(text_game_speed_1.area);
+            break;
+        case (2):
+            drawBox(text_game_speed_2.area);
+            break;
+        case (3):
+            drawBox(text_game_speed_3.area);
+            break;
+        case (4):
+            drawBox(text_game_speed_4.area);
+            break;
+        }
         break;
     default:
         break;
@@ -201,7 +240,16 @@ void Menu::draw(){
     drawText(text_light_color_4);
 
     drawText(text_light_source);
+    drawText(text_light_source_1);
+    drawText(text_light_source_2);
+    drawText(text_light_source_3);
+    drawText(text_light_source_4);
+
     drawText(text_game_speed);
+    drawText(text_game_speed_1);
+    drawText(text_game_speed_2);
+    drawText(text_game_speed_3);
+    drawText(text_game_speed_4);
 
     drawText(text_wireframe_mode);
     drawText(text_wireframe_on);
@@ -213,70 +261,78 @@ void Menu::draw(){
 }
 
 void Menu::interact(SDL_Event * evento){
-    while(SDL_PollEvent(evento)){
-        switch(evento->type){
-        case SDL_KEYDOWN:
-            switch(evento->key.keysym.sym){
-            case SDLK_UP:
-                curr_opt++;
-                cout << curr_opt << endl;
+    switch(evento->type){
+    case SDL_KEYDOWN:
+        switch(evento->key.keysym.sym){
+        case SDLK_UP:
+            curr_opt = MOD((curr_opt + 1),5);
+            cout << "curr_opt " << curr_opt << endl;
+            break;
+        case SDLK_DOWN:
+            curr_opt = MOD((curr_opt - 1),5);
+            cout << "curr_opt " << curr_opt << endl;
+            break;
+        case SDLK_LEFT:
+            switch(curr_opt){
+            case (texture_mode_opt):
+                game->texture_mode = !game->texture_mode;
+                cout << "texture_mode " << game->texture_mode << endl;
                 break;
-            case SDLK_DOWN:
-                curr_opt--;
-                cout << curr_opt << endl;
+            case (wireframe_mode_opt):
+                game->wireframe_mode = !game->wireframe_mode;
+                cout << "wireframe_mode " << game->wireframe_mode << endl;
                 break;
-            case SDLK_LEFT:
-                switch(curr_opt){
-                case (texture_mode_opt):
-                    game->texture_mode = !game->texture_mode;
-                    cout << game->texture_mode << endl;
-                    break;
-                case (wireframe_mode_opt):
-                    game->wireframe_mode = !game->wireframe_mode;
-                    cout << game->wireframe_mode << endl;
-                    break;
-                case (light_src_opt):
-//                    game->light_position--;
-                    break;
-                case (light_color_opt):
-                    game->light_color = (game->light_color - 1) % 4;
-                    break;
-                case (speed_opt):
-                    game->game_speed--;
-                    break;
-                default:
-                    break;
-                }
+            case (light_src_opt):
+                game->light_position = MOD(game->light_position - 1,4);
+                cout << "light_position " << game->light_position << endl;
                 break;
-            case SDLK_RIGHT:
-                switch(curr_opt){
-                case (texture_mode_opt):
-                    game->texture_mode = !game->texture_mode;
-                    cout << game->texture_mode << endl;
-                    break;
-                case (wireframe_mode_opt):
-                    game->wireframe_mode = !game->wireframe_mode;
-                    cout << game->wireframe_mode << endl;
-                    break;
-                case (light_src_opt):
-//                    game->light_position++;
-                    break;
-                case (light_color_opt):
-                    game->light_color = (game->light_color + 1) % 4;
-                    break;
-                case (speed_opt):
-                    game->game_speed++;
-                    break;
-                default:
-                    break;
-                }
+            case (light_color_opt):
+                game->light_color = MOD(game->light_color - 1,4);
+                cout << "light_color " << game->light_color << endl;
+                break;
+            case (speed_opt):
+                game->game_speed = MAX((game->game_speed - 1), Constants::MIN_SPEED);
+                cout << "game_speed " << game->game_speed << endl;
                 break;
             default:
+//                cout << "default1 " << curr_opt << endl;
+                break;
+            }
+            break;
+        case SDLK_RIGHT:
+            switch(curr_opt){
+            case (texture_mode_opt):
+                game->texture_mode = !game->texture_mode;
+                cout << "texture_mode " << game->texture_mode << endl;
+                break;
+            case (wireframe_mode_opt):
+                game->wireframe_mode = !game->wireframe_mode;
+                cout << "wireframe_mode " << game->wireframe_mode << endl;
+                break;
+            case (light_src_opt):
+                game->light_position = MOD(game->light_position + 1,4);
+                cout << "light_position " << game->light_position << endl;
+                break;
+            case (light_color_opt):
+                game->light_color = MOD(game->light_color + 1,4);
+                cout << "light_color " << game->light_color << endl;
+                break;
+            case (speed_opt):
+                game->game_speed = MIN((game->game_speed + 1), Constants::MAX_SPEED);
+                cout << "game_speed " << game->game_speed << endl;
+                break;
+            default:
+//                cout << "default2" << curr_opt << endl;
                 break;
             }
             break;
         default:
+//            cout << "default keysym" << evento->key.keysym.sym << endl;
             break;
         }
+        break;
+    default:
+//        cout << "default keytype" << evento->type << endl;
+        break;
     }
 }
