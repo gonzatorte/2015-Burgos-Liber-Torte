@@ -303,7 +303,6 @@ void Game::interact(SDL_Event * evento){
                 leftKeyPressed();
                 break;
             case SDLK_RIGHT:
-
                 rightKeyPressed();
                break;
             case SDLK_UP:
@@ -413,9 +412,9 @@ void Game::addMisil() {
     misil->acceleration = Vector(0.0 ,0.0 ,0.0);
     float rand_x = (*itBuildings)->position.x + (rand() % 30) * multiplicador;
     float rand_z = (*itBuildings)->position.z + (rand() % 30) * multiplicador;
-    float y = 35.0;
+    float y = 15.0;
 
-    misil->position = Vector(rand_x, 35, rand_z);
+    misil->position = Vector(rand_x, y, rand_z);
 
     misil->velocity = Vector((*itBuildings)->position.x/misilSpeed - rand_x/misilSpeed,
                              (*itBuildings)->position.y/misilSpeed - y/misilSpeed,
@@ -695,7 +694,7 @@ void drawHalfSphere(int lats, int longs, GLfloat r) {
  }
 
 void Game::drawLandscape(){
-    int box_size = 60.0f;
+    int box_size = 70.0f;
     // Draw ground
     glColor3f(1.0f, 1.0f, 1.0f);
     glBindTexture(GL_TEXTURE_2D, textura_suelo);
@@ -713,7 +712,7 @@ void Game::drawLandscape(){
     glColor3f(1.0f, 0.0f, 0.0f);
     glBindTexture(GL_TEXTURE_2D, textura_cielo);
     //glBindTexture(GL_TEXTURE_2D, textura_paredes);
-    drawHalfSphere(50,50, 90);
+    drawHalfSphere(130,130, 100);
     // Draw roof
 //    glColor3f(1.0f, 0.0f, 0.0f);
 //    glBindTexture(GL_TEXTURE_2D, textura_cielo);
