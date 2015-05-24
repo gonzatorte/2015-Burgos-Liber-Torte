@@ -287,7 +287,6 @@ void Game::interact(SDL_Event * evento){
                 leftKeyPressed();
                 break;
             case SDLK_RIGHT:
-
                 rightKeyPressed();
                break;
             case SDLK_UP:
