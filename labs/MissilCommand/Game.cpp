@@ -165,7 +165,7 @@ void Game::renderScene(){
 
     if (!this->isPaused){
         if (this->isGameOver()){
-            cout << "Perdio..";
+//            cout << "Perdio..";
             this->drawHud();
         } else {
             if (this->levelCompleted()) {
@@ -532,25 +532,44 @@ void Game::misilDisplacement() {
     }
 }
 
+bool interval_intersect(float a1, float b1, float a2, float b2){
+    return ((a1 <= a2) && (a2 <= b1)) || ((a1 <= b2) && (b2 <= b1));
+}
+
+bool prism_intersect(Vector ini_coord1, Vector end_coord1, Vector ini_coord2, Vector end_coord2){
+    return ((end_coord1) < (end_coord2 - ini_coord2)) || ((ini_coord1) < (end_coord2 - ini_coord2));
+//    return  (interval_intersect(ini_coord1.x, end_coord1.x, ini_coord2.x, end_coord2.x)) &&
+//            (interval_intersect(ini_coord1.y, end_coord1.y, ini_coord2.y, end_coord2.y)) &&
+//            (interval_intersect(ini_coord1.z, end_coord1.z, ini_coord2.z, end_coord2.z));
+}
+
 void Game::detectCollisions(){
 
     list<Misil*>::iterator it = misils->begin();
-
-    float a, b, c, x_b, x_diff, y_b, y_diff, z_b, z_diff;
     bool delete_misil;
 
-    while (it!=misils->end()){
+    Vector aa1 = Vector(1,1,1);
+    Vector aa2 = Vector(2,2,2);
+    Vector bb1 = Vector(3,3,3);
+    Vector bb2 = Vector(4,4,4);
+    Vector v1 = Vector(1.0, 1.0, 1.0);
+
+    while (it != misils->end()){
+        Misil * curr_misil = (*it);
+        Vector misil_next_position = curr_misil->position + curr_misil->velocity * (Constants::dt/fps);
+
         delete_misil = false;
-        x_b = (*it)->position.x;
-        y_b = (*it)->position.y;
-        z_b = (*it)->position.z;
         list<ModelFigure*>::iterator itB = buildings->begin();
         while(itB!=buildings->end()){
-            x_diff = x_b - (*itB)->position.x;
-            y_diff = y_b - (*itB)->position.y;
-            z_diff = z_b - (*itB)->position.z;
-            if (fabs(x_diff) < 1 && fabs(y_diff) < 1 && fabs(z_diff) < 1){
+            ModelFigure * curr_building = (*itB);
+
+            bool building_intersect =
+                (curr_misil->position - curr_building->position) < (v1);
+//                prism_intersect(curr_misil->position, misil_next_position + v1, curr_building->position, curr_building->position + v1);
+
+            if (building_intersect){
                 itB = buildings->erase(itB);
+                delete curr_building;
                 decreaseLife();
                 delete_misil = true;
                 break;
@@ -561,11 +580,16 @@ void Game::detectCollisions(){
         if (!delete_misil){
             list<Bullet*>::iterator itBullet = bullets->begin();
             while(itBullet!=bullets->end()){
-                a = x_b - (*itBullet)->position.x;
-                b = y_b - (*itBullet)->position.y;
-                c = z_b - (*itBullet)->position.z;
-                if (fabs(a) < 1.0f && fabs(b) < 1.0f && fabs(c) < 1.0f){
+                Bullet * curr_bullet = (*itBullet);
+                Vector bullet_next_position = curr_bullet->position + curr_bullet->velocity * (Constants::dt/fps);
+
+                bool bullet_intersect =
+                    (curr_misil->position - curr_bullet->position) < (v1);
+//                    prism_intersect(curr_misil->position, misil_next_position + v1, curr_bullet->position, bullet_next_position + v1);
+
+                if (bullet_intersect){
                     itBullet = bullets->erase(itBullet);
+                    delete curr_bullet;
                     delete_misil = true;
                     score += Constants::MISIL_POINTS;
                     break;
@@ -574,11 +598,12 @@ void Game::detectCollisions(){
                 }
             }
         }
-        if (y_b <= 0) { //choca contra el piso
+        if (curr_misil->position.y <= 0) { //choca contra el piso
             delete_misil = true;
         }
         if (delete_misil){
             it = misils->erase(it);
+            delete curr_misil;
             misilQuantity--;
         } else {
             ++it;
