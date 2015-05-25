@@ -65,6 +65,7 @@ class Game
         int light_direction;
         int light_color;
         int game_speed;
+        bool faceting;
     protected:
     private:
         GLuint textura_suelo, textura_cielo, textura_paredes;
