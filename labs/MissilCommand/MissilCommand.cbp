@@ -23,10 +23,7 @@
 					<Add library="lib\libopengl32.a" />
 					<Add library="lib\libSDL.dll.a" />
 					<Add library="lib\libSDL_ttf.dll.a" />
-					<Add directory="../../libs/SDL-devel-1.2.15-mingw32/SDL-1.2.15/lib" />
-					<Add directory="../../libs/freeglut-MinGW-3.0.0-1.mp/freeglut/lib" />
-					<Add directory="../../libs/opengl-deCodeblocks/lib" />
-					<Add directory="../../libs/dlls" />
+					<Add directory="lib" />
 				</Linker>
 			</Target>
 		</Build>
