@@ -88,8 +88,8 @@ class Game
         bool gameOver;
         bool victory;
         clock_t lastMisilTime;
-        list<Misil*>* misils;
-//        list<ModelFigure*>* misils;
+//        list<Misil*>* misils;
+        list<ModelFigure*>* misils;
         list<ModelFigure*>* buildings;
         list<Bullet*>* bullets;
         map<int, Level*>* levels;

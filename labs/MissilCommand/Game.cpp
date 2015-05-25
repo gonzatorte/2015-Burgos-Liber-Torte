@@ -28,8 +28,8 @@ void Game::initLevel(int levelNumber) {
     this->light_direction = 1;
     this->bulletQuantity = maxBulletQuantity;
     this->lastMisilTime = clock();
-    misils = new list<Misil*>();
-//    misils = new list<ModelFigure*>();
+//    misils = new list<Misil*>();
+    misils = new list<ModelFigure*>();
     buildings = new list<ModelFigure*>();
     bullets = new list<Bullet*>();
     addBuildings();
@@ -367,7 +367,7 @@ Game::Game(int screen_w_in, int screen_h_in, Camera * camera_in, int fps_in, boo
     game_speed = 1;
     faceting = true;
     texture_mode = texture_mode_in;
-    textura_suelo = LoadBitmap("rsc/textures/grass.bmp");
+    textura_suelo = LoadBitmap("rsc/textures/GrassES4.bmp");
     textura_cielo = LoadBitmap("rsc/textures/RIPPLES.bmp");
 
     model_building = new ModelType();
@@ -422,11 +422,11 @@ bool Game::isGameOver() {
 void Game::addMisil() {
     list<ModelFigure*>::iterator itBuildings = obtRandomIterator();
 
-//    ModelFigure* misil = new ModelFigure(model_misil);
-//    misil->orientation = Vector(90, 0, 45);
-//    misil->aspect = Vector(1/20.0,1/20.0,-1/20.0);
+    ModelFigure* misil = new ModelFigure(model_misil);
+    misil->orientation = Vector(90, 0, 45);
+    misil->aspect = Vector(1/20.0,1/20.0,-1/20.0);
 
-    Misil* misil = new Misil();
+//    Misil* misil = new Misil();
 
     misil->acceleration = Vector(0.0 ,0.0 ,0.0);
     float rand_x = (*itBuildings)->position.x + (rand() % 30) * multiplicador;
@@ -525,8 +525,8 @@ void Game::addBuildings() {
 }
 
 void Game::misilDisplacement() {
-//    list<ModelFigure*>::iterator it;
-    list<Misil*>::iterator it;
+    list<ModelFigure*>::iterator it;
+//    list<Misil*>::iterator it;
     for (it=misils->begin(); it!=misils->end(); ++it){
         (*it)->eulerIntegrate(fps/((float)game_speed));
     }
@@ -575,15 +575,15 @@ bool simple_intrsect(Vector position1, Vector position2){
 
 void Game::detectCollisions(){
 
-//    list<ModelFigure*>::iterator it = misils->begin();
-    list<Misil*>::iterator it = misils->begin();
+    list<ModelFigure*>::iterator it = misils->begin();
+//    list<Misil*>::iterator it = misils->begin();
     bool delete_misil;
 
     Vector v1 = Vector(0.5, 0.5, 0.5);
 
     while (it != misils->end()){
-//        ModelFigure * curr_misil = (*it);
-        Misil * curr_misil = (*it);
+        ModelFigure * curr_misil = (*it);
+//        Misil * curr_misil = (*it);
         Vector misil_next_position = curr_misil->position + curr_misil->velocity * (Constants::dt/(fps*((float)game_speed)));
 
         delete_misil = false;
@@ -653,8 +653,8 @@ void Game::manageGame() {
 }
 
 void Game::drawMisils() {
-//    list<ModelFigure*>::iterator it;
-    list<Misil*>::iterator it;
+    list<ModelFigure*>::iterator it;
+//    list<Misil*>::iterator it;
     for (it=misils->begin(); it!=misils->end(); ++it){
 		glPushMatrix();
             (*it)->drawFigure();
