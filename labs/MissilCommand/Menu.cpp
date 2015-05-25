@@ -97,12 +97,15 @@ void Menu::init(){
 }
 
 void drawBox(SDL_Rect box, GLuint texture = -1){
-//    glDisable(GL_BLEND);
-//    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
     if (texture != -1)
         glBindTexture(GL_TEXTURE_2D, texture);
-    //glEnable(GL_BLEND);
-    //glColor3f(1.0f, 0.0f, 1.0f);
+    else {
+        glDisable(GL_TEXTURE_2D);
+        glColor3f(1.0f, 0.5f, 0.0f);
+    }
+//    glDisable(GL_BLEND);
+//    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+//    glEnable(GL_BLEND);
     glBegin(GL_QUADS);
     if (texture != -1)
         glTexCoord2f(1,1);
@@ -118,6 +121,11 @@ void drawBox(SDL_Rect box, GLuint texture = -1){
     glVertex2f(box.x, box.y + box.h);
     glEnd();
 //    glEnable(GL_BLEND);
+    if (texture != -1){
+        ;
+    } else {
+        glEnable(GL_TEXTURE_2D);
+    }
 }
 
 void positionate_box(float place_w, float place_h, float padding_w, float padding_h, SDL_Rect relative_box, SDL_Rect & box){
