@@ -29,6 +29,7 @@ void Game::initLevel(int levelNumber) {
     this->bulletQuantity = maxBulletQuantity;
     this->lastMisilTime = clock();
     misils = new list<Misil*>();
+//    misils = new list<ModelFigure*>();
     buildings = new list<ModelFigure*>();
     bullets = new list<Bullet*>();
     addBuildings();
@@ -362,8 +363,12 @@ Game::Game(int screen_w_in, int screen_h_in, Camera * camera_in, int fps_in, boo
     textura_cielo = LoadBitmap("rsc/textures/RIPPLES.bmp");
 
     model_building = new ModelType();
-    model_building->LoadFrom3DS("rsc/models/house4.3ds");
-    model_building->id_texture = LoadBitmap("rsc/textures/GrassES4.bmp");
+    model_building->LoadFrom3DS("rsc/models/LongHouse.3ds");
+    model_building->id_texture = LoadBitmap("rsc/textures/LongHouse.bmp");
+
+    model_misil = new ModelType();
+    model_misil->LoadFrom3DS("rsc/models/missile.3ds");
+    model_misil->id_texture = LoadBitmap("rsc/textures/missile.bmp");
 
     font_hub = TTF_OpenFont("rsc/fonts/OpenSans-Regular.ttf", 10);
     font_end = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 30);
@@ -407,13 +412,14 @@ bool Game::isGameOver() {
 }
 
 void Game::addMisil() {
-
-    //if (itBuildings == buildings->end()) {
-    //    itBuildings = buildings->begin();
-    //}
     list<ModelFigure*>::iterator itBuildings = obtRandomIterator();
 
+//    ModelFigure* misil = new ModelFigure(model_misil);
+//    misil->orientation = Vector(90, 0, 45);
+//    misil->aspect = Vector(1/20.0,1/20.0,-1/20.0);
+
     Misil* misil = new Misil();
+
     misil->acceleration = Vector(0.0 ,0.0 ,0.0);
     float rand_x = (*itBuildings)->position.x + (rand() % 30) * multiplicador;
     float rand_z = (*itBuildings)->position.z + (rand() % 30) * multiplicador;
@@ -486,11 +492,11 @@ void Game::addBuildings() {
             ModelFigure * building = new ModelFigure(model_building);
             int dir = rand() % 8;
             building->orientation = Vector(90, 0, 45*dir);
-            building->aspect = Vector(1/16.0,1/20.0,-1/12.0);
+            building->aspect = Vector(1/180.0,1/60.0,-1/60.0)*(1/2.0);
             Vector initAccel = Vector(0.0 ,0.0 ,0.0);
             building->acceleration = initAccel;
 
-            Vector initPosition = Vector(i*10.0+10,3,j*10.0+5);
+            Vector initPosition = Vector(i*10.0+13,1.5,j*10.0+11);
             building->position = initPosition;
 
             Vector initVelocity = Vector(0 , 0 ,0.0);
@@ -511,6 +517,7 @@ void Game::addBuildings() {
 }
 
 void Game::misilDisplacement() {
+//    list<ModelFigure*>::iterator it;
     list<Misil*>::iterator it;
     for (it=misils->begin(); it!=misils->end(); ++it){
         (*it)->eulerIntegrate(fps/((float)game_speed));
@@ -560,12 +567,14 @@ bool simple_intrsect(Vector position1, Vector position2){
 
 void Game::detectCollisions(){
 
+//    list<ModelFigure*>::iterator it = misils->begin();
     list<Misil*>::iterator it = misils->begin();
     bool delete_misil;
 
     Vector v1 = Vector(0.5, 0.5, 0.5);
 
     while (it != misils->end()){
+//        ModelFigure * curr_misil = (*it);
         Misil * curr_misil = (*it);
         Vector misil_next_position = curr_misil->position + curr_misil->velocity * (Constants::dt/(fps*((float)game_speed)));
 
@@ -624,7 +633,6 @@ void Game::detectCollisions(){
     }
 }
 
-
 void Game::manageGame() {
 
     clock_t time = clock();
@@ -637,6 +645,7 @@ void Game::manageGame() {
 }
 
 void Game::drawMisils() {
+//    list<ModelFigure*>::iterator it;
     list<Misil*>::iterator it;
     for (it=misils->begin(); it!=misils->end(); ++it){
 		glPushMatrix();
@@ -649,11 +658,15 @@ void Game::drawMisils() {
 }
 
 void Game::drawBullets() {
+    glDisable(GL_TEXTURE_2D);
     list<Bullet*>::iterator it;
     for (it=bullets->begin(); it!=bullets->end(); ++it){
 		glPushMatrix();
             (*it)->drawFigure();
 		glPopMatrix();
+    }
+    if (texture_mode){
+        glEnable(GL_TEXTURE_2D);
     }
 }
 

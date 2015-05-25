@@ -69,6 +69,7 @@ class Game
     private:
         GLuint textura_suelo, textura_cielo, textura_paredes;
         ModelType * model_building;
+        ModelType * model_misil;
         TTF_Font * font_end;
         TTF_Font * font_hub;
         TextGrafic text_hud_vida;
@@ -87,6 +88,7 @@ class Game
         bool victory;
         clock_t lastMisilTime;
         list<Misil*>* misils;
+//        list<ModelFigure*>* misils;
         list<ModelFigure*>* buildings;
         list<Bullet*>* bullets;
         map<int, Level*>* levels;
