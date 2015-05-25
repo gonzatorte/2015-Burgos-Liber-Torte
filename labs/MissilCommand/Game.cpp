@@ -13,7 +13,7 @@ using namespace std;
 int multiplicador;
 int vel_adjust_factor = 700;
 Vector auxPos;
-float x1,x2,z1,z2;
+float x1, x2, yy1, yy2;
 
 void Game::initLevel(int levelNumber) {
     Level* level = levels->find(levelNumber)->second;
@@ -28,125 +28,104 @@ void Game::initLevel(int levelNumber) {
     this->light_direction = 1;
     this->bulletQuantity = maxBulletQuantity;
     this->lastMisilTime = clock();
-    misils = new list<Misil*>();
+    misils = new list<ModelFigure*>();
     buildings = new list<ModelFigure*>();
     bullets = new list<Bullet*>();
     addBuildings();
 }
 
-map<int, Level*>* Game::getLevelsFromSetting(tinyxml2::XMLElement* gameSettings) {
-    map<int, Level*>* levels = new map<int, Level*>();
-    tinyxml2::XMLElement* levelElement;
-    for(levelElement=gameSettings->FirstChildElement("LEVEL"); levelElement; levelElement=levelElement->NextSiblingElement()) {
 
-        int levelNumber = atoi(levelElement->FirstChildElement("LEVEL_NUMBER")->GetText());
-        int misilSpeed = atoi(levelElement->FirstChildElement("MISSILE_SPEED")->GetText());
-        int maxBuildQuantity = atoi(levelElement->FirstChildElement("CANT_BUILDINGS")->GetText());
-        int maxMisilQuantity = atoi(levelElement->FirstChildElement("CANT_MISSILES")->GetText());
-        int life = atoi(levelElement->FirstChildElement("LIFE")->GetText());
-        int simultMisilQuant = atoi(levelElement->FirstChildElement("CANT_SIMULTANEOUS_MISSILES")->GetText());
-        int maxBulletQuantity = atoi(levelElement->FirstChildElement("CANT_BULLETS")->GetText());
-        Level* level = new Level();
-        level->setLevelNumber(levelNumber);
-        level->life = life;
-        level->setMisilSpeed(misilSpeed);
-        level->setMaxBuildQuantity(maxBuildQuantity);
-        level->setMaxMisilQuantity(maxMisilQuantity);
-        level->setSimultMisilQuant(simultMisilQuant);
-        level->setMaxBulletQuantity(maxBulletQuantity);
-        levels->insert(pair<int, Level*>(levelNumber, level));
+Game::Game(int screen_w_in, int screen_h_in, Camera * camera_in, int fps_in, bool wireframe_mode_in, bool texture_mode_in) {
+    screen_w = screen_w_in;
+    screen_h = screen_h_in;
+    camera = camera_in;
+    fps = fps_in;
+    wireframe_mode = wireframe_mode_in;
+    game_speed = 1;
+    texture_mode = texture_mode_in;
+    textura_suelo = LoadBitmap("rsc/textures/GrassES4.bmp");
+    textura_cielo = LoadBitmap("rsc/textures/RIPPLES.bmp");
+    model_building = new ModelType();
+    model_building->LoadFrom3DS("rsc/models/cubo.3ds");
+//    model_building->LoadFrom3DS("rsc/models/house4.3ds");
+//    model_building->id_texture = LoadBitmap("rsc/textures/stone_1.bmp");
+
+    model_misil = new ModelType();
+    model_misil->LoadFrom3DS("rsc/models/missile.3DS");
+    model_misil->id_texture = LoadBitmap("rsc/textures/missile.bmp");
+
+    font_hub = TTF_OpenFont("rsc/fonts/OpenSans-Regular.ttf", 10);
+    font_end = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 30);
+    if (!font_hub || !font_end){
+        std::stringstream ss;
+        ss << "Unable to load font: " << SDL_GetError();
+        throw std::runtime_error(ss.str().c_str());
     }
-    return levels;
+    text_hud_vida = Load_string("LIFE", {12,90,32,0}, font_hub);
+    text_end_lost = Load_string("GAME OVER", {255,128,0,0}, font_end);
+    text_end_win = Load_string("VICTORY!", {128,0,255,0}, font_end);
+    text_hud_lvl = Load_string("lvl:", {128,0,255,0}, font_hub);
+    text_hud_score = Load_string("SCORE:", {128,0,255,0}, font_hub);
+
+    tinyxml2::XMLDocument settings;
+    settings.LoadFile("settings.xml");
+    tinyxml2::XMLElement* gameSettings = settings.FirstChildElement("GAME");
+    levels = getLevelsFromSetting(gameSettings);
+    reset();
 }
 
-list<ModelFigure*>::iterator Game::obtRandomIterator() {
-    int randomAccess = rand() % maxBuildQuantity;
-    int cont = 0;
-    list<ModelFigure*>::iterator itB = buildings->begin();
-    while (cont < randomAccess) {
-        ++itB;
-        if (itB == buildings->end()) {
-            itB = buildings->begin();
-        }
-        cont++;
-    }
-    return itB;
-}
+void Game::addBuildings() {
+    int n = maxBuildQuantity;
+    int a = 1;
+    for(int i = -4; i < 2; i++){
+        for(int j=-4; j < 2; j++) {
+            ModelFigure * building = new ModelFigure(model_building);
+            building->orientation = Vector(0, 0, 0);
+            building->aspect = Vector(1/2.0, 1/2.0, 1/2.0);
+            Vector initAccel = Vector(0.0 ,0.0 ,0.0);
+            building->acceleration = initAccel;
 
-void Game::setLight(){
+            Vector initPosition = Vector(i*5.0+10,j*5.0+5,1);
+            building->position = initPosition;
 
-    if (this->light_position){
-        switch (this->light_direction){
-            case 0:
-                {float light_position[] = { 0, 1, 1, 0.0f };
-                glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-                break;}
-            case 1:
-                {float light_position[] = { 0, 1, -1, 0.0f };
-                glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-                break;}
-            case 2:
-                {float light_position[] = { 1, 1, 0, 0.0f };
-                glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-                break;}
-            case 3:
-                {float light_position[] = { -1, 1, 0, 0.0f };
-                glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-                break;}
-            default:
+            Vector initVelocity = Vector(0 , 0 ,0.0);
+            building->velocity = initVelocity;
+
+            buildings->push_back(building);
+            n--;
+            a *= -1;
+            if (n==0)
                 break;
         }
-    }else{
-        switch (this->light_direction){
-        case 0:
-            {float light_position[] = { 0.0f, -1.0f, 1.0f, 0.0f };
-            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-            break;}
-        case 1:
-            {float light_position[] = { 0.0f, -1.0f, -1.0f, 0.0f };
-            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-            break;}
-        case 2:
-            {float light_position[] = { 1.0f, -1.0f, 0.0f, 0.0f };
-            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-            break;}
-        case 3:
-            {float light_position[] = { -1.0f, -1.0f, 0.0f, 0.0f };
-            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-            break;}
-        default:
+        if (n==0)
             break;
-        }
     }
 
+    //Agregar limites de movimiento
+    setMovementLimits();
+}
 
-    switch (this->light_color){
-        case 0:
-            {float mat_ambient[] = { 0.0f, 0.2f, 0.3f, 1.0f };
-            float mat_diffuse[] = { 0.0f, 0.9f, 0.8f, 1.0f };
-            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
-            break;}
-        case 1:
-            {float mat_ambient[] = { 0.0f, 5.2f, 0.3f, 1.0f };
-            float mat_diffuse[] = { 0.0f, 6.9f, 0.8f, 1.0f };
-            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
-            break;}
-        case 2:
-            {float mat_ambient[] = { 9.0f, 0.2f, 0.3f, 1.0f };
-            float mat_diffuse[] = { 9.0f, 0.9f, 0.8f, 1.0f };
-            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
-            break;}
-        case 3:
-            {float mat_ambient[] = { 4.0f, 0.2f, 0.3f, 1.0f };
-            float mat_diffuse[] = { 0.0f, 0.9f, 8.8f, 1.0f };
-            glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
-            break;}
-        }
+void Game::addMisil() {
+    list<ModelFigure*>::iterator itBuildings = obtRandomIterator();
 
+    ModelFigure* misil = new ModelFigure(model_misil);
+    misil->acceleration = Vector(0.0 ,0.0 ,0.0);
+    float rand_x = (*itBuildings)->position.x + (rand() % 30) * multiplicador;
+    float rand_y = (*itBuildings)->position.y + (rand() % 30) * multiplicador;
+    float z = 15.0;
+
+    misil->position = Vector(rand_x, rand_y, z);
+
+    misil->velocity = Vector((*itBuildings)->position.x/misilSpeed - rand_x/misilSpeed,
+                             (*itBuildings)->position.y/misilSpeed - rand_y/misilSpeed,
+                             (*itBuildings)->position.z/misilSpeed - z/misilSpeed);
+    misil->velocity = misil->velocity*vel_adjust_factor;
+    misils->push_back(misil);
+
+    misilQuantity++;
+    maxMisilQuantity--;
+    //++itBuildings;
+    multiplicador = multiplicador * -1;
 }
 
 void Game::renderScene(){
@@ -195,6 +174,121 @@ void Game::renderScene(){
     }
 }
 
+map<int, Level*>* Game::getLevelsFromSetting(tinyxml2::XMLElement* gameSettings) {
+    map<int, Level*>* levels = new map<int, Level*>();
+    tinyxml2::XMLElement* levelElement;
+    for(levelElement=gameSettings->FirstChildElement("LEVEL"); levelElement; levelElement=levelElement->NextSiblingElement()) {
+
+        int levelNumber = atoi(levelElement->FirstChildElement("LEVEL_NUMBER")->GetText());
+        int misilSpeed = atoi(levelElement->FirstChildElement("MISSILE_SPEED")->GetText());
+        int maxBuildQuantity = atoi(levelElement->FirstChildElement("CANT_BUILDINGS")->GetText());
+        int maxMisilQuantity = atoi(levelElement->FirstChildElement("CANT_MISSILES")->GetText());
+        int life = atoi(levelElement->FirstChildElement("LIFE")->GetText());
+        int simultMisilQuant = atoi(levelElement->FirstChildElement("CANT_SIMULTANEOUS_MISSILES")->GetText());
+        int maxBulletQuantity = atoi(levelElement->FirstChildElement("CANT_BULLETS")->GetText());
+        Level* level = new Level();
+        level->setLevelNumber(levelNumber);
+        level->life = life;
+        level->setMisilSpeed(misilSpeed);
+        level->setMaxBuildQuantity(maxBuildQuantity);
+        level->setMaxMisilQuantity(maxMisilQuantity);
+        level->setSimultMisilQuant(simultMisilQuant);
+        level->setMaxBulletQuantity(maxBulletQuantity);
+        levels->insert(pair<int, Level*>(levelNumber, level));
+    }
+    return levels;
+}
+
+list<ModelFigure*>::iterator Game::obtRandomIterator() {
+    int randomAccess = rand() % maxBuildQuantity;
+    int cont = 0;
+    list<ModelFigure*>::iterator itB = buildings->begin();
+    while (cont < randomAccess) {
+        ++itB;
+        if (itB == buildings->end()) {
+            itB = buildings->begin();
+        }
+        cont++;
+    }
+    return itB;
+}
+
+void Game::setLight(){
+
+    if (this->light_position){
+        switch (this->light_direction){
+        case 0:
+            {float light_position[] = { 0, 1, 1, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        case 1:
+            {float light_position[] = { 0, 1, -1, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        case 2:
+            {float light_position[] = { 1, 1, 0, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        case 3:
+            {float light_position[] = { -1, 1, 0, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        default:
+            break;
+        }
+    }else{
+        switch (this->light_direction){
+        case 0:
+            {float light_position[] = { 0.0f, -1.0f, 1.0f, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        case 1:
+            {float light_position[] = { 0.0f, -1.0f, -1.0f, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        case 2:
+            {float light_position[] = { 1.0f, -1.0f, 0.0f, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        case 3:
+            {float light_position[] = { -1.0f, -1.0f, 0.0f, 0.0f };
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+            break;}
+        default:
+            break;
+        }
+    }
+
+
+    switch (this->light_color){
+    case 0:
+        {float mat_ambient[] = { 0.0f, 0.2f, 0.3f, 1.0f };
+        float mat_diffuse[] = { 0.0f, 0.9f, 0.8f, 1.0f };
+        glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+        break;}
+    case 1:
+        {float mat_ambient[] = { 0.0f, 5.2f, 0.3f, 1.0f };
+        float mat_diffuse[] = { 0.0f, 6.9f, 0.8f, 1.0f };
+        glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+        break;}
+    case 2:
+        {float mat_ambient[] = { 9.0f, 0.2f, 0.3f, 1.0f };
+        float mat_diffuse[] = { 9.0f, 0.9f, 0.8f, 1.0f };
+        glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+        break;}
+    case 3:
+        {float mat_ambient[] = { 4.0f, 0.2f, 0.3f, 1.0f };
+        float mat_diffuse[] = { 0.0f, 0.9f, 8.8f, 1.0f };
+        glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+        break;}
+    }
+
+}
+
 void Game::init(){
     SDL_EnableKeyRepeat(200,1);
     SDL_ShowCursor(SDL_DISABLE);
@@ -215,11 +309,11 @@ void Game::init(){
 void Game::leftKeyPressed() {
     float fps_f = fps/((float)game_speed);
     float dt_f = Constants::dt/fps/((float)game_speed);
-    float newXPoint = camera->position.x + (camera->point.z - camera->position.z) * dt_f * Constants::CAMERA_SPEED;
-    float newZPoint = camera->position.z + ((camera->point.x - camera->position.x)*-1) * dt_f * Constants::CAMERA_SPEED;
+    float newXPoint = camera->position.x + (camera->point.y - camera->position.y) * dt_f * Constants::CAMERA_SPEED;
+    float newYPoint = camera->position.y + ((camera->point.x - camera->position.x)*-1) * dt_f * Constants::CAMERA_SPEED;
 
-    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1 || newZPoint > 70 || newZPoint < -70 || newXPoint > 70 || newXPoint < -70)) {
-        auxPos = Vector( camera->point.z - camera->position.z, 0, (camera->point.x - camera->position.x)*-1) * Constants::CAMERA_SPEED;
+    if (!(newYPoint > yy1 && newYPoint < yy2 && newXPoint > x2 && newXPoint < x1 || newYPoint > 70 || newYPoint < -70 || newXPoint > 70 || newXPoint < -70)) {
+        auxPos = Vector( camera->point.y - camera->position.y, 0, (camera->point.x - camera->position.x)*-1) * Constants::CAMERA_SPEED;
         camera->position = camera->position + auxPos * dt_f;
         camera->point = camera->point + auxPos * dt_f;
     }
@@ -230,10 +324,10 @@ void Game::upKeyPressed() {
     float fps_f = fps/((float)game_speed);
     float dt_f = Constants::dt/fps_f;
     float newXPoint = camera->position.x + (camera->point.x - camera->position.x) * dt_f * Constants::CAMERA_SPEED;
-    float newZPoint = camera->position.z + (camera->point.z - camera->position.z) * dt_f * Constants::CAMERA_SPEED;
+    float newYPoint = camera->position.y + (camera->point.y - camera->position.y) * dt_f * Constants::CAMERA_SPEED;
 
-    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1 || newZPoint > 70 || newZPoint < -70 || newXPoint > 70 || newXPoint < -70)) {
-        auxPos = Vector(camera->point.x - camera->position.x, 0, camera->point.z - camera->position.z) * Constants::CAMERA_SPEED;
+    if (!(newYPoint > yy1 && newYPoint < yy2 && newXPoint > x2 && newXPoint < x1 || newYPoint > 70 || newYPoint < -70 || newXPoint > 70 || newXPoint < -70)) {
+        auxPos = Vector(camera->point.x - camera->position.x, 0, camera->point.y - camera->position.y) * Constants::CAMERA_SPEED;
         camera->position = camera->position + auxPos * dt_f;
         camera->point = camera->point + auxPos * dt_f;
     }
@@ -242,11 +336,11 @@ void Game::upKeyPressed() {
 void Game::rightKeyPressed() {
     float fps_f = fps/((float)game_speed);
     float dt_f = Constants::dt/fps_f;
-    float newXPoint = camera->position.x + ((camera->point.z - camera->position.z)*-1) * dt_f * Constants::CAMERA_SPEED;
-    float newZPoint = camera->position.z + (camera->point.x - camera->position.x) * dt_f * Constants::CAMERA_SPEED;
+    float newXPoint = camera->position.x + ((camera->point.y - camera->position.y)*-1) * dt_f * Constants::CAMERA_SPEED;
+    float newYPoint = camera->position.y + (camera->point.x - camera->position.x) * dt_f * Constants::CAMERA_SPEED;
 
-    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1 || newZPoint > 70 || newZPoint < -70 || newXPoint > 70 || newXPoint < -70)) {
-        auxPos = Vector( (camera->point.z - camera->position.z)*-1, 0, camera->point.x - camera->position.x) * Constants::CAMERA_SPEED;
+    if (!(newYPoint > yy1 && newYPoint < yy2 && newXPoint > x2 && newXPoint < x1 || newYPoint > 70 || newYPoint < -70 || newXPoint > 70 || newXPoint < -70)) {
+        auxPos = Vector( (camera->point.y - camera->position.y)*-1, 0, camera->point.x - camera->position.x) * Constants::CAMERA_SPEED;
         camera->position = camera->position + auxPos * dt_f;
         camera->point = camera->point + auxPos * dt_f;
     }
@@ -257,10 +351,10 @@ void Game::downKeyPressed() {
     float fps_f = fps/((float)game_speed);
     float dt_f = Constants::dt/fps_f;
     float newXPoint = camera->position.x + (camera->position.x - camera->point.x) * dt_f * Constants::CAMERA_SPEED;
-    float newZPoint = camera->position.z + (camera->position.z - camera->point.z) * dt_f * Constants::CAMERA_SPEED;
+    float newYPoint = camera->position.y + (camera->position.y - camera->point.y) * dt_f * Constants::CAMERA_SPEED;
 
-    if (!(newZPoint > z1 && newZPoint < z2 && newXPoint > x2 && newXPoint < x1 || newZPoint > 70 || newZPoint < -70 || newXPoint > 70 || newXPoint < -70)) {
-        auxPos = Vector(camera->position.x - camera->point.x ,0,camera->position.z - camera->point.z) * Constants::CAMERA_SPEED;
+    if (!(newYPoint > yy1 && newYPoint < yy2 && newXPoint > x2 && newXPoint < x1 || newYPoint > 70 || newYPoint < -70 || newXPoint > 70 || newXPoint < -70)) {
+        auxPos = Vector(camera->position.x - camera->point.x ,0,camera->position.y - camera->point.y) * Constants::CAMERA_SPEED;
         camera->position = camera->position + auxPos * dt_f;
         camera->point = camera->point + auxPos * dt_f;
     }
@@ -351,40 +445,6 @@ void Game::interact(SDL_Event * evento){
     }
 }
 
-Game::Game(int screen_w_in, int screen_h_in, Camera * camera_in, int fps_in, bool wireframe_mode_in, bool texture_mode_in) {
-    screen_w = screen_w_in;
-    screen_h = screen_h_in;
-    camera = camera_in;
-    fps = fps_in;
-    wireframe_mode = wireframe_mode_in;
-    game_speed = 1;
-    texture_mode = texture_mode_in;
-    textura_suelo = LoadBitmap("rsc/textures/GrassES4.bmp");
-    textura_cielo = LoadBitmap("rsc/textures/RIPPLES.bmp");
-    model_building = new ModelType();
-    model_building->LoadFrom3DS("rsc/models/cubo.3ds");
-//    model_building->LoadFrom3DS("rsc/models/house4.3ds");
-    model_building->id_texture = LoadBitmap("rsc/models/textures/stone_1.bmp");
-    font_hub = TTF_OpenFont("rsc/fonts/OpenSans-Regular.ttf", 10);
-    font_end = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 30);
-    if (!font_hub || !font_end){
-        std::stringstream ss;
-        ss << "Unable to load font: " << SDL_GetError();
-        throw std::runtime_error(ss.str().c_str());
-    }
-    text_hud_vida = Load_string("LIFE", {12,90,32,0}, font_hub);
-    text_end_lost = Load_string("GAME OVER", {255,128,0,0}, font_end);
-    text_end_win = Load_string("VICTORY!", {128,0,255,0}, font_end);
-    text_hud_lvl = Load_string("lvl:", {128,0,255,0}, font_hub);
-    text_hud_score = Load_string("SCORE:", {128,0,255,0}, font_hub);
-
-    tinyxml2::XMLDocument settings;
-    settings.LoadFile("settings.xml");
-    tinyxml2::XMLElement* gameSettings = settings.FirstChildElement("GAME");
-    levels = getLevelsFromSetting(gameSettings);
-    reset();
-}
-
 void Game::reset(){
     score = 0;
     gameOver = false;
@@ -404,33 +464,6 @@ void Game::decreaseLife() {
 
 bool Game::isGameOver() {
     return gameOver;
-}
-
-void Game::addMisil() {
-
-    //if (itBuildings == buildings->end()) {
-    //    itBuildings = buildings->begin();
-    //}
-    list<ModelFigure*>::iterator itBuildings = obtRandomIterator();
-
-    Misil* misil = new Misil();
-    misil->acceleration = Vector(0.0 ,0.0 ,0.0);
-    float rand_x = (*itBuildings)->position.x + (rand() % 30) * multiplicador;
-    float rand_z = (*itBuildings)->position.z + (rand() % 30) * multiplicador;
-    float y = 15.0;
-
-    misil->position = Vector(rand_x, y, rand_z);
-
-    misil->velocity = Vector((*itBuildings)->position.x/misilSpeed - rand_x/misilSpeed,
-                             (*itBuildings)->position.y/misilSpeed - y/misilSpeed,
-                             (*itBuildings)->position.z/misilSpeed - rand_z/misilSpeed);
-    misil->velocity = misil->velocity*vel_adjust_factor;
-    misils->push_back(misil);
-
-    misilQuantity++;
-    maxMisilQuantity--;
-    //++itBuildings;
-    multiplicador = multiplicador * -1;
 }
 
 void Game::addBullet(Vector initPosition, Vector initVelocity, Vector initAccel) {
@@ -453,67 +486,33 @@ void Game::setMovementLimits() {
     list<ModelFigure*>::iterator itB;
     x1=-100;
     x2=100;
-    z1=100;
-    z2=-100;
+    yy1=100;
+    yy2=-100;
     for (itB=buildings->begin(); itB!=buildings->end(); ++itB){
 
         float xPos = (*itB)->position.x;
-        float zPos = (*itB)->position.z;
+        float yPos = (*itB)->position.y;
         if (xPos > x1) {
             x1 = xPos;
         }
         if (xPos < x2) {
             x2 = xPos;
         }
-        if (zPos < z1) {
-            z1 = zPos;
+        if (yPos < yy1) {
+            yy1 = yPos;
         }
-        if (zPos > z2) {
-            z2 = zPos;
+        if (yPos > yy2) {
+            yy2 = yPos;
         }
     }
     x1 += 8;
     x2 -= 8;
-    z1 -= 8;
-    z2 += 8;
-}
-void Game::addBuildings() {
-    int n = maxBuildQuantity;
-    int a = 1;
-    for(int i = -4; i < 2; i++){
-        for(int j=-4; j < 2; j++) {
-            ModelFigure * building = new ModelFigure(model_building);
-            building->orientation = Vector(0,
-                                           0,
-                                           0);
-            building->aspect = Vector(2/(building->model->x_top_limit - building->model->x_bot_limit),
-                                      2/(building->model->y_top_limit - building->model->y_bot_limit),
-                                      2/(building->model->z_top_limit - building->model->z_bot_limit));
-            Vector initAccel = Vector(0.0 ,0.0 ,0.0);
-            building->acceleration = initAccel;
-
-            Vector initPosition = Vector(i*5.0+10,1,j*5.0+5);
-            building->position = initPosition;
-
-            Vector initVelocity = Vector(0 , 0 ,0.0);
-            building->velocity = initVelocity;
-
-            buildings->push_back(building);
-            n--;
-            a *= -1;
-            if (n==0)
-                break;
-        }
-        if (n==0)
-            break;
-    }
-
-    //Agregar limites de movimiento
-    setMovementLimits();
+    yy1 -= 8;
+    yy2 += 8;
 }
 
 void Game::misilDisplacement() {
-    list<Misil*>::iterator it;
+    list<ModelFigure*>::iterator it;
     for (it=misils->begin(); it!=misils->end(); ++it){
         (*it)->eulerIntegrate(fps/((float)game_speed));
     }
@@ -562,13 +561,13 @@ bool simple_intrsect(Vector position1, Vector position2){
 
 void Game::detectCollisions(){
 
-    list<Misil*>::iterator it = misils->begin();
+    list<ModelFigure*>::iterator it = misils->begin();
     bool delete_misil;
 
     Vector v1 = Vector(0.5, 0.5, 0.5);
 
     while (it != misils->end()){
-        Misil * curr_misil = (*it);
+        ModelFigure * curr_misil = (*it);
         Vector misil_next_position = curr_misil->position + curr_misil->velocity * (Constants::dt/(fps*((float)game_speed)));
 
         delete_misil = false;
@@ -639,10 +638,10 @@ void Game::manageGame() {
 }
 
 void Game::drawMisils() {
-    list<Misil*>::iterator it;
+    list<ModelFigure*>::iterator it;
     for (it=misils->begin(); it!=misils->end(); ++it){
 		glPushMatrix();
-            (*it)->drawFigure();
+            (*it)->drawFigure(camera);
 		glPopMatrix();
     }
 }
@@ -660,8 +659,7 @@ void Game::drawBuildings() {
     list<ModelFigure*>::iterator it;
     for (it=buildings->begin(); it!=buildings->end(); ++it){
 		glPushMatrix();
-//		glLoadIdentity();
-			(*it)->drawFigure();
+			(*it)->drawFigure(camera);
 		glPopMatrix();
     }
 }

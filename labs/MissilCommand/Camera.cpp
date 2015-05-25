@@ -44,8 +44,8 @@ void Camera::moveCam(int x, int y) {
         }
 
         float lookAtX = sinf(xAngle) * cosf(yAngle);
-        float lookAtY = sinf(yAngle);
-        float lookAtZ = cosf(xAngle) * cosf(yAngle);
+        float lookAtY = cosf(xAngle) * cosf(yAngle);
+        float lookAtZ = sinf(yAngle);
         point.x = position.x + lookAtX;
         point.y = position.y + lookAtY;
         point.z = position.z + lookAtZ;
@@ -60,9 +60,10 @@ void Camera::moveCam(int x, int y) {
 }
 
 void Camera::setLookAt() {
+    glMatrixMode(GL_MODELVIEW);
     gluLookAt(position.x, position.y, position.z,
             point.x, point.y,  point.z,
-			0.0f, 1.0f,  0.0f);
+			0.0f, 0.0f,  1.0f);
 }
 
 Camera::~Camera()
