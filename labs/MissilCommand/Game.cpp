@@ -146,7 +146,6 @@ void Game::setLight(){
             glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
             break;}
         }
-
 }
 
 void Game::renderScene(){
@@ -361,10 +360,11 @@ Game::Game(int screen_w_in, int screen_h_in, Camera * camera_in, int fps_in, boo
     texture_mode = texture_mode_in;
     textura_suelo = LoadBitmap("rsc/textures/GrassES4.bmp");
     textura_cielo = LoadBitmap("rsc/textures/RIPPLES.bmp");
+
     model_building = new ModelType();
-    model_building->LoadFrom3DS("rsc/models/cubo.3ds");
-//    model_building->LoadFrom3DS("rsc/models/house4.3ds");
-    model_building->id_texture = LoadBitmap("rsc/models/textures/stone_1.bmp");
+    model_building->LoadFrom3DS("rsc/models/house4.3ds");
+    model_building->id_texture = LoadBitmap("rsc/textures/GrassES4.bmp");
+
     font_hub = TTF_OpenFont("rsc/fonts/OpenSans-Regular.ttf", 10);
     font_end = TTF_OpenFont("rsc/fonts/destroy_the_enemy.ttf", 30);
     if (!font_hub || !font_end){
@@ -477,22 +477,20 @@ void Game::setMovementLimits() {
     z1 -= 8;
     z2 += 8;
 }
+
 void Game::addBuildings() {
     int n = maxBuildQuantity;
     int a = 1;
     for(int i = -4; i < 2; i++){
-        for(int j=-4; j < 2; j++) {
+        for(int j=2; j < 8; j++) {
             ModelFigure * building = new ModelFigure(model_building);
-            building->orientation = Vector(0,
-                                           0,
-                                           0);
-            building->aspect = Vector(2/(building->model->x_top_limit - building->model->x_bot_limit),
-                                      2/(building->model->y_top_limit - building->model->y_bot_limit),
-                                      2/(building->model->z_top_limit - building->model->z_bot_limit));
+            int dir = rand() % 8;
+            building->orientation = Vector(90, 0, 45*dir);
+            building->aspect = Vector(1/16.0,1/20.0,-1/12.0);
             Vector initAccel = Vector(0.0 ,0.0 ,0.0);
             building->acceleration = initAccel;
 
-            Vector initPosition = Vector(i*5.0+10,1,j*5.0+5);
+            Vector initPosition = Vector(i*10.0+10,3,j*10.0+5);
             building->position = initPosition;
 
             Vector initVelocity = Vector(0 , 0 ,0.0);
@@ -645,6 +643,9 @@ void Game::drawMisils() {
             (*it)->drawFigure();
 		glPopMatrix();
     }
+    if (texture_mode){
+        glEnable(GL_TEXTURE_2D);
+    }
 }
 
 void Game::drawBullets() {
@@ -660,8 +661,7 @@ void Game::drawBuildings() {
     list<ModelFigure*>::iterator it;
     for (it=buildings->begin(); it!=buildings->end(); ++it){
 		glPushMatrix();
-//		glLoadIdentity();
-			(*it)->drawFigure();
+			(*it)->drawFigure(camera);
 		glPopMatrix();
     }
 }
@@ -753,6 +753,10 @@ void Game::drawLife(){
     int x2 = -86;
     int y2 = 70;
 
+    if (texture_mode){
+        glDisable(GL_TEXTURE_2D);
+    }
+
     for (int i=0; i < life; i++){
         glRecti(x1, y1, x2, y2);
         x1 += 6;
@@ -760,6 +764,11 @@ void Game::drawLife(){
     }
     y2 += 10;
     float coords[3] = {-90, y2, 0};
+
+    if (texture_mode){
+        glEnable(GL_TEXTURE_2D);
+    }
+
     drawText(text_hud_vida, coords);
 }
 
@@ -801,6 +810,9 @@ void Game::drawLevel(){
 void Game::drawAim()
 {
     // Dibujar mira
+    if (texture_mode){
+        glDisable(GL_TEXTURE_2D);
+    }
 
     glLineWidth(2);
     glBegin(GL_LINES);
@@ -841,12 +853,17 @@ void Game::drawAim()
         y *= radial_factor;
     }
     glEnd();
-// Termino mira
+
+    if (texture_mode){
+        glEnable(GL_TEXTURE_2D);
+    }
 }
 
 void Game::drawHud()
 {
-    // Temporary disable lighting
+    glDisable(GL_LIGHTING);
+//    glColor3f(1.0f, 1.0f, 1.0f);
+//    glBindTexture(GL_TEXTURE_2D, textura_suelo);
 
     // Our HUD consists of a simple rectangle
     glMatrixMode( GL_PROJECTION );
@@ -876,6 +893,7 @@ void Game::drawHud()
     glMatrixMode( GL_MODELVIEW );
     glPopMatrix();
 
+    glEnable(GL_LIGHTING);
 }
 
 void Game::drawGameOver()
@@ -883,6 +901,7 @@ void Game::drawGameOver()
     float coords[3] = {-80, 0, 0};
     drawText(text_end_lost, coords);
 }
+
 void Game::drawVictory()
 {
     float coords[3] = {-60, 0, 0};

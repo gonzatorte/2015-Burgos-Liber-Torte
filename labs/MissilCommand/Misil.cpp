@@ -16,9 +16,10 @@ Misil::Misil()
 {
 }
 
-void Misil::drawFigure() {
+void Misil::drawFigure(Camera * cam) {
     glTranslatef(this->position.x, this->position.y, this->position.z);
     glColor3f(1.0f,0.0f,0.0f);
+    glDisable(GL_TEXTURE_2D);
     //glutSolidSphere(Constants::BALLRADIUS,50,50);
     gluSphere(gluNewQuadric(), Constants::BALLRADIUS,50,50);
 }

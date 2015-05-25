@@ -11,7 +11,7 @@ class Misil: public Figure
     public:
         Misil();
         ~Misil();
-        void drawFigure();
+        void drawFigure(Camera * cam = NULL);
 };
 
 #endif // MISIL_H

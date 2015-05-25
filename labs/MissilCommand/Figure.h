@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "Vector.h"
+#include "Camera.h"
 
 using namespace std;
 
@@ -12,7 +13,7 @@ class Figure
         Figure();
         virtual ~Figure();
         void eulerIntegrate(float fps);
-        virtual void drawFigure() = 0;
+        virtual void drawFigure(Camera * cam = NULL) = 0;
 
         Vector position;
         Vector velocity;

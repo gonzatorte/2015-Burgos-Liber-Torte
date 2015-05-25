@@ -24,6 +24,7 @@ typedef struct{
 // The object type
 class ModelType {
     public:
+        ModelType();
         char name[20];
 
         int vertices_qty;
@@ -35,12 +36,12 @@ class ModelType {
         vertex_type normal[MAX_VERTICES];
         int id_texture;
 
-        int z_bot_limit = INT_MAX;
-        int z_top_limit = INT_MIN;
-        int y_bot_limit = INT_MAX;
-        int y_top_limit = INT_MIN;
-        int x_bot_limit = INT_MAX;
-        int x_top_limit = INT_MIN;
+        float z_bot_limit;
+        float z_top_limit;
+        float y_bot_limit;
+        float y_top_limit;
+        float x_bot_limit;
+        float x_top_limit;
 
         char LoadFrom3DS (char *filename);
 };

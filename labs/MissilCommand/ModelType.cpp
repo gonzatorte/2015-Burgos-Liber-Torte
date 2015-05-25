@@ -5,7 +5,15 @@
 #include "ModelType.h"
 #include "Vector.h"
 
-
+ModelType::ModelType(){
+    z_bot_limit = INT_MAX;
+    z_top_limit = INT_MIN;
+    y_bot_limit = INT_MAX;
+    y_top_limit = INT_MIN;
+    x_bot_limit = INT_MAX;
+    x_top_limit = INT_MIN;
+    id_texture = -1;
+}
 
 void ObjCalcNormals(ModelType * model){
 	int i;
@@ -65,7 +73,23 @@ void ObjCalcNormals(ModelType * model){
 	}
 }
 
+void centre_model(ModelType * model){
+    float x_correct_pos = (model->x_top_limit + model->x_bot_limit)/2.0;
+    float y_correct_pos = (model->y_top_limit + model->y_bot_limit)/2.0;
+    float z_correct_pos = (model->z_top_limit + model->z_bot_limit)/2.0;
+    model->x_bot_limit -= x_correct_pos;
+    model->x_top_limit -= x_correct_pos;
+    model->y_bot_limit -= y_correct_pos;
+    model->y_top_limit -= y_correct_pos;
+    model->z_bot_limit -= z_correct_pos;
+    model->z_top_limit -= z_correct_pos;
 
+    for(int i=0; i<model->vertices_qty; i++){
+        model->vertex[i].x -= x_correct_pos;
+        model->vertex[i].y -= y_correct_pos;
+        model->vertex[i].z -= z_correct_pos;
+    }
+}
 
 /**********************************************************
  *
@@ -239,6 +263,7 @@ char ModelType::LoadFrom3DS(char *p_filename)
         }
 	}
 	fclose (l_file); // Closes the file stream
+	centre_model(this);
 	ObjCalcNormals(this);
 	return (1); // Returns ok
 }
