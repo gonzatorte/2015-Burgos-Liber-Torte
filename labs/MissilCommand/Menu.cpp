@@ -21,38 +21,38 @@ Menu::Menu(int screen_w_in, int screen_h_in, Game * game_in){
     screen_h = screen_h_in;
     game = game_in;
 
-    texture_back = LoadBitmap("rsc/textures/marble_0.bmp");
+    texture_back = LoadBitmap("rsc/textures/menu.bmp");
 
     const char * font_type = "rsc/fonts/OpenSans-Regular.ttf";
     font_big = TTF_OpenFont(font_type, 20);
     font_small = TTF_OpenFont(font_type, 12);
-    text_menu = Load_string("MENU", {128,64,64,0}, font_big);
+    text_menu = Load_string("MENU", {12,90,32,0}, font_big);
 
-    text_game_speed = Load_string("Speed", {128,64,64,0}, font_small);
-    text_game_speed_1 = Load_string("1", {128,64,64,0}, font_small);
-    text_game_speed_2 = Load_string("2", {128,64,64,0}, font_small);
-    text_game_speed_3 = Load_string("3", {128,64,64,0}, font_small);
-    text_game_speed_4 = Load_string("4", {128,64,64,0}, font_small);
+    text_game_speed = Load_string("Speed", {12,90,32,0}, font_small);
+    text_game_speed_1 = Load_string("1", {12,90,32,0}, font_small);
+    text_game_speed_2 = Load_string("2", {12,90,32,0}, font_small);
+    text_game_speed_3 = Load_string("3", {12,90,32,0}, font_small);
+    text_game_speed_4 = Load_string("4", {12,90,32,0}, font_small);
 
-    text_wireframe_mode = Load_string("Wireframes", {128,64,64,0}, font_small);
-    text_wireframe_on = Load_string("ON", {128,64,64,0}, font_small);
-    text_wireframe_off = Load_string("OFF", {128,64,64,0}, font_small);
+    text_wireframe_mode = Load_string("Wireframes", {12,90,32,0}, font_small);
+    text_wireframe_on = Load_string("ON", {12,90,32,0}, font_small);
+    text_wireframe_off = Load_string("OFF", {12,90,32,0}, font_small);
 
-    text_texture_mode = Load_string("Textures", {128,64,64,0}, font_small);
-    text_texture_on = Load_string("ON", {128,64,64,0}, font_small);
-    text_texture_off = Load_string("OFF", {128,64,64,0}, font_small);
+    text_texture_mode = Load_string("Textures", {12,90,32,0}, font_small);
+    text_texture_on = Load_string("ON", {12,90,32,0}, font_small);
+    text_texture_off = Load_string("OFF", {12,90,32,0}, font_small);
 
-    text_light_source = Load_string("Light src", {128,64,64,0}, font_small);
-    text_light_source_1 = Load_string("1", {128,64,64,0}, font_small);
-    text_light_source_2 = Load_string("2", {128,64,64,0}, font_small);
-    text_light_source_3 = Load_string("3", {128,64,64,0}, font_small);
-    text_light_source_4 = Load_string("4", {128,64,64,0}, font_small);
+    text_light_source = Load_string("Light Position", {128,64,64,0}, font_small);
+    text_light_source_1 = Load_string("1", {12,90,32,0}, font_small);
+    text_light_source_2 = Load_string("2", {12,90,32,0}, font_small);
+    text_light_source_3 = Load_string("3", {12,90,32,0}, font_small);
+    text_light_source_4 = Load_string("4", {12,90,32,0}, font_small);
 
-    text_light_color = Load_string("Light clr", {128,64,64,0}, font_small);
-    text_light_color_1 = Load_string("1", {128,64,64,0}, font_small);
-    text_light_color_2 = Load_string("2", {128,64,64,0}, font_small);
-    text_light_color_3 = Load_string("3", {128,64,64,0}, font_small);
-    text_light_color_4 = Load_string("4", {128,64,64,0}, font_small);
+    text_light_color = Load_string("Light Color", {12,90,32,0}, font_small);
+    text_light_color_1 = Load_string("1", {12,90,32,0}, font_small);
+    text_light_color_2 = Load_string("2", {12,90,32,0}, font_small);
+    text_light_color_3 = Load_string("3", {12,90,32,0}, font_small);
+    text_light_color_4 = Load_string("4", {12,90,32,0}, font_small);
 }
 
 void Menu::init(){
@@ -101,7 +101,8 @@ void drawBox(SDL_Rect box, GLuint texture = -1){
 //    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
     if (texture != -1)
         glBindTexture(GL_TEXTURE_2D, texture);
-    glColor3f(0.0f, 0.0f, 1.0f);
+    //glEnable(GL_BLEND);
+    //glColor3f(1.0f, 0.0f, 1.0f);
     glBegin(GL_QUADS);
     if (texture != -1)
         glTexCoord2f(1,1);
@@ -125,8 +126,8 @@ void positionate_box(float place_w, float place_h, float padding_w, float paddin
 }
 
 void Menu::draw(){
-    int menu_size_h = 150;
-    int menu_size_w = 150;
+    int menu_size_h = 200;
+    int menu_size_w = 200;
     int padding = 10;
 
     SDL_Rect main_box;
