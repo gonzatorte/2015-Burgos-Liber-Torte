@@ -358,7 +358,7 @@ Game::Game(int screen_w_in, int screen_h_in, Camera * camera_in, int fps_in, boo
     wireframe_mode = wireframe_mode_in;
     game_speed = 1;
     texture_mode = texture_mode_in;
-    textura_suelo = LoadBitmap("rsc/textures/GrassES4.bmp");
+    textura_suelo = LoadBitmap("rsc/textures/grass.bmp");
     textura_cielo = LoadBitmap("rsc/textures/RIPPLES.bmp");
 
     model_building = new ModelType();
