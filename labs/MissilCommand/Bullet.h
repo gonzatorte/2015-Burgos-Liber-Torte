@@ -12,7 +12,7 @@ class Bullet: public Figure
     public:
         Bullet();
         ~Bullet();
-        void drawFigure();
+        void drawFigure(Camera * cam = NULL);
 };
 
 #endif // BULLET_H

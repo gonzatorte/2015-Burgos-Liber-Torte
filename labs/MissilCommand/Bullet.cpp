@@ -16,7 +16,7 @@ Bullet::Bullet()
 {
 }
 
-void Bullet::drawFigure() {
+void Bullet::drawFigure(Camera * cam) {
 
     if (fabs(position.z - previews_position.z) < 80 &&
         fabs(position.x - previews_position.x) < 80){

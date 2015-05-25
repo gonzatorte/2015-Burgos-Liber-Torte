@@ -7,7 +7,7 @@
 class ModelFigure: public Figure{
     public:
         ModelFigure(ModelType * m);
-        void drawFigure();
+        void drawFigure(Camera * cam = NULL);
         void moveFigure(int fps);
         Vector orientation;
         Vector aspect;
