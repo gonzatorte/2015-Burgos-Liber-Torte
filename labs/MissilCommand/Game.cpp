@@ -28,8 +28,8 @@ void Game::initLevel(int levelNumber) {
     this->light_direction = 1;
     this->bulletQuantity = maxBulletQuantity;
     this->lastMisilTime = clock();
-    misils = new list<Misil*>();
-//    misils = new list<ModelFigure*>();
+//    misils = new list<Misil*>();
+    misils = new list<ModelFigure*>();
     buildings = new list<ModelFigure*>();
     bullets = new list<Bullet*>();
     addBuildings();
@@ -414,13 +414,9 @@ bool Game::isGameOver() {
 void Game::addMisil() {
     list<ModelFigure*>::iterator itBuildings = obtRandomIterator();
 
-//    ModelFigure* misil = new ModelFigure(model_misil);
-//    misil->orientation = Vector(90, 0, 45);
-//    misil->aspect = Vector(1/20.0,1/20.0,-1/20.0);
+    ModelFigure* misil = new ModelFigure(model_misil);
 
-    Misil* misil = new Misil();
-
-    misil->acceleration = Vector(0.0 ,0.0 ,0.0);
+    misil->acceleration = Vector(0.0 ,0.0 ,180.0);
     float rand_x = (*itBuildings)->position.x + (rand() % 30) * multiplicador;
     float rand_z = (*itBuildings)->position.z + (rand() % 30) * multiplicador;
     float y = 15.0;
@@ -431,6 +427,15 @@ void Game::addMisil() {
                              (*itBuildings)->position.y/misilSpeed - y/misilSpeed,
                              (*itBuildings)->position.z/misilSpeed - rand_z/misilSpeed);
     misil->velocity = misil->velocity*vel_adjust_factor;
+
+    Vector vel = misil->velocity;
+    float norm = Vector::VectLenght(&vel);
+    float angulo1 = acos(vel.x*vel.z/((sqrt(vel.x*vel.x + vel.z*vel.z))-1))*3.141518;
+    float angulo2 = acos(vel.y*vel.z/((sqrt(vel.x*vel.x + vel.y*vel.y))-1))*3.141518;
+
+    misil->orientation = Vector(angulo1, 0, angulo2);
+    misil->aspect = Vector(1/50000.0,-1/500000.0,1/50000.0);
+
     misils->push_back(misil);
 
     misilQuantity++;
@@ -517,8 +522,8 @@ void Game::addBuildings() {
 }
 
 void Game::misilDisplacement() {
-//    list<ModelFigure*>::iterator it;
-    list<Misil*>::iterator it;
+    list<ModelFigure*>::iterator it;
+//    list<Misil*>::iterator it;
     for (it=misils->begin(); it!=misils->end(); ++it){
         (*it)->eulerIntegrate(fps/((float)game_speed));
     }
@@ -567,15 +572,15 @@ bool simple_intrsect(Vector position1, Vector position2){
 
 void Game::detectCollisions(){
 
-//    list<ModelFigure*>::iterator it = misils->begin();
-    list<Misil*>::iterator it = misils->begin();
+    list<ModelFigure*>::iterator it = misils->begin();
+//    list<Misil*>::iterator it = misils->begin();
     bool delete_misil;
 
     Vector v1 = Vector(0.5, 0.5, 0.5);
 
     while (it != misils->end()){
-//        ModelFigure * curr_misil = (*it);
-        Misil * curr_misil = (*it);
+        ModelFigure * curr_misil = (*it);
+//        Misil * curr_misil = (*it);
         Vector misil_next_position = curr_misil->position + curr_misil->velocity * (Constants::dt/(fps*((float)game_speed)));
 
         delete_misil = false;
@@ -645,8 +650,8 @@ void Game::manageGame() {
 }
 
 void Game::drawMisils() {
-//    list<ModelFigure*>::iterator it;
-    list<Misil*>::iterator it;
+    list<ModelFigure*>::iterator it;
+//    list<Misil*>::iterator it;
     for (it=misils->begin(); it!=misils->end(); ++it){
 		glPushMatrix();
             (*it)->drawFigure();
