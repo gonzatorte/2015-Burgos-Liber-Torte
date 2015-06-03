@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="RayTracer02" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/RayTracer02" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/RayTracer02" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="include/Cylinder.h" />
+		<Unit filename="include/FreeImage.h" />
+		<Unit filename="include/Image.h" />
+		<Unit filename="include/Intersection.h" />
+		<Unit filename="include/Light.h" />
+		<Unit filename="include/Maya.h" />
+		<Unit filename="include/Object.h" />
+		<Unit filename="include/Plane.h" />
+		<Unit filename="include/Ray.h" />
+		<Unit filename="include/Scene.h" />
+		<Unit filename="include/Screen.h" />
+		<Unit filename="include/Shader.h" />
+		<Unit filename="include/Shadower.h" />
+		<Unit filename="include/Sphere.h" />
+		<Unit filename="include/SuperSampling.h" />
+		<Unit filename="include/Tracer.h" />
+		<Unit filename="include/Vector.h" />
+		<Unit filename="include/tinystr.h" />
+		<Unit filename="include/tinyxml.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="src/Cylinder.cpp" />
+		<Unit filename="src/Image.cpp" />
+		<Unit filename="src/Intersection.cpp" />
+		<Unit filename="src/Light.cpp" />
+		<Unit filename="src/Maya.cpp" />
+		<Unit filename="src/Plane.cpp" />
+		<Unit filename="src/Ray.cpp" />
+		<Unit filename="src/Scene.cpp" />
+		<Unit filename="src/Screen.cpp" />
+		<Unit filename="src/Shader.cpp" />
+		<Unit filename="src/Shadower.cpp" />
+		<Unit filename="src/Sphere.cpp" />
+		<Unit filename="src/SuperSampling.cpp" />
+		<Unit filename="src/Tracer.cpp" />
+		<Unit filename="src/tinystr.cpp" />
+		<Unit filename="src/tinyxml.cpp" />
+		<Unit filename="src/tinyxmlerror.cpp" />
+		<Unit filename="src/tinyxmlparser.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
