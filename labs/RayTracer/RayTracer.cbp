@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="src" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -22,6 +23,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -44,6 +46,26 @@
 		</Linker>
 		<Unit filename="cb.bmp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Camera.cpp" />
+		<Unit filename="src/Camera.h" />
+		<Unit filename="src/Cylinder.cpp" />
+		<Unit filename="src/Cylinder.h" />
+		<Unit filename="src/Figure.cpp" />
+		<Unit filename="src/Figure.h" />
+		<Unit filename="src/Pixel.cpp" />
+		<Unit filename="src/Pixel.h" />
+		<Unit filename="src/Plane.cpp" />
+		<Unit filename="src/Plane.h" />
+		<Unit filename="src/Scene.cpp" />
+		<Unit filename="src/Scene.h" />
+		<Unit filename="src/Screen.cpp" />
+		<Unit filename="src/Screen.h" />
+		<Unit filename="src/Sphere.cpp" />
+		<Unit filename="src/Sphere.h" />
+		<Unit filename="src/Vector.cpp" />
+		<Unit filename="src/Vector.h" />
+		<Unit filename="src/tinyxml2.cpp" />
+		<Unit filename="src/tinyxml2.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
