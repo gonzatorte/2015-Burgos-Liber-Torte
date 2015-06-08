@@ -423,12 +423,17 @@ void Game::addMisil() {
     list<ModelFigure*>::iterator itBuildings = obtRandomIterator();
 
     ModelFigure* misil = new ModelFigure(model_misil);
+<<<<<<< HEAD
     misil->orientation = Vector(90, 0, 45);
     misil->aspect = Vector(1/20.0,1/20.0,-1/20.0);
 
 //    Misil* misil = new Misil();
 
     misil->acceleration = Vector(0.0 ,0.0 ,0.0);
+=======
+
+    misil->acceleration = Vector(0.0 ,0.0 ,180.0);
+>>>>>>> b68fd16922164b3ef7e843ca346d44835c0626eb
     float rand_x = (*itBuildings)->position.x + (rand() % 30) * multiplicador;
     float rand_z = (*itBuildings)->position.z + (rand() % 30) * multiplicador;
     float y = 15.0;
@@ -439,6 +444,15 @@ void Game::addMisil() {
                              (*itBuildings)->position.y/misilSpeed - y/misilSpeed,
                              (*itBuildings)->position.z/misilSpeed - rand_z/misilSpeed);
     misil->velocity = misil->velocity*vel_adjust_factor;
+
+    Vector vel = misil->velocity;
+    float norm = Vector::VectLenght(&vel);
+    float angulo1 = acos(vel.x*vel.z/((sqrt(vel.x*vel.x + vel.z*vel.z))-1))*3.141518;
+    float angulo2 = acos(vel.y*vel.z/((sqrt(vel.x*vel.x + vel.y*vel.y))-1))*3.141518;
+
+    misil->orientation = Vector(angulo1, 0, angulo2);
+    misil->aspect = Vector(1/50000.0,-1/500000.0,1/50000.0);
+
     misils->push_back(misil);
 
     misilQuantity++;
