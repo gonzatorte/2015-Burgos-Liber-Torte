@@ -7,6 +7,8 @@
 #include "Plane.h"
 #include "Screen.h"
 #include "Camera.h"
+#include "Trace.h"
+#include "Ray.h"
 #include <list>
 
 using namespace std;

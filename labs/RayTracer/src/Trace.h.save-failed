@@ -1,0 +1,14 @@
+#ifndef TRACE_H
+#define TRACE_H
+
+
+class Trace
+{
+    public:
+        Trace();
+        virtual ~Trace();
+    protected:
+    private:
+};
+
+#endif // TRACE_H
