@@ -11,7 +11,7 @@ class Shade
     public:
         Shade();
         virtual ~Shade();
-        Vector shadeRay(int level,  Isect isect, Ray ray);
+        Vector shadeRay(Ray* ray, Isect* isect, int level);
     protected:
     private:
 };

@@ -99,17 +99,17 @@ Vector::~Vector()
 
 // Copy paste
 
- const double Vector::MagnitudeSquared()
+double Vector::MagnitudeSquared()
 {
     return (x*x) + (y*y) + (z*z);
 }
 
-const double Vector::Magnitude()
+double Vector::Magnitude()
 {
     return sqrt(MagnitudeSquared());
 }
 
-const Vector Vector::UnitVector()
+Vector Vector::UnitVector()
 {
     const double mag = Magnitude();
     return Vector(x/mag, y/mag, z/mag);

@@ -3,6 +3,7 @@
 #include "Vector.h"
 #include "Figure.h"
 
+class Figure;
 
 class Isect
 {
@@ -12,6 +13,7 @@ class Isect
         Figure* figure;
         Vector normal;
         Vector surfacePoint;
+        double distance;
     protected:
     private:
 };

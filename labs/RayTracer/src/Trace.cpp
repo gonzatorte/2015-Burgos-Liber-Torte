@@ -9,16 +9,17 @@ Vector Trace::traceRay(Ray* ray, int level) {
     Vector color;
     Scene* scene = Scene::getInstance();
     Shade shade;
-    Isect* closest, aux;
+    Isect* closest;
+    Isect* aux;
     double minDistance = 100000;
     closest = NULL;
     list<Figure*>::iterator it;
     for (it=scene->figures->begin(); it!=scene->figures->end(); ++it){
 
         aux = (*it)->intersect(ray);
-        if (aux != NULL && minDistance > aux.distance) {
+        if (aux != NULL && minDistance > aux->distance) {
             closest = aux;
-            minDistance = aux.distance;
+            minDistance = aux->distance;
         }
 
     }

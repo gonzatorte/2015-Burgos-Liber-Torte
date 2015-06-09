@@ -13,6 +13,8 @@ class Cylinder: public Figure
         virtual ~Cylinder();
         double radius;
         Vector center;
+        Vector normal(Vector v);
+        Isect* intersect(Ray* ray);
         double height;
     protected:
     private:

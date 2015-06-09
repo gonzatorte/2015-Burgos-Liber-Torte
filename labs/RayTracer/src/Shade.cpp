@@ -10,12 +10,12 @@ Shade::~Shade()
     //dtor
 }
 
-Vector Shade::shadeRay(int level, Isect isect, Ray ray){
+Vector Shade::shadeRay(Ray* ray, Isect* isect, int level){
     Scene* s = Scene::getInstance();
     int maxLevel = 3;
-    Figure* figure = isect.figure;
-    Vector normal = isect.normal;
-    Vector point = isect.surfacePoint;
+    Figure* figure = isect->figure;
+    Vector normal = isect->normal;
+    Vector point = isect->surfacePoint;
     Trace t;
     Vector color;
     color.x = figure->color.x;

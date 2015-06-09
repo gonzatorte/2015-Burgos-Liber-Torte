@@ -9,6 +9,8 @@ class Plane: public Figure
         Plane();
         void read(tinyxml2::XMLElement* element);
         virtual ~Plane();
+        Vector normal(Vector v);
+        Isect* intersect(Ray* ray);
     protected:
     private:
 };

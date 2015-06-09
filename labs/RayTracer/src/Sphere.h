@@ -13,6 +13,8 @@ class Sphere: public Figure
         virtual ~Sphere();
         double radius;
         Vector center;
+        Vector normal(Vector v);
+        Isect* intersect(Ray* ray);
     protected:
     private:
 };

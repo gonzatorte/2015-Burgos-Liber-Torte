@@ -20,5 +20,5 @@ Ray::~Ray()
 //Copia
 Vector Ray::rayPoint(const double dist)
 {
-	return dist*direction + origin;
+	return direction*dist + origin;
 }

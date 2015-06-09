@@ -7,6 +7,8 @@
 #include "Vector.h"
 #include "Ray.h"
 
+class Isect;
+
 class Figure
 {
     public:
@@ -15,7 +17,8 @@ class Figure
         virtual ~Figure();
         bool reflexion, refraction;
         Vector color;
-        virtual Isect intersect(Ray r) = 0;
+        virtual Vector normal(Vector v);
+        virtual Isect* intersect(Ray* r) = 0;
     protected:
     private:
 };
