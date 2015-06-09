@@ -6,6 +6,11 @@ Plane::Plane()
 }
 
 
+void Plane::read(tinyxml2::XMLElement* element) {
+
+}
+
+
 Vector Plane::normal(Vector v) {
 }
 
