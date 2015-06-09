@@ -56,12 +56,16 @@
 		<Unit filename="src/Pixel.h" />
 		<Unit filename="src/Plane.cpp" />
 		<Unit filename="src/Plane.h" />
+		<Unit filename="src/Ray.cpp" />
+		<Unit filename="src/Ray.h" />
 		<Unit filename="src/Scene.cpp" />
 		<Unit filename="src/Scene.h" />
 		<Unit filename="src/Screen.cpp" />
 		<Unit filename="src/Screen.h" />
 		<Unit filename="src/Sphere.cpp" />
 		<Unit filename="src/Sphere.h" />
+		<Unit filename="src/Trace.cpp" />
+		<Unit filename="src/Trace.h" />
 		<Unit filename="src/Vector.cpp" />
 		<Unit filename="src/Vector.h" />
 		<Unit filename="src/tinyxml2.cpp" />
