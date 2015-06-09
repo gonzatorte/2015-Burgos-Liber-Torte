@@ -1,5 +1,5 @@
 #include "Scene.h"
-
+#include <string>
 Scene* Scene::instance = NULL;
 
 Scene::Scene()
@@ -22,19 +22,19 @@ void Scene::sceneRead() {
     tinyxml2::XMLElement* rootElement = document.FirstChildElement("ROOT");
     tinyxml2::XMLElement* element;
     for(element=rootElement->FirstChildElement(); element; element=element->NextSiblingElement()) {
-        String elementName = element->value();
+        string elementName = element->Value();
         if (elementName=="sphere") {
-            Sphere sphere = new Sphere();
+            Sphere* sphere = new Sphere();
             sphere->read(element);
             figures->push_back(sphere);
 
         } else if (elementName=="cylinder") {
-            Cylinder cylinder = new Cylinder();
+            Cylinder* cylinder = new Cylinder();
             cylinder->read(element);
             figures->push_back(cylinder);
 
         } else if (elementName=="plane") {
-            Plane plane = new Plane();
+            Plane* plane = new Plane();
             plane->read(element);
             figures->push_back(plane);
 
@@ -51,7 +51,7 @@ void Scene::sceneRead() {
 
 }
 
-void createScreen() {
+void Scene::createScreen() {
     screen->createScreen();
 }
 

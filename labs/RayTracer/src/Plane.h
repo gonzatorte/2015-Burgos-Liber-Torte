@@ -1,9 +1,9 @@
 #ifndef PLANE_H
 #define PLANE_H
-
+#include "Figure.h"
 #include "tinyxml2.h"
 
-class Plane
+class Plane: public Figure
 {
     public:
         Plane();

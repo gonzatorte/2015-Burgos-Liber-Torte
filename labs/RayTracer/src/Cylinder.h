@@ -2,6 +2,8 @@
 #define CYLINDER_H
 
 #include "tinyxml2.h"
+#include "Figure.h"
+#include "Vector.h"
 
 class Cylinder: public Figure
 {

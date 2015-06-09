@@ -7,23 +7,23 @@ Trace::Trace()
 
 Vector Trace::traceRay(Ray* ray, int level) {
     Vector color;
-    Scene scene = Scene.getInstance();
-    Shader shader;
-    Isect closest, aux;
+    Scene* scene = Scene::getInstance();
+    Shade shade;
+    Isect* closest, aux;
     double minDistance = 100000;
-    closest = null;
+    closest = NULL;
     list<Figure*>::iterator it;
-    for (it=scene.figures->begin(); it!=scene.figures->end(); ++it){
+    for (it=scene->figures->begin(); it!=scene->figures->end(); ++it){
 
         aux = (*it)->intersect(ray);
-        if (aux != null && minDistance > aux.distance) {
+        if (aux != NULL && minDistance > aux.distance) {
             closest = aux;
             minDistance = aux.distance;
         }
 
     }
-    if (closest != null) {
-        color = shader.shade(ray, closest, level);
+    if (closest != NULL) {
+        color = shade.shadeRay(ray, closest, level);
     } else {
         color = Vector(1,1,1);
     }

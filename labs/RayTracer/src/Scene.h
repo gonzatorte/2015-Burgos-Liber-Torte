@@ -17,6 +17,7 @@ class Scene
 {
     public:
         Scene();
+        static Scene* instance;
         static Scene* getInstance();
         void sceneRead();
         void createScreen();

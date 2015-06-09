@@ -1,6 +1,8 @@
 #ifndef TRACE_H
 #define TRACE_H
 
+#include "Scene.h"
+#include "Shade.h"
 #include "Ray.h"
 #include "Pixel.h"
 
