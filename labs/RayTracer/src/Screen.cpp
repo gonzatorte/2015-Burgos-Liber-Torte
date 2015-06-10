@@ -1,6 +1,5 @@
 #include "Screen.h"
 #include "Scene.h"
-#include "FreeImage.h"
 
 Pixel* average(Pixel* p1, Pixel* p2, Pixel* p3, Pixel* p4) {
 
@@ -28,21 +27,22 @@ void Screen::createScreen() {
     FIBITMAP* refractionImage = FreeImage_Allocate(width, height, 24);
     FIBITMAP* reflexionImage = FreeImage_Allocate(width, height, 24);
     Camera* cam = scene->camera;
-    Pixel* buff[width][height];
+    Pixel** buff;
+    buff = new Pixel* [height];
     Trace trace;
     Vector color;
     RGBQUAD free_color;
     for (int j=0; j < height; j++) {
+
+        buff[j] = new Pixel[width];
         for (int i=0; i < width; i++) {
             Vector rayDir = Vector(i-cam->viewPoint.x, j-cam->viewPoint.y,0); //PELIGRO!!! Checkear esto con distintas pos de la camara.
             Ray* ray = new Ray(cam->viewPoint, rayDir);
             color = trace.traceRay(ray, 0);
             Pixel* pixel = new Pixel(i,j,color.x, color.y, color.z);
-
-            //pixel->setColor
-            buff[i][j] = pixel;
+            buff[i,j] = pixel;
             if (i > 0 && j > 0) {
-                Pixel* avrgPixel = average(buff[i-1][j-1], buff[i][j-1], buff[i-1][j], buff[i][j]);
+                Pixel* avrgPixel = average(buff[i-1, j-1], buff[i, j-1], buff[i-1, j], buff[i, j]);
                 free_color.rgbRed = (double) color.x;
                 free_color.rgbGreen = (double) color.y;
                 free_color.rgbBlue = (double) color.z;
@@ -52,6 +52,9 @@ void Screen::createScreen() {
         }
 
     }
+
+
+    FreeImage_Save(FIF_PNG, image,"PRUEBAIMAGE", 0);
 
 }
 

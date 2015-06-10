@@ -5,6 +5,7 @@ Scene* Scene::instance = NULL;
 Scene::Scene()
 {
     screen = new Screen();
+    figures = new list<Figure*>();
 }
 
 Scene* Scene::getInstance() {
