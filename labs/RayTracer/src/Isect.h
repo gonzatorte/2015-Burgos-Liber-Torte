@@ -9,6 +9,9 @@ class Isect
         virtual ~Isect();
     protected:
     private:
+       Figure* figure;
+       Vector normal;
+       Vector surfacePoint;
 };
 
 #endif // ISECT_H

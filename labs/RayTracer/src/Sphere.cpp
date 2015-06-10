@@ -5,6 +5,8 @@ Sphere::Sphere()
     //ctor
 }
 
+<<<<<<< HEAD
+=======
 void Sphere::read(tinyxml2::XMLElement* element) {
 
     radius = atof(element->Attribute("radius"));
@@ -12,6 +14,7 @@ void Sphere::read(tinyxml2::XMLElement* element) {
     super.read(element);
 }
 
+<<<<<<< HEAD
 
 Vector Sphere::normal(Vector p)
 {
@@ -76,6 +79,9 @@ Intersection Sphere::intersect(Ray* r)
 	return inter;
 }
 
+=======
+>>>>>>> 3ef7e8a17efc01e56f2676bac37f809a3a56110c
+>>>>>>> 70ca16aaaf447f87254dc0036e8149483740df8d
 Sphere::~Sphere()
 {
     //dtor

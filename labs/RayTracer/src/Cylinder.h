@@ -11,6 +11,7 @@ class Cylinder: public Figure
         virtual ~Cylinder();
         double radius;
         Vector center;
+        double height;
     protected:
     private:
 };

@@ -150,6 +150,10 @@ void Game::setLight(){
 }
 
 void Game::renderScene(){
+    if (this->faceting)
+        glShadeModel(GL_SMOOTH);
+    else
+        glShadeModel(GL_FLAT);
     if (!wireframe_mode){
         glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     }else{
@@ -291,6 +295,9 @@ void Game::interact(SDL_Event * evento){
     case SDL_KEYDOWN:
 
         switch(evento->key.keysym.sym){
+            case SDLK_f:
+                faceting = !faceting;
+                break;
             case SDLK_y:
                 wireframe_mode = !wireframe_mode;
                 break;
@@ -358,8 +365,9 @@ Game::Game(int screen_w_in, int screen_h_in, Camera * camera_in, int fps_in, boo
     fps = fps_in;
     wireframe_mode = wireframe_mode_in;
     game_speed = 1;
+    faceting = true;
     texture_mode = texture_mode_in;
-    textura_suelo = LoadBitmap("rsc/textures/grass.bmp");
+    textura_suelo = LoadBitmap("rsc/textures/GrassES4.bmp");
     textura_cielo = LoadBitmap("rsc/textures/RIPPLES.bmp");
 
     model_building = new ModelType();
@@ -415,8 +423,17 @@ void Game::addMisil() {
     list<ModelFigure*>::iterator itBuildings = obtRandomIterator();
 
     ModelFigure* misil = new ModelFigure(model_misil);
+<<<<<<< HEAD
+    misil->orientation = Vector(90, 0, 45);
+    misil->aspect = Vector(1/20.0,1/20.0,-1/20.0);
+
+//    Misil* misil = new Misil();
+
+    misil->acceleration = Vector(0.0 ,0.0 ,0.0);
+=======
 
     misil->acceleration = Vector(0.0 ,0.0 ,180.0);
+>>>>>>> b68fd16922164b3ef7e843ca346d44835c0626eb
     float rand_x = (*itBuildings)->position.x + (rand() % 30) * multiplicador;
     float rand_z = (*itBuildings)->position.z + (rand() % 30) * multiplicador;
     float y = 15.0;
@@ -743,10 +760,13 @@ void Game::drawLandscape(){
     glVertex3f( box_size, 0.0f, -box_size);
     glEnd();
 
+    glPushMatrix();
     glColor3f(1.0f, 0.0f, 0.0f);
+    glTranslatef(0.0,-5.0,0.0);
     glBindTexture(GL_TEXTURE_2D, textura_cielo);
     //glBindTexture(GL_TEXTURE_2D, textura_paredes);
     drawHalfSphere(130,130, 100);
+    glPopMatrix();
 }
 
 bool Game::levelCompleted() {
