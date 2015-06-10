@@ -91,7 +91,7 @@ int main(int argc, char **argv){
     bool menu_active = false;
     SDL_Event evento;
     Uint8 *keystate;
-    Camera* camera = new Camera(Vector(0.0f,1.0f,-40.0f), Vector(8.0f,1.0f,4.0f), screen_w, screen_h);
+    Camera* camera = new Camera(Vector(-15.0f,1.0f,15.0f), Vector(0.0f,1.0f,4.0f), screen_w, screen_h);
     Game * game = new Game(screen_w, screen_h, camera, fps);
     Menu * menu = new Menu(screen_h, screen_w, game);
     game->init();

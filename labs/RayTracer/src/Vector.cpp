@@ -96,3 +96,26 @@ Vector::~Vector()
     //dtor
 }
 
+
+// Copy paste
+
+double Vector::MagnitudeSquared()
+{
+    return (x*x) + (y*y) + (z*z);
+}
+
+double Vector::Magnitude()
+{
+    return sqrt(MagnitudeSquared());
+}
+
+Vector Vector::UnitVector()
+{
+    const double mag = Magnitude();
+    return Vector(x/mag, y/mag, z/mag);
+}
+
+inline double Vector::DotProduct (const Vector& a, const Vector& b)
+{
+    return (a.x*b.x) + (a.y*b.y) + (a.z*b.z);
+}

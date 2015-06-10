@@ -12,6 +12,7 @@ void Figure::read(tinyxml2::XMLElement* element) {
     color = Vector(atof(element->Attribute("r")), atof(element->Attribute("g")), atof(element->Attribute("b")));
 }
 
+
 Figure::~Figure()
 {
     //dtor

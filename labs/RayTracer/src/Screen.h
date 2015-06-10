@@ -2,6 +2,7 @@
 #define SCREEN_H
 
 #include "Pixel.h"
+#include "Ray.h"
 
 using namespace std;
 

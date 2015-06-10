@@ -2,6 +2,8 @@
 #define CYLINDER_H
 
 #include "tinyxml2.h"
+#include "Figure.h"
+#include "Vector.h"
 
 class Cylinder: public Figure
 {
@@ -11,6 +13,9 @@ class Cylinder: public Figure
         virtual ~Cylinder();
         double radius;
         Vector center;
+        Vector normal(Vector v);
+        Isect* intersect(Ray* ray);
+        double height;
     protected:
     private:
 };

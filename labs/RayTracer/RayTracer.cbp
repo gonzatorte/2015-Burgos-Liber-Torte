@@ -16,23 +16,10 @@
 					<Add directory="src" />
 				</Compiler>
 			</Target>
-			<Target title="Release">
-				<Option output="bin/Release/RayTracer" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
-				<Option type="0" />
-				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-O2" />
-					<Add directory="src" />
-				</Compiler>
-				<Linker>
-					<Add option="-s" />
-				</Linker>
-			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="C:/Program Files (x86)/CodeBlocks/SDL/include" />
+			<Add directory="C:/Users/leobaf/Documents/Grafica/2015-Graf-Lburgos-LAzambuya-Gtorte/libs/SDL-devel-1.2.15-mingw32/SDL-1.2.15/include" />
 		</Compiler>
 		<Linker>
 			<Add library="mingw32" />
@@ -42,7 +29,7 @@
 			<Add library="gdi32" />
 			<Add library="winmm" />
 			<Add library="dxguid" />
-			<Add directory="C:/Program Files (x86)/CodeBlocks/SDL/lib" />
+			<Add directory="C:/Users/leobaf/Documents/Grafica/2015-Graf-Lburgos-LAzambuya-Gtorte/libs/SDL-devel-1.2.15-mingw32/SDL-1.2.15/lib" />
 		</Linker>
 		<Unit filename="cb.bmp" />
 		<Unit filename="main.cpp" />
@@ -52,18 +39,28 @@
 		<Unit filename="src/Cylinder.h" />
 		<Unit filename="src/Figure.cpp" />
 		<Unit filename="src/Figure.h" />
+		<Unit filename="src/FreeImage.h" />
+		<Unit filename="src/Isect.cpp" />
+		<Unit filename="src/Isect.h" />
 		<Unit filename="src/Pixel.cpp" />
 		<Unit filename="src/Pixel.h" />
 		<Unit filename="src/Plane.cpp" />
 		<Unit filename="src/Plane.h" />
+		<Unit filename="src/Ray.cpp" />
+		<Unit filename="src/Ray.h" />
 		<Unit filename="src/Scene.cpp" />
 		<Unit filename="src/Scene.h" />
 		<Unit filename="src/Screen.cpp" />
 		<Unit filename="src/Screen.h" />
+		<Unit filename="src/Shade.cpp" />
+		<Unit filename="src/Shade.h" />
 		<Unit filename="src/Sphere.cpp" />
 		<Unit filename="src/Sphere.h" />
+		<Unit filename="src/Trace.cpp" />
+		<Unit filename="src/Trace.h" />
 		<Unit filename="src/Vector.cpp" />
 		<Unit filename="src/Vector.h" />
+		<Unit filename="src/lib/FreeImage/FreeImage.h" />
 		<Unit filename="src/tinyxml2.cpp" />
 		<Unit filename="src/tinyxml2.h" />
 		<Extensions>
