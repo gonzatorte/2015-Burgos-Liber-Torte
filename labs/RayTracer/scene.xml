@@ -1,0 +1,5 @@
+<ROOT>
+	
+	<scene width="1366" height="768" viewPointX="0" viewPointY="0" viewPointZ="0" lookAtX="0" lookAtY="0" lookAtZ="1" upVectorX="0" upVectorY="1" upVectorZ="0"/>
+	<sphere centerX="200" centerY="-20" centerZ="1700" radius="120" hasReflexion="0" hasRefraction="0" r="0.1" g="0.1" b="0.1" />
+</ROOT>
