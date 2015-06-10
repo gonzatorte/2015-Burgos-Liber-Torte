@@ -23,6 +23,10 @@ class Vector
         static float VectScalarProduct (Vector * p_vector1,Vector * p_vector2);
         static void VectDotProduct (Vector * p_vector1, Vector * p_vector2,Vector * p_normal);
         float x,y,z;
+        const double MagnitudeSquared();
+        const double Magnitude();
+        Vector UnitVector();
+        inline double DotProduct(const Vector& a, const Vector& b);
 };
 
 #endif // VECTOR_H

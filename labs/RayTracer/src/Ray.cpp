@@ -15,3 +15,10 @@ Ray::~Ray()
 {
     //dtor
 }
+
+
+//Copia
+Vector Ray::rayPoint(const double dist)
+{
+	return dist*direction + origin;
+}
