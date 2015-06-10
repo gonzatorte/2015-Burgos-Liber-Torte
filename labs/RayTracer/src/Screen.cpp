@@ -1,6 +1,6 @@
 #include "Screen.h"
 #include "Scene.h"
-#include "FreeImage.h"
+#include "lib/FreeImage/FreeImage.h"
 
 Pixel* average(Pixel* p1, Pixel* p2, Pixel* p3, Pixel* p4) {
 
