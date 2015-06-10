@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include <string>
+#include <math.h>
 Scene* Scene::instance = NULL;
 
 Scene::Scene()
@@ -44,10 +45,12 @@ void Scene::sceneRead() {
             Vector lookAt = Vector(atof(element->Attribute("lookAtX")), atof(element->Attribute("lookAtY")), atof(element->Attribute("lookAtZ")));
             Vector upVector = Vector(atof(element->Attribute("upVectorX")), atof(element->Attribute("upVectorY")), atof(element->Attribute("upVectorZ")));
             Vector leftVector = upVector.VectorProduct(lookAt);
-            camera = new Camera(viewPoint, lookAt, upVector, leftVector);
+
+
             width = atoi(element->Attribute("width"));
             height = atoi(element->Attribute("height"));
-
+            distance = sqrt(width^2 + height^2) / ( 2*tan( 45/2 ) );
+            camera = new Camera(viewPoint, lookAt, upVector, leftVector, distance);
         }
     }
 

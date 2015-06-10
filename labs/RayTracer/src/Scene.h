@@ -26,6 +26,7 @@ class Scene
         Screen* screen;
         Camera* camera;
         int width, height;
+        double distance;
     protected:
     private:
 };
