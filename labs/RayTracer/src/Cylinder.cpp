@@ -15,6 +15,13 @@ void Cylinder::read(tinyxml2::XMLElement* element) {
 
 }
 
+Vector Cylinder::normal(Vector v) {
+}
+
+Isect* Cylinder::intersect(Ray* ray) {
+
+}
+
 Cylinder::~Cylinder()
 {
     //dtor

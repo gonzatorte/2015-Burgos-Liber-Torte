@@ -17,7 +17,7 @@ class Figure
         virtual ~Figure();
         bool reflexion, refraction;
         Vector color;
-        virtual Vector normal(Vector v);
+        virtual Vector normal(Vector v) = 0;
         virtual Isect* intersect(Ray* r) = 0;
     protected:
     private:
