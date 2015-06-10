@@ -119,3 +119,8 @@ inline double Vector::DotProduct (const Vector& a, const Vector& b)
 {
     return (a.x*b.x) + (a.y*b.y) + (a.z*b.z);
 }
+
+Vector Vector::VectorProduct(Vector v)
+{
+        return Vector((y * v.z) - (z * v.y),(z * v.x) - (x * v.z),(x * v.y) - (y * v.x));
+}

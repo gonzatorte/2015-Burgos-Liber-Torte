@@ -21,5 +21,5 @@ Vector Shade::shadeRay(Ray* ray, Isect* isect, int level){
     color.x = figure->color.x;
     color.y = figure->color.y;
     color.z = figure->color.z;
-
+    return color;
 }

@@ -27,6 +27,8 @@ class Vector
         double Magnitude();
         Vector UnitVector();
         inline double DotProduct(const Vector& a, const Vector& b);
+        Vector VectorProduct(Vector v);
+
 };
 
 #endif // VECTOR_H

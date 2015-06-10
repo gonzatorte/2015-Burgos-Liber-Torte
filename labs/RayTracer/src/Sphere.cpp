@@ -49,6 +49,7 @@ Isect* Sphere::intersect(Ray* r)
 		t1 = (-b-discriminent)/(2*a);
 		if(t1 > 0){
             result = new Isect();
+            result->figure = this;
 			result->surfacePoint = r->rayPoint(t1);
             //result.enter = true;//entra
             result->distance = t1;
@@ -62,6 +63,7 @@ Isect* Sphere::intersect(Ray* r)
 		else if(t2 > 0)
 		{
 		    result = new Isect();
+            result->figure = this;
 			result->surfacePoint = r->rayPoint(t2);
             //result->enter = false;//entra
             result->distance = t2;

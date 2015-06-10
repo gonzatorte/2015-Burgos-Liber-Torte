@@ -26,7 +26,7 @@ Vector Trace::traceRay(Ray* ray, int level) {
     if (closest != NULL) {
         color = shade.shadeRay(ray, closest, level);
     } else {
-        color = Vector(1,1,1);
+        color = Vector(0,0,0);
     }
     return color;
 

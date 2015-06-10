@@ -6,9 +6,9 @@ class Camera
 {
     public:
         Camera();
-        Camera(Vector viewPoint, Vector lookAt, Vector upVector);
+        Camera(Vector viewPoint, Vector lookAt, Vector upVector, Vector leftVector);
         virtual ~Camera();
-        Vector viewPoint, lookAt, upVector;
+        Vector viewPoint, lookAt, upVector, leftVector;
     protected:
     private:
 };

@@ -5,6 +5,7 @@ Scene* Scene::instance = NULL;
 Scene::Scene()
 {
     screen = new Screen();
+    figures = new list<Figure*>();
 }
 
 Scene* Scene::getInstance() {
@@ -42,7 +43,8 @@ void Scene::sceneRead() {
             Vector viewPoint = Vector(atof(element->Attribute("viewPointX")), atof(element->Attribute("viewPointY")), atof(element->Attribute("viewPointZ")));
             Vector lookAt = Vector(atof(element->Attribute("lookAtX")), atof(element->Attribute("lookAtY")), atof(element->Attribute("lookAtZ")));
             Vector upVector = Vector(atof(element->Attribute("upVectorX")), atof(element->Attribute("upVectorY")), atof(element->Attribute("upVectorZ")));
-            camera = new Camera(viewPoint, lookAt, upVector);
+            Vector leftVector = upVector.VectorProduct(lookAt);
+            camera = new Camera(viewPoint, lookAt, upVector, leftVector);
             width = atoi(element->Attribute("width"));
             height = atoi(element->Attribute("height"));
 
