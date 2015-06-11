@@ -11,6 +11,7 @@ class Plane: public Figure
         virtual ~Plane();
         Vector normal(Vector v);
         Isect* intersect(Ray* ray);
+        float height, width;
     protected:
     private:
 };
