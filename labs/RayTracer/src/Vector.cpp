@@ -115,12 +115,11 @@ Vector Vector::UnitVector()
     return Vector(x/mag, y/mag, z/mag);
 }
 
-inline double Vector::DotProduct (const Vector& a, const Vector& b)
-{
-    return (a.x*b.x) + (a.y*b.y) + (a.z*b.z);
-}
-
-Vector Vector::VectorProduct(Vector v)
+Vector Vector::vectorProduct(Vector v)
 {
         return Vector((y * v.z) - (z * v.y),(z * v.x) - (x * v.z),(x * v.y) - (y * v.x));
+}
+
+double Vector::dotProduct(Vector v) {
+    return (x*v.x) + (y*v.y) + (z*v.z);
 }

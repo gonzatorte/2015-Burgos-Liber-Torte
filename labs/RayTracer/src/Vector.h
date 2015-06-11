@@ -26,8 +26,8 @@ class Vector
         double MagnitudeSquared();
         double Magnitude();
         Vector UnitVector();
-        inline double DotProduct(const Vector& a, const Vector& b);
-        Vector VectorProduct(Vector v);
+        Vector vectorProduct(Vector v);
+        double dotProduct(Vector v);
 
 };
 

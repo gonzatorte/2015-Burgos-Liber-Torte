@@ -12,6 +12,7 @@ class Plane: public Figure
         Vector normal(Vector v);
         Isect* intersect(Ray* ray);
         float height, width;
+        Vector center, norm;
     protected:
     private:
 };
