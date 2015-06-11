@@ -7,6 +7,7 @@
 	<plane centerX="0" centerY="-200" centerZ="2000" normalX="0" normalY="1" normalZ="0"  width="5000" height="5000" r="0" g="0" b="255" hasReflexion="0" hasRefraction="0" />
 	<plane centerX="0" centerY="500" centerZ="2000" normalX="0" normalY="0" normalZ="-1"  width="5000" height="5000" r="255" g="0" b="120" hasReflexion="0" hasRefraction="0" />
 	<plane centerX="0" centerY="200" centerZ="2000" normalX="0" normalY="-1" normalZ="0"  width="5000" height="5000" r="255" g="100" b="0" hasReflexion="0" hasRefraction="0" />
+	<plane centerX="0" centerY="200" centerZ="1500" normalX="0" normalY="0" normalZ="-1"  width="600" height="200" r="255" g="100" b="10" hasReflexion="0" hasRefraction="0" />
+	<plane centerX="0" centerY="100" centerZ="1700" normalX="0" normalY="-1" normalZ="0"  width="600" height="400" r="255" g="50" b="200" hasReflexion="0" hasRefraction="0" />
 	<sphere centerX="200" centerY="-20" centerZ="1700" radius="120" hasReflexion="0" hasRefraction="0" r="255" g="0" b="0" />
-	</>
 </root>
