@@ -34,9 +34,9 @@ Isect* Plane::intersect(Ray* ray) {
                 //isect.hit = true;
                 //isect.position = r.rayPoint(t);
                 //isect.enter = false;//entra
-                isect.normal = normal;
-                isect.distance = t;
-                return inter;
+                isect->normal = normal;
+                isect->distance = t;
+                return isect;
             }
         }
     }
