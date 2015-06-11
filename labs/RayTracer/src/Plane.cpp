@@ -36,11 +36,11 @@ Isect* Plane::intersect(Ray* ray) {
                 //isect.enter = false;//entra
                 isect.normal = normal;
                 isect.distance = t;
+                return inter;
             }
         }
-
     }
-    return inter;
+    return NULL;
 }
 
 Plane::~Plane()
