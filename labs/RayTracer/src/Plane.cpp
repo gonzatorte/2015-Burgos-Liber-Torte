@@ -20,11 +20,12 @@ Vector Plane::normal(Vector v) {
 }
 
 Isect* Plane::intersect(Ray* ray) {
-    Isect* isect;
+    Isect* isect = new Isect();
 	isect->figure = this;
 	//inter.hit = false;
 	//Vector l(r.direction);
     double denom = norm.dotProduct(ray->direction);
+    //double a = ray->direction.dotProduct(norm);
     if (abs(denom) > 0.00001f)
     {
         float t = (center - ray->origin).dotProduct(norm) / denom;
@@ -34,7 +35,7 @@ Isect* Plane::intersect(Ray* ray) {
             isect->surfacePoint = ray->rayPoint(t);
             //Vector p(inter.position);
             double aux = (center - isect->surfacePoint).dotProduct(norm.vectorProduct(Vector(1,0,0)));
-            if( isect->surfacePoint.x < width/2 && - width/2 < isect->surfacePoint.x && aux < height/2 && -height/2 < aux  )
+            if( (center - isect->surfacePoint).x < width/2 && - width/2 < (center - isect->surfacePoint).x && aux < height/2 && -height/2 < aux  )
             {
                 //isect.hit = true;
                 //isect.position = r.rayPoint(t);

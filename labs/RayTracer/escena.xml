@@ -1,45 +1,45 @@
 <root>
    <Escena Width="1366" Height="768" LookingX="0" LookingY="0" LookingZ="1" EyeX="0" EyeY="0" EyeZ="0" VupX="0" VupY="1" VupZ="0" />
 
-   
+
 	<Maya Tipo="F" R="0.7" G="0.4" B="0.1"  Specular="0.05" Ref="0.9" Diffuse="0.6" MedioR="1.5" Refracta="0" Refleja="0" SpecularLevel="100" Glossiness="0.5"/>
-	
+
 	<Vertices  PositionX="-50" PositionY="-50" PositionZ="1700"/>
-	
+
 	<Vertices  PositionX="25" PositionY="100" PositionZ="1700"/>
-	
+
 	<Vertices  PositionX="-50" PositionY="100" PositionZ="1500"/>
-	
+
 	<Vertices  PositionX="-125" PositionY="100" PositionZ="1700"/>
-	
+
 	<FinMaya />
 
    <Sphere Radius="120" CenterX="200" CenterY="-20" CenterZ="1700" R="0.1" G="0.1" B="0.1"  Specular="0.05" Ref="0.9" Diffuse="0.6" MedioR="1.5" Refracta="1" Refleja="1" SpecularLevel="100" Glossiness="0.5" />
-	
-	
+
+
 	<Sphere Radius="100" CenterX="-200" CenterY="0" CenterZ="1700" R="0.3" G="0.3" B="0.3"  Specular="0.3" Ref="0.3" Diffuse="0.5" MedioR="1.5" Refracta="0" Refleja="1" SpecularLevel="100" Glossiness="0.5" />
-	
-	
+
+
 	<Plane  Height= "5000" Width= "5000"  CenterX="0" CenterY="200" CenterZ="2000" NormalX="0" NormalY="-1" NormalZ="0" R="0.7" G="0" B="0"  Specular="0.0" Ref="0.5" Diffuse="0" MedioR="1" Refracta="0" Refleja="0" SpecularLevel="0" Glossiness="0" />
-	
+
 	<Plane  Height= "5000" Width= "5000"  CenterX="0" CenterY="500" CenterZ="2000" NormalX="0" NormalY="0" NormalZ="-1" R="0.7" G="0.7" B="0.7"  Specular="0.0" Ref="0.5" Diffuse="0" MedioR="1" Refracta="0" Refleja="0" SpecularLevel="0" Glossiness="0" />
-	
+
 	<Plane  Height= "5000" Width= "5000"  CenterX="0" CenterY="-200" CenterZ="2000" NormalX="0" NormalY="1" NormalZ="0" R="0." G="0.7" B="0"  Specular="0.0" Ref="0.5" Diffuse="0" MedioR="1" Refracta="0" Refleja="0" SpecularLevel="0" Glossiness="0" />
-	
+
 	<Plane  Height= "5000" Width= "5000"  CenterX="-400" CenterY="0" CenterZ="2000" NormalX="1" NormalY="0" NormalZ="0" R="0.7" G="0.7" B="0"  Specular="0.0" Ref="0.5" Diffuse="0" MedioR="1" Refracta="0" Refleja="0" SpecularLevel="0" Glossiness="0" />
-	
+
 	<Plane  Height= "5000" Width= "5000"  CenterX="400" CenterY="0" CenterZ="2000" NormalX="-1" NormalY="0" NormalZ="0" R="0.7" G="0" B="0.7"  Specular="0.0" Ref="0.5" Diffuse="0" MedioR="1" Refracta="0" Refleja="0" SpecularLevel="0" Glossiness="0" />
-	
-	<Plane  Height= "200" Width= "600"  CenterX="0" CenterY="200" CenterZ="1500" NormalX="0" NormalY="0" NormalZ="-1" R="0.5" G="0.5" B="0.5"  Specular="0.2" Ref="0.5" Diffuse="0" MedioR="1" Refracta="0" Refleja="1" SpecularLevel="100" Glossiness="0.2" />
-	
+
+	<!--<Plane  Height= "200" Width= "600"  CenterX="0" CenterY="200" CenterZ="1500" NormalX="0" NormalY="0" NormalZ="-1" R="0.5" G="0.5" B="0.5"  Specular="0.2" Ref="0.5" Diffuse="0" MedioR="1" Refracta="0" Refleja="1" SpecularLevel="100" Glossiness="0.2" />
+
 	<Plane  Height= "400" Width= "600"  CenterX="0" CenterY="100" CenterZ="1700" NormalX="0" NormalY="-1" NormalZ="0" R="0.5" G="0.5" B="0.5"  Specular="0.2" Ref="0.5" Diffuse="0" MedioR="1" Refracta="0" Refleja="1" SpecularLevel="100" Glossiness="0.2" />
-	
+
 	<Cylinder  Height= "150" Radius="60" CenterX="100" CenterY="50" CenterZ="1650" OrientationX="0" OrientationY="-1" OrientationZ="0" R="0.1" G="0.7" B="0.1"  Specular="0.1" Ref="0.1" Diffuse="0.5" MedioR="1.5" Refracta="0" Refleja="0" SpecularLevel="0" Glossiness="0" />
-	
-	
+	 -->
+
 	<Light R="255" G="255" B="255" PositionX="0" PositionY="-100" PositionZ="1700" />
 	<Light R="255" G="255" B="255" PositionX="0" PositionY="-100" PositionZ="1400" />
-  
+
 </root>
-	
+
 

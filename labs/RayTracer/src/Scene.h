@@ -8,6 +8,7 @@
 #include "Screen.h"
 #include "Camera.h"
 #include "Trace.h"
+#include "Light.h"
 #include "Ray.h"
 #include <list>
 
@@ -22,6 +23,7 @@ class Scene
         void sceneRead();
         void createScreen();
         list<Figure*>* figures;
+        list<Light*>* lights;
         virtual ~Scene();
         Screen* screen;
         Camera* camera;

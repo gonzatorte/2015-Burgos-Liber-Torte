@@ -7,6 +7,7 @@ Scene::Scene()
 {
     screen = new Screen();
     figures = new list<Figure*>();
+    lights = new list<Light*>();
 }
 
 Scene* Scene::getInstance() {
@@ -39,6 +40,11 @@ void Scene::sceneRead() {
             Plane* plane = new Plane();
             plane->read(element);
             figures->push_back(plane);
+
+        } else if (elementName=="light") {
+            Light* light = new Light();
+            light->read(element);
+            lights->push_back(light);
 
         } else if (elementName=="scene") {
             width = atoi(element->Attribute("width"));

@@ -28,16 +28,16 @@ void Screen::createScreen() {
     FIBITMAP* reflexionImage = FreeImage_Allocate(width, height, 24);
     Camera* cam = scene->camera;
     Pixel** buff;
-    buff = new Pixel* [height];
+    buff = new Pixel* [width];
     Trace trace;
     Vector color;
     RGBQUAD free_color;
     //RGBQUAD free_color2;
     unsigned char g = 1;
-    for (int j=0; j < height; j++) {
+    for (int j=0; j < width; j++) {
 
-        buff[j] = new Pixel[width];
-        for (int i=0; i < width; i++) {
+        buff[j] = new Pixel[height];
+        for (int i=0; i < height; i++) {
             Vector rayDir = (cam->lookAt)*cam->distance + cam->upVector*((scene->height)/2 - (i + 0.5)); //PELIGRO!!! Checkear esto con distintas pos de la camara.
             rayDir = rayDir + cam->leftVector*((scene->width)/2 - (j - 0.5));
             Ray* ray = new Ray(cam->viewPoint, rayDir);
@@ -50,7 +50,7 @@ void Screen::createScreen() {
                 free_color.rgbGreen = (double) avrgPixel->g;
                 free_color.rgbBlue = (double) avrgPixel->b;
                 //free_color2.rgbBlue = g;
-                FreeImage_SetPixelColor(image,avrgPixel->y, avrgPixel->x,&free_color);
+                FreeImage_SetPixelColor(image,avrgPixel->x, avrgPixel->y,&free_color);
             }
 
         }
