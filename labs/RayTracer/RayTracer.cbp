@@ -42,6 +42,10 @@
 		<Unit filename="src/FreeImage.h" />
 		<Unit filename="src/Isect.cpp" />
 		<Unit filename="src/Isect.h" />
+		<Unit filename="src/Light.cpp" />
+		<Unit filename="src/Light.h" />
+		<Unit filename="src/Mesh.cpp" />
+		<Unit filename="src/Mesh.h" />
 		<Unit filename="src/Pixel.cpp" />
 		<Unit filename="src/Pixel.h" />
 		<Unit filename="src/Plane.cpp" />
