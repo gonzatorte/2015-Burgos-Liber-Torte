@@ -57,6 +57,10 @@ void Scene::sceneRead() {
             Vector leftVector = upVector.vectorProduct(lookAt);
             distance = sqrt(width^2 + height^2) / ( 2*tan( 45/2 ) );
             camera = new Camera(viewPoint, lookAt, upVector, leftVector, distance);
+        } else if (elementName=="mesh") {
+            Mesh* mesh = new Mesh();
+            mesh->read(element);
+            figures->push_back(mesh);
         }
     }
 

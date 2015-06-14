@@ -1,0 +1,14 @@
+#ifndef MAYA_H
+#define MAYA_H
+
+
+class Maya
+{
+    public:
+        Maya();
+        virtual ~Maya();
+    protected:
+    private:
+};
+
+#endif // MAYA_H

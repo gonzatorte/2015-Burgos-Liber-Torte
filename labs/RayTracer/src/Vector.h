@@ -10,6 +10,7 @@ class Vector
         ~Vector();
         Vector operator+(const Vector & v);
         Vector operator-(const Vector & v);
+        Vector operator/(const Vector & v);
         Vector operator*(float num);
         Vector & operator=(const Vector & v);
         bool operator==(const Vector & v);

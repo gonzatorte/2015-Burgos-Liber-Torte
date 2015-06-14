@@ -38,6 +38,7 @@ void Screen::createScreen() {
 
         buff[j] = new Pixel[height];
         for (int i=0; i < height; i++) {
+
             Vector rayDir = (cam->lookAt)*cam->distance + cam->upVector*((scene->height)/2 - (i + 0.5)); //PELIGRO!!! Checkear esto con distintas pos de la camara.
             rayDir = rayDir + cam->leftVector*((scene->width)/2 - (j - 0.5));
             Ray* ray = new Ray(cam->viewPoint, rayDir);

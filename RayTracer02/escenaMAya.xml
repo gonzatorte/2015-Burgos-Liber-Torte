@@ -1,0 +1,19 @@
+<root>
+   <Escena Width="1366" Height="768" LookingX="0" LookingY="0" LookingZ="1" EyeX="0" EyeY="0" EyeZ="0" VupX="0" VupY="1" VupZ="0" />
+
+   
+	<Maya Tipo="F" R="0.7" G="0.4" B="0.1"  Specular="0.05" Ref="0.9" Diffuse="0.6" MedioR="1.5" Refracta="0" Refleja="0" SpecularLevel="100" Glossiness="0.5"/>
+	
+	<Vertices  PositionX="-50" PositionY="100" PositionZ="1500"/>
+	<Vertices  PositionX="-125" PositionY="100" PositionZ="1700"/>
+	<Vertices  PositionX="25" PositionY="100" PositionZ="1700"/>
+	<Vertices  PositionX="-50" PositionY="-50" PositionZ="1700"/>
+	
+	<FinMaya />
+	
+	<Light R="255" G="255" B="255" PositionX="0" PositionY="-100" PositionZ="1700" />
+	<Light R="255" G="255" B="255" PositionX="0" PositionY="-100" PositionZ="1400" />
+  
+</root>
+	
+

@@ -10,6 +10,7 @@
 #include "Trace.h"
 #include "Light.h"
 #include "Ray.h"
+#include "Mesh.h"
 #include <list>
 
 using namespace std;

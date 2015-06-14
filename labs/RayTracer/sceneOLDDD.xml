@@ -1,0 +1,29 @@
+<root>
+
+	<scene width="1366" height="768"/>
+	<mesh r="0" g="255" b="0" hasReflexion="0" hasRefraction="0">
+		<vertex x="50" y="100" z="1700"/>
+		<vertex x="50" y="-50" z="1700"/>
+		<vertex x="-150" y="100" z="1700"/>
+		<vertex x="-150" y="-50" z="1700"/>
+
+		<vertex x="50" y="100" z="1200"/>
+		<vertex x="50" y="-50" z="1200"/>
+		<vertex x="-150" y="100" z="1200"/>
+		<vertex x="-150" y="-50" z="1200"/>
+		
+	</mesh>
+	<camera viewPointX="0" viewPointY="0" viewPointZ="0" lookAtX="0" lookAtY="0" lookAtZ="1" upVectorX="0" upVectorY="1" upVectorZ="0" />
+	<plane centerX="-400" centerY="0" centerZ="2000" normalX="1" normalY="0" normalZ="0"  width="5000" height="5000" r="0" g="255" b="0" hasReflexion="0" hasRefraction="0" />
+	<plane centerX="0" centerY="-200" centerZ="2000" normalX="0" normalY="1" normalZ="0"  width="5000" height="5000" r="0" g="0" b="255" hasReflexion="0" hasRefraction="0" />
+	<plane centerX="0" centerY="500" centerZ="2000" normalX="0" normalY="0" normalZ="-1"  width="10000" height="10000" r="255" g="255" b="255" hasReflexion="0" hasRefraction="0" />
+	<plane centerX="0" centerY="200" centerZ="2000" normalX="0" normalY="-1" normalZ="0"  width="5000" height="5000" r="255" g="55" b="255" hasReflexion="0" hasRefraction="0" />	
+	<plane centerX="400" centerY="0" centerZ="2000" normalX="-1" normalY="0" normalZ="0" width="5000" height="5000" r="0" g="255" b="255" hasReflexion="0" hasRefraction="0" />
+	<sphere centerX="200" centerY="-20" centerZ="1700" radius="120" hasReflexion="0" hasRefraction="0" r="255" g="0" b="0" />
+</root>
+
+
+<Plane  Height= "200" Width= "600"  CenterX="0" CenterY="200" CenterZ="1500" NormalX="0" NormalY="0" NormalZ="-1" R="0.5" G="0.5" B="0.5"  Specular="0.2" Ref="0.5" Diffuse="0" MedioR="1" Refracta="0" Refleja="1" SpecularLevel="100" Glossiness="0.2" />
+	
+<Plane  Height= "400" Width= "600"  CenterX="0" CenterY="100" CenterZ="1700" NormalX="0" NormalY="-1" NormalZ="0" R="0.5" G="0.5" B="0.5"  Specular="0.2" Ref="0.5" Diffuse="0" MedioR="1" Refracta="0" Refleja="1" SpecularLevel="100" Glossiness="0.2" />
+	

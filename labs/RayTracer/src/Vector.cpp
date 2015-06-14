@@ -35,6 +35,11 @@ Vector Vector::operator-(const Vector & v) {
     return result;
 }
 
+Vector Vector::operator/(const Vector & v) {
+    Vector result = Vector(this->x/v.x, this->y/v.y, this->z/v.z);
+    return result;
+}
+
 Vector Vector::operator*(float num) {
     Vector result = Vector(this->x * num, this->y * num, this->z * num);
     return result;

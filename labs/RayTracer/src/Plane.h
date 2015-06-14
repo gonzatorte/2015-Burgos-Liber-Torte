@@ -2,6 +2,9 @@
 #define PLANE_H
 #include "Figure.h"
 #include "tinyxml2.h"
+#include <iostream>
+
+using namespace std;
 
 class Plane: public Figure
 {

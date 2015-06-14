@@ -80,14 +80,7 @@ Colour Shader::Shade(int depth, Intersection inter, Ray ray)
     {
         float intensity = 0;
         Vector lightDir = ((s->lights[l]->pos) - P);
-        if(object->reflex)
-        {
-            Vector viewDir = (s->lookAt - P);
-            Vector H = lightDir + (viewDir);
-            H = H.UnitVector();
-             float NdotH = DotProduct(N,H);
-            intensity = (object->glossiness)*pow( NdotH, object->specularLevel);
-        }
+
         Ray rayL(P, lightDir);
         if((DotProduct(rayL.direction,N) > 0) &&!interference(object,s->lights[l],P))
         {
@@ -123,7 +116,7 @@ Colour Shader::Shade(int depth, Intersection inter, Ray ray)
 				color.b = aux;
        }
     }
-    if(depth < MAXDEPTH)
+    if(false && depth < MAXDEPTH)
     {
         //reflection
         if(/*ray.weight*object->spec > MINW*/object->reflex)
