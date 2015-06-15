@@ -14,7 +14,7 @@ class Sphere: public Figure
         double radius;
         Vector center;
         Vector normal(Vector v);
-        Isect* intersect(Ray ray);
+        Isect intersect(Ray ray);
     protected:
     private:
 };

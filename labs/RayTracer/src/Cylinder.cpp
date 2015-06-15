@@ -20,7 +20,7 @@ void Cylinder::read(tinyxml2::XMLElement* element) {
 Vector Cylinder::normal(Vector v) {
 }
 
-Isect* Cylinder::intersect(Ray ray) {
+Isect Cylinder::intersect(Ray ray) {
     //ToDo: Improve, no usar new
     //ToDo: Por ahora solo es para cilindros alineados en Z
 
@@ -31,7 +31,9 @@ Isect* Cylinder::intersect(Ray ray) {
     float t = (-b + discrim)/2*a;
 
     Isect inter;
+    inter.hited = true;
     inter.surfacePoint = ray.origin + (ray.direction)*t;
+    return inter;
 }
 
 Cylinder::~Cylinder()

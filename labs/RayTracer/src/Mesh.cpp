@@ -77,16 +77,17 @@ Vector Mesh::normal(Vector p) {
     return Vector(0,0,0);
 }
 
-Isect* Mesh::intersect(Ray ray) {
+Isect Mesh::intersect(Ray ray) {
 
     double minDistance = 100000;
-    Isect* closest = NULL;
-    Isect* aux;
+    Isect closest;
+    closest.hited = false;
     for (int i=0; i < planes.size(); i++) {
+        Isect aux;
         aux = planes[i]->intersect(ray);
-        if (aux != NULL && minDistance > aux->distance) {
+        if (aux.hited && minDistance > aux.distance) {
             closest = aux;
-            minDistance = aux->distance;
+            minDistance = aux.distance;
         }
     }
 

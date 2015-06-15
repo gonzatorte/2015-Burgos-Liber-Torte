@@ -19,7 +19,7 @@ class Figure
         Vector color;
         float kspec;
         virtual Vector normal(Vector v) = 0;
-        virtual Isect* intersect(Ray r) = 0;
+        virtual Isect intersect(Ray r) = 0;
     protected:
     private:
 };

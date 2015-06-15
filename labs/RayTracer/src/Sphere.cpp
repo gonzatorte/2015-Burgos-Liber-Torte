@@ -26,9 +26,10 @@ Vector Sphere::normal(Vector p)
 
 }
 
-Isect* Sphere::intersect(Ray r)
+Isect Sphere::intersect(Ray r)
 {
-	Isect* result = NULL;
+	Isect result;
+	result.hited = false;
 	//inter.model = this;
 	Vector d = r.direction;
 	double t1 = -1;
@@ -45,12 +46,12 @@ Isect* Sphere::intersect(Ray r)
 		t2 = (-b+discriminent)/(2*a);
 		t1 = (-b-discriminent)/(2*a);
 		if(t1 > 0){
-            result = new Isect();
-            result->figure = this;
-			result->surfacePoint = r.rayPoint(t1);
+            result.hited = true;
+            result.figure = this;
+			result.surfacePoint = r.rayPoint(t1);
             //result.enter = true;//entra
-            result->distance = t1;
-            result->normal = this->normal(result->surfacePoint);
+            result.distance = t1;
+            result.normal = this->normal(result.surfacePoint);
 
 //			if((inter.position.x-center.x)*(inter.position.x-center.x) + (inter.position.y-center.y)*(inter.position.y-center.y) + (inter.position.z-center.z)*(inter.position.z-center.z) == radius*radius)
 //                std::cout <<"pertence"<< std::endl;
@@ -59,19 +60,16 @@ Isect* Sphere::intersect(Ray r)
 		}
 		else if(t2 > 0)
 		{
-		    result = new Isect();
-            result->figure = this;
-			result->surfacePoint = r.rayPoint(t2);
+		    result.hited = true;
+            result.figure = this;
+			result.surfacePoint = r.rayPoint(t2);
             //result->enter = false;//entra
-            result->distance = t2;
-            result->normal = this->normal(result->surfacePoint);
+            result.distance = t2;
+            result.normal = this->normal(result.surfacePoint);
 //			if((inter.position.x-center.x)*(inter.position.x-center.x) + (inter.position.y-center.y)*(inter.position.y-center.y) + (inter.position.z-center.z)*(inter.position.z-center.z) == radius*radius)
 //                std::cout <<"pertence"<< std::endl;
 //            std::cout <<(inter.position.x-center.x)*(inter.position.x-center.x) + (inter.position.y-center.y)*(inter.position.y-center.y) + (inter.position.z-center.z)*(inter.position.z-center.z)<< std::endl;
 		}
-
-
-
 	}
 	return result;
 }

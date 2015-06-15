@@ -19,9 +19,10 @@ Vector Plane::normal(Vector v) {
     return norm;
 }
 
-Isect* Plane::intersect(Ray ray) {
-    Isect* isect = new Isect();
-    isect->figure = this;
+Isect Plane::intersect(Ray ray) {
+    Isect isect;
+    isect.hited = false;
+    isect.figure = this;
     double cosciente = norm.dotProduct(center - ray.origin);
     double denominador = norm.dotProduct(ray.direction);
     if (denominador != 0) { // En caso que sea cero quiere decir que el plano es paralelo al rayo
@@ -43,14 +44,15 @@ Isect* Plane::intersect(Ray ray) {
             }
 
             if(isSurfacePoint) {
-                isect->surfacePoint = isectPoint;
-                isect->normal = norm;
-                isect->distance = t;
+                isect.surfacePoint = isectPoint;
+                isect.normal = norm;
+                isect.distance = t;
+                isect.hited = true;
                 return isect;
             }
         }
     }
-    return NULL;
+    return isect;
 }
 
 

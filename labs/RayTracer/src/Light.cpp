@@ -17,11 +17,13 @@ void Light::read(tinyxml2::XMLElement* element) {
 }
 
 Vector Light::normal(Vector v) {
+    throw "No se debe usar";
     return position;
 }
 
-Isect* Light::intersect(Ray ray) {
-    return NULL;
+Isect Light::intersect(Ray ray) {
+    throw "No se debe usar";
+    return Isect();
 }
 
 Light::~Light()
