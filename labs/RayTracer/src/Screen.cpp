@@ -41,11 +41,9 @@ void Screen::createScreen() {
         for (int i=0; i < height; i++) {
             Vector rayDir = (cam->lookAt)*cam->distance + cam->upVector*((scene->height)/2 - (i + 0.5)); //PELIGRO!!! Checkear esto con distintas pos de la camara.
             rayDir = rayDir + cam->leftVector*((scene->width)/2 - (j - 0.5));
-            Ray* ray = new Ray(cam->viewPoint, rayDir);
+            Ray ray = Ray(cam->viewPoint, rayDir);
             color = trace.traceRay(ray, 0, 1);
-            // ToDo: En C se permite acceso de doble indice? Larga un warning...
             buff[j][i] = Pixel(j,i,color.x, color.y, color.z);
-
             if ((i > 0) && (j > 0)) {
                 Pixel* avrgPixel = average(&buff[j-1][i-1], &buff[j][i-1], &buff[j-1][i], &buff[j][i]);
                 free_color.rgbRed = (double) avrgPixel->r;

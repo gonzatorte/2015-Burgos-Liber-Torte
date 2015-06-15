@@ -10,15 +10,17 @@ Shade::~Shade()
     //dtor
 }
 
-bool shadow(Ray* ray, Figure* figure){
+
+bool shadow(Ray ray, Isect isect){
     Scene* s = Scene::getInstance();
     bool interfiere = true;
-    Isect* isect = figure->intersect(ray);
-    double minDistance = isect != NULL ? isect->distance : 50000000;
+    double minDistance = isect.hited ? isect.distance : 5000000;
     list<Figure*>::iterator it;
     for (it=s->figures->begin(); it!=s->figures->end(); ++it){
-            isect = (*it)->intersect(ray);
-            if (isect != NULL)
+        isect = (*it)->intersect(ray);
+        if (isect.hited)
+        {
+            if (isect.distance < minDistance)
             {
                 if (isect->distance < minDistance)
                 {
@@ -26,7 +28,7 @@ bool shadow(Ray* ray, Figure* figure){
                     break;
                 }
             }
-        //}
+        }
     }
     return interfiere;
 
@@ -36,13 +38,13 @@ Vector specularDirection(Vector incidentRay, Vector normal){
         return normal.AddScalar(incidentRay.dotProduct(normal)*-2, incidentRay).UnitVector();
 }
 
-Vector Shade::shadeRay(Ray* ray, Isect* isect, int level, int weight){
+Vector Shade::shadeRay(Ray ray, Isect isect, int level, int weight){
     Scene* s = Scene::getInstance();
     int maxLevel = 3;
-    float minWeight = 0.1;
-    Figure* figure = isect->figure;
-    Vector normal = isect->normal;
-    Vector point = isect->surfacePoint;
+    int minWeight = 0.1;
+    Figure* figure = isect.figure;
+    Vector normal = isect.normal;
+    Vector point = isect.surfacePoint;
     Trace trace;
     Vector color;
     Vector colorReflexion;
@@ -50,7 +52,7 @@ Vector Shade::shadeRay(Ray* ray, Isect* isect, int level, int weight){
     color.y = figure->color.y;
     color.z = figure->color.z;
 
-    if (ray->direction.dotProduct(normal)>0){
+    if (ray.direction.dotProduct(normal)>0){
         normal = normal*-1;
     }
 
@@ -62,10 +64,9 @@ Vector Shade::shadeRay(Ray* ray, Isect* isect, int level, int weight){
         //ToDo: Este factor debe ser propio de cada luz, es la componente difusa de cada luz
         //Hay que hacer algo similar con la componente specular de las luces para la parte specular (recursiva)
         float intensity = 0;
-        Vector lightDir = ((*it)->position - isect->surfacePoint);
-        Ray* rayL = new Ray((*it)->position, isect->surfacePoint - (*it)->position);
-
-        if((lightDir.dotProduct(normal) > 0) && shadow(rayL, isect->figure))
+        Vector lightDir = ((*it)->position - isect.surfacePoint);
+        Ray rayL = Ray((*it)->position, isect.surfacePoint - (*it)->position);
+        if((lightDir.dotProduct(normal) > 0) && shadow(rayL, isect))
         {
             //ToDo: si se pasa de 256 se puede hacer el chequeo al final, pues el color siempre sube
             color.x = color.x + (*it)->color.x*lightDir.UnitVector().dotProduct(normal);
@@ -75,12 +76,11 @@ Vector Shade::shadeRay(Ray* ray, Isect* isect, int level, int weight){
     }
 
     if (level + 1 < maxLevel){
-        Ray* rayStart = new Ray();
-        rayStart->origin = isect->surfacePoint;
+        Ray rayStart;
+        rayStart.origin = isect.surfacePoint;
         // Reflexion
         if (weight * figure->kspec > minWeight && figure->reflexion){
-            rayStart->direction = specularDirection(ray->direction, normal);
-            rayStart->origin = rayStart->direction*0.1 + rayStart->origin;
+            rayStart.direction = specularDirection(ray.direction, normal);
             colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
             color = colorReflexion.AddScalar(figure->kspec, color);
         }

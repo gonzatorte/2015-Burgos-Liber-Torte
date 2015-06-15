@@ -18,7 +18,7 @@ class Mesh: public Figure
         Mesh();
         void read(tinyxml2::XMLElement* element);
         Vector normal(Vector v);
-        Isect* intersect(Ray* ray);
+        Isect intersect(Ray ray);
         vector<Vector> vertexs;
         vector<Plane*> planes;
         virtual ~Mesh();

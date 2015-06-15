@@ -26,34 +26,32 @@ Vector Sphere::normal(Vector p)
 
 }
 
-Isect* Sphere::intersect(Ray* r)
+Isect Sphere::intersect(Ray r)
 {
-	Isect* result = NULL;
+	Isect result;
+	result.hited = false;
 	//inter.model = this;
-	Vector d = r->direction;
+	Vector d = r.direction;
 	double t1 = -1;
 	double t2 = -1;
 	double discriminent;
-	//temporary == e-c
-	Vector temporary = (r->origin);
-	temporary =temporary - (center);
+	Vector temporary = r.origin - center;
 	double b = 2*(DotProduct(d,temporary));
 	double a = DotProduct(d,d);
 	double c = DotProduct(temporary,temporary) - (radius * radius);
-	double disc;
-	disc = b*b - 4*a*c;
+	double disc = b*b - 4*a*c;
 	if(disc >= 0)
 	{
 		discriminent = sqrt(disc);
 		t2 = (-b+discriminent)/(2*a);
 		t1 = (-b-discriminent)/(2*a);
 		if(t1 > 0){
-            result = new Isect();
-            result->figure = this;
-			result->surfacePoint = r->rayPoint(t1);
+            result.hited = true;
+            result.figure = this;
+			result.surfacePoint = r.rayPoint(t1);
             //result.enter = true;//entra
-            result->distance = t1;
-            result->normal = this->normal(result->surfacePoint);
+            result.distance = t1;
+            result.normal = this->normal(result.surfacePoint);
 
 //			if((inter.position.x-center.x)*(inter.position.x-center.x) + (inter.position.y-center.y)*(inter.position.y-center.y) + (inter.position.z-center.z)*(inter.position.z-center.z) == radius*radius)
 //                std::cout <<"pertence"<< std::endl;
@@ -62,19 +60,16 @@ Isect* Sphere::intersect(Ray* r)
 		}
 		else if(t2 > 0)
 		{
-		    result = new Isect();
-            result->figure = this;
-			result->surfacePoint = r->rayPoint(t2);
+		    result.hited = true;
+            result.figure = this;
+			result.surfacePoint = r.rayPoint(t2);
             //result->enter = false;//entra
-            result->distance = t2;
-            result->normal = this->normal(result->surfacePoint);
+            result.distance = t2;
+            result.normal = this->normal(result.surfacePoint);
 //			if((inter.position.x-center.x)*(inter.position.x-center.x) + (inter.position.y-center.y)*(inter.position.y-center.y) + (inter.position.z-center.z)*(inter.position.z-center.z) == radius*radius)
 //                std::cout <<"pertence"<< std::endl;
 //            std::cout <<(inter.position.x-center.x)*(inter.position.x-center.x) + (inter.position.y-center.y)*(inter.position.y-center.y) + (inter.position.z-center.z)*(inter.position.z-center.z)<< std::endl;
 		}
-
-
-
 	}
 	return result;
 }
