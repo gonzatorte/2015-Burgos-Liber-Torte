@@ -5,7 +5,7 @@ Trace::Trace()
     //ctor
 }
 
-Vector Trace::traceRay(Ray* ray, int level, int weight) {
+Vector Trace::traceRay(Ray ray, int level, int weight) {
     Vector color;
     Scene* scene = Scene::getInstance();
     Shade shade;

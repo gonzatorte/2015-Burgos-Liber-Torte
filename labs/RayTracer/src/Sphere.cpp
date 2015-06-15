@@ -26,22 +26,19 @@ Vector Sphere::normal(Vector p)
 
 }
 
-Isect* Sphere::intersect(Ray* r)
+Isect* Sphere::intersect(Ray r)
 {
 	Isect* result = NULL;
 	//inter.model = this;
-	Vector d = r->direction;
+	Vector d = r.direction;
 	double t1 = -1;
 	double t2 = -1;
 	double discriminent;
-	//temporary == e-c
-	Vector temporary = (r->origin);
-	temporary =temporary - (center);
+	Vector temporary = r.origin - center;
 	double b = 2*(DotProduct(d,temporary));
 	double a = DotProduct(d,d);
 	double c = DotProduct(temporary,temporary) - (radius * radius);
-	double disc;
-	disc = b*b - 4*a*c;
+	double disc = b*b - 4*a*c;
 	if(disc >= 0)
 	{
 		discriminent = sqrt(disc);
@@ -50,7 +47,7 @@ Isect* Sphere::intersect(Ray* r)
 		if(t1 > 0){
             result = new Isect();
             result->figure = this;
-			result->surfacePoint = r->rayPoint(t1);
+			result->surfacePoint = r.rayPoint(t1);
             //result.enter = true;//entra
             result->distance = t1;
             result->normal = this->normal(result->surfacePoint);
@@ -64,7 +61,7 @@ Isect* Sphere::intersect(Ray* r)
 		{
 		    result = new Isect();
             result->figure = this;
-			result->surfacePoint = r->rayPoint(t2);
+			result->surfacePoint = r.rayPoint(t2);
             //result->enter = false;//entra
             result->distance = t2;
             result->normal = this->normal(result->surfacePoint);

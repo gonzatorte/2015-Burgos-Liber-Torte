@@ -12,7 +12,7 @@ class Light: public Figure
         Light(Vector color, Vector position);
         void read(tinyxml2::XMLElement* element);
         Vector normal(Vector v);
-        Isect* intersect(Ray* ray);
+        Isect* intersect(Ray ray);
         virtual ~Light();
         Vector position;
     protected:

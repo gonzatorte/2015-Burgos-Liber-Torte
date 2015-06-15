@@ -10,7 +10,7 @@ Shade::~Shade()
     //dtor
 }
 
-bool shadow(Ray* ray, Isect* isect){
+bool shadow(Ray ray, Isect* isect){
     Scene* s = Scene::getInstance();
     bool interfiere = true;
     double minDistance = isect != NULL ? isect->distance : 5000000;
@@ -35,7 +35,7 @@ Vector specularDirection(Vector incidentRay, Vector normal){
         return normal.AddScalar(incidentRay.UnitVector().dotProduct(normal.UnitVector())*-2, incidentRay.UnitVector());
 }
 
-Vector Shade::shadeRay(Ray* ray, Isect* isect, int level, int weight){
+Vector Shade::shadeRay(Ray ray, Isect* isect, int level, int weight){
     Scene* s = Scene::getInstance();
     int maxLevel = 3;
     int minWeight = 0.1;
@@ -49,7 +49,7 @@ Vector Shade::shadeRay(Ray* ray, Isect* isect, int level, int weight){
     color.y = figure->color.y;
     color.z = figure->color.z;
 
-    if (ray->direction.dotProduct(normal)>0){
+    if (ray.direction.dotProduct(normal)>0){
         normal = normal*-1;
     }
 
@@ -62,7 +62,7 @@ Vector Shade::shadeRay(Ray* ray, Isect* isect, int level, int weight){
         //Hay que hacer algo similar con la componente specular de las luces para la parte specular (recursiva)
         float intensity = 0;
         Vector lightDir = ((*it)->position - isect->surfacePoint);
-        Ray* rayL = new Ray((*it)->position, isect->surfacePoint - (*it)->position);
+        Ray rayL = Ray((*it)->position, isect->surfacePoint - (*it)->position);
         if((lightDir.dotProduct(normal) > 0) && shadow(rayL, isect))
         {
             //ToDo: si se pasa de 256 se puede hacer el chequeo al final, pues el color siempre sube
@@ -76,12 +76,12 @@ Vector Shade::shadeRay(Ray* ray, Isect* isect, int level, int weight){
     }
 
     if (level + 1 < maxLevel){
-        Ray* rayStart = new Ray();
-        rayStart->origin = isect->surfacePoint;
+        Ray rayStart;
+        rayStart.origin = isect->surfacePoint;
         // Reflexion
         if (weight * figure->kspec > minWeight && figure->reflexion){
             cout<<"adasdaddd";
-            rayStart->direction = specularDirection(ray->direction, normal);
+            rayStart.direction = specularDirection(ray.direction, normal);
             colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
             color = colorReflexion.AddScalar(figure->kspec, color);
         }
