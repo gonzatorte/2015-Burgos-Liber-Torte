@@ -48,6 +48,7 @@ void Mesh::read(tinyxml2::XMLElement* element) {
     Vector v1, v2 ,v3, v4;
     int index = 0;
     int normalSign = 1;
+    // TODO: Porque son 10 planos?
     while (index<=10) {
         if (index <= 4) { //Caras laterales y de fondo.
             if (index==4) { //Cara lateral derecha

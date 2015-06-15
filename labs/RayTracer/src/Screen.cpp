@@ -35,7 +35,6 @@ void Screen::createScreen() {
     //RGBQUAD free_color2;
     unsigned char g = 1;
     for (int j=0; j < width; j++) {
-
         buff[j] = new Pixel[height];
         for (int i=0; i < height; i++) {
 

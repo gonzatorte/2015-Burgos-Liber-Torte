@@ -6,3 +6,6 @@
 *.save-failed
 **/stderr.txt
 **/stdout.txt
+*.png
+*.tga
+*.cbp
