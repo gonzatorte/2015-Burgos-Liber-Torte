@@ -45,6 +45,7 @@ void Screen::createScreen() {
             color = trace.traceRay(ray, 0, 1);
             // ToDo: En C se permite acceso de doble indice? Larga un warning...
             buff[j][i] = Pixel(j,i,color.x, color.y, color.z);
+
             if ((i > 0) && (j > 0)) {
                 Pixel* avrgPixel = average(&buff[j-1][i-1], &buff[j][i-1], &buff[j-1][i], &buff[j][i]);
                 free_color.rgbRed = (double) avrgPixel->r;
@@ -53,9 +54,7 @@ void Screen::createScreen() {
                 //free_color2.rgbBlue = g;
                 FreeImage_SetPixelColor(image,avrgPixel->x, avrgPixel->y,&free_color);
             }
-
         }
-
     }
     cout << "Guardando imagen" << endl;
     FreeImage_Save(FIF_PNG, image,"PRUEBAIMAGE.png", 0);

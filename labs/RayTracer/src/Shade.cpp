@@ -10,35 +10,36 @@ Shade::~Shade()
     //dtor
 }
 
-bool shadow(Ray* ray, Isect* isect){
+bool shadow(Ray* ray, Figure* figure){
     Scene* s = Scene::getInstance();
     bool interfiere = true;
-    double minDistance = isect != NULL ? isect->distance : 5000000;
+    Isect* isect = figure->intersect(ray);
+    double minDistance = isect != NULL ? isect->distance : 50000000;
     list<Figure*>::iterator it;
     for (it=s->figures->begin(); it!=s->figures->end(); ++it){
-
-        isect = (*it)->intersect(ray);
-        if (isect != NULL)
-        {
-            if (isect->distance < minDistance)
+            isect = (*it)->intersect(ray);
+            if (isect != NULL)
             {
-                interfiere = false;
-                break;
+                if (isect->distance < minDistance)
+                {
+                    interfiere = false;
+                    break;
+                }
             }
-        }
+        //}
     }
     return interfiere;
 
 }
 
 Vector specularDirection(Vector incidentRay, Vector normal){
-        return normal.AddScalar(incidentRay.UnitVector().dotProduct(normal.UnitVector())*-2, incidentRay.UnitVector());
+        return normal.AddScalar(incidentRay.dotProduct(normal)*-2, incidentRay).UnitVector();
 }
 
 Vector Shade::shadeRay(Ray* ray, Isect* isect, int level, int weight){
     Scene* s = Scene::getInstance();
     int maxLevel = 3;
-    int minWeight = 0.1;
+    float minWeight = 0.1;
     Figure* figure = isect->figure;
     Vector normal = isect->normal;
     Vector point = isect->surfacePoint;
@@ -63,15 +64,13 @@ Vector Shade::shadeRay(Ray* ray, Isect* isect, int level, int weight){
         float intensity = 0;
         Vector lightDir = ((*it)->position - isect->surfacePoint);
         Ray* rayL = new Ray((*it)->position, isect->surfacePoint - (*it)->position);
-        if((lightDir.dotProduct(normal) > 0) && shadow(rayL, isect))
+
+        if((lightDir.dotProduct(normal) > 0) && shadow(rayL, isect->figure))
         {
             //ToDo: si se pasa de 256 se puede hacer el chequeo al final, pues el color siempre sube
-            aux = color.x + (*it)->color.x*lightDir.UnitVector().dotProduct(normal);
-            color.x = aux<256 ? aux : 255;
-            aux = color.y + (*it)->color.y*lightDir.UnitVector().dotProduct(normal);
-            color.y = aux<256 ? aux : 255;
-			aux = color.z + (*it)->color.z*lightDir.UnitVector().dotProduct(normal);
-            color.z = aux<256 ? aux : 255;
+            color.x = color.x + (*it)->color.x*lightDir.UnitVector().dotProduct(normal);
+            color.y = color.y + (*it)->color.y*lightDir.UnitVector().dotProduct(normal);
+			color.z = color.z + (*it)->color.z*lightDir.UnitVector().dotProduct(normal);
        }
     }
 
@@ -80,12 +79,16 @@ Vector Shade::shadeRay(Ray* ray, Isect* isect, int level, int weight){
         rayStart->origin = isect->surfacePoint;
         // Reflexion
         if (weight * figure->kspec > minWeight && figure->reflexion){
-            cout<<"adasdaddd";
             rayStart->direction = specularDirection(ray->direction, normal);
+            rayStart->origin = rayStart->direction*0.1 + rayStart->origin;
             colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
             color = colorReflexion.AddScalar(figure->kspec, color);
         }
     }
+
+    color.x = color.x < 256 ? color.x : 255;
+    color.y = color.y < 256 ? color.y : 255;
+    color.z = color.z < 256 ? color.z : 255;
 
     return color;
 }
