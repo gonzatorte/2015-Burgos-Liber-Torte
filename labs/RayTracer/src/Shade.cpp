@@ -22,7 +22,7 @@ bool shadow(Ray ray, Isect isect){
         {
             if (isect.distance < minDistance)
             {
-                if (isect->distance < minDistance)
+                if (isect.distance < minDistance)
                 {
                     interfiere = false;
                     break;
