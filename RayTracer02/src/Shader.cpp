@@ -84,6 +84,11 @@ Colour Shader::Shade(int depth, Intersection inter, Ray ray)
         Ray rayL(P, lightDir);
         if((DotProduct(rayL.direction,N) > 0) &&!interference(object,s->lights[l],P))
         {
+            if (object->col.y > 0.7)
+            {
+                int aa = 1;
+            }
+
 			aux = color.r + (1-intensity)*object->col.x*s->lights[l]->color.r*(DotProduct(rayL.direction,N));
             if(aux > 255)
                 color.r = 255;

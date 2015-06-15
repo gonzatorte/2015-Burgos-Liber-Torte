@@ -125,6 +125,10 @@ Vector Vector::vectorProduct(Vector v)
         return Vector((y * v.z) - (z * v.y),(z * v.x) - (x * v.z),(x * v.y) - (y * v.x));
 }
 
+Vector Vector::AddScalar(int scalar, Vector v){
+    return Vector(scalar*x + v.x, scalar*y + v.y, scalar*z + v.z);
+}
+
 double Vector::dotProduct(Vector v) {
     return (x*v.x) + (y*v.y) + (z*v.z);
 }

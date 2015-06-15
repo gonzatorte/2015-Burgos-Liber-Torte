@@ -42,7 +42,7 @@ void Screen::createScreen() {
             Vector rayDir = (cam->lookAt)*cam->distance + cam->upVector*((scene->height)/2 - (i + 0.5)); //PELIGRO!!! Checkear esto con distintas pos de la camara.
             rayDir = rayDir + cam->leftVector*((scene->width)/2 - (j - 0.5));
             Ray* ray = new Ray(cam->viewPoint, rayDir);
-            color = trace.traceRay(ray, 0);
+            color = trace.traceRay(ray, 0, 1);
             Pixel* pixel = new Pixel(j,i,color.x, color.y, color.z);
             buff[j,i] = pixel;
             if (i > 0 && j > 0) {

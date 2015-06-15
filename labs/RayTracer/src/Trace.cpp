@@ -5,7 +5,7 @@ Trace::Trace()
     //ctor
 }
 
-Vector Trace::traceRay(Ray* ray, int level) {
+Vector Trace::traceRay(Ray* ray, int level, int weight) {
     Vector color;
     Scene* scene = Scene::getInstance();
     Shade shade;
@@ -24,7 +24,7 @@ Vector Trace::traceRay(Ray* ray, int level) {
 
     }
     if (closest != NULL) {
-        color = shade.shadeRay(ray, closest, level);
+        color = shade.shadeRay(ray, closest, level, weight);
     } else {
         color = Vector(0,0,0);
     }
