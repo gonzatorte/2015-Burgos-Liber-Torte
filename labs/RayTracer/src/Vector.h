@@ -10,6 +10,7 @@ class Vector
         ~Vector();
         Vector operator+(const Vector & v);
         Vector operator-(const Vector & v);
+        Vector operator/(const Vector & v);
         Vector operator*(float num);
         Vector & operator=(const Vector & v);
         bool operator==(const Vector & v);
@@ -26,7 +27,9 @@ class Vector
         double MagnitudeSquared();
         double Magnitude();
         Vector UnitVector();
-        inline double DotProduct(const Vector& a, const Vector& b);
+        Vector vectorProduct(Vector v);
+        double dotProduct(Vector v);
+
 };
 
 #endif // VECTOR_H

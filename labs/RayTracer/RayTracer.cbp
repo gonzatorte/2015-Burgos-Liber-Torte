@@ -19,7 +19,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="C:/Users/leobaf/Documents/Grafica/2015-Graf-Lburgos-LAzambuya-Gtorte/libs/SDL-devel-1.2.15-mingw32/SDL-1.2.15/include" />
+			<Add directory="C:/Users/Liber Azambuya/2015-Graf-Lburgos-LAzambuya-Gtorte/libs/SDL-devel-1.2.15-mingw32/SDL-1.2.15/include" />
 		</Compiler>
 		<Linker>
 			<Add library="mingw32" />
@@ -29,7 +29,7 @@
 			<Add library="gdi32" />
 			<Add library="winmm" />
 			<Add library="dxguid" />
-			<Add directory="C:/Users/leobaf/Documents/Grafica/2015-Graf-Lburgos-LAzambuya-Gtorte/libs/SDL-devel-1.2.15-mingw32/SDL-1.2.15/lib" />
+			<Add directory="C:/Users/Liber Azambuya/2015-Graf-Lburgos-LAzambuya-Gtorte/libs/SDL-devel-1.2.15-mingw32/SDL-1.2.15/lib" />
 		</Linker>
 		<Unit filename="cb.bmp" />
 		<Unit filename="main.cpp" />
@@ -42,6 +42,10 @@
 		<Unit filename="src/FreeImage.h" />
 		<Unit filename="src/Isect.cpp" />
 		<Unit filename="src/Isect.h" />
+		<Unit filename="src/Light.cpp" />
+		<Unit filename="src/Light.h" />
+		<Unit filename="src/Mesh.cpp" />
+		<Unit filename="src/Mesh.h" />
 		<Unit filename="src/Pixel.cpp" />
 		<Unit filename="src/Pixel.h" />
 		<Unit filename="src/Plane.cpp" />

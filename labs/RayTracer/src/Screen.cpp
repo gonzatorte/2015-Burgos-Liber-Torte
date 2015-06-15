@@ -1,6 +1,5 @@
 #include "Screen.h"
 #include "Scene.h"
-#include "FreeImage.h"
 
 Pixel* average(Pixel* p1, Pixel* p2, Pixel* p3, Pixel* p4) {
 
@@ -28,30 +27,37 @@ void Screen::createScreen() {
     FIBITMAP* refractionImage = FreeImage_Allocate(width, height, 24);
     FIBITMAP* reflexionImage = FreeImage_Allocate(width, height, 24);
     Camera* cam = scene->camera;
-    Pixel* buff[width][height];
+    Pixel** buff;
+    buff = new Pixel* [width];
     Trace trace;
     Vector color;
     RGBQUAD free_color;
-    for (int j=0; j < height; j++) {
-        for (int i=0; i < width; i++) {
-            Vector rayDir = Vector(i-cam->viewPoint.x, j-cam->viewPoint.y,0); //PELIGRO!!! Checkear esto con distintas pos de la camara.
+    //RGBQUAD free_color2;
+    unsigned char g = 1;
+    for (int j=0; j < width; j++) {
+
+        buff[j] = new Pixel[height];
+        for (int i=0; i < height; i++) {
+
+            Vector rayDir = (cam->lookAt)*cam->distance + cam->upVector*((scene->height)/2 - (i + 0.5)); //PELIGRO!!! Checkear esto con distintas pos de la camara.
+            rayDir = rayDir + cam->leftVector*((scene->width)/2 - (j - 0.5));
             Ray* ray = new Ray(cam->viewPoint, rayDir);
             color = trace.traceRay(ray, 0);
-            Pixel* pixel = new Pixel(i,j,color.x, color.y, color.z);
-
-            //pixel->setColor
-            buff[i][j] = pixel;
+            Pixel* pixel = new Pixel(j,i,color.x, color.y, color.z);
+            buff[j,i] = pixel;
             if (i > 0 && j > 0) {
-                Pixel* avrgPixel = average(buff[i-1][j-1], buff[i][j-1], buff[i-1][j], buff[i][j]);
-                free_color.rgbRed = (double) color.x;
-                free_color.rgbGreen = (double) color.y;
-                free_color.rgbBlue = (double) color.z;
-                FreeImage_SetPixelColor(image,avrgPixel->y, avrgPixel->x,&free_color);
+                Pixel* avrgPixel = average(buff[j-1, i-1], buff[j, i-1], buff[j-1, i], buff[j, i]);
+                free_color.rgbRed = (double) avrgPixel->r;
+                free_color.rgbGreen = (double) avrgPixel->g;
+                free_color.rgbBlue = (double) avrgPixel->b;
+                //free_color2.rgbBlue = g;
+                FreeImage_SetPixelColor(image,avrgPixel->x, avrgPixel->y,&free_color);
             }
 
         }
 
     }
+    FreeImage_Save(FIF_PNG, image,"PRUEBAIMAGE.png", 0);
 
 }
 

@@ -8,7 +8,9 @@
 #include "Screen.h"
 #include "Camera.h"
 #include "Trace.h"
+#include "Light.h"
 #include "Ray.h"
+#include "Mesh.h"
 #include <list>
 
 using namespace std;
@@ -22,10 +24,12 @@ class Scene
         void sceneRead();
         void createScreen();
         list<Figure*>* figures;
+        list<Light*>* lights;
         virtual ~Scene();
         Screen* screen;
         Camera* camera;
         int width, height;
+        double distance;
     protected:
     private:
 };

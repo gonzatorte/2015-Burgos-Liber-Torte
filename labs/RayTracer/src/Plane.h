@@ -2,6 +2,9 @@
 #define PLANE_H
 #include "Figure.h"
 #include "tinyxml2.h"
+#include <iostream>
+
+using namespace std;
 
 class Plane: public Figure
 {
@@ -11,6 +14,8 @@ class Plane: public Figure
         virtual ~Plane();
         Vector normal(Vector v);
         Isect* intersect(Ray* ray);
+        float height, width;
+        Vector center, norm;
     protected:
     private:
 };

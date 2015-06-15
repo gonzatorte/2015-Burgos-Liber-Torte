@@ -35,6 +35,11 @@ Vector Vector::operator-(const Vector & v) {
     return result;
 }
 
+Vector Vector::operator/(const Vector & v) {
+    Vector result = Vector(this->x/v.x, this->y/v.y, this->z/v.z);
+    return result;
+}
+
 Vector Vector::operator*(float num) {
     Vector result = Vector(this->x * num, this->y * num, this->z * num);
     return result;
@@ -115,7 +120,11 @@ Vector Vector::UnitVector()
     return Vector(x/mag, y/mag, z/mag);
 }
 
-inline double Vector::DotProduct (const Vector& a, const Vector& b)
+Vector Vector::vectorProduct(Vector v)
 {
-    return (a.x*b.x) + (a.y*b.y) + (a.z*b.z);
+        return Vector((y * v.z) - (z * v.y),(z * v.x) - (x * v.z),(x * v.y) - (y * v.x));
+}
+
+double Vector::dotProduct(Vector v) {
+    return (x*v.x) + (y*v.y) + (z*v.z);
 }
