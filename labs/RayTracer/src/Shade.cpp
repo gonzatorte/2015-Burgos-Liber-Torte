@@ -36,7 +36,7 @@ bool shadow(Ray & ray, Figure * fig){
 }
 
 Vector specularDirection(Vector incidentRay, Vector normal){
-        return normal.AddScalar(incidentRay.dotProduct(normal)*-2, incidentRay).UnitVector();
+    return (incidentRay + normal * (incidentRay * normal * -2)).UnitVector();
 }
 
 Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
@@ -60,15 +60,17 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     list<Light*>::iterator it;
     for (it=s->lights.begin(); it!=s->lights.end(); ++it)
     {
-        //ToDo: Este factor debe ser propio de cada luz, es la componente difusa de cada luz
-        //Hay que hacer algo similar con la componente specular de las luces para la parte specular (recursiva)
         Light * curr_light = (*it);
         Vector lightDir = (curr_light->position - point);
         Ray rayL = Ray(curr_light->position, point - curr_light->position);
         float difuse_angle = lightDir.UnitVector() * normal;
         if((difuse_angle > 0) && shadow(rayL, figure))
         {
-            color = color + curr_light->ambient_intesity * difuse_angle;
+            color = color + (curr_light->ambient_intesity * figure->kamb);
+            color = color + (curr_light->difuse_intesity * (figure->kdif * difuse_angle));
+//            color = color +
+//                    (curr_light->spec_intesity * figure->kspec *
+//                             powf((ray.origin*(-1)) * specular_vector, figure->shininess));
         }
     }
 
@@ -78,11 +80,10 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
         // Reflexion
         if (weight * figure->kspec > minWeight && figure->reflexion){
             Ray rayStart;
-            rayStart.origin = point;
             rayStart.direction = specular_vector;
-            rayStart.origin = rayStart.direction*0.1 + rayStart.origin;
+            rayStart.origin = rayStart.direction*0.1 + point;
             colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
-            color = colorReflexion.AddScalar(figure->kspec, color);
+            color = color + colorReflexion * figure->kspec;
         }
     }
 

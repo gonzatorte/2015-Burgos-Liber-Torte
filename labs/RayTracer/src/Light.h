@@ -13,11 +13,11 @@ class Light: public Object
         virtual ~Light();
         void read(tinyxml2::XMLElement* element);
         Vector position;
-        float ambient_k;
+//        float ambient_k;
         Vector ambient_intesity;
-        float spec_k;
+//        float spec_k;
         Vector spec_intesity;
-        float difuse_k;
+//        float difuse_k;
         Vector difuse_intesity;
     protected:
     private:

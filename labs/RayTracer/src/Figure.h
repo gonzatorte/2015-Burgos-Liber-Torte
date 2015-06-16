@@ -16,10 +16,13 @@ class Figure: public Object
         void read(tinyxml2::XMLElement* element);
         Figure();
         virtual ~Figure();
+        virtual Isect intersect(Ray & r) = 0;
         bool reflexion, refraction;
         Vector color;
         float kspec;
-        virtual Isect intersect(Ray & r) = 0;
+        float kdif;
+        float kamb;
+        float shininess;
     protected:
     private:
 };
