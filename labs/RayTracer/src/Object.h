@@ -8,7 +8,7 @@
 class Object {
     public:
         Object(){};
-        virtual void read(tinyxml2::XMLElement* element) = 0;
+        virtual void read(tinyxml2::XMLElement* element);
         virtual ~Object(){};
 };
 

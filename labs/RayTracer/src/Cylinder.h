@@ -5,6 +5,9 @@
 #include "Figure.h"
 #include "Vector.h"
 
+#include <vector>
+using namespace std;
+
 class Cylinder: public Figure
 {
     public:
@@ -14,7 +17,7 @@ class Cylinder: public Figure
         double radius;
         Vector center;
         Vector orientation;
-        Isect intersect(Ray & ray);
+        vector<Isect> intersect(Ray & ray);
         double height;
     protected:
     private:

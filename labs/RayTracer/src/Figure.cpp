@@ -12,6 +12,7 @@ void Figure::read(tinyxml2::XMLElement* element) {
     kamb = atof(element->Attribute("kamb"));
     shininess = atof(element->Attribute("shininess"));
     refraction = atof(element->Attribute("hasRefraction"));
+    ktran = atof(element->Attribute("ktran"));
     color = Vector(atof(element->Attribute("r")), atof(element->Attribute("g")), atof(element->Attribute("b")));
 }
 

@@ -5,7 +5,7 @@ Mesh::Mesh()
     //ctor
 }
 
-void Mesh::buildTriangles(Vector v1, Vector v2, Vector v3, Vector v4, int signoNormal) {
+void Mesh::buildTriangles(Vector v1, Vector v2, Vector v3, Vector v4, int signoNormal, int index) {
     float height;
     float width;
     Vector aux, normal, center;
@@ -28,15 +28,21 @@ void Mesh::buildTriangles(Vector v1, Vector v2, Vector v3, Vector v4, int signoN
     center = v1 + aux;
     for (int i=0; i<4; i++) {
         Triangle triangle;
-        triangle.reflexion = reflexion;
         triangle.refraction = refraction;
-        triangle.color = Vector(color.x, color.y, color.z);
+        triangle.reflexion = reflexion;
+        triangle.ktran = ktran;
+        triangle.kspec = kspec;
+        triangle.kdif = kdif;
+        triangle.kamb = kamb;
+        triangle.color = triangle.color + triangle.color*((index+i)*256/4);
+        triangle.color.x = ((int)triangle.color.x) % 256;
+        triangle.color.y = ((int)triangle.color.y) % 256;
+        triangle.color.z = ((int)triangle.color.z) % 256;
         triangle.norm = normal;
         if (i==0) {
             triangle.v0 = v1;
             triangle.v1 = center;
             triangle.v2 = v2;
-
         } else if (i==1) {
             triangle.v0 = v2;
             triangle.v1 = center;
@@ -70,7 +76,6 @@ void Mesh::read(tinyxml2::XMLElement* element) {
     Vector v1, v2 ,v3, v4;
     int index = 0;
     int normalSign = 1;
-    // TODO: Porque son 10 planos?
     while (index<=10) {
         if (index <= 2) { //Cara lateral izquierda y de fondo.
             v1 = vertexs[index]; v2 = vertexs[index+1]; v3 = vertexs[index+2]; v4 = vertexs[index+3];
@@ -87,27 +92,22 @@ void Mesh::read(tinyxml2::XMLElement* element) {
             normalSign = -1;
             v1 = vertexs[1]; v2 = vertexs[3]; v3 = vertexs[7]; v4 = vertexs[5];
         }
-        buildTriangles(v1, v2, v3, v4, normalSign);
+        buildTriangles(v1, v2, v3, v4, normalSign, index);
         index = index+2;
     }
-
 }
 
-Isect Mesh::intersect(Ray & ray) {
-
+vector<Isect> Mesh::intersect(Ray & ray) {
     double minDistance = 100000;
-    Isect closest;
-    closest.hited = false;
+    vector <Isect> intersecciones;
     for (int i=0; i < triangles.size(); i++) {
-        Isect aux;
-        aux = triangles[i].intersect(ray);
-        if (aux.hited && minDistance > aux.distance) {
-            closest = aux;
-            minDistance = aux.distance;
+        vector <Isect> aux = triangles[i].intersect(ray);
+        if (!aux.empty() && minDistance > aux[0].distance) {
+            minDistance = aux[0].distance;
+            intersecciones.swap(aux);
         }
     }
-
-    return closest;
+    return intersecciones;
 }
 
 Mesh::~Mesh()

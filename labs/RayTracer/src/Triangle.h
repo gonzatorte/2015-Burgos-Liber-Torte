@@ -9,7 +9,7 @@ class Triangle: public Figure
     public:
         Triangle();
         Triangle(Vector v0, Vector v1, Vector v2, Vector norm);
-        Isect intersect(Ray & ray);
+        vector<Isect> intersect(Ray & ray);
         void read(tinyxml2::XMLElement* element);
         Vector v0, v1, v2;
         Vector norm;

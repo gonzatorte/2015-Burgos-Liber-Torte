@@ -9,15 +9,13 @@ Cylinder::Cylinder()
 }
 
 void Cylinder::read(tinyxml2::XMLElement* element) {
-
     radius = atof(element->Attribute("radius"));
     height = atof(element->Attribute("height"));
     center = Vector(atof(element->Attribute("centerX")), atof(element->Attribute("centerY")), atof(element->Attribute("centerZ")));
     Figure::read(element);
-
 }
 
-Isect Cylinder::intersect(Ray & ray) {
+vector<Isect> Cylinder::intersect(Ray & ray) {
     //ToDo: Improve, no usar new
     //ToDo: Por ahora solo es para cilindros alineados en Z
 
@@ -28,9 +26,10 @@ Isect Cylinder::intersect(Ray & ray) {
     float t = (-b + discrim)/2*a;
 
     Isect inter;
-    inter.hited = true;
     inter.surfacePoint = ray.origin + (ray.direction)*t;
-    return inter;
+    vector <Isect> intersecciones;
+    intersecciones.push_back(inter);
+    return intersecciones;
 }
 
 Cylinder::~Cylinder()

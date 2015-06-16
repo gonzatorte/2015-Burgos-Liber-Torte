@@ -5,6 +5,9 @@
 #include "Vector.h"
 #include "Figure.h"
 
+#include <vector>
+using namespace std;
+
 class Sphere: public Figure
 {
     public:
@@ -13,7 +16,7 @@ class Sphere: public Figure
         virtual ~Sphere();
         double radius;
         Vector center;
-        Isect intersect(Ray & ray);
+        vector<Isect> intersect(Ray & ray);
     protected:
     private:
 };

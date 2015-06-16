@@ -13,11 +13,8 @@ void Sphere::read(tinyxml2::XMLElement* element) {
     Figure::read(element);
 }
 
-Isect Sphere::intersect(Ray & r)
-{
-	Isect result;
-	result.hited = false;
-	//inter.model = this;
+vector<Isect> Sphere::intersect(Ray & r){
+	vector<Isect> intersecciones;
 	Vector d = r.direction;
 	double t1 = -1;
 	double t2 = -1;
@@ -33,24 +30,26 @@ Isect Sphere::intersect(Ray & r)
 		t2 = (-b+discriminent)/(2*a);
 		t1 = (-b-discriminent)/(2*a);
 		if(t1 > 0){
-            result.hited = true;
+            Isect result;
             result.figure = this;
 			result.surfacePoint = r.rayPoint(t1);
             //result.enter = true;//entra
             result.distance = t1;
             result.normal = (result.surfacePoint - this->center).UnitVector();
+            intersecciones.push_back(result);
 		}
 		else if(t2 > 0)
 		{
-		    result.hited = true;
+            Isect result;
             result.figure = this;
 			result.surfacePoint = r.rayPoint(t2);
             //result->enter = false;//entra
             result.distance = t2;
             result.normal = (result.surfacePoint - this->center).UnitVector();
+            intersecciones.push_back(result);
 		}
 	}
-	return result;
+	return intersecciones;
 }
 
 Sphere::~Sphere()

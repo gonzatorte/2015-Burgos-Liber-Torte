@@ -2,13 +2,12 @@
 #include "Scene.h"
 
 Pixel* average(Pixel* p1, Pixel* p2, Pixel* p3, Pixel* p4) {
-
-     Pixel* result = new Pixel();
-     result->r = (p1->r + p2->r + p3->r + p4->r)/4;
-     result->g = (p1->g + p2->g + p3->g + p4->g)/4;
-     result->b = (p1->b + p2->b + p3->b + p4->b)/4;
-     result->x = p1->x + 0.5;
-     result->y = p1->y + 0.5;
+    Pixel* result = new Pixel();
+    result->r = (p1->r + p2->r + p3->r + p4->r)/4;
+    result->g = (p1->g + p2->g + p3->g + p4->g)/4;
+    result->b = (p1->b + p2->b + p3->b + p4->b)/4;
+    result->x = p1->x + 0.5;
+    result->y = p1->y + 0.5;
     return result;
 }
 
@@ -23,22 +22,23 @@ vector<double> Screen::getColor(Ray ray) {
     colorsList.push_back(0);
     colorsList.push_back(0);
     Isect closest;
-    Isect aux;
+    bool finded = false;
     double minDistance = 100000;
-    closest.hited = false;
     list<Figure*>::iterator it;
     for (it=scene->figures.begin(); it!=scene->figures.end(); ++it){
-
+        vector<Isect> aux;
         aux = (*it)->intersect(ray);
-        if (aux.hited && minDistance > aux.distance) {
-            closest = aux;
-            minDistance = aux.distance;
+        for (vector<Isect>::iterator it_inter = aux.begin() ; it_inter != aux.end(); ++it_inter){
+            if (minDistance > (*it_inter).distance) {
+                closest = (*it_inter);
+                minDistance = (*it_inter).distance;
+                finded = true;
+            }
         }
-
     }
-    if (closest.hited) {
+    if (finded) {
         if (closest.figure->reflexion) {
-                colorsList[0] = closest.figure->kspec * 255;
+            colorsList[0] = closest.figure->kspec * 255;
         }
         if (closest.figure->refraction) {
             //colorsList[1] = closest.figure->kspec * 255;
@@ -48,7 +48,6 @@ vector<double> Screen::getColor(Ray ray) {
 }
 
 void Screen::createScreen() {
-
     Scene* scene = Scene::getInstance();
     int width = scene->width;
     int height = scene->height;

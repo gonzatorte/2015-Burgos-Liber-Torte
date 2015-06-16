@@ -18,13 +18,13 @@ class Mesh: public Figure
         Mesh();
         void read(tinyxml2::XMLElement* element);
         Vector normal(Vector v);
-        Isect intersect(Ray & ray);
+        vector<Isect> intersect(Ray & ray);
         vector<Vector> vertexs;
         vector<Triangle> triangles;
         virtual ~Mesh();
     protected:
     private:
-        void buildTriangles(Vector v1, Vector v2, Vector v3, Vector v4, int signoNormal);
+        void buildTriangles(Vector v1, Vector v2, Vector v3, Vector v4, int signoNormal, int index);
 
 };
 

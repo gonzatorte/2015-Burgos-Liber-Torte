@@ -4,9 +4,11 @@
 #include "tinyxml2.h"
 #include "Object.h"
 #include "Isect.h"
-
+#include <vector>
 #include "Vector.h"
 #include "Ray.h"
+
+using namespace std;
 
 class Isect;
 
@@ -16,12 +18,13 @@ class Figure: public Object
         void read(tinyxml2::XMLElement* element);
         Figure();
         virtual ~Figure();
-        virtual Isect intersect(Ray & r) = 0;
+        virtual vector<Isect> intersect(Ray & r) = 0;
         bool reflexion, refraction;
         Vector color;
         float kspec;
         float kdif;
         float kamb;
+        float ktran;
         float shininess;
     protected:
     private:

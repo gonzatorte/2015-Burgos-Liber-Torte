@@ -14,7 +14,6 @@ class Isect
         Vector normal;
         Vector surfacePoint;
         double distance;
-        bool hited;
     protected:
     private:
 };

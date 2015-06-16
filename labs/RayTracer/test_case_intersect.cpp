@@ -34,8 +34,8 @@ int main2 ( int argc, char** argv )
     P2.width = 5000;
     P2.height = 5000;
 
-    Isect res1 = P.intersect(R);
-    Isect res2 = P2.intersect(R);
+//    Isect res1 = P.intersect(R);
+//    Isect res2 = P2.intersect(R);
 
     //elem = "<Plane  Height= \"5000\" Width= \"5000\"  CenterX=\"0\" CenterY=\"500\" CenterZ=\"2000\" NormalX=\"0\" NormalY=\"0\" NormalZ=\"-1\" R=\"0.7\" G=\"0.7\" B=\"0.7\"  Specular=\"0.0\" Ref=\"0.5\" Diffuse=\"0\" MedioR=\"1\" Refracta=\"0\" Refleja=\"0\" SpecularLevel=\"0\" Glossiness=\"0\" />";
     return 0;

@@ -13,18 +13,14 @@ Shade::~Shade()
 bool shadow(Ray & ray, Figure * fig){
     Scene* s = Scene::getInstance();
     bool interfiere = true;
-    Isect isect = fig->intersect(ray);
-    double minDistance = isect.hited ? isect.distance : 5000000;
-    list<Figure*>::iterator it;
-    for (it=s->figures.begin(); it!=s->figures.end(); ++it){
-        Figure* F = *it;
-        isect = F->intersect(ray);
-        if (isect.hited)
-        {
-            if (isect.distance < minDistance)
-            {
-                if (isect.distance < minDistance)
-                {
+    Isect isect;
+    vector<Isect> isects = fig->intersect(ray);
+    if (!isects.empty()){
+        float minDistance = isects[0].distance;
+        for (list<Figure*>::iterator it_figure = s->figures.begin(); it_figure!=s->figures.end(); ++it_figure){
+            vector<Isect> fig_isects = (*it_figure)->intersect(ray);
+            if (!fig_isects.empty()){
+                if (fig_isects[0].distance < minDistance){
                     interfiere = false;
                     break;
                 }
@@ -32,7 +28,6 @@ bool shadow(Ray & ray, Figure * fig){
         }
     }
     return interfiere;
-
 }
 
 Vector specularDirection(Vector incidentRay, Vector normal){
@@ -58,14 +53,12 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     Vector specular_vector = specularDirection(ray.direction, normal);
 
     list<Light*>::iterator it;
-    for (it=s->lights.begin(); it!=s->lights.end(); ++it)
-    {
+    for (it=s->lights.begin(); it!=s->lights.end(); ++it){
         Light * curr_light = (*it);
         Vector lightDir = (curr_light->position - point);
         Ray rayL = Ray(curr_light->position, point - curr_light->position);
         float difuse_angle = lightDir.UnitVector() * normal;
-        if((difuse_angle > 0) && shadow(rayL, figure))
-        {
+        if((difuse_angle > 0) && shadow(rayL, figure)){
             color = color + (curr_light->ambient_intesity * figure->kamb);
             color = color + (curr_light->difuse_intesity * (figure->kdif * difuse_angle));
 //            color = color +
@@ -81,7 +74,7 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
         if (weight * figure->kspec > minWeight && figure->reflexion){
             Ray rayStart;
             rayStart.direction = specular_vector;
-            rayStart.origin = rayStart.direction*0.1 + point;
+            rayStart.origin = rayStart.direction + point;
             colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
             color = color + colorReflexion * figure->kspec;
         }

@@ -12,7 +12,7 @@ class Plane: public Figure
         Plane();
         void read(tinyxml2::XMLElement* element);
         virtual ~Plane();
-        Isect intersect(Ray & ray);
+        vector<Isect> intersect(Ray & ray);
         float height, width;
         Vector center, norm;
     protected:
