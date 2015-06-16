@@ -23,8 +23,11 @@ bool shadow(Ray ray, Figure * fig){
         {
             if (isect.distance < minDistance)
             {
-                interfiere = false;
-                break;
+                if (isect.distance < minDistance)
+                {
+                    interfiere = false;
+                    break;
+                }
             }
         }
     }
@@ -33,7 +36,7 @@ bool shadow(Ray ray, Figure * fig){
 }
 
 Vector specularDirection(Vector incidentRay, Vector normal){
-        return normal.AddScalar(incidentRay.UnitVector().dotProduct(normal.UnitVector())*-2, incidentRay.UnitVector());
+        return normal.AddScalar(incidentRay.dotProduct(normal)*-2, incidentRay).UnitVector();
 }
 
 Vector Shade::shadeRay(Ray ray, Isect isect, int level, int weight){
@@ -69,12 +72,9 @@ Vector Shade::shadeRay(Ray ray, Isect isect, int level, int weight){
         if((angle_vect > 0) && shadow(rayL, isect.figure))
         {
             //ToDo: si se pasa de 256 se puede hacer el chequeo al final, pues el color siempre sube
-            aux = color.x + (*it)->color.x*lightDir.UnitVector().dotProduct(normal);
-            color.x = aux<256 ? aux : 255;
-            aux = color.y + (*it)->color.y*lightDir.UnitVector().dotProduct(normal);
-            color.y = aux<256 ? aux : 255;
-			aux = color.z + (*it)->color.z*lightDir.UnitVector().dotProduct(normal);
-            color.z = aux<256 ? aux : 255;
+            color.x = color.x + (*it)->color.x*lightDir.UnitVector().dotProduct(normal);
+            color.y = color.y + (*it)->color.y*lightDir.UnitVector().dotProduct(normal);
+			color.z = color.z + (*it)->color.z*lightDir.UnitVector().dotProduct(normal);
        }
     }
 
@@ -83,12 +83,15 @@ Vector Shade::shadeRay(Ray ray, Isect isect, int level, int weight){
         rayStart.origin = isect.surfacePoint;
         // Reflexion
         if (weight * figure->kspec > minWeight && figure->reflexion){
-            cout<<"adasdaddd";
             rayStart.direction = specularDirection(ray.direction, normal);
             colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
             color = colorReflexion.AddScalar(figure->kspec, color);
         }
     }
+
+    color.x = color.x < 256 ? color.x : 255;
+    color.y = color.y < 256 ? color.y : 255;
+    color.z = color.z < 256 ? color.z : 255;
 
     return color;
 }

@@ -59,9 +59,7 @@ void Screen::createScreen() {
                 //free_color2.rgbBlue = g;
                 FreeImage_SetPixelColor(image,avrgPixel->x, avrgPixel->y,&free_color);
             }
-
         }
-
     }
     cout << "Guardando imagen" << endl;
     FreeImage_Save(FIF_PNG, image,"PRUEBAIMAGE.png", 0);
