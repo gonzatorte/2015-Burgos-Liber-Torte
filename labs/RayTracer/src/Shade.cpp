@@ -10,47 +10,24 @@ Shade::~Shade()
     //dtor
 }
 
-bool interference(Figure* object, Light* l, Vector P)
-{
-    Isect* inter = new Isect();
-    Scene* s = Scene::getInstance();
-    Ray* rayP = new Ray(l->position, (P  - l->position));
-    bool interfiere = false;
-    inter = object->intersect(rayP);
-    double minDistance = inter != NULL ? inter->distance : 0;
-    int k = 0;
-    list<Figure*>::iterator it;
-    for (it=s->figures->begin(); it!=s->figures->end(); ++it){
-
-        inter = (*it)->intersect(rayP);
-        if (inter != NULL)
-        {
-            if (inter->distance < minDistance)
-            {
-                interfiere = true;
-                break;
-            }
-        }
-        k++;
-    }
-    return interfiere;
-}
-
-bool shadow(Ray* ray, Isect* isect){
+bool shadow(Ray ray, Figure * fig){
     Scene* s = Scene::getInstance();
     bool interfiere = true;
-    double minDistance = isect != NULL ? isect->distance : 5000000;
-    int k = 0;
+    Isect isect = fig->intersect(ray);
+    double minDistance = isect.hited ? isect.distance : 5000000;
     list<Figure*>::iterator it;
     for (it=s->figures->begin(); it!=s->figures->end(); ++it){
-
-        isect = (*it)->intersect(ray);
-        if (isect != NULL)
+        Figure* F = *it;
+        isect = F->intersect(ray);
+        if (isect.hited)
         {
-            if (isect->distance < minDistance)
+            if (isect.distance < minDistance)
             {
-                interfiere = false;
-                break;
+                if (isect.distance < minDistance)
+                {
+                    interfiere = false;
+                    break;
+                }
             }
         }
     }
@@ -58,20 +35,26 @@ bool shadow(Ray* ray, Isect* isect){
 
 }
 
-Vector Shade::shadeRay(Ray* ray, Isect* isect, int level){
+Vector specularDirection(Vector incidentRay, Vector normal){
+        return normal.AddScalar(incidentRay.dotProduct(normal)*-2, incidentRay).UnitVector();
+}
+
+Vector Shade::shadeRay(Ray ray, Isect isect, int level, int weight){
     Scene* s = Scene::getInstance();
     int maxLevel = 3;
-    Figure* figure = isect->figure;
-    Vector normal = isect->normal;
-    Vector point = isect->surfacePoint;
-    Trace t;
+    int minWeight = 0.1;
+    Figure* figure = isect.figure;
+    Vector normal = isect.normal;
+    Vector point = isect.surfacePoint;
+    Trace trace;
     Vector color;
+    Vector colorReflexion;
     color.x = figure->color.x;
     color.y = figure->color.y;
     color.z = figure->color.z;
 
-    if (ray->direction.dotProduct(normal)>0){
-        normal = normal - normal*2;
+    if (ray.direction.dotProduct(normal)>0){
+        normal = normal*-1;
     }
 
     list<Light*>::iterator it;
@@ -79,27 +62,37 @@ Vector Shade::shadeRay(Ray* ray, Isect* isect, int level){
 
     for (it=s->lights->begin(); it!=s->lights->end(); ++it)
     {
+        //ToDo: Este factor debe ser propio de cada luz, es la componente difusa de cada luz
+        //Hay que hacer algo similar con la componente specular de las luces para la parte specular (recursiva)
         float intensity = 0;
-        Vector lightDir = ((*it)->position - isect->surfacePoint);
-        Ray* rayL = new Ray((*it)->position, isect->surfacePoint - (*it)->position);
-        if((lightDir.dotProduct(normal) > 0) && shadow(rayL, isect))
+        Light * curr_light = (*it);
+        Vector lightDir = (curr_light->position - isect.surfacePoint);
+        Ray rayL = Ray(curr_light->position, isect.surfacePoint - curr_light->position);
+        float angle_vect = lightDir.dotProduct(normal);
+        if((angle_vect > 0) && shadow(rayL, isect.figure))
         {
-            if (color.y == 152){
-                int a =4;
-            }
-            if (color.y == 150){
-                int a =4;
-            }
-
-			aux = color.x + (*it)->color.x*lightDir.UnitVector().dotProduct(normal);
-            color.x = aux<256 ? aux : 255;
-            aux = color.y + (*it)->color.y*lightDir.UnitVector().dotProduct(normal);
-            color.y = aux<256 ? aux : 255;
-			aux = color.z + (*it)->color.z*lightDir.UnitVector().dotProduct(normal);
-            color.z = aux<256 ? aux : 255;
+            //ToDo: si se pasa de 256 se puede hacer el chequeo al final, pues el color siempre sube
+            color.x = color.x + (*it)->color.x*lightDir.UnitVector().dotProduct(normal);
+            color.y = color.y + (*it)->color.y*lightDir.UnitVector().dotProduct(normal);
+			color.z = color.z + (*it)->color.z*lightDir.UnitVector().dotProduct(normal);
        }
-
     }
+
+    if (level + 1 < maxLevel){
+        Ray rayStart;
+        rayStart.origin = isect.surfacePoint;
+        // Reflexion
+        if (weight * figure->kspec > minWeight && figure->reflexion){
+            rayStart.direction = specularDirection(ray.direction, normal);
+            rayStart.origin = rayStart.direction*0.1 + rayStart.origin;
+            colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
+            color = colorReflexion.AddScalar(figure->kspec, color);
+        }
+    }
+
+    color.x = color.x < 256 ? color.x : 255;
+    color.y = color.y < 256 ? color.y : 255;
+    color.z = color.z < 256 ? color.z : 255;
 
     return color;
 }

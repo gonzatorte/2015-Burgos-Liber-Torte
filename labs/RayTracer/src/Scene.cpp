@@ -49,14 +49,13 @@ void Scene::sceneRead() {
         } else if (elementName=="scene") {
             width = atoi(element->Attribute("width"));
             height = atoi(element->Attribute("height"));
-
         } else if (elementName=="camera") {
             Vector viewPoint = Vector(atof(element->Attribute("viewPointX")), atof(element->Attribute("viewPointY")), atof(element->Attribute("viewPointZ")));
             Vector lookAt = Vector(atof(element->Attribute("lookAtX")), atof(element->Attribute("lookAtY")), atof(element->Attribute("lookAtZ")));
             Vector upVector = Vector(atof(element->Attribute("upVectorX")), atof(element->Attribute("upVectorY")), atof(element->Attribute("upVectorZ")));
             Vector leftVector = upVector.vectorProduct(lookAt);
             distance = sqrt(width^2 + height^2) / ( 2*tan( 45/2 ) );
-            camera = new Camera(viewPoint, lookAt, upVector, leftVector, distance);
+            camera = new Camera(viewPoint, lookAt, upVector, distance);
         } else if (elementName=="mesh") {
             Mesh* mesh = new Mesh();
             mesh->read(element);

@@ -35,28 +35,33 @@ void Screen::createScreen() {
     //RGBQUAD free_color2;
     unsigned char g = 1;
     for (int j=0; j < width; j++) {
-
+        if (j%100 == 0)
+            cout << "Van " << j << " De " << width << " Lineas" << endl;
         buff[j] = new Pixel[height];
         for (int i=0; i < height; i++) {
-
+//            if ((j%100 == 0) && (i%100 == 0)){
+//                free_color.rgbRed = (double) 0;
+//                free_color.rgbGreen = (double) 0;
+//                free_color.rgbBlue = (double) 0;
+//                FreeImage_SetPixelColor(image,j, i,&free_color);
+//                continue;
+//            }
             Vector rayDir = (cam->lookAt)*cam->distance + cam->upVector*((scene->height)/2 - (i + 0.5)); //PELIGRO!!! Checkear esto con distintas pos de la camara.
             rayDir = rayDir + cam->leftVector*((scene->width)/2 - (j - 0.5));
-            Ray* ray = new Ray(cam->viewPoint, rayDir);
-            color = trace.traceRay(ray, 0);
-            Pixel* pixel = new Pixel(j,i,color.x, color.y, color.z);
-            buff[j,i] = pixel;
-            if (i > 0 && j > 0) {
-                Pixel* avrgPixel = average(buff[j-1, i-1], buff[j, i-1], buff[j-1, i], buff[j, i]);
+            Ray ray = Ray(cam->viewPoint, rayDir);
+            color = trace.traceRay(ray, 0, 1);
+            buff[j][i] = Pixel(j,i,color.x, color.y, color.z);
+            if ((i > 0) && (j > 0)) {
+                Pixel* avrgPixel = average(&buff[j-1][i-1], &buff[j][i-1], &buff[j-1][i], &buff[j][i]);
                 free_color.rgbRed = (double) avrgPixel->r;
                 free_color.rgbGreen = (double) avrgPixel->g;
                 free_color.rgbBlue = (double) avrgPixel->b;
                 //free_color2.rgbBlue = g;
                 FreeImage_SetPixelColor(image,avrgPixel->x, avrgPixel->y,&free_color);
             }
-
         }
-
     }
+    cout << "Guardando imagen" << endl;
     FreeImage_Save(FIF_PNG, image,"PRUEBAIMAGE.png", 0);
 
 }

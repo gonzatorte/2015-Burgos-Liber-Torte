@@ -7,8 +7,9 @@ Figure::Figure()
 
 void Figure::read(tinyxml2::XMLElement* element) {
 
-    reflexion = atoi(element->Attribute("hasReflexion"));
-    refraction = atoi(element->Attribute("hasRefraction"));
+    reflexion = atof(element->Attribute("hasReflexion"));
+    kspec = atof(element->Attribute("kspec"));
+    refraction = atof(element->Attribute("hasRefraction"));
     color = Vector(atof(element->Attribute("r")), atof(element->Attribute("g")), atof(element->Attribute("b")));
 }
 

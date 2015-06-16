@@ -10,7 +10,7 @@ class Triangle: public Figure
         Triangle();
         Triangle(Vector v0, Vector v1, Vector v2, Vector norm);
         Vector normal(Vector v);
-        Isect* intersect(Ray* ray);
+        Isect intersect(Ray ray);
         Vector v0, v1, v2;
         Vector norm;
         virtual ~Triangle();
