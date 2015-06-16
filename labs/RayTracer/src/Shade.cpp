@@ -84,6 +84,7 @@ Vector Shade::shadeRay(Ray ray, Isect isect, int level, int weight){
         // Reflexion
         if (weight * figure->kspec > minWeight && figure->reflexion){
             rayStart.direction = specularDirection(ray.direction, normal);
+            rayStart.origin = rayStart.direction*0.1 + rayStart.origin;
             colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
             color = colorReflexion.AddScalar(figure->kspec, color);
         }
