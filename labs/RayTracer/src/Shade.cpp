@@ -10,13 +10,15 @@ Shade::~Shade()
     //dtor
 }
 
-bool shadow(Ray ray, Isect isect){
+bool shadow(Ray ray, Figure * fig){
     Scene* s = Scene::getInstance();
     bool interfiere = true;
+    Isect isect = fig->intersect(ray);
     double minDistance = isect.hited ? isect.distance : 5000000;
     list<Figure*>::iterator it;
     for (it=s->figures->begin(); it!=s->figures->end(); ++it){
-        isect = (*it)->intersect(ray);
+        Figure* F = *it;
+        isect = F->intersect(ray);
         if (isect.hited)
         {
             if (isect.distance < minDistance)
@@ -60,9 +62,11 @@ Vector Shade::shadeRay(Ray ray, Isect isect, int level, int weight){
         //ToDo: Este factor debe ser propio de cada luz, es la componente difusa de cada luz
         //Hay que hacer algo similar con la componente specular de las luces para la parte specular (recursiva)
         float intensity = 0;
-        Vector lightDir = ((*it)->position - isect.surfacePoint);
-        Ray rayL = Ray((*it)->position, isect.surfacePoint - (*it)->position);
-        if((lightDir.dotProduct(normal) > 0) && shadow(rayL, isect))
+        Light * curr_light = (*it);
+        Vector lightDir = (curr_light->position - isect.surfacePoint);
+        Ray rayL = Ray(curr_light->position, isect.surfacePoint - curr_light->position);
+        float angle_vect = lightDir.dotProduct(normal);
+        if((angle_vect > 0) && shadow(rayL, isect.figure))
         {
             //ToDo: si se pasa de 256 se puede hacer el chequeo al final, pues el color siempre sube
             aux = color.x + (*it)->color.x*lightDir.UnitVector().dotProduct(normal);

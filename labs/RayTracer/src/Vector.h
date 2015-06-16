@@ -28,7 +28,7 @@ class Vector
         double Magnitude();
         Vector UnitVector();
         Vector vectorProduct(Vector v);
-        Vector AddScalar(int scalar, Vector v);
+        Vector AddScalar(float scalar, Vector v);
         double dotProduct(Vector v);
 
 };

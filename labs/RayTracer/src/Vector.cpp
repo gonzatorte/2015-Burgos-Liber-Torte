@@ -126,7 +126,7 @@ Vector Vector::vectorProduct(Vector v)
 }
 
 //ToDo: No estoy seguro si estas funciones requieren un constructor de copia explicito o ya se define uno...
-Vector Vector::AddScalar(int scalar, Vector v){
+Vector Vector::AddScalar(float scalar, Vector v){
     Vector v2 = Vector(scalar*x + v.x, scalar*y + v.y, scalar*z + v.z);
     return Vector(scalar*x + v.x, scalar*y + v.y, scalar*z + v.z);
 }
