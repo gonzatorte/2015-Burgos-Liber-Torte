@@ -5,6 +5,8 @@
 #include "Ray.h"
 #include "lib/FreeImage/FreeImage.h"
 #include <ctime>
+#include <vector>
+
 
 using namespace std;
 
@@ -16,6 +18,8 @@ class Screen
         virtual ~Screen();
     protected:
     private:
+        vector<double> getColor(Ray ray);
+
 };
 
 #endif // SCREEN_H

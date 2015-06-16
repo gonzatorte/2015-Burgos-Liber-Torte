@@ -17,6 +17,36 @@ Screen::Screen()
     //ctor
 }
 
+vector<double> Screen::getColor(Ray ray) {
+    vector<double> colorsList; //[0] => Reflexion color, [1] => refraction color.
+    Scene* scene = Scene::getInstance();
+    colorsList.push_back(0);
+    colorsList.push_back(0);
+    Isect closest;
+    Isect aux;
+    double minDistance = 100000;
+    closest.hited = false;
+    list<Figure*>::iterator it;
+    for (it=scene->figures->begin(); it!=scene->figures->end(); ++it){
+
+        aux = (*it)->intersect(ray);
+        if (aux.hited && minDistance > aux.distance) {
+            closest = aux;
+            minDistance = aux.distance;
+        }
+
+    }
+    if (closest.hited) {
+        if (closest.figure->reflexion) {
+                colorsList[0] = closest.figure->kspec * 255;
+        }
+        if (closest.figure->refraction) {
+            //colorsList[1] = closest.figure->kspec * 255;
+        }
+    }
+    return colorsList;
+}
+
 void Screen::createScreen() {
 
     Scene* scene = Scene::getInstance();
@@ -32,6 +62,7 @@ void Screen::createScreen() {
     Trace trace;
     Vector color;
     RGBQUAD free_color;
+    vector<double> colorsList;
     //RGBQUAD free_color2;
     unsigned char g = 1;
     for (int j=0; j < width; j++) {
@@ -59,13 +90,22 @@ void Screen::createScreen() {
                 //free_color2.rgbBlue = g;
                 FreeImage_SetPixelColor(image,avrgPixel->x, avrgPixel->y,&free_color);
             }
+            colorsList = getColor(ray);
+            free_color.rgbRed = (double) colorsList[0];
+            free_color.rgbGreen = (double) colorsList[0];
+            free_color.rgbBlue = (double) colorsList[0];
+            FreeImage_SetPixelColor(reflexionImage, j, i, &free_color);
+
+            free_color.rgbRed = (double) colorsList[1];
+            free_color.rgbGreen = (double) colorsList[1];
+            free_color.rgbBlue = (double) colorsList[1];
+            FreeImage_SetPixelColor(refractionImage, j, i, &free_color);
         }
     }
     cout << "Guardando imagen" << endl;
     FreeImage_Save(FIF_PNG, image,"PRUEBAIMAGE.png", 0);
-
+    FreeImage_Save(FIF_PNG, reflexionImage,"ReflexionImage.png", 0);
 }
-
 
 Screen::~Screen()
 {
