@@ -32,8 +32,6 @@ void Screen::createScreen() {
     Trace trace;
     Vector color;
     RGBQUAD free_color;
-    //RGBQUAD free_color2;
-    unsigned char g = 1;
     for (int j=0; j < width; j++) {
         if (j%100 == 0)
             cout << "Van " << j << " De " << width << " Lineas" << endl;

@@ -6,8 +6,6 @@ Scene* Scene::instance = NULL;
 Scene::Scene()
 {
     screen = new Screen();
-    figures = new list<Figure*>();
-    lights = new list<Light*>();
 }
 
 Scene* Scene::getInstance() {
@@ -19,7 +17,6 @@ Scene* Scene::getInstance() {
 }
 
 void Scene::sceneRead() {
-
     tinyxml2::XMLDocument document;
     document.LoadFile("scene.xml");
     tinyxml2::XMLElement* rootElement = document.FirstChildElement("root");
@@ -27,25 +24,25 @@ void Scene::sceneRead() {
     for(element=rootElement->FirstChildElement(); element; element=element->NextSiblingElement()) {
         string elementName = element->Value();
         if (elementName=="sphere") {
-            Sphere* sphere = new Sphere();
+            Sphere * sphere = new Sphere();
             sphere->read(element);
-            figures->push_back(sphere);
-
+            figures.push_back(sphere);
         } else if (elementName=="cylinder") {
-            Cylinder* cylinder = new Cylinder();
+            Cylinder * cylinder = new Cylinder();
             cylinder->read(element);
-            figures->push_back(cylinder);
-
+            figures.push_back(cylinder);
         } else if (elementName=="plane") {
-            Plane* plane = new Plane();
+            Plane * plane = new Plane();
             plane->read(element);
-            figures->push_back(plane);
-
+            figures.push_back(plane);
         } else if (elementName=="light") {
-            Light* light = new Light();
+            Light * light = new Light();
             light->read(element);
-            lights->push_back(light);
-
+            lights.push_back(light);
+        } else if (elementName=="mesh") {
+            Mesh * mesh = new Mesh();
+            mesh->read(element);
+            figures.push_back(mesh);
         } else if (elementName=="scene") {
             width = atoi(element->Attribute("width"));
             height = atoi(element->Attribute("height"));
@@ -56,10 +53,6 @@ void Scene::sceneRead() {
             Vector leftVector = upVector.vectorProduct(lookAt);
             distance = sqrt(width^2 + height^2) / ( 2*tan( 45/2 ) );
             camera = new Camera(viewPoint, lookAt, upVector, distance);
-        } else if (elementName=="mesh") {
-            Mesh* mesh = new Mesh();
-            mesh->read(element);
-            figures->push_back(mesh);
         }
     }
 

@@ -93,11 +93,7 @@ void Mesh::read(tinyxml2::XMLElement* element) {
 
 }
 
-Vector Mesh::normal(Vector p) {
-    return Vector(0,0,0);
-}
-
-Isect Mesh::intersect(Ray ray) {
+Isect Mesh::intersect(Ray & ray) {
 
     double minDistance = 100000;
     Isect closest;

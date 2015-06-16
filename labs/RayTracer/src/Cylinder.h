@@ -14,8 +14,7 @@ class Cylinder: public Figure
         double radius;
         Vector center;
         Vector orientation;
-        Vector normal(Vector v);
-        Isect intersect(Ray ray);
+        Isect intersect(Ray & ray);
         double height;
     protected:
     private:

@@ -3,18 +3,22 @@
 
 #include "tinyxml2.h"
 #include "Vector.h"
-#include "Figure.h"
+#include "Object.h"
 
-class Light: public Figure
+class Light: public Object
 {
     public:
         Light();
         Light(Vector color, Vector position);
-        void read(tinyxml2::XMLElement* element);
-        Vector normal(Vector v);
-        Isect intersect(Ray ray);
         virtual ~Light();
+        void read(tinyxml2::XMLElement* element);
         Vector position;
+        float ambient_k;
+        Vector ambient_intesity;
+        float spec_k;
+        Vector spec_intesity;
+        float difuse_k;
+        Vector difuse_intesity;
     protected:
     private:
 };

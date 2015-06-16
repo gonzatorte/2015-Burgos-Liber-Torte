@@ -12,14 +12,9 @@ void Plane::read(tinyxml2::XMLElement* element) {
     width = atoi(element->Attribute("width"));
     height = atoi(element->Attribute("height"));
     Figure::read(element);
-
 }
 
-Vector Plane::normal(Vector v) {
-    return norm;
-}
-
-Isect Plane::intersect(Ray ray) {
+Isect Plane::intersect(Ray & ray) {
     Isect isect;
     isect.hited = false;
     isect.figure = this;

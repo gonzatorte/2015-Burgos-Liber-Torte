@@ -5,7 +5,7 @@ Trace::Trace()
     //ctor
 }
 
-Vector Trace::traceRay(Ray ray, int level, int weight) {
+Vector Trace::traceRay(Ray & ray, int level, int weight) {
     Vector color;
     Scene* scene = Scene::getInstance();
     Shade shade;
@@ -14,7 +14,7 @@ Vector Trace::traceRay(Ray ray, int level, int weight) {
     double minDistance = 100000;
     closest.hited = false;
     list<Figure*>::iterator it;
-    for (it=scene->figures->begin(); it!=scene->figures->end(); ++it){
+    for (it=scene->figures.begin(); it!=scene->figures.end(); ++it){
 
         aux = (*it)->intersect(ray);
         if (aux.hited && minDistance > aux.distance) {

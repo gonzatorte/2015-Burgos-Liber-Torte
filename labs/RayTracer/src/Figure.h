@@ -2,6 +2,7 @@
 #define FIGURE_H
 
 #include "tinyxml2.h"
+#include "Object.h"
 #include "Isect.h"
 
 #include "Vector.h"
@@ -9,17 +10,16 @@
 
 class Isect;
 
-class Figure
+class Figure: public Object
 {
     public:
-        Figure();
         void read(tinyxml2::XMLElement* element);
+        Figure();
         virtual ~Figure();
         bool reflexion, refraction;
         Vector color;
         float kspec;
-        virtual Vector normal(Vector v) = 0;
-        virtual Isect intersect(Ray r) = 0;
+        virtual Isect intersect(Ray & r) = 0;
     protected:
     private:
 };

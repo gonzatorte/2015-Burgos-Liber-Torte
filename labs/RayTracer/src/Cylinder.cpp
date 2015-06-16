@@ -17,10 +17,7 @@ void Cylinder::read(tinyxml2::XMLElement* element) {
 
 }
 
-Vector Cylinder::normal(Vector v) {
-}
-
-Isect Cylinder::intersect(Ray ray) {
+Isect Cylinder::intersect(Ray & ray) {
     //ToDo: Improve, no usar new
     //ToDo: Por ahora solo es para cilindros alineados en Z
 

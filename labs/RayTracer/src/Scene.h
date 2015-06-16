@@ -23,8 +23,8 @@ class Scene
         static Scene* getInstance();
         void sceneRead();
         void createScreen();
-        list<Figure*>* figures;
-        list<Light*>* lights;
+        list<Figure*> figures;
+        list<Light*> lights;
         virtual ~Scene();
         Screen* screen;
         Camera* camera;

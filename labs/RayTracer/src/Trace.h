@@ -10,7 +10,7 @@ class Trace
 {
     public:
         Trace();
-        Vector traceRay(Ray ray, int level, int weight);
+        Vector traceRay(Ray & ray, int level, int weight);
         virtual ~Trace();
     protected:
     private:

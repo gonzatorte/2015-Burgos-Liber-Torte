@@ -5,11 +5,14 @@ Triangle::Triangle()
     //ctor
 }
 
-Vector Triangle::normal(Vector v) {
-    return norm;
+void Triangle::read(tinyxml2::XMLElement* element) {
+    v0 = Vector(atof(element->Attribute("v0_x")), atof(element->Attribute("v0_y")), atof(element->Attribute("v0_z")));
+    v1 = Vector(atof(element->Attribute("v1_x")), atof(element->Attribute("v1_y")), atof(element->Attribute("v1_z")));
+    v2 = Vector(atof(element->Attribute("v2_x")), atof(element->Attribute("v2_y")), atof(element->Attribute("v2_z")));
+    Figure::read(element);
 }
 
-Isect Triangle::intersect(Ray ray) {
+Isect Triangle::intersect(Ray & ray) {
 
     Isect isect;
     isect.hited = false;

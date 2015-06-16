@@ -6,7 +6,6 @@ Figure::Figure()
 }
 
 void Figure::read(tinyxml2::XMLElement* element) {
-
     reflexion = atof(element->Attribute("hasReflexion"));
     kspec = atof(element->Attribute("kspec"));
     refraction = atof(element->Attribute("hasRefraction"));
