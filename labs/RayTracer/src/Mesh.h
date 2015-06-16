@@ -7,7 +7,7 @@
 #include "Vector.h"
 #include <vector>
 #include <iostream>
-#include "Plane.h"
+#include "Triangle.h"
 #include <cmath>
 
 using namespace std;
@@ -20,13 +20,11 @@ class Mesh: public Figure
         Vector normal(Vector v);
         Isect* intersect(Ray* ray);
         vector<Vector> vertexs;
-        vector<Plane*> planes;
+        vector<Triangle*> triangles;
         virtual ~Mesh();
     protected:
     private:
-        Plane* buildPlane(Vector v1, Vector v2, Vector v3, Vector v4, int signoNormal);
-        Isect* intersectPlane(Plane* plane, Ray* ray);
-
+        void buildTriangles(Vector v1, Vector v2, Vector v3, Vector v4, int signoNormal);
 
 };
 
