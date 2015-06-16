@@ -27,7 +27,7 @@ vector<double> Screen::getColor(Ray ray) {
     double minDistance = 100000;
     closest.hited = false;
     list<Figure*>::iterator it;
-    for (it=scene->figures->begin(); it!=scene->figures->end(); ++it){
+    for (it=scene->figures.begin(); it!=scene->figures.end(); ++it){
 
         aux = (*it)->intersect(ray);
         if (aux.hited && minDistance > aux.distance) {
