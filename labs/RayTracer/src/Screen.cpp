@@ -67,13 +67,6 @@ void Screen::createScreen() {
             cout << "Van " << j << " De " << width << " Lineas" << endl;
         buff[j] = new Pixel[height];
         for (int i=0; i < height; i++) {
-//            if ((j%100 == 0) && (i%100 == 0)){
-//                free_color.rgbRed = (double) 0;
-//                free_color.rgbGreen = (double) 0;
-//                free_color.rgbBlue = (double) 0;
-//                FreeImage_SetPixelColor(image,j, i,&free_color);
-//                continue;
-//            }
             Vector rayDir = (cam->lookAt)*cam->distance + cam->upVector*((scene->height)/2 - (i + 0.5)); //PELIGRO!!! Checkear esto con distintas pos de la camara.
             rayDir = rayDir + cam->leftVector*((scene->width)/2 - (j - 0.5));
             Ray ray = Ray(cam->viewPoint, rayDir);
@@ -84,7 +77,6 @@ void Screen::createScreen() {
                 free_color.rgbRed = (double) avrgPixel->r;
                 free_color.rgbGreen = (double) avrgPixel->g;
                 free_color.rgbBlue = (double) avrgPixel->b;
-                //free_color2.rgbBlue = g;
                 FreeImage_SetPixelColor(image,avrgPixel->x, avrgPixel->y,&free_color);
             }
             colorsList = getColor(ray);

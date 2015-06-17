@@ -11,16 +11,18 @@ Shade::~Shade(){
 bool shadow(Ray & ray, Figure * fig){
     Scene* s = Scene::getInstance();
     bool interfiere = true;
-    Isect isect;
     vector<Isect> isects = fig->intersect(ray);
     if (!isects.empty()){
         float minDistance = isects[0].distance;
         for (list<Figure*>::iterator it_figure = s->figures.begin(); it_figure!=s->figures.end(); ++it_figure){
-            vector<Isect> fig_isects = (*it_figure)->intersect(ray);
-            if (!fig_isects.empty()){
-                if (fig_isects[0].distance < minDistance){
-                    interfiere = false;
-                    break;
+            Figure * other_fig = (*it_figure);
+            if (other_fig != fig){
+                vector<Isect> fig_isects = other_fig->intersect(ray);
+                if (!fig_isects.empty()){
+                    if (fig_isects[0].distance < minDistance){
+                        interfiere = false;
+                        break;
+                    }
                 }
             }
         }
@@ -102,6 +104,5 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     color.x = color.x < 256 ? color.x : 255;
     color.y = color.y < 256 ? color.y : 255;
     color.z = color.z < 256 ? color.z : 255;
-
     return color;
 }
