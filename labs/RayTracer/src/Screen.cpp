@@ -37,10 +37,10 @@ vector<double> Screen::getColor(Ray ray) {
         }
     }
     if (finded) {
-        if (closest.figure->reflexion) {
+        if (closest.figure->kspec > 0) {
             colorsList[0] = closest.figure->kspec * 255;
         }
-        if (closest.figure->refraction) {
+        if (closest.figure->ktran > 0) {
             //colorsList[1] = closest.figure->kspec * 255;
         }
     }

@@ -80,7 +80,7 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     int minWeight = 0.1;
     if (level + 1 < maxLevel){
         // Reflexion
-        if (weight * figure->kspec > minWeight && figure->reflexion){
+        if ((weight * figure->kspec > minWeight) && (figure->kspec > 0)){
             Ray rayStart;
             rayStart.direction = specularDirection(ray.direction, normal);
             rayStart.origin = rayStart.direction + point;
@@ -88,7 +88,7 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
             color = color + colorReflexion * figure->kspec;
         }
 
-        if (weight * isect.figure->ktran > minWeight && isect.figure->refraction){
+        if ((weight * isect.figure->ktran > minWeight) && (isect.figure->ktran > 0)){
             Ray rayStart;
             rayStart.origin = rayStart.direction + point;
             bool no_total_ref = transmisionDirection(ray.tran, isect.figure->ktran, ray.direction, isect.normal, rayStart.direction);

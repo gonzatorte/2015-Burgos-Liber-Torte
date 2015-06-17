@@ -31,8 +31,6 @@ void Mesh::buildTriangles(Vector v1, Vector v2, Vector v3, Vector v4, int signoN
     center = v1 + aux;
     for (int i=0; i<4; i++) {
         Triangle triangle;
-        triangle.refraction = refraction;
-        triangle.reflexion = reflexion;
         triangle.ktran = ktran;
         triangle.kspec = kspec;
         triangle.kdif = kdif;

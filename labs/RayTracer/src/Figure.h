@@ -19,7 +19,6 @@ class Figure: public Object
         Figure();
         virtual ~Figure();
         virtual vector<Isect> intersect(Ray & r) = 0;
-        bool reflexion, refraction;
         Vector color;
         float kspec;
         float kdif;
