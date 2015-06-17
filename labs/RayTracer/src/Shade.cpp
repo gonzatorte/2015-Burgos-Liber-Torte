@@ -32,10 +32,8 @@ Vector specularDirection(Vector incidentRay, Vector normal){
     return (incidentRay + normal * (incidentRay * normal * -2)).UnitVector();
 }
 
-bool transmisionDirection(Figure * medio_in, Figure * medio_out, Vector incidentRay, Vector normal, Vector & res){
-    float n1 = medio_in ? medio_in->ktran : 1;
-    float n2 = medio_out ? medio_out->ktran : 1;
-    float eta = n1/n2;
+bool transmisionDirection(float n_in, float n_out, Vector incidentRay, Vector normal, Vector & res){
+    float eta = n_in/n_out;
     float c1 = - (incidentRay * normal);
     float cs2 = 1 - eta*eta * (1 - c1*c1);
     if (cs2 < 0)
@@ -88,15 +86,16 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
             color = color + colorReflexion * figure->kspec;
         }
 
-//        if (weight * isect.figure->ktran > minWeight && isect.figure->refraction){
-//            Ray rayStart;
-//            rayStart.origin = rayStart.direction + point;
-//            no_total_ref = transmisionDirection(ray.tran, isect.figure->tran, ray, isect.normal, rayStart.direction);
-//            if (no_total_ref){
-//                colorRefraction = trace.traceRay(rayStart, level + 1, weight * isect.figure->ktran);
-//                color = color + colorRefraction * isect.figure->ktran;
-//            }
-//        }
+        if (weight * isect.figure->ktran > minWeight && isect.figure->refraction){
+            Ray rayStart;
+            rayStart.origin = rayStart.direction + point;
+            bool no_total_ref = transmisionDirection(ray.tran, isect.figure->ktran, ray.direction, isect.normal, rayStart.direction);
+            if (no_total_ref){
+                rayStart.tran = isect.figure->ktran;
+                Vector colorRefraction = trace.traceRay(rayStart, level + 1, weight * isect.figure->ktran);
+                color = color + colorRefraction * isect.figure->ktran;
+            }
+        }
 
     }
 
