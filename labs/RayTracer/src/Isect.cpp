@@ -1,11 +1,17 @@
 #include "Isect.h"
 
-Isect::Isect()
-{
+Isect::Isect(){
     //ctor
 }
 
-Isect::~Isect()
-{
+bool Isect::operator > (const Isect & isect) const  {
+    return this->distance > isect.distance;
+}
+
+bool Isect::operator < (const Isect & isect) const  {
+    return this->distance < isect.distance;
+}
+
+Isect::~Isect(){
     //dtor
 }

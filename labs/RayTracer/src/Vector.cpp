@@ -4,8 +4,7 @@
 
 using namespace std;
 
-Vector::Vector()
-{
+Vector::Vector(){
     x = 0;
     y = 0;
     z = 0;
@@ -18,21 +17,22 @@ Vector & Vector::operator=(const Vector & v){
     return *this;
 }
 
-Vector::Vector(float x, float y, float z)
-{
+Vector::Vector(float x, float y, float z){
     this->x = x;
     this->y = y;
     this->z = z;
 }
 
 Vector Vector::operator+(const Vector & v) {
-    Vector result = Vector(this->x + v.x, this->y + v.y, this->z + v.z);
-    return result;
+    return Vector(this->x + v.x, this->y + v.y, this->z + v.z);
 }
 
 Vector Vector::operator-(const Vector & v) {
-    Vector result = Vector(this->x - v.x, this->y - v.y, this->z - v.z);
-    return result;
+    return Vector(this->x - v.x, this->y - v.y, this->z - v.z);
+}
+
+Vector Vector::operator-() {
+    return Vector(- this->x, - this->y, - this->z);
 }
 
 Vector Vector::operator/(const Vector & v) {
@@ -100,28 +100,26 @@ void Vector::VectNormalize(Vector * p_vector){
     p_vector->z /= l_lenght;
 }
 
-Vector::~Vector()
-{
+Vector::~Vector(){
     //dtor
 }
 
 
 // Copy paste
 
-double Vector::Magnitude()
-{
+double Vector::Magnitude(){
     return sqrt((x*x) + (y*y) + (z*z));
 }
 
-Vector Vector::UnitVector()
-{
+Vector Vector::UnitVector(){
     const double mag = Magnitude();
     return Vector(x/mag, y/mag, z/mag);
 }
 
-Vector Vector::vectorProduct(Vector v)
-{
-    return Vector((y * v.z) - (z * v.y),(z * v.x) - (x * v.z),(x * v.y) - (y * v.x));
+Vector Vector::vectorProduct(Vector v){
+    return Vector((this->y * v.z) - (this->z * v.y),
+                  (this->z * v.x) - (this->x * v.z),
+                  (this->x * v.y) - (this->y * v.x));
 }
 
 double Vector::dotProduct(Vector v) {

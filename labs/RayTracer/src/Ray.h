@@ -3,13 +3,13 @@
 
 #include "Vector.h"
 
-class Ray
-{
+class Ray {
     public:
         Ray();
-        Ray(Vector origin, Vector direction);
+        Ray(Vector origin, Vector direction, float _tran=1);
         virtual ~Ray();
         Vector direction, origin;
+        float tran;
         Vector rayPoint(const double dist);
     protected:
     private:

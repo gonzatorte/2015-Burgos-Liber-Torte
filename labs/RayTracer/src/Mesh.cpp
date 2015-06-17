@@ -1,7 +1,10 @@
 #include "Mesh.h"
+#include <algorithm>
 
-Mesh::Mesh()
-{
+using namespace std;
+
+
+Mesh::Mesh(){
     //ctor
 }
 
@@ -98,19 +101,16 @@ void Mesh::read(tinyxml2::XMLElement* element) {
 }
 
 vector<Isect> Mesh::intersect(Ray & ray) {
-    double minDistance = 100000;
     vector <Isect> intersecciones;
     for (int i=0; i < triangles.size(); i++) {
         vector <Isect> aux = triangles[i].intersect(ray);
-        if (!aux.empty() && minDistance > aux[0].distance) {
-            minDistance = aux[0].distance;
-            intersecciones.swap(aux);
-        }
+        intersecciones.insert(intersecciones.end(), aux.begin(), aux.end());
     }
+    sort(intersecciones.begin(), intersecciones.end());
+//    reverse
     return intersecciones;
 }
 
-Mesh::~Mesh()
-{
+Mesh::~Mesh(){
     //dtor
 }

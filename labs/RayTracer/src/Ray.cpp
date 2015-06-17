@@ -1,24 +1,15 @@
 #include "Ray.h"
 
-Ray::Ray()
-{
+Ray::Ray(){
     //ctor
 }
 
-Ray::Ray(Vector origin, Vector direction) {
-
+Ray::Ray(Vector origin, Vector direction, float _tran) {
     this->origin = origin;
     this->direction = direction;
+    this->tran = _tran;
 }
 
-Ray::~Ray()
-{
+Ray::~Ray(){
     //dtor
-}
-
-
-//Copia
-Vector Ray::rayPoint(const double dist)
-{
-	return direction*dist + origin;
 }

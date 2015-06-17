@@ -32,18 +32,18 @@ vector<Isect> Sphere::intersect(Ray & r){
 		if(t1 > 0){
             Isect result;
             result.figure = this;
-			result.surfacePoint = r.rayPoint(t1);
-            //result.enter = true;//entra
+			result.surfacePoint = r.direction*t1 + r.origin;
             result.distance = t1;
             result.normal = (result.surfacePoint - this->center).UnitVector();
+            result.enter = (r.direction * result.normal) < 0;
             intersecciones.push_back(result);
 		}
 		else if(t2 > 0)
 		{
             Isect result;
             result.figure = this;
-			result.surfacePoint = r.rayPoint(t2);
-            //result->enter = false;//entra
+			result.surfacePoint = r.direction*t2 + r.origin;
+            result.enter = (r.direction * result.normal) < 0;
             result.distance = t2;
             result.normal = (result.surfacePoint - this->center).UnitVector();
             intersecciones.push_back(result);

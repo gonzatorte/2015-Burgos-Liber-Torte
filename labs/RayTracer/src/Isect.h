@@ -5,15 +5,17 @@
 
 class Figure;
 
-class Isect
-{
+class Isect {
     public:
         Isect();
         virtual ~Isect();
         Figure* figure;
         Vector normal;
+        bool enter;
         Vector surfacePoint;
         double distance;
+        bool operator > (const Isect&) const;
+        bool operator < (const Isect&) const;
     protected:
     private:
 };
