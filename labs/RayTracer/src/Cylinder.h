@@ -4,6 +4,7 @@
 #include "tinyxml2.h"
 #include "Figure.h"
 #include "Vector.h"
+#include "Ray.h"
 
 #include <vector>
 using namespace std;
@@ -15,11 +16,13 @@ class Cylinder: public Figure
         void read(tinyxml2::XMLElement* element);
         virtual ~Cylinder();
         double radius;
-        Vector center;
-        Vector orientation;
+        Vector base;
+        Vector top;
         vector<Isect> intersect(Ray & ray);
         double height;
     protected:
+        bool intersect_caps(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float distance);
+        void intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, Vector & normal, Vector & point, float distance);
     private:
 };
 

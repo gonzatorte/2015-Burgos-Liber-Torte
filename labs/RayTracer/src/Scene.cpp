@@ -31,6 +31,10 @@ void Scene::sceneRead() {
             Cylinder * cylinder = new Cylinder();
             cylinder->read(element);
             figures.push_back(cylinder);
+        } else if (elementName=="circunference") {
+            Circunference * circunference = new Circunference();
+            circunference->read(element);
+            figures.push_back(circunference);
         } else if (elementName=="plane") {
             Plane * plane = new Plane();
             plane->read(element);
@@ -50,7 +54,7 @@ void Scene::sceneRead() {
             Vector viewPoint = Vector(atof(element->Attribute("viewPointX")), atof(element->Attribute("viewPointY")), atof(element->Attribute("viewPointZ")));
             Vector lookAt = Vector(atof(element->Attribute("lookAtX")), atof(element->Attribute("lookAtY")), atof(element->Attribute("lookAtZ")));
             Vector upVector = Vector(atof(element->Attribute("upVectorX")), atof(element->Attribute("upVectorY")), atof(element->Attribute("upVectorZ")));
-            Vector leftVector = upVector.vectorProduct(lookAt);
+            Vector leftVector = upVector.cross(lookAt);
             distance = sqrt((width^2) + (height^2)) / ( 2*tan( 45/2 ) );
             camera = new Camera(viewPoint, lookAt, upVector, distance);
         }

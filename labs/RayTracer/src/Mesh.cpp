@@ -35,10 +35,17 @@ void Mesh::buildTriangles(Vector v1, Vector v2, Vector v3, Vector v4, int signoN
         triangle.kspec = kspec;
         triangle.kdif = kdif;
         triangle.kamb = kamb;
-        triangle.color = triangle.color + triangle.color*((index+i)*256/4);
-        triangle.color.x = ((int)triangle.color.x) % 256;
-        triangle.color.y = ((int)triangle.color.y) % 256;
-        triangle.color.z = ((int)triangle.color.z) % 256;
+        triangle.color = triangle.color + Vector(1,1,1)*((index+i)*256/4);
+        triangle.color.x = ((int)triangle.color.x) % 128;
+        triangle.color.y = ((int)triangle.color.y) % 128;
+        triangle.color.z = ((int)triangle.color.z) % 128;
+
+//        if (i%2 == 0){
+//            triangle.color = Vector(255, 0, 0);
+//        } else {
+//            triangle.color = Vector(0, 255, 0);
+//        }
+
         triangle.norm = normal;
         if (i==0) {
             triangle.v0 = v1;

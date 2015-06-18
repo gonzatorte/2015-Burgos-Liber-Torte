@@ -40,7 +40,7 @@ bool transmisionDirection(float n_in, float n_out, Vector incidentRay, Vector no
     float cs2 = 1 - eta*eta * (1 - c1*c1);
     if (cs2 < 0)
         return false;
-    res = incidentRay * eta + normal * (eta*c1-sqrt(cs2));
+    res = (incidentRay * eta + normal * (eta*c1-sqrt(cs2)));
     return true;
 }
 
@@ -56,7 +56,7 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     color.y = figure->color.y;
     color.z = figure->color.z;
 
-    if (ray.direction.dotProduct(normal)>0){
+    if (ray.direction * normal > 0){
         normal = normal*-1;
     }
 
@@ -81,23 +81,21 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     if (level + 1 < maxLevel){
         // Reflexion
         if ((weight * figure->kspec > minWeight) && (figure->kspec > 0)){
-            Ray rayStart;
-            rayStart.direction = specularDirection(ray.direction, normal);
-            rayStart.origin = rayStart.direction + point;
+            Ray rayStart (rayStart.direction + point, specularDirection(ray.direction, normal));
             colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
             color = color + colorReflexion * figure->kspec;
         }
 
-        if ((weight * isect.figure->ktran > minWeight) && (isect.figure->ktran > 0)){
-            Ray rayStart;
-            rayStart.origin = rayStart.direction + point;
-            bool no_total_ref = transmisionDirection(ray.tran, isect.figure->ktran, ray.direction, isect.normal, rayStart.direction);
-            if (no_total_ref){
-                rayStart.tran = isect.figure->ktran;
-                Vector colorRefraction = trace.traceRay(rayStart, level + 1, weight * isect.figure->ktran);
-                color = color + colorRefraction * isect.figure->ktran;
-            }
-        }
+//        if ((weight * isect.figure->ktran > minWeight) && (isect.figure->ktran > 0)){
+//            Vector transDirection;
+//            bool no_total_ref = transmisionDirection(ray.tran, isect.figure->ktran, ray.direction, isect.normal, transDirection);
+//            if (no_total_ref){
+//                Ray rayStart(rayStart.direction + point, transDirection);
+//                rayStart.tran = isect.figure->ktran;
+//                Vector colorRefraction = trace.traceRay(rayStart, level + 1, weight * isect.figure->ktran);
+//                color = color + colorRefraction * isect.figure->ktran;
+//            }
+//        }
 
     }
 

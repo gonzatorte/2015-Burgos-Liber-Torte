@@ -13,6 +13,7 @@ class Vector
         Vector operator-();
         Vector operator/(const Vector & v);
         Vector operator*(float num);
+        Vector cross(const Vector & v);
         float operator*(const Vector &);
         Vector & operator=(const Vector & v);
         bool operator==(const Vector & v);
@@ -20,19 +21,11 @@ class Vector
         bool operator<=(const Vector & v);
         bool operator>=(const Vector & v);
         bool operator>(const Vector & v);
-        static void VectCreate(Vector * p_start, Vector * p_end, Vector * p_vector);
-        static void VectNormalize(Vector * p_vector);
-        static float VectLenght (Vector * p_vector);
-        static float VectScalarProduct (Vector * p_vector1,Vector * p_vector2);
-        static void VectDotProduct (Vector * p_vector1, Vector * p_vector2,Vector * p_normal);
         float x,y,z;
-        double MagnitudeSquared();
-        double Magnitude();
+        double Norm();
         Vector UnitVector();
-        Vector vectorProduct(Vector v);
-        Vector AddScalar(float scalar, Vector v);
-        double dotProduct(Vector v);
-
+        float Square();
+        Vector Projection(Vector & v);
 };
 
 #endif // VECTOR_H

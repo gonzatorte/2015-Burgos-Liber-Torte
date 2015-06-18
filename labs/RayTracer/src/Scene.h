@@ -4,6 +4,7 @@
 #include "tinyxml2.h"
 #include "Sphere.h"
 #include "Cylinder.h"
+#include "Circunference.h"
 #include "Plane.h"
 #include "Screen.h"
 #include "Camera.h"

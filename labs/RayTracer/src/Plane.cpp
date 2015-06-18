@@ -16,8 +16,8 @@ void Plane::read(tinyxml2::XMLElement* element) {
 
 vector<Isect> Plane::intersect(Ray & ray) {
     vector <Isect> intersecciones;
-    double cosciente = norm.dotProduct(center - ray.origin);
-    double denominador = norm.dotProduct(ray.direction);
+    double cosciente = norm * (center - ray.origin);
+    double denominador = norm * (ray.direction);
     if (denominador != 0) { // En caso que sea cero quiere decir que el plano es paralelo al rayo
         double t = cosciente/denominador;
         if (t>=0) {
