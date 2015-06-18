@@ -1,5 +1,8 @@
 #include "Ray.h"
 
+Ray::Ray() {
+}
+
 Ray::Ray(Vector origin, Vector direction, float _tran) {
     this->origin = origin;
     this->direction = direction.UnitVector();

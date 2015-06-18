@@ -81,7 +81,9 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     if (level + 1 < maxLevel){
         // Reflexion
         if ((weight * figure->kspec > minWeight) && (figure->kspec > 0)){
-            Ray rayStart (rayStart.direction + point, specularDirection(ray.direction, normal));
+            Ray rayStart;
+            rayStart.direction = specularDirection(ray.direction, normal);
+            rayStart.origin = rayStart.direction + point;
             colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
             color = color + colorReflexion * figure->kspec;
         }
