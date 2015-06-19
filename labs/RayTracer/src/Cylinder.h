@@ -19,10 +19,10 @@ class Cylinder: public Figure
         Vector base;
         Vector top;
         vector<Isect> intersect(Ray & ray);
-        double height;
     protected:
         bool intersect_caps(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float distance);
         void intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, Vector & normal, Vector & point, float distance);
+        vector<Isect> check_point(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt);
     private:
 };
 

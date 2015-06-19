@@ -1,12 +1,33 @@
 #include <cstdlib>
 #include <cmath>
 #include "Plane.h"
+#include "Cylinder.h"
 #include "Ray.h"
 #include "Scene.h"
 #include "Camera.h"
 
-int main2 ( int argc, char** argv )
-{
+void case_vector(){
+    Vector a (1,1,0);
+    Vector b (1,0,0);
+    Vector p = a.Projection(b);
+    Vector c ();
+}
+
+void case_cylinder(){
+    Ray R;
+    R.direction = Vector(0,0,1);
+    R.origin = Vector(0,0,0);
+
+    Cylinder C = Cylinder();
+    C.base = Vector(0,-1,0);
+    C.top = Vector(0,1,0);
+    C.radius = 20.0;
+
+    vector<Isect> res1 = C.intersect(R);
+}
+
+void case_copia(){
+
     int height = 768;
     int width = 1366;
 
@@ -37,6 +58,11 @@ int main2 ( int argc, char** argv )
 //    Isect res1 = P.intersect(R);
 //    Isect res2 = P2.intersect(R);
 
-    //elem = "<Plane  Height= \"5000\" Width= \"5000\"  CenterX=\"0\" CenterY=\"500\" CenterZ=\"2000\" NormalX=\"0\" NormalY=\"0\" NormalZ=\"-1\" R=\"0.7\" G=\"0.7\" B=\"0.7\"  Specular=\"0.0\" Ref=\"0.5\" Diffuse=\"0\" MedioR=\"1\" Refracta=\"0\" Refleja=\"0\" SpecularLevel=\"0\" Glossiness=\"0\" />";
+}
+
+int main2( int argc, char** argv ){
+    case_vector();
+    case_cylinder();
     return 0;
 }
+

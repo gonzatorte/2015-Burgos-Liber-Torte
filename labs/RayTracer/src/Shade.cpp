@@ -112,7 +112,7 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     color = color + colorAmbiente;
     color = color + colorDifuso;
 //    color = color + colorSpecular;
-    color = color + colorReflexion; ///ToDo: Usamos la de la recursion y la otra ademas?
+    color = color + colorReflexion;
     color = color + colorRefraction;
 
     color.x = color.x < 256 ? color.x : 255;

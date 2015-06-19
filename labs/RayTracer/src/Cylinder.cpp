@@ -24,9 +24,6 @@ void Cylinder::intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, Ve
     intersecciones.push_back(isect);
 }
 
-//bool Cylinder::intersect_body(vector<Isect> & intersecciones, Vector orientation, Vector point, float distance){
-//}
-
 bool Cylinder::intersect_caps(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float distance){
     bool cond1 = (orientation*(point - base) == 0);
     bool cond2 = (orientation*(point - top) == 0);
@@ -45,6 +42,18 @@ bool Cylinder::intersect_caps(vector<Isect> & intersecciones, Ray & ray, Vector 
         }
     }
     return false;
+}
+
+vector<Isect> Cylinder::check_point(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt){
+//    sqrt
+    float square_heigh = (top - base).Square();
+    float dd = (point - base).Projection(orientation).Square() - square_heigh;
+    if (dd > 0){
+        Vector normal = point - point.Projection(orientation);
+        intersect_add_isect(intersecciones, ray, normal, point, tt);
+    } else {
+        intersect_caps(intersecciones, ray, orientation, point, tt);
+    }
 }
 
 vector<Isect> Cylinder::intersect(Ray & ray) {
@@ -67,22 +76,8 @@ vector<Isect> Cylinder::intersect(Ray & ray) {
         Vector point_1 = ray.origin + (ray.direction * t1);
         Vector point_2 = ray.origin + (ray.direction* t2);
 
-        Vector d1_t = (point_1 - top);
-        Vector d1_b = (point_2 - base);
-        float q1_b = orientation * d1_b;
-        float q1_t = orientation * d1_t;
-//        float q2_b = d1_b * d1_b;
-//        float q2_t = d1_t * d1_t;
-        if ((q1_t > 0) && (q1_b > 0)){
-            Vector normal_1 = point_1 - point_1.Projection(orientation);
-            intersect_add_isect(intersecciones, ray, normal_1, point_1, t1);
-
-            Vector normal_2 = point_2 - point_2.Projection(orientation);
-            intersect_add_isect(intersecciones, ray, normal_2, point_2, t2);
-        } else {
-            intersect_caps(intersecciones, ray, orientation, point_1, t1);
-            intersect_caps(intersecciones, ray, orientation, point_2, t2);
-        }
+        check_point(intersecciones, ray, orientation, point_1, t1);
+        check_point(intersecciones, ray, orientation, point_2, t2);
     }
     return intersecciones;
 }
