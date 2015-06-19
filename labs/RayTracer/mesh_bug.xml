@@ -1,0 +1,36 @@
+<root>
+	<scene width="1000" height="500"/>
+	<camera viewPointX="0" viewPointY="0" viewPointZ="-600" lookAtX="0" lookAtY="0" lookAtZ="1" upVectorX="0" upVectorY="1" upVectorZ="0" />
+	<light centerX="0" centerY="-150" centerZ="1500" ambient_r="120" ambient_g="120" ambient_b="120" spec_r="80" spec_g="80" spec_b="80" difuse_r="120" difuse_g="120" difuse_b="120" />
+
+	<!-- Constante en Y -->
+	<triangle v0_x="-300" v0_y="150" v0_z="1000" v1_x="-100" v1_y="150" v1_z="1000" v2_x="-300" v2_y="150" v2_z="1700" ktran="0" kspec="0" kdif="1" kamb="1" r="0" g="128" b="0" />
+
+	<!-- Constante en Z -->
+	<triangle v0_x="300" v0_y="200" v0_z="1700" v1_x="300" v1_y="-200" v1_z="1700" v2_x="-250" v2_y="200" v2_z="1700" ktran="0" kspec="0" kdif="1" kamb="1" r="0" g="0" b="128" />
+	<!-- Constante en Z -->
+	<triangle v0_x="300" v0_y="200" v0_z="1700" v1_x="300" v1_y="-200" v1_z="1700" v2_x="-250" v2_y="200" v2_z="1700" ktran="0" kspec="0" kdif="1" kamb="1" r="0" g="0" b="128" />
+
+
+	<!-- Constante en X -->
+	<triangle v0_x="300" v0_y="50" v0_z="1000" v1_x="300" v1_y="300" v1_z="1700" v2_x="300" v2_y="50" v2_z="1700" ktran="0" kspec="0" kdif="1" kamb="1" r="128" g="0" b="0" />
+
+</root>
+<root>
+	<scene width="1000" height="500"/>
+	<camera viewPointX="0" viewPointY="0" viewPointZ="-600" lookAtX="0" lookAtY="0" lookAtZ="1" upVectorX="0" upVectorY="1" upVectorZ="0" />
+	<light centerX="0" centerY="-150" centerZ="1500" ambient_r="120" ambient_g="120" ambient_b="120" spec_r="80" spec_g="80" spec_b="80" difuse_r="120" difuse_g="120" difuse_b="120" />
+
+	<!-- Constante en Y -->
+	<triangle v0_x="-300" v0_y="150" v0_z="1000" v1_x="-100" v1_y="150" v1_z="1000" v2_x="-300" v2_y="150" v2_z="1700" ktran="0" kspec="0" kdif="1" kamb="1" r="0" g="128" b="0" />
+
+	<!-- Constante en Z -->
+	<triangle v0_x="300" v0_y="200" v0_z="1700" v1_x="300" v1_y="-200" v1_z="1700" v2_x="-250" v2_y="200" v2_z="1700" ktran="0" kspec="0" kdif="1" kamb="1" r="0" g="0" b="128" />
+	<!-- Constante en Z -->
+	<triangle v0_x="300" v0_y="200" v0_z="1700" v1_x="300" v1_y="-200" v1_z="1700" v2_x="-250" v2_y="200" v2_z="1700" ktran="0" kspec="0" kdif="1" kamb="1" r="0" g="0" b="128" />
+
+
+	<!-- Constante en X -->
+	<triangle v0_x="300" v0_y="50" v0_z="1000" v1_x="300" v1_y="300" v1_z="1700" v2_x="300" v2_y="50" v2_z="1700" ktran="0" kspec="0" kdif="1" kamb="1" r="128" g="0" b="0" />
+
+</root>

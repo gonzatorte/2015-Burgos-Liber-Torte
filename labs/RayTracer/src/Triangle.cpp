@@ -9,6 +9,7 @@ void Triangle::read(tinyxml2::XMLElement* element) {
     v0 = Vector(atof(element->Attribute("v0_x")), atof(element->Attribute("v0_y")), atof(element->Attribute("v0_z")));
     v1 = Vector(atof(element->Attribute("v1_x")), atof(element->Attribute("v1_y")), atof(element->Attribute("v1_z")));
     v2 = Vector(atof(element->Attribute("v2_x")), atof(element->Attribute("v2_y")), atof(element->Attribute("v2_z")));
+    norm = (v0 - v1).cross(v0 - v2).UnitVector();
     Figure::read(element);
 }
 

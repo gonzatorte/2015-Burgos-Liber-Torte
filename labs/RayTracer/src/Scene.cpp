@@ -39,6 +39,10 @@ void Scene::sceneRead() {
             Plane * plane = new Plane();
             plane->read(element);
             figures.push_back(plane);
+        } else if (elementName=="triangle") {
+            Triangle * triangle = new Triangle();
+            triangle->read(element);
+            figures.push_back(triangle);
         } else if (elementName=="light") {
             Light * light = new Light();
             light->read(element);

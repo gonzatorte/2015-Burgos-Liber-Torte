@@ -1,5 +1,7 @@
 #include "Shade.h"
 
+#define limited(V,I,S) ((V)<(I))?(I):(((V)>(S))?(S):(V))
+
 Shade::Shade(){
     //ctor
 }
@@ -50,29 +52,34 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     Vector normal = isect.normal;
     Vector point = isect.surfacePoint;
     Trace trace;
-    Vector color;
+    Vector colorAmbiente;
+    Vector colorDifuso;
+    Vector colorSpecular;
     Vector colorReflexion;
-    color.x = figure->color.x;
-    color.y = figure->color.y;
-    color.z = figure->color.z;
+    Vector colorRefraction;
 
     if (ray.direction * normal > 0){
         normal = normal*-1;
     }
 
+    Vector specular_direction = specularDirection(ray.direction, normal);
+    Vector cam_direction = (s->camera->viewPoint - point).UnitVector();
+
     list<Light*>::iterator it;
     for (it=s->lights.begin(); it!=s->lights.end(); ++it){
         Light * curr_light = (*it);
 
-        color = color + (curr_light->ambient_intesity * figure->kamb);
+        colorAmbiente = colorAmbiente + (curr_light->color * figure->kamb);
 
-        Ray rayL = Ray(curr_light->position, point - curr_light->position);
-        float difuse_angle = -rayL.direction.UnitVector() * normal;
+        Ray rayL = Ray(curr_light->position, (point - curr_light->position));
+        float difuse_angle = -rayL.direction.UnitVector() * normal.UnitVector();
         if((difuse_angle > 0) && shadow(rayL, figure)){
-            color = color + (curr_light->difuse_intesity * (figure->kdif * difuse_angle));
-//            color = color +
-//                    (curr_light->spec_intesity * figure->kspec *
-//                             powf((ray.origin*(-1)) * specular_vector, figure->shininess));
+//            difuse_angle = (difuse_angle<0)?(0):((difuse_angle>1)?1:difuse_angle)
+            difuse_angle = limited(difuse_angle,0,1);
+            colorDifuso = colorDifuso + (curr_light->color * (figure->kdif * difuse_angle));
+            float reflex_view_angle = cam_direction * specular_direction;
+            colorSpecular = colorSpecular +
+                    (curr_light->color * figure->kspec * powf(reflex_view_angle, figure->shininess));
         }
     }
 
@@ -82,24 +89,31 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
         // Reflexion
         if ((weight * figure->kspec > minWeight) && (figure->kspec > 0)){
             Ray rayStart;
-            rayStart.direction = specularDirection(ray.direction, normal);
-            rayStart.origin = rayStart.direction + point;
+            rayStart.direction = specular_direction;
+            rayStart.origin = rayStart.direction + point; //ToDo: Esto no debe ser solo point?
             colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
-            color = color + colorReflexion * figure->kspec;
+            colorReflexion = colorReflexion * figure->kspec;
         }
 
-//        if ((weight * isect.figure->ktran > minWeight) && (isect.figure->ktran > 0)){
-//            Vector transDirection;
-//            bool no_total_ref = transmisionDirection(ray.tran, isect.figure->ktran, ray.direction, isect.normal, transDirection);
-//            if (no_total_ref){
-//                Ray rayStart(rayStart.direction + point, transDirection);
-//                rayStart.tran = isect.figure->ktran;
-//                Vector colorRefraction = trace.traceRay(rayStart, level + 1, weight * isect.figure->ktran);
-//                color = color + colorRefraction * isect.figure->ktran;
-//            }
-//        }
+        if ((weight * figure->ktran > minWeight) && (figure->ktran > 0)){
+            Vector transDirection;
+            bool no_total_ref = transmisionDirection(ray.tran, figure->ktran, ray.direction, normal, transDirection);
+            if (no_total_ref){
+                Ray rayStart(rayStart.direction + point, transDirection);
+                rayStart.tran = figure->ktran;
+                colorRefraction = trace.traceRay(rayStart, level + 1, weight * figure->ktran);
+                colorRefraction = colorRefraction * figure->ktran;
+            }
+        }
 
     }
+
+    Vector color = figure->color;
+    color = color + colorAmbiente;
+    color = color + colorDifuso;
+//    color = color + colorSpecular;
+    color = color + colorReflexion; ///ToDo: Usamos la de la recursion y la otra ademas?
+    color = color + colorRefraction;
 
     color.x = color.x < 256 ? color.x : 255;
     color.y = color.y < 256 ? color.y : 255;
