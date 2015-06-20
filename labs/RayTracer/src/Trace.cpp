@@ -10,15 +10,31 @@ Vector Trace::traceRay(Ray & ray, int level, int weight) {
     Scene* scene = Scene::getInstance();
     Shade shade;
     Isect closest;
-    double minDistance = 100000;
     bool finded = false;
-    list<Figure*>::iterator it;
-    for (it=scene->figures.begin(); it!=scene->figures.end(); ++it){
-        vector<Isect> aux = (*it)->intersect(ray);
-        if (!aux.empty() && minDistance > aux[0].distance) {
-            closest = aux[0];
+    float minDistance;
+    list<Figure*>::iterator it_fig = scene->figures.begin();
+    for ( ; it_fig != scene->figures.end(); ++it_fig){
+        vector<Isect> inters = (*it_fig)->intersect(ray);
+        vector<Isect>::iterator it_inter = inters.begin();
+        if (it_inter != inters.end()) {
+            closest = *it_inter;
+            minDistance = closest.distance;
+            ++it_inter;
             finded = true;
-            minDistance = aux[0].distance;
+        }
+        for ( ; it_inter != inters.end();++it_inter){
+            if (minDistance > (*it_inter).distance){
+                closest = *it_inter;
+                minDistance = closest.distance;
+            }
+        }
+    }
+    for ( ; it_fig != scene->figures.end(); ++it_fig){
+        vector<Isect> inters = (*it_fig)->intersect(ray);
+        vector<Isect>::iterator it_inter = inters.begin();
+        if (it_inter != inters.end()) {
+            closest = *it_inter;
+            minDistance = closest.distance;
         }
     }
     if (finded) {
