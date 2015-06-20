@@ -16,6 +16,6 @@ Isect::~Isect(){
     //dtor
 }
 
-ostream& operator<<(ostream& os, Isect & isect) {
+ostream & operator<<(ostream& os, Isect & isect) {
     return os << "Normal " << isect.normal << " | Point " << isect.surfacePoint << " | Distance " << isect.distance;
 }

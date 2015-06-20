@@ -18,11 +18,13 @@ class Cylinder: public Figure
         float radius;
         Vector base;
         Vector top;
-        vector<Isect> intersect(Ray & ray);
+        vector<Isect> intersect(Ray & Cylinder);
+        friend ostream & operator<<(ostream & , Cylinder & );
     protected:
         bool check_caps_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & normal, Vector & point_ref);
         bool check_body_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt);
         void intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, Vector & normal, Vector & point, float distance);
+        virtual void print(ostream & stream);
     private:
 };
 

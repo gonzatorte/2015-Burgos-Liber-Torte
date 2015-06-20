@@ -51,3 +51,12 @@ vector<Isect> Circunference::intersect(Ray & ray) {
 Circunference::~Circunference(){
     //dtor
 }
+
+ostream & operator<<(ostream & os, Circunference & c) {
+    c.print(os);
+    return os;
+}
+
+void Circunference::print(ostream & os){
+    os << "Center " << center ;
+}

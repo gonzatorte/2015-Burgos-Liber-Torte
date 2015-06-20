@@ -52,7 +52,15 @@ vector<Isect> Sphere::intersect(Ray & r){
 	return intersecciones;
 }
 
-Sphere::~Sphere()
-{
+Sphere::~Sphere(){
     //dtor
+}
+
+ostream & operator<<(ostream& os, Sphere & sp) {
+    sp.print(os);
+    return os;
+}
+
+void Sphere::print(ostream & os){
+    os << "Center " << center;
 }

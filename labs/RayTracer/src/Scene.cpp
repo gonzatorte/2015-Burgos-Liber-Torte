@@ -70,7 +70,13 @@ void Scene::createScreen() {
     screen->createScreen();
 }
 
-Scene::~Scene()
-{
+Scene::~Scene(){
     //dtor
+}
+
+ostream & operator<<(ostream & os, Scene & s) {
+    for (list<Figure*>::iterator it=s.figures.begin(); it!=s.figures.end(); ++it){
+        os << *(*it) << endl;
+    }
+    return os;
 }

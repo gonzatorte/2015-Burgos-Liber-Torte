@@ -18,7 +18,9 @@ class Circunference: public Figure {
         Vector norm;
         vector<Isect> intersect(Ray & ray);
         double height;
+        friend ostream & operator<<(ostream & os, Circunference & c);
     protected:
+        virtual void print(ostream & stream);
     private:
 };
 

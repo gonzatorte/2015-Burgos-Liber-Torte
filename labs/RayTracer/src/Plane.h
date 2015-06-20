@@ -15,7 +15,9 @@ class Plane: public Figure
         vector<Isect> intersect(Ray & ray);
         float height, width;
         Vector center, norm;
+        friend ostream & operator<<(ostream & , Plane & );
     protected:
+        virtual void print(ostream & stream);
     private:
 };
 

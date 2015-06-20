@@ -48,24 +48,24 @@ void Mesh::buildTriangles(Vector v1, Vector v2, Vector v3, Vector v4, int signoN
 
         triangle.norm = normal;
         if (i==0) {
+//            continue;
             triangle.v0 = v1;
             triangle.v1 = center;
             triangle.v2 = v2;
         } else if (i==1) {
+//            continue;
             triangle.v0 = v2;
             triangle.v1 = center;
             triangle.v2 = v4;
-
         } else if (i==2) {
             triangle.v0 = v4;
             triangle.v1 = center;
             triangle.v2 = v3;
-
         } else {
+//            continue;
             triangle.v0 = v3;
             triangle.v1 = center;
             triangle.v2 = v1;
-
         }
         triangles.push_back(triangle);
 
@@ -87,16 +87,24 @@ void Mesh::read(tinyxml2::XMLElement* element) {
     while (index<=10) {
         if (index <= 2) { //Cara lateral izquierda y de fondo.
             v1 = vertexs[index]; v2 = vertexs[index+1]; v3 = vertexs[index+2]; v4 = vertexs[index+3];
+            index = index+2;
+//            continue;
         } else if (index == 4) {  //Cara lateral derecha
             normalSign = -1;
             v1 = vertexs[5]; v2 = vertexs[4]; v3 = vertexs[7]; v4 = vertexs[6];
+            index = index+2;
+//            continue;
         } else if (index == 6) { // Cara frontal
             normalSign = -1;
             v1 = vertexs[0]; v2 = vertexs[1]; v3 = vertexs[6]; v4 = vertexs[7];
         } else if (index == 8) { // Base
+            index = index+2;
+//            continue;
             normalSign = 1;
             v1 = vertexs[0]; v2 = vertexs[2]; v3 = vertexs[6]; v4 = vertexs[4];
         } else if (index == 10) { // Techo
+            index = index+2;
+//            continue;
             normalSign = -1;
             v1 = vertexs[1]; v2 = vertexs[3]; v3 = vertexs[7]; v4 = vertexs[5];
         }
@@ -107,8 +115,9 @@ void Mesh::read(tinyxml2::XMLElement* element) {
 
 vector<Isect> Mesh::intersect(Ray & ray) {
     vector <Isect> intersecciones;
-    for (int i=0; i < triangles.size(); i++) {
-        vector <Isect> aux = triangles[i].intersect(ray);
+    for (vector<Triangle>::iterator t_it = triangles.begin(); t_it != triangles.end(); ++t_it){
+        Triangle t = (*t_it);
+        vector <Isect> aux = t.intersect(ray);
         intersecciones.insert(intersecciones.end(), aux.begin(), aux.end());
     }
     sort(intersecciones.begin(), intersecciones.end());
@@ -118,4 +127,16 @@ vector<Isect> Mesh::intersect(Ray & ray) {
 
 Mesh::~Mesh(){
     //dtor
+}
+
+ostream & operator<<(ostream & os, Mesh & m) {
+    m.print(os);
+    return os;
+}
+
+void Mesh::print(ostream & os){
+    os << "Mesh";
+    for (vector<Triangle>::iterator t_it = triangles.begin(); t_it != triangles.end(); ++t_it){
+        os << "Mesh vertex " << (*t_it);
+    }
 }

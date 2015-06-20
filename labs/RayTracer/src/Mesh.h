@@ -22,7 +22,9 @@ class Mesh: public Figure
         vector<Vector> vertexs;
         vector<Triangle> triangles;
         virtual ~Mesh();
+        friend ostream & operator<<(ostream & , Mesh & );
     protected:
+        virtual void print(ostream & stream);
     private:
         void buildTriangles(Vector v1, Vector v2, Vector v3, Vector v4, int signoNormal, int index);
 

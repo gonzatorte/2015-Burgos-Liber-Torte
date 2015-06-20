@@ -14,7 +14,9 @@ class Triangle: public Figure
         Vector v0, v1, v2;
         Vector norm;
         virtual ~Triangle();
+        friend ostream & operator<<(ostream & , Triangle & );
     protected:
+        virtual void print(ostream & stream);
     private:
 };
 

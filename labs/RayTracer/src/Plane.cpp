@@ -48,7 +48,15 @@ vector<Isect> Plane::intersect(Ray & ray) {
 }
 
 
-Plane::~Plane()
-{
+Plane::~Plane(){
     //dtor
+}
+
+ostream & operator<<(ostream& os, Plane & plane) {
+    plane.print(os);
+    return os;
+}
+
+void Plane::print(ostream & os){
+    os << "Normal " << norm;
 }

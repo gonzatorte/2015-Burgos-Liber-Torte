@@ -17,7 +17,9 @@ class Sphere: public Figure
         double radius;
         Vector center;
         vector<Isect> intersect(Ray & ray);
+        friend ostream & operator<<(ostream & , Sphere & );
     protected:
+        virtual void print(ostream & stream);
     private:
 };
 

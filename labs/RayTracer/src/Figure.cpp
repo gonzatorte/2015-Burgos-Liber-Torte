@@ -15,7 +15,15 @@ void Figure::read(tinyxml2::XMLElement* element) {
 }
 
 
-Figure::~Figure()
-{
+Figure::~Figure(){
     //dtor
+}
+
+ostream & operator<<(ostream & os, Figure & f){
+    f.print(os);
+    return os;
+}
+
+void Figure::print(ostream & stream) {
+//    os << color;
 }

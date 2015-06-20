@@ -43,10 +43,11 @@ bool Cylinder::check_caps_intersect(vector<Isect> & intersecciones, Ray & ray, V
 
 bool Cylinder::check_body_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt){
     float square_heigh = (top - base).Square();
-    Vector r_point = (point - base);
-    float dd = square_heigh - r_point.Projection(orientation).Square();
+    Vector r_point = (point - base).Projection(orientation);
+    float dd = square_heigh - r_point.Square();
     if (dd > 0){
-        Vector normal = point - r_point.Projection(orientation);
+        Vector normal = ((point - base) - r_point).UnitVector();
+//
         intersect_add_isect(intersecciones, ray, normal, point, tt);
         return true;
     }
@@ -70,14 +71,19 @@ vector<Isect> Cylinder::intersect(Ray & ray) {
         float t1 = (-b+root)/(2*a);
         float t2 = (-b-root)/(2*a);
 
-        Vector point_1 = ray.origin + (ray.direction * t1);
-        Vector point_2 = ray.origin + (ray.direction * t2);
+        if (t1 > 0){
+            Vector point_1 = ray.origin + (ray.direction * t1);
+            check_body_intersect(intersecciones, ray, orientation, point_1, t1);
+        }
 
-        check_body_intersect(intersecciones, ray, orientation, point_1, t1);
-        check_body_intersect(intersecciones, ray, orientation, point_2, t2);
+        if (t2 > 0){
+            Vector point_2 = ray.origin + (ray.direction * t2);
+            check_body_intersect(intersecciones, ray, orientation, point_2, t2);
+        }
+
         Vector m_orientation = -orientation;
-        check_caps_intersect(intersecciones, ray, m_orientation, top);
-        check_caps_intersect(intersecciones, ray, orientation, base);
+        check_caps_intersect(intersecciones, ray, orientation, top);
+        check_caps_intersect(intersecciones, ray, m_orientation, base);
 
     }
     return intersecciones;
@@ -85,4 +91,13 @@ vector<Isect> Cylinder::intersect(Ray & ray) {
 
 Cylinder::~Cylinder(){
     //dtor
+}
+
+ostream & operator<<(ostream & os, Cylinder & c) {
+    c.print(os);
+    return os;
+}
+
+void Cylinder::print(ostream & os){
+    os << "Base " << base << " | Top " << top << " | Radius " << radius;
 }

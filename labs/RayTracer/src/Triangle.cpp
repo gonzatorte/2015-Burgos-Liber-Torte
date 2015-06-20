@@ -39,7 +39,15 @@ vector<Isect> Triangle::intersect(Ray & ray) {
     return intersecciones;
 }
 
-Triangle::~Triangle()
-{
+Triangle::~Triangle(){
     //dtor
+}
+
+ostream & operator<<(ostream& os, Triangle & tr) {
+    tr.print(os);
+    return os;
+}
+
+void Triangle::print(ostream & os){
+    os << "Normal " << norm;
 }

@@ -25,7 +25,9 @@ class Figure: public Object
         float kamb;
         float ktran;
         float shininess;
+        friend ostream & operator<<(ostream & , Figure & );
     protected:
+        virtual void print(ostream & stream);
     private:
 };
 
