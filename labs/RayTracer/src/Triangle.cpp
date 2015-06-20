@@ -1,8 +1,7 @@
 #include "Triangle.h"
 
-Triangle::Triangle()
-{
-    //ctor
+Triangle::Triangle(){
+//    Figure();
 }
 
 void Triangle::read(tinyxml2::XMLElement* element) {
@@ -49,5 +48,5 @@ ostream & operator<<(ostream& os, Triangle & tr) {
 }
 
 void Triangle::print(ostream & os){
-    os << "Normal " << norm;
+    os << "Normal " << norm << " | v0 " << v0 << " | v1 " << v1 << " | v2 " << v2;
 }

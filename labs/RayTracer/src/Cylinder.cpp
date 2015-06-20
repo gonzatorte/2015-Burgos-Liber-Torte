@@ -1,6 +1,8 @@
+#include <cmath>
+#include <algorithm>
+
 #include "Cylinder.h"
 #include "Figure.h"
-#include <math.h>
 #include "Scene.h"
 
 Cylinder::Cylinder(){
@@ -18,8 +20,6 @@ void Cylinder::intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, Ve
     isect.figure = this;
     isect.distance = distance;
     isect.surfacePoint = point;
-//    Vector vec = (isect.surfacePoint - center) + orientation * (-(orientation * (isect.surfacePoint - center)));
-//    isect.normal = vec.UnitVector();
     isect.normal = normal;
     isect.enter = (ray.direction * isect.normal) < 0;
     intersecciones.push_back(isect);
@@ -44,10 +44,9 @@ bool Cylinder::check_caps_intersect(vector<Isect> & intersecciones, Ray & ray, V
 bool Cylinder::check_body_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt){
     float square_heigh = (top - base).Square();
     Vector r_point = (point - base).Projection(orientation);
-    float dd = square_heigh - r_point.Square();
+    float dd = sqrt(square_heigh) - sqrt(r_point.Square());
     if (dd > 0){
         Vector normal = ((point - base) - r_point).UnitVector();
-//
         intersect_add_isect(intersecciones, ray, normal, point, tt);
         return true;
     }
@@ -57,12 +56,21 @@ bool Cylinder::check_body_intersect(vector<Isect> & intersecciones, Ray & ray, V
 vector<Isect> Cylinder::intersect(Ray & ray) {
     vector <Isect> intersecciones;
 
+//    Vector AB = (top - base);
+//    Vector AO = (ray.origin - base);
+//    Vector AOxAB = (AO ^ AB);
+//    Vector VxAB  = (ray.direction ^ AB);
+//    float  ab2   = (AB * AB);
+//    float a      = (VxAB * VxAB);
+//    float b      = 2 * (VxAB * AOxAB);
+//    float c      = (AOxAB * AOxAB) - (radius*radius * ab2);
+//    Vector orientation = AB.UnitVector();
+
     Vector orientation = (top - base).UnitVector();
     Vector dp = ray.origin - base;
-
     Vector ray_p_orient = ray.direction.Rejection(orientation);
     Vector dp_p_orient = dp.Rejection(orientation);
-	double a = ray_p_orient.Square();
+    float a = ray_p_orient.Square();
     float b = 2*(ray_p_orient * dp_p_orient);
     float c = dp_p_orient.Square() - (radius*radius);
     float discrim = b*b - 4*a*c;
@@ -86,6 +94,8 @@ vector<Isect> Cylinder::intersect(Ray & ray) {
         check_caps_intersect(intersecciones, ray, m_orientation, base);
 
     }
+
+    sort(intersecciones.begin(), intersecciones.end());
     return intersecciones;
 }
 

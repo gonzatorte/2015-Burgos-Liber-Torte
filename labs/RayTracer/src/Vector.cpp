@@ -49,6 +49,10 @@ float Vector::operator*(const Vector & v) {
     return this->x * v.x + this->y * v.y + this->z * v.z;
 }
 
+Vector Vector::operator^(Vector v) {
+    return this->cross(v);
+}
+
 bool Vector::operator==(const Vector & v){
     return ((this->x == v.x) && (this->y == v.y) && (this->z == v.z));
 }

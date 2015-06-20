@@ -67,9 +67,6 @@ void Screen::createScreen() {
             cout << "Van " << j << " De " << width << " Lineas" << endl;
         buff[j] = new Pixel[height];
         for (int i=0; i < height; i++) {
-            if ((i==25) && (j==52)){
-                cout << i << " De " << j << endl;
-            }
             Vector rayDir = (cam->lookAt)*cam->distance + cam->upVector*((scene->height)/2 - (i + 0.5)); //PELIGRO!!! Checkear esto con distintas pos de la camara.
             rayDir = rayDir + cam->leftVector*((scene->width)/2 - (j - 0.5));
             Ray ray = Ray(cam->viewPoint, rayDir);

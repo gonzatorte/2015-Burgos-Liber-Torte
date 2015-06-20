@@ -116,16 +116,10 @@ void Mesh::read(tinyxml2::XMLElement* element) {
 vector<Isect> Mesh::intersect(Ray & ray) {
     vector <Isect> intersecciones;
     for (vector<Triangle>::iterator t_it = triangles.begin(); t_it != triangles.end(); ++t_it){
-        Triangle t = (*t_it);
-        vector <Isect> aux = t.intersect(ray);
+        vector <Isect> aux = (*t_it).intersect(ray);
         intersecciones.insert(intersecciones.end(), aux.begin(), aux.end());
     }
-//    for (int i=0 ; triangles.size() ; i++ ){
-//        vector <Isect> aux = triangles[i].intersect(ray);
-//        intersecciones.insert(intersecciones.end(), aux.begin(), aux.end());
-//    }
     sort(intersecciones.begin(), intersecciones.end());
-//    reverse
     return intersecciones;
 }
 

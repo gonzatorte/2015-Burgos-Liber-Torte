@@ -17,6 +17,7 @@ class Vector
         Vector operator*(float num);
         Vector cross(const Vector & v);
         float operator*(const Vector &);
+        Vector operator^(Vector v);
         Vector & operator=(const Vector & v);
         bool operator==(const Vector & v);
         bool operator<(const Vector & v);
