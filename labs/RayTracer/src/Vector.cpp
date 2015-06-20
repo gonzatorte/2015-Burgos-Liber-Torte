@@ -53,8 +53,16 @@ Vector Vector::operator^(Vector v) {
     return this->cross(v);
 }
 
+bool Vector::similar(Vector & v, float eps){
+    return (*this - (Vector(1,1,1)*eps) < v) && (v < *this + (Vector(1,1,1)*eps));
+}
+
 bool Vector::operator==(const Vector & v){
     return ((this->x == v.x) && (this->y == v.y) && (this->z == v.z));
+}
+
+bool Vector::operator!=(const Vector & v){
+    return !(*this == v);
 }
 
 bool Vector::operator<(const Vector & v){

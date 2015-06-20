@@ -47,7 +47,6 @@ vector<Isect> Plane::intersect(Ray & ray) {
     return intersecciones;
 }
 
-
 Plane::~Plane(){
     //dtor
 }

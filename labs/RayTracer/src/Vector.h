@@ -20,6 +20,8 @@ class Vector
         Vector operator^(Vector v);
         Vector & operator=(const Vector & v);
         bool operator==(const Vector & v);
+        bool similar(Vector & v, float eps);
+        bool operator!=(const Vector & v);
         bool operator<(const Vector & v);
         bool operator<=(const Vector & v);
         bool operator>=(const Vector & v);

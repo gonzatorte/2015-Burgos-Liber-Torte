@@ -24,6 +24,6 @@ ostream & operator<<(ostream & os, Figure & f){
     return os;
 }
 
-void Figure::print(ostream & stream) {
-//    os << color;
+void Figure::print(ostream & os) {
+    os << color;
 }
