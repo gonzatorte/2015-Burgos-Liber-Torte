@@ -72,7 +72,7 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
         colorAmbiente = colorAmbiente + (curr_light->color * figure->kamb);
 
         Ray rayL = Ray(curr_light->position, (point - curr_light->position));
-        float difuse_angle = -rayL.direction.UnitVector() * normal.UnitVector();
+        float difuse_angle = (rayL.direction.UnitVector()*(-1.0f)) * normal.UnitVector();
         if((difuse_angle > 0) && shadow(rayL, figure)){
 //            difuse_angle = (difuse_angle<0)?(0):((difuse_angle>1)?1:difuse_angle)
             difuse_angle = limited(difuse_angle,0,1);

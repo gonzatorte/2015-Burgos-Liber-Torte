@@ -5,12 +5,12 @@ Camera::Camera()
     //ctor
 }
 
-Camera::Camera(Vector viewPoint, Vector lookAt, Vector upVector, double distance) {
-    this->viewPoint = viewPoint;
-    this->lookAt = lookAt;
-    this->upVector = upVector;
-    this->leftVector = upVector.cross(lookAt);
-    this->distance = distance;
+Camera::Camera(Vector _viewPoint, Vector _lookAt, Vector _upVector, double _distance) {
+    this->viewPoint = _viewPoint;
+    this->lookAt = _lookAt.UnitVector();
+    this->upVector = _upVector.UnitVector();
+    this->leftVector = upVector.cross(lookAt).UnitVector();
+    this->distance = _distance;
 }
 
 Camera::~Camera()

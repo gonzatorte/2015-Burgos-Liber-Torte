@@ -1,6 +1,8 @@
 #ifndef VECTOR_H
 #define VECTOR_H
+#include <iostream>
 
+using namespace std;
 
 class Vector
 {
@@ -21,11 +23,15 @@ class Vector
         bool operator<=(const Vector & v);
         bool operator>=(const Vector & v);
         bool operator>(const Vector & v);
-        float x,y,z;
-        double Norm();
+        bool operator<<(const Vector & v);
+        friend ostream& operator<<(ostream& os, Vector & v);
+        float Norm();
         Vector UnitVector();
         float Square();
         Vector Projection(Vector & v);
+        Vector Rejection(Vector & v);
+
+        float x,y,z;
 };
 
 #endif // VECTOR_H

@@ -79,8 +79,12 @@ Vector::~Vector(){
     //dtor
 }
 
+Vector Vector::Rejection(Vector & v){
+    return *this - this->Projection(v);
+}
+
 Vector Vector::Projection(Vector & v){
-    return *this - (v*((*this) * v));
+    return v*(((*this) * v)/v.Square());
 }
 
 float Vector::Square(){
@@ -90,3 +94,12 @@ float Vector::Square(){
 Vector Vector::UnitVector(){
     return (*this)*(1/sqrt(this->Square()));
 }
+
+float Vector::Norm(){
+    return sqrt(this->Square());
+}
+
+ostream& operator<<(ostream& os, Vector & v) {
+    return os << "(" << v.x << "," << v.y << "," << v.z << ")";
+}
+

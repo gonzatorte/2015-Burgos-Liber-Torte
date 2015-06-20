@@ -20,6 +20,7 @@ void Cylinder::intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, Ve
     isect.surfacePoint = point;
 //    Vector vec = (isect.surfacePoint - center) + orientation * (-(orientation * (isect.surfacePoint - center)));
 //    isect.normal = vec.UnitVector();
+    isect.normal = normal;
     isect.enter = (ray.direction * isect.normal) < 0;
     intersecciones.push_back(isect);
 }
@@ -44,12 +45,16 @@ bool Cylinder::intersect_caps(vector<Isect> & intersecciones, Ray & ray, Vector 
     return false;
 }
 
-vector<Isect> Cylinder::check_point(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt){
+void Cylinder::check_point(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt){
 //    sqrt
     float square_heigh = (top - base).Square();
     float dd = (point - base).Projection(orientation).Square() - square_heigh;
     if (dd > 0){
-        Vector normal = point - point.Projection(orientation);
+        Vector r_point = (point - base);
+//        std::cout << r_point.x << std::endl;
+//        std::cout << r_point.y << std::endl;
+//        std::cout << r_point.z << std::endl;
+        Vector normal = point - r_point.Projection(orientation);
         intersect_add_isect(intersecciones, ray, normal, point, tt);
     } else {
         intersect_caps(intersecciones, ray, orientation, point, tt);
@@ -62,11 +67,11 @@ vector<Isect> Cylinder::intersect(Ray & ray) {
     Vector orientation = (top - base).UnitVector();
     Vector dp = ray.origin - base;
 
-    Vector ray_p_orient = ray.direction.Projection(orientation);
-    Vector dp_p_direc = dp - ray.direction*(dp*ray.direction);
-	double a = ray_p_orient * ray_p_orient;
-    float b = 2*(ray_p_orient * dp_p_direc);
-    float c = (dp_p_direc*dp_p_direc) - (radius*radius);
+    Vector ray_p_orient = ray.direction.Rejection(orientation);
+    Vector dp_p_orient = dp.Rejection(orientation);
+	double a = ray_p_orient.Square();
+    float b = 2*(ray_p_orient * dp_p_orient);
+    float c = dp_p_orient.Square() - (radius*radius);
     float discrim = b*b - 4*a*c;
     if (discrim >= 0){
         float root = sqrt(discrim);
