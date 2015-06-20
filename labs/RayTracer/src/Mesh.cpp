@@ -87,23 +87,23 @@ void Mesh::read(tinyxml2::XMLElement* element) {
     while (index<=10) {
         if (index <= 2) { //Cara lateral izquierda y de fondo.
             v1 = vertexs[index]; v2 = vertexs[index+1]; v3 = vertexs[index+2]; v4 = vertexs[index+3];
-            index = index+2;
+//            index = index+2;
 //            continue;
         } else if (index == 4) {  //Cara lateral derecha
             normalSign = -1;
             v1 = vertexs[5]; v2 = vertexs[4]; v3 = vertexs[7]; v4 = vertexs[6];
-            index = index+2;
+//            index = index+2;
 //            continue;
         } else if (index == 6) { // Cara frontal
             normalSign = -1;
             v1 = vertexs[0]; v2 = vertexs[1]; v3 = vertexs[6]; v4 = vertexs[7];
         } else if (index == 8) { // Base
-            index = index+2;
+//            index = index+2;
 //            continue;
             normalSign = 1;
             v1 = vertexs[0]; v2 = vertexs[2]; v3 = vertexs[6]; v4 = vertexs[4];
         } else if (index == 10) { // Techo
-            index = index+2;
+//            index = index+2;
 //            continue;
             normalSign = -1;
             v1 = vertexs[1]; v2 = vertexs[3]; v3 = vertexs[7]; v4 = vertexs[5];
@@ -120,6 +120,10 @@ vector<Isect> Mesh::intersect(Ray & ray) {
         vector <Isect> aux = t.intersect(ray);
         intersecciones.insert(intersecciones.end(), aux.begin(), aux.end());
     }
+//    for (int i=0 ; triangles.size() ; i++ ){
+//        vector <Isect> aux = triangles[i].intersect(ray);
+//        intersecciones.insert(intersecciones.end(), aux.begin(), aux.end());
+//    }
     sort(intersecciones.begin(), intersecciones.end());
 //    reverse
     return intersecciones;
