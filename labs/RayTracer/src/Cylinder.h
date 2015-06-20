@@ -15,14 +15,14 @@ class Cylinder: public Figure
         Cylinder();
         void read(tinyxml2::XMLElement* element);
         virtual ~Cylinder();
-        double radius;
+        float radius;
         Vector base;
         Vector top;
         vector<Isect> intersect(Ray & ray);
     protected:
-        bool intersect_caps(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float distance);
+        bool check_caps_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & normal, Vector & point_ref);
+        bool check_body_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt);
         void intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, Vector & normal, Vector & point, float distance);
-        void check_point(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt);
     private:
 };
 

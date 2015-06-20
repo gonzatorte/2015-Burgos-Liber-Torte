@@ -25,19 +25,15 @@ void Cylinder::intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, Ve
     intersecciones.push_back(isect);
 }
 
-bool Cylinder::intersect_caps(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float distance){
-    bool cond1 = (orientation*(point - base) == 0);
-    bool cond2 = (orientation*(point - top) == 0);
-    if (cond1 || cond2){
-        if (cond1){
-            if ((point - base).Square() < radius*radius){
-                Vector normal = orientation*(-1);
-                intersect_add_isect(intersecciones, ray, normal, point, distance);
-                return true;
-            }
-        } else {
-            if ((point - top).Square() < radius*radius){
-                intersect_add_isect(intersecciones, ray, orientation, point, distance);
+bool Cylinder::check_caps_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & normal, Vector & point_ref){
+    float cosciente = normal * (point_ref - ray.origin);
+    float denominador = normal * (ray.direction);
+    if (denominador != 0) {
+        float t = cosciente/denominador;
+        if (t>=0) {
+            Vector point = ray.origin + ray.direction * t;
+            if ((point - point_ref).Square() < radius*radius){
+                intersect_add_isect(intersecciones, ray, normal, point, t);
                 return true;
             }
         }
@@ -45,20 +41,16 @@ bool Cylinder::intersect_caps(vector<Isect> & intersecciones, Ray & ray, Vector 
     return false;
 }
 
-void Cylinder::check_point(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt){
-//    sqrt
+bool Cylinder::check_body_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt){
     float square_heigh = (top - base).Square();
-    float dd = (point - base).Projection(orientation).Square() - square_heigh;
+    Vector r_point = (point - base);
+    float dd = square_heigh - r_point.Projection(orientation).Square();
     if (dd > 0){
-        Vector r_point = (point - base);
-//        std::cout << r_point.x << std::endl;
-//        std::cout << r_point.y << std::endl;
-//        std::cout << r_point.z << std::endl;
         Vector normal = point - r_point.Projection(orientation);
         intersect_add_isect(intersecciones, ray, normal, point, tt);
-    } else {
-        intersect_caps(intersecciones, ray, orientation, point, tt);
+        return true;
     }
+    return false;
 }
 
 vector<Isect> Cylinder::intersect(Ray & ray) {
@@ -79,10 +71,14 @@ vector<Isect> Cylinder::intersect(Ray & ray) {
         float t2 = (-b-root)/(2*a);
 
         Vector point_1 = ray.origin + (ray.direction * t1);
-        Vector point_2 = ray.origin + (ray.direction* t2);
+        Vector point_2 = ray.origin + (ray.direction * t2);
 
-        check_point(intersecciones, ray, orientation, point_1, t1);
-        check_point(intersecciones, ray, orientation, point_2, t2);
+        check_body_intersect(intersecciones, ray, orientation, point_1, t1);
+        check_body_intersect(intersecciones, ray, orientation, point_2, t2);
+        Vector m_orientation = -orientation;
+        check_caps_intersect(intersecciones, ray, m_orientation, top);
+        check_caps_intersect(intersecciones, ray, orientation, base);
+
     }
     return intersecciones;
 }
