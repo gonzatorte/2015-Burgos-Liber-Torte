@@ -63,8 +63,8 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     }
 
     Vector specular_direction = specularDirection(ray.direction, normal);
-    Vector cam_direction = (s->camera->viewPoint - point).UnitVector();
 
+    Vector cam_direction = (s->camera->viewPoint - point).UnitVector();
     list<Light*>::iterator it;
     for (it=s->lights.begin(); it!=s->lights.end(); ++it){
         Light * curr_light = (*it);
@@ -78,8 +78,13 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
             difuse_angle = limited(difuse_angle,0,1);
             colorDifuso = colorDifuso + (curr_light->color * (figure->kdif * difuse_angle));
             float reflex_view_angle = cam_direction * specular_direction;
-            colorSpecular = colorSpecular +
-                    (curr_light->color * figure->kspec * powf(reflex_view_angle, figure->shininess));
+//            reflex_view_angle = limited(reflex_view_angle,0,1);
+//            float phong = powf(reflex_view_angle, 1.001);
+//            float phong = powf(1 + reflex_view_angle, figure->shininess);
+//            colorSpecular = colorSpecular +
+//                    (curr_light->color * 0.3 * phong);
+//            colorSpecular = colorSpecular +
+//                    (curr_light->color * figure->kspec * phong);
         }
     }
 
@@ -90,7 +95,7 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
         if ((weight * figure->kspec > minWeight) && (figure->kspec > 0)){
             Ray rayStart;
             rayStart.direction = specular_direction;
-            rayStart.origin = rayStart.direction + point; //ToDo: Esto no debe ser solo point?
+            rayStart.origin = point; //ToDo: Esto no debe ser solo point?
             colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
             colorReflexion = colorReflexion * figure->kspec;
         }
@@ -113,7 +118,7 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     color = color + colorDifuso;
 //    color = color + colorSpecular;
     color = color + colorReflexion;
-    color = color + colorRefraction;
+//    color = color + colorRefraction;
 
     color.x = color.x < 256 ? color.x : 255;
     color.y = color.y < 256 ? color.y : 255;

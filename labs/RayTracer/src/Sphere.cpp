@@ -1,5 +1,7 @@
+#include <cmath>
+#include <algorithm>
+
 #include "Sphere.h"
-#include <math.h>
 
 Sphere::Sphere()
 {
@@ -16,20 +18,20 @@ void Sphere::read(tinyxml2::XMLElement* element) {
 vector<Isect> Sphere::intersect(Ray & r){
 	vector<Isect> intersecciones;
 	Vector d = r.direction;
-	double t1 = -1;
-	double t2 = -1;
-	double discriminent;
+	float t1 = -1;
+	float t2 = -1;
+	float discriminent;
 	Vector temporary = r.origin - center;
-	double b = 2*(d*temporary);
-	double a = d*d;
-	double c = temporary*temporary - (radius * radius);
-	double disc = b*b - 4*a*c;
+	float b = 2*(d*temporary);
+	float a = d*d;
+	float c = temporary*temporary - (radius * radius);
+	float disc = b*b - 4*a*c;
 	if(disc >= 0)
 	{
 		discriminent = sqrt(disc);
 		t2 = (-b+discriminent)/(2*a);
 		t1 = (-b-discriminent)/(2*a);
-		if(t1 > 0){
+		if(t1 > Figure::FIGURE_EPS){
             Isect result;
             result.figure = this;
 			result.surfacePoint = r.direction*t1 + r.origin;
@@ -38,8 +40,7 @@ vector<Isect> Sphere::intersect(Ray & r){
             result.enter = (r.direction * result.normal) < 0;
             intersecciones.push_back(result);
 		}
-		else if(t2 > 0)
-		{
+		if(t2 > Figure::FIGURE_EPS){
             Isect result;
             result.figure = this;
 			result.surfacePoint = r.direction*t2 + r.origin;
@@ -49,6 +50,7 @@ vector<Isect> Sphere::intersect(Ray & r){
             intersecciones.push_back(result);
 		}
 	}
+    sort(intersecciones.begin(), intersecciones.end());
 	return intersecciones;
 }
 

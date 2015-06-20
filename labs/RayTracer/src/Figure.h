@@ -15,6 +15,7 @@ class Isect;
 class Figure: public Object
 {
     public:
+        static const float FIGURE_EPS = 0.05f;
         void read(tinyxml2::XMLElement* element);
         Figure();
         virtual ~Figure();

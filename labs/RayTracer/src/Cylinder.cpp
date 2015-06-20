@@ -79,12 +79,12 @@ vector<Isect> Cylinder::intersect(Ray & ray) {
         float t1 = (-b+root)/(2*a);
         float t2 = (-b-root)/(2*a);
 
-        if (t1 > 0){
+        if (t1 > Figure::FIGURE_EPS){
             Vector point_1 = ray.origin + (ray.direction * t1);
             check_body_intersect(intersecciones, ray, orientation, point_1, t1);
         }
 
-        if (t2 > 0){
+        if (t2 > Figure::FIGURE_EPS){
             Vector point_2 = ray.origin + (ray.direction * t2);
             check_body_intersect(intersecciones, ray, orientation, point_2, t2);
         }

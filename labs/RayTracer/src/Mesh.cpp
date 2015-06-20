@@ -91,7 +91,7 @@ void Mesh::read(tinyxml2::XMLElement* element) {
             normalSign = -1;
             v1 = vertexs[0]; v2 = vertexs[1]; v3 = vertexs[6]; v4 = vertexs[7];
         } else if (index == 8) { // Base
-            index = index+2;
+            normalSign = 1;
             v1 = vertexs[0]; v2 = vertexs[2]; v3 = vertexs[6]; v4 = vertexs[4];
         } else if (index == 10) { // Techo
             normalSign = -1;
