@@ -24,7 +24,7 @@ class Vector
         bool operator>=(const Vector & v);
         bool operator>(const Vector & v);
         bool operator<<(const Vector & v);
-        friend ostream& operator<<(ostream& os, Vector & v);
+        friend ostream & operator<<(ostream & , Vector & );
         float Norm();
         Vector UnitVector();
         float Square();

@@ -99,7 +99,7 @@ float Vector::Norm(){
     return sqrt(this->Square());
 }
 
-ostream& operator<<(ostream& os, Vector & v) {
+ostream & operator<<(ostream & os, Vector & v) {
     return os << "(" << v.x << "," << v.y << "," << v.z << ")";
 }
 

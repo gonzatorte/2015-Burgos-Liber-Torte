@@ -16,6 +16,7 @@ class Isect {
         double distance;
         bool operator > (const Isect&) const;
         bool operator < (const Isect&) const;
+        friend ostream& operator<<(ostream & , Isect & );
     protected:
     private:
 };

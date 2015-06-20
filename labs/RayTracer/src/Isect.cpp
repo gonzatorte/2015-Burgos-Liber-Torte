@@ -15,3 +15,7 @@ bool Isect::operator < (const Isect & isect) const  {
 Isect::~Isect(){
     //dtor
 }
+
+ostream& operator<<(ostream& os, Isect & isect) {
+    return os << "Normal " << isect.normal << " | Point " << isect.surfacePoint << " | Distance " << isect.distance;
+}

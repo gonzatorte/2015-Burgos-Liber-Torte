@@ -11,6 +11,7 @@ class Ray {
         Vector direction, origin;
         float tran;
         Vector rayPoint(const double dist);
+        friend ostream& operator<<(ostream & , Ray & );
     protected:
     private:
 };
