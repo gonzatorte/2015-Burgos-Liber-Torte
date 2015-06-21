@@ -28,7 +28,7 @@ void Cylinder::intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, Ve
 bool Cylinder::check_caps_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & normal, Vector & point_ref){
     float cosciente = normal * (point_ref - ray.origin);
     float denominador = normal * (ray.direction);
-    if (denominador != 0) {
+    if ((denominador > Figure::FIGURE_EPS) || (Figure::FIGURE_EPS > denominador)) {
         float t = cosciente/denominador;
         if (t>=0) {
             Vector point = ray.origin + ray.direction * t;
@@ -42,10 +42,10 @@ bool Cylinder::check_caps_intersect(vector<Isect> & intersecciones, Ray & ray, V
 }
 
 bool Cylinder::check_body_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt){
-    float square_heigh = ((top - base)*(1)).Square();
+    Vector axis = (top - base);
     Vector r_point = (point - base).Projection(orientation);
-    float dd = (square_heigh) - (r_point.Square());
-    if (dd > 0){
+    float dd = r_point*axis;
+    if ((dd > 0) && (axis.Square() > dd)){
         Vector normal = ((point - base) - r_point).UnitVector();
         intersect_add_isect(intersecciones, ray, normal, point, tt);
         return true;
