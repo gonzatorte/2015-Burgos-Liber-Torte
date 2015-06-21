@@ -9,11 +9,12 @@ class Light: public Object
 {
     public:
         Light();
-        Light(Vector color, Vector position);
         virtual ~Light();
         void read(tinyxml2::XMLElement* element);
         Vector position;
-        Vector color;
+        Vector diffuse_color;
+        Vector specular_color;
+        Vector ambient_color;
     protected:
     private:
 };

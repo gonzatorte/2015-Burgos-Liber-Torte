@@ -9,7 +9,6 @@ int main ( int argc, char** argv )
 {
     Scene* scene = Scene::getInstance();
     scene->sceneRead();
-//    cout << *scene << endl;
     scene->createScreen();
     return 0;
 }
