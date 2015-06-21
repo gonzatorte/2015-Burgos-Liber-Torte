@@ -41,7 +41,7 @@ vector<double> Screen::getColor(Ray ray) {
             colorsList[0] = closest.figure->kspec * 255;
         }
         if (closest.figure->ktran > 0) {
-            //colorsList[1] = closest.figure->kspec * 255;
+            colorsList[1] = closest.figure->refrIndex * 255;
         }
     }
     return colorsList;
@@ -94,6 +94,8 @@ void Screen::createScreen() {
     cout << "Guardando imagen" << endl;
     FreeImage_Save(FIF_PNG, image,"PRUEBAIMAGE.png", 0);
     FreeImage_Save(FIF_PNG, reflexionImage,"ReflexionImage.png", 0);
+    FreeImage_Save(FIF_PNG, refractionImage,"refractionImage.png", 0);
+
 }
 
 Screen::~Screen()

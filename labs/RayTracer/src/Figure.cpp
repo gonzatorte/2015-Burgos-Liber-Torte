@@ -12,6 +12,7 @@ void Figure::read(tinyxml2::XMLElement* element) {
     shininess = atof(element->Attribute("shininess"));
     ktran = atof(element->Attribute("ktran"));
     color = Vector(atof(element->Attribute("r")), atof(element->Attribute("g")), atof(element->Attribute("b")));
+    refrIndex = atof(element->Attribute("refrIndex"));
 }
 
 

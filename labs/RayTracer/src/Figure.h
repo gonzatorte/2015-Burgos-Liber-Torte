@@ -24,7 +24,7 @@ class Figure: public Object
         float kspec;
         float kdif;
         float kamb;
-        float ktran;
+        float ktran, refrIndex;
         float shininess;
         friend ostream & operator<<(ostream & , Figure & );
     protected:
