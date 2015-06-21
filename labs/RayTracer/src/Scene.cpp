@@ -16,10 +16,12 @@ Scene* Scene::getInstance() {
     return instance;
 }
 
-void Scene::sceneRead() {
+void Scene::sceneRead(char * filepath) {
     tinyxml2::XMLDocument document;
-    document.LoadFile("scene.xml");
-    tinyxml2::XMLElement* rootElement = document.FirstChildElement("root");
+    document.LoadFile(filepath);
+    tinyxml2::XMLElement* rootElement = document.FirstChildElement("scene");
+    width = atoi(rootElement->Attribute("width"));
+    height = atoi(rootElement->Attribute("height"));
     tinyxml2::XMLElement* element;
     for(element=rootElement->FirstChildElement(); element; element=element->NextSiblingElement()) {
         string elementName = element->Value();
@@ -51,9 +53,6 @@ void Scene::sceneRead() {
             Mesh * mesh = new Mesh();
             mesh->read(element);
             figures.push_back(mesh);
-        } else if (elementName=="scene") {
-            width = atoi(element->Attribute("width"));
-            height = atoi(element->Attribute("height"));
         } else if (elementName=="camera") {
             Vector viewPoint = Vector(atof(element->Attribute("viewPointX")), atof(element->Attribute("viewPointY")), atof(element->Attribute("viewPointZ")));
             Vector lookAt = Vector(atof(element->Attribute("lookAtX")), atof(element->Attribute("lookAtY")), atof(element->Attribute("lookAtZ")));

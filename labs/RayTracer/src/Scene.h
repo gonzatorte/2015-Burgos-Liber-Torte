@@ -22,7 +22,7 @@ class Scene
         Scene();
         static Scene* instance;
         static Scene* getInstance();
-        void sceneRead();
+        void sceneRead(char * filepath);
         void createScreen();
         list<Figure*> figures;
         list<Light*> lights;
