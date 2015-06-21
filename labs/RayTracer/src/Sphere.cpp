@@ -3,59 +3,55 @@
 
 #include "Sphere.h"
 
-Sphere::Sphere()
-{
-    //ctor
+Sphere::Sphere(){
+}
+
+Sphere::~Sphere(){
 }
 
 void Sphere::read(tinyxml2::XMLElement* element) {
-
     radius = atof(element->Attribute("radius"));
     center = Vector(atof(element->Attribute("centerX")), atof(element->Attribute("centerY")), atof(element->Attribute("centerZ")));
     Figure::read(element);
 }
 
-vector<Isect> Sphere::intersect(Ray & r){
+void Sphere::intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, float distance){
+    Isect isect;
+    isect.figure = this;
+    isect.surfacePoint = ray.direction*distance + ray.origin;
+    isect.distance = distance;
+    isect.normal = (isect.surfacePoint - this->center).UnitVector();
+    isect.enter = (ray.direction * isect.normal) > 0;
+//    if (!isect.enter){
+//        isect.normal = -isect.normal;
+//    }
+    intersecciones.push_back(isect);
+}
+
+vector<Isect> Sphere::intersect(Ray & ray){
 	vector<Isect> intersecciones;
-	Vector d = r.direction;
+	Vector d = ray.direction;
 	float t1 = -1;
 	float t2 = -1;
 	float discriminent;
-	Vector temporary = r.origin - center;
+	Vector temporary = ray.origin - center;
 	float b = 2*(d*temporary);
 	float a = d*d;
 	float c = temporary*temporary - (radius * radius);
 	float disc = b*b - 4*a*c;
-	if(disc >= 0)
-	{
+	if(disc >= 0){
 		discriminent = sqrt(disc);
 		t2 = (-b+discriminent)/(2*a);
 		t1 = (-b-discriminent)/(2*a);
 		if(t1 > Figure::FIGURE_EPS){
-            Isect result;
-            result.figure = this;
-			result.surfacePoint = r.direction*t1 + r.origin;
-            result.distance = t1;
-            result.normal = (result.surfacePoint - this->center).UnitVector();
-            result.enter = (r.direction * result.normal) < 0;
-            intersecciones.push_back(result);
+            intersect_add_isect(intersecciones, ray, t1);
 		}
 		if(t2 > Figure::FIGURE_EPS){
-            Isect result;
-            result.figure = this;
-			result.surfacePoint = r.direction*t2 + r.origin;
-            result.enter = (r.direction * result.normal) < 0;
-            result.distance = t2;
-            result.normal = (result.surfacePoint - this->center).UnitVector();
-            intersecciones.push_back(result);
+            intersect_add_isect(intersecciones, ray, t2);
 		}
 	}
     sort(intersecciones.begin(), intersecciones.end());
 	return intersecciones;
-}
-
-Sphere::~Sphere(){
-    //dtor
 }
 
 ostream & operator<<(ostream& os, Sphere & sp) {
