@@ -35,6 +35,32 @@ void case_cylinder(){
         }
     }
     {
+        cout << "Caso bug" << endl;
+        Ray R1(Vector(0,1.5,0), Vector(0,0,1));
+        Ray R2(Vector(0,-1.5,0), Vector(0,0,1));
+
+        cout << R1 << endl;
+        cout << R2 << endl;
+
+        Cylinder C = Cylinder();
+        C.base = Vector(0,-1,0);
+        C.top = Vector(0,1,0);
+        C.radius = 20.0;
+
+        cout << C << endl;
+
+        vector<Isect> res1 = C.intersect(R1);
+        for (vector<Isect>::iterator it_res = res1.begin() ; it_res != res1.end() ; ++it_res){
+            Isect a = (*it_res);
+            cout << a << endl;
+        }
+        vector<Isect> res2 = C.intersect(R2);
+        for (vector<Isect>::iterator it_res = res2.begin() ; it_res != res2.end() ; ++it_res){
+            Isect a = (*it_res);
+            cout << a << endl;
+        }
+    }
+    {
         cout << "Caso Tapas" << endl;
         Ray R;
         R.direction = Vector(0,0,1);
