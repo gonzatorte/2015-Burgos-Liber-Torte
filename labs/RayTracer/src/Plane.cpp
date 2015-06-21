@@ -20,7 +20,7 @@ vector<Isect> Plane::intersect(Ray & ray) {
     double denominador = norm * (ray.direction);
     if (denominador != 0) { // En caso que sea cero quiere decir que el plano es paralelo al rayo
         double t = cosciente/denominador;
-        if (t>=0) {
+        if (t>=Figure::FIGURE_EPS) {
             Vector isectPoint = ray.origin + ray.direction * t;
             bool isSurfacePoint = false;
             if (norm.x != 0) { // Es un plano en X
