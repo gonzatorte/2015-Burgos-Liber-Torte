@@ -9,7 +9,7 @@ Camera::Camera(Vector _viewPoint, Vector _lookAt, Vector _upVector, double _dist
     this->viewPoint = _viewPoint;
     this->lookAt = _lookAt.UnitVector();
     this->upVector = _upVector.UnitVector();
-    this->leftVector = upVector.cross(lookAt).UnitVector();
+    this->leftVector = upVector.cross(viewPoint - lookAt).UnitVector();
     this->distance = _distance;
 }
 

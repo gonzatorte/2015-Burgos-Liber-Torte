@@ -30,7 +30,6 @@ class Scene
         Screen* screen;
         Camera* camera;
         int width, height;
-        double distance;
         friend ostream & operator<<(ostream & , Scene & );
     protected:
     private:
