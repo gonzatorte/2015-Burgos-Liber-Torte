@@ -79,16 +79,16 @@ void Screen::createScreen() {
                 free_color.rgbBlue = (double) avrgPixel->b;
                 FreeImage_SetPixelColor(image,avrgPixel->x, avrgPixel->y,&free_color);
             }
-            colorsList = getColor(ray);
-            free_color.rgbRed = (double) colorsList[0];
-            free_color.rgbGreen = (double) colorsList[0];
-            free_color.rgbBlue = (double) colorsList[0];
-            FreeImage_SetPixelColor(reflexionImage, j, i, &free_color);
-
-            free_color.rgbRed = (double) colorsList[1];
-            free_color.rgbGreen = (double) colorsList[1];
-            free_color.rgbBlue = (double) colorsList[1];
-            FreeImage_SetPixelColor(refractionImage, j, i, &free_color);
+//            colorsList = getColor(ray);
+//            free_color.rgbRed = (double) colorsList[0];
+//            free_color.rgbGreen = (double) colorsList[0];
+//            free_color.rgbBlue = (double) colorsList[0];
+//            FreeImage_SetPixelColor(reflexionImage, j, i, &free_color);
+//
+//            free_color.rgbRed = (double) colorsList[1];
+//            free_color.rgbGreen = (double) colorsList[1];
+//            free_color.rgbBlue = (double) colorsList[1];
+//            FreeImage_SetPixelColor(refractionImage, j, i, &free_color);
         }
     }
     cout << "Guardando imagen" << endl;

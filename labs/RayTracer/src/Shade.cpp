@@ -36,8 +36,7 @@ Vector specularDirection(Vector incidentRay, Vector normal){
     return (incidentRay + normal * (incidentRay * normal * -2)).UnitVector();
 }
 
-bool transmisionDirection(float n_in, float n_out, Vector incidentRay, Vector normal, Vector & res){
-    float eta = n_in/n_out;
+bool transmisionDirection(float eta, Vector incidentRay, Vector normal, Vector & res){
     float c1 = - (incidentRay * normal);
     float cs2 = 1 - eta*eta * (1 - c1*c1);
     if (cs2 < 0)
@@ -95,16 +94,24 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
             colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
             colorReflexion = colorReflexion * figure->kspec;
         }
-//        if ((weight * figure->ktran > minWeight) && (figure->ktran > 0)){
-//            Vector transDirection;
-//            bool no_total_ref = transmisionDirection(ray.tran, figure->ktran, ray.direction, normal, transDirection);
-//            if (no_total_ref){
-//                Ray rayStart(rayStart.direction + point, transDirection);
-//                rayStart.tran = figure->ktran;
-//                colorRefraction = trace.traceRay(rayStart, level + 1, weight * figure->ktran);
-//                colorRefraction = colorRefraction * figure->ktran;
-//            }
-//        }
+        if ((weight * figure->ktran > minWeight) && (figure->ktran > 0)){
+            Vector transDirection;
+            bool no_total_ref;
+            float eta;
+            if (isect.enter){
+                eta = ray.tran/figure->refr_medium;
+                no_total_ref = transmisionDirection(eta, ray.direction, normal, transDirection);
+            } else {
+                eta = ray.tran*figure->refr_medium;
+                no_total_ref = transmisionDirection(eta, ray.direction, normal, transDirection);
+            }
+            if (no_total_ref){
+                Ray rayStart(point, transDirection);
+                rayStart.tran = eta;
+                colorRefraction = trace.traceRay(rayStart, level + 1, weight * figure->ktran);
+                colorRefraction = colorRefraction * figure->ktran;
+            }
+        }
     }
 
     Vector color;

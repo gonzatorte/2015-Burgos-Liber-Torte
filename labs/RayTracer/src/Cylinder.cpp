@@ -42,9 +42,9 @@ bool Cylinder::check_caps_intersect(vector<Isect> & intersecciones, Ray & ray, V
 }
 
 bool Cylinder::check_body_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt){
-    float square_heigh = (top - base).Square();
+    float square_heigh = ((top - base)*(1)).Square();
     Vector r_point = (point - base).Projection(orientation);
-    float dd = sqrt(square_heigh) - sqrt(r_point.Square());
+    float dd = (square_heigh) - (r_point.Square());
     if (dd > 0){
         Vector normal = ((point - base) - r_point).UnitVector();
         intersect_add_isect(intersecciones, ray, normal, point, tt);
@@ -89,7 +89,7 @@ vector<Isect> Cylinder::intersect(Ray & ray) {
             check_body_intersect(intersecciones, ray, orientation, point_2, t2);
         }
 
-        Vector m_orientation = -orientation;
+        Vector m_orientation = orientation;
         check_caps_intersect(intersecciones, ray, orientation, top);
         check_caps_intersect(intersecciones, ray, m_orientation, base);
 

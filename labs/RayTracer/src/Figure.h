@@ -26,6 +26,7 @@ class Figure: public Object
         float kamb;
         float ktran;
         float shininess;
+        float refr_medium;
         friend ostream & operator<<(ostream & , Figure & );
     protected:
         virtual void print(ostream & stream);
