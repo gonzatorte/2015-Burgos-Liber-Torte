@@ -112,5 +112,5 @@ ostream & operator<<(ostream & os, Cylinder & c) {
 }
 
 void Cylinder::print(ostream & os){
-    os << "Base " << base << " | Top " << top << " | Radius " << radius;
+    os << " | Base " << base << " | Top " << top << " | Radius " << radius;
 }

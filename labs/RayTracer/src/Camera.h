@@ -10,6 +10,7 @@ class Camera
         virtual ~Camera();
         Vector viewPoint, lookAt, upVector, leftVector;
         double distance;
+        friend ostream & operator<<(ostream & os, Camera & s);
     protected:
     private:
 };

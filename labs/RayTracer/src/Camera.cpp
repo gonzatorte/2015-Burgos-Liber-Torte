@@ -1,8 +1,6 @@
 #include "Camera.h"
 
-Camera::Camera()
-{
-    //ctor
+Camera::Camera(){
 }
 
 Camera::Camera(Vector _viewPoint, Vector _lookAt, Vector _upVector, double _distance) {
@@ -13,7 +11,15 @@ Camera::Camera(Vector _viewPoint, Vector _lookAt, Vector _upVector, double _dist
     this->distance = _distance;
 }
 
-Camera::~Camera()
-{
-    //dtor
+Camera::~Camera(){
+}
+
+ostream & operator<<(ostream & os, Camera & s) {
+    os << "{ CAMERA" << endl;
+    os << s.distance << endl;
+    os << s.lookAt << endl;
+    os << s.upVector << endl;
+    os << s.viewPoint << endl;
+    os << "} CAMERA";
+    return os;
 }

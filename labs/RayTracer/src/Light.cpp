@@ -26,3 +26,11 @@ void Light::read(tinyxml2::XMLElement* element) {
 Light::~Light(){
     //dtor
 }
+
+ostream & operator<<(ostream & os, Light & s) {
+    os << s.ambient_color;
+    os << s.diffuse_color;
+    os << s.specular_color;
+    os << s.position;
+    return os;
+}

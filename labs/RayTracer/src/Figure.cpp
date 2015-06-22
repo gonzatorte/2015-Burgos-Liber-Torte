@@ -26,5 +26,6 @@ ostream & operator<<(ostream & os, Figure & f){
 }
 
 void Figure::print(ostream & os) {
-    os << color;
+    os << "Color " << color << " | kspec " << kspec << " | kdif " << kdif << " | kamb " << kamb << " | ktran " << ktran
+    << " | shine " << shininess << " | refr_medium " << refr_medium;
 }

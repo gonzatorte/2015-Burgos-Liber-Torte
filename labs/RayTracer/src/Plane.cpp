@@ -55,10 +55,12 @@ Plane::~Plane(){
 }
 
 ostream & operator<<(ostream& os, Plane & plane) {
+
     plane.print(os);
     return os;
 }
 
 void Plane::print(ostream & os){
-    os << "Normal " << norm;
+    Figure::print(os);
+    os << " | Normal " << norm;
 }

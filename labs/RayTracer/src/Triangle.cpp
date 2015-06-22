@@ -51,5 +51,5 @@ ostream & operator<<(ostream& os, Triangle & tr) {
 }
 
 void Triangle::print(ostream & os){
-    os << "Normal " << norm << " | v0 " << v0 << " | v1 " << v1 << " | v2 " << v2;
+    os << " | Normal " << norm << " | v0 " << v0 << " | v1 " << v1 << " | v2 " << v2;
 }

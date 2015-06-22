@@ -28,8 +28,8 @@ class Figure: public Object
         float shininess;
         float refr_medium;
         friend ostream & operator<<(ostream & , Figure & );
-    protected:
         virtual void print(ostream & stream);
+    protected:
     private:
 };
 

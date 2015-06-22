@@ -60,5 +60,6 @@ ostream & operator<<(ostream& os, Sphere & sp) {
 }
 
 void Sphere::print(ostream & os){
-    os << "Center " << center;
+    Figure::print(os);
+    os << " | Center " << center;
 }
