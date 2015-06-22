@@ -21,7 +21,7 @@ void Sphere::intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, floa
     isect.surfacePoint = ray.direction*distance + ray.origin;
     isect.distance = distance;
     isect.normal = (isect.surfacePoint - this->center).UnitVector();
-    isect.enter = (ray.direction * isect.normal) > 0;
+    isect.enter = (ray.direction * isect.normal) < 0;
     if (!isect.enter){
         isect.normal = -isect.normal;
     }
