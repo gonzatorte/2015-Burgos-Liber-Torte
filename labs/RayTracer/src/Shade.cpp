@@ -6,12 +6,12 @@
 
 Shade::Shade(Trace * _tracer){
     tracer = _tracer;
-    reflexion_component = false;
-    refraction_component = false;
-    diffuse_component = false;
-    specular_component = false;
-    ambient_component = false;
-    natural_component = false;
+    reflexion_component = true;
+    refraction_component = true;
+    diffuse_component = true;
+    specular_component = true;
+    ambient_component = true;
+    natural_component = true;
     minWeight = 0.1;
     maxLevel = 3;
 }
@@ -50,8 +50,8 @@ void Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight, ManyVector 
     Vector colorAmbiente;
     Vector colorDifuso;
     Vector colorSpecular;
-    ManyVector colorsReflexion;
-    ManyVector colorsRefraction;
+    Vector colorReflexion;
+    Vector colorRefraction;
 
     if (ray.direction * normal > 0){
         normal = normal*-1;
@@ -92,8 +92,10 @@ void Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight, ManyVector 
         if (reflexion_component){
             if ((weight * figure->kspec > minWeight) && (figure->kspec > 0)){
                 Ray rayStart(point, specular_direction);
-                tracer->traceRay(rayStart, level + 1, weight * figure->kspec, colorsReflexion);
-                colorsReflexion.v5 = colorsReflexion.v5 * figure->kspec;
+                ManyVector colors;
+                tracer->traceRay(rayStart, level + 1, weight * figure->kspec, colors);
+                colorReflexion = colors.v1 + colors.v2 + colors.v3 + colors.v4 + colors.v5 + colors.v6;
+                colorReflexion = colorReflexion * figure->kspec;
             }
         }
         if (refraction_component){
@@ -111,8 +113,10 @@ void Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight, ManyVector 
                 if (no_total_ref){
                     Ray rayStart(point, transDirection);
                     rayStart.tran = eta;
-                    tracer->traceRay(rayStart, level + 1, weight * figure->ktran, colorsRefraction);
-                    colorsRefraction.v6 = colorsRefraction.v6 * figure->ktran;
+                    ManyVector colors;
+                    tracer->traceRay(rayStart, level + 1, weight * figure->ktran, colors);
+                    colorRefraction = colors.v1 + colors.v2 + colors.v3 + colors.v4 + colors.v5 + colors.v6 ;
+                    colorRefraction = colorRefraction * figure->ktran;
                 }
             }
         }
@@ -122,13 +126,13 @@ void Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight, ManyVector 
     resColors.v2 += colorAmbiente;
     resColors.v3 += colorDifuso;
     resColors.v4 += colorSpecular;
-    resColors.v5 += colorsReflexion.v5 + figure->color + colorAmbiente + colorDifuso + colorSpecular;
-    resColors.v6 += colorsRefraction.v6 + figure->color + colorAmbiente + colorDifuso + colorSpecular;
+    resColors.v5 += colorReflexion;
+    resColors.v6 += colorRefraction;
 
-    truncate_vector(255,resColors.v1);
-    truncate_vector(255,resColors.v2);
-    truncate_vector(255,resColors.v3);
-    truncate_vector(255,resColors.v4);
-    truncate_vector(255,resColors.v5);
-    truncate_vector(255,resColors.v6);
+//    truncate_vector(255,resColors.v1);
+//    truncate_vector(255,resColors.v2);
+//    truncate_vector(255,resColors.v3);
+//    truncate_vector(255,resColors.v4);
+//    truncate_vector(255,resColors.v5);
+//    truncate_vector(255,resColors.v6);
 }
