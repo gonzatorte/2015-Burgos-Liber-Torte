@@ -10,8 +10,8 @@ using namespace std;
 
 void case_plane(){
 
-    int height = 768;
-    int width = 1366;
+//    int height = 768;
+//    int width = 1366;
 
 //    Camera Cam(Vector(0,0,-350), Vector(0,0,1), Vector(0,1,0), sqrt(width^2 + height^2) / ( 2*tan( 45/2 ) ));
 

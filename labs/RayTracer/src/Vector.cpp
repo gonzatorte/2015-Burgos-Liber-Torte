@@ -17,6 +17,13 @@ Vector & Vector::operator=(const Vector & v){
     return *this;
 }
 
+Vector & Vector::operator+=(const Vector & v){
+    this->x += v.x;
+    this->y += v.y;
+    this->z += v.z;
+    return *this;
+}
+
 Vector::Vector(float x, float y, float z){
     this->x = x;
     this->y = y;
@@ -115,3 +122,27 @@ ostream & operator<<(ostream & os, Vector & v) {
     return os << "(" << v.x << "," << v.y << "," << v.z << ")";
 }
 
+void Vector::clear(){
+    this->x = this->y = this->z = 0;
+}
+
+void ManyVector::clear(){
+    this->v1.clear();
+    this->v2.clear();
+    this->v3.clear();
+    this->v4.clear();
+    this->v5.clear();
+    this->v6.clear();
+}
+
+void ManyVector::unzip(ManyVector * m){
+}
+
+void ManyVector::average(ManyVector & p1, ManyVector & p2, ManyVector & p3, ManyVector & p4, ManyVector & result) {
+    result.v1 = (p1.v1 + p2.v1 + p3.v1 + p4.v1)*(1/4.0);
+    result.v2 = (p1.v2 + p2.v2 + p3.v2 + p4.v2)*(1/4.0);
+    result.v3 = (p1.v3 + p2.v3 + p3.v3 + p4.v3)*(1/4.0);
+    result.v4 = (p1.v4 + p2.v4 + p3.v4 + p4.v4)*(1/4.0);
+    result.v5 = (p1.v5 + p2.v5 + p3.v5 + p4.v5)*(1/4.0);
+    result.v6 = (p1.v6 + p2.v6 + p3.v6 + p4.v6)*(1/4.0);
+}
