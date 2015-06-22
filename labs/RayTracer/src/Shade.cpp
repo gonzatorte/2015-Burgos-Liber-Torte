@@ -83,7 +83,7 @@ Vector & Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     }
 
     int maxLevel = 3;
-    int minWeight = 0.1;
+    float minWeight = 0.1;
     if (level + 1 < maxLevel){
         // Reflexion
         if ((weight * figure->kspec > minWeight) && (figure->kspec > 0)){
