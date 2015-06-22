@@ -18,8 +18,8 @@ class Sphere: public Figure
         Vector center;
         vector<Isect> intersect(Ray & ray);
         friend ostream & operator<<(ostream & , Sphere & );
+        void print(ostream & stream);
     protected:
-        virtual void print(ostream & stream);
     private:
         void intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, float distance);
 };

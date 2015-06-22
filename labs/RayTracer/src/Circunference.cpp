@@ -50,5 +50,5 @@ ostream & operator<<(ostream & os, Circunference & c) {
 }
 
 void Circunference::print(ostream & os){
-    os << "Center " << center ;
+    os << " | Center " << center << " | radius" << radius ;
 }

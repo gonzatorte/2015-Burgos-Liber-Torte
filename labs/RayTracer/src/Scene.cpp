@@ -77,8 +77,15 @@ Scene::~Scene(){
 }
 
 ostream & operator<<(ostream & os, Scene & s) {
-    for (list<Figure*>::iterator it=s.figures.begin(); it!=s.figures.end(); ++it){
+    os << *(s.camera) << endl;
+    os << s.height << endl;
+    os << s.width << endl;
+    for (list<Light*>::iterator it=s.lights.begin(); it!=s.lights.end(); ++it){
         os << *(*it) << endl;
+    }
+    for (list<Figure*>::iterator it=s.figures.begin(); it!=s.figures.end(); ++it){
+        (*it)->print(os);
+        os << endl;
     }
     return os;
 }

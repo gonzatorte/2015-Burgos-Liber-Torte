@@ -16,8 +16,8 @@ class Plane: public Figure
         float height, width;
         Vector center, norm;
         friend ostream & operator<<(ostream & , Plane & );
+        void print(ostream & stream);
     protected:
-        virtual void print(ostream & stream);
     private:
 };
 

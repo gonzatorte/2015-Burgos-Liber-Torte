@@ -15,6 +15,7 @@ class Light: public Object
         Vector diffuse_color;
         Vector specular_color;
         Vector ambient_color;
+        friend ostream & operator<<(ostream & os, Light & s);
     protected:
     private:
 };

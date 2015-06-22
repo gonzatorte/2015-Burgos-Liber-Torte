@@ -125,8 +125,9 @@ ostream & operator<<(ostream & os, Mesh & m) {
 }
 
 void Mesh::print(ostream & os){
-    os << "Mesh:";
-    for (vector<Triangle>::iterator t_it = triangles.begin(); t_it != triangles.end(); ++t_it){
-        os << "Mesh vertex " << (*t_it);
-    }
+    os << "{ Mesh" << endl;
+//    for (vector<Triangle>::iterator t_it = triangles.begin(); t_it != triangles.end(); ++t_it){
+//        os << "Mesh vertex " << (*t_it);
+//    }
+    os << "} Mesh" << endl;
 }

@@ -1,5 +1,8 @@
 #include "Screen.h"
 #include "Scene.h"
+#include <sstream>
+
+using namespace std;
 
 Pixel* average(Pixel* p1, Pixel* p2, Pixel* p3, Pixel* p4) {
     Pixel* result = new Pixel();
@@ -48,9 +51,12 @@ vector<double> Screen::getColor(Ray ray) {
 }
 
 void add_png_metadata(FIBITMAP* bitmap){
+    Scene* scene = Scene::getInstance();
     FITAG * tag = FreeImage_CreateTag();
-    const char * value = "Hello World";
-    const char *key = "Comment";
+    stringstream strbuff;
+    strbuff << *scene;
+    const char * value = strbuff.str().c_str();
+    const char * key = "Comment";
     DWORD len;
     len = strlen(value)+1;
     if (tag){

@@ -423,17 +423,12 @@ void Game::addMisil() {
     list<ModelFigure*>::iterator itBuildings = obtRandomIterator();
 
     ModelFigure* misil = new ModelFigure(model_misil);
-<<<<<<< HEAD
     misil->orientation = Vector(90, 0, 45);
     misil->aspect = Vector(1/20.0,1/20.0,-1/20.0);
 
 //    Misil* misil = new Misil();
 
     misil->acceleration = Vector(0.0 ,0.0 ,0.0);
-=======
-
-    misil->acceleration = Vector(0.0 ,0.0 ,180.0);
->>>>>>> b68fd16922164b3ef7e843ca346d44835c0626eb
     float rand_x = (*itBuildings)->position.x + (rand() % 30) * multiplicador;
     float rand_z = (*itBuildings)->position.z + (rand() % 30) * multiplicador;
     float y = 15.0;
@@ -752,11 +747,11 @@ void Game::drawLandscape(){
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
     glVertex3f(-box_size, 0.0f, -box_size);
-    glTexCoord2f(1, 0);
+    glTexCoord2f(10, 0);
     glVertex3f(-box_size, 0.0f,  box_size);
-    glTexCoord2f(1, 1);
+    glTexCoord2f(10, 10);
     glVertex3f( box_size, 0.0f,  box_size);
-    glTexCoord2f(0, 1);
+    glTexCoord2f(0, 10);
     glVertex3f( box_size, 0.0f, -box_size);
     glEnd();
 
