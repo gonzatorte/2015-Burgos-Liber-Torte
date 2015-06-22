@@ -15,7 +15,7 @@ void Sphere::read(tinyxml2::XMLElement* element) {
     Figure::read(element);
 }
 
-void Sphere::intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, float distance){
+void Sphere::intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, double distance){
     Isect isect;
     isect.figure = this;
     isect.surfacePoint = ray.direction*distance + ray.origin;
@@ -31,14 +31,14 @@ void Sphere::intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, floa
 vector<Isect> Sphere::intersect(Ray & ray){
 	vector<Isect> intersecciones;
 	Vector d = ray.direction;
-	float t1 = -1;
-	float t2 = -1;
-	float discriminent;
+	double t1 = -1;
+	double t2 = -1;
+	double discriminent;
 	Vector temporary = ray.origin - center;
-	float b = 2*(d*temporary);
-	float a = d*d;
-	float c = temporary*temporary - (radius * radius);
-	float disc = b*b - 4*a*c;
+	double b = 2*(d*temporary);
+	double a = d*d;
+	double c = temporary*temporary - (radius * radius);
+	double disc = b*b - 4*a*c;
 	if(disc >= 0){
 		discriminent = sqrt(disc);
 		t2 = (-b+discriminent)/(2*a);

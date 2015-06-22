@@ -9,8 +9,8 @@ Mesh::Mesh(){
 }
 
 void Mesh::buildTriangles(Vector v1, Vector v2, Vector v3, Vector v4, int signoNormal, int index) {
-    float height;
-    float width;
+    double height;
+    double width;
     Vector aux, normal, center;
     if (v1.z==v2.z && v2.z==v3.z && v3.z==v4.z) { //Cara frontal y de fondo
         height = abs((v1 - v2).y);

@@ -21,7 +21,7 @@ class Sphere: public Figure
         void print(ostream & stream);
     protected:
     private:
-        void intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, float distance);
+        void intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, double distance);
 };
 
 #endif // SPHERE_H

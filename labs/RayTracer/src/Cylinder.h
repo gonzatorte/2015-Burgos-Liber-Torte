@@ -15,7 +15,7 @@ class Cylinder: public Figure
         Cylinder();
         void read(tinyxml2::XMLElement* element);
         virtual ~Cylinder();
-        float radius;
+        double radius;
         Vector base;
         Vector top;
         vector<Isect> intersect(Ray & Cylinder);
@@ -23,8 +23,8 @@ class Cylinder: public Figure
         void print(ostream & stream);
     protected:
         bool check_caps_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & normal, Vector & point_ref);
-        bool check_body_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, float tt);
-        void intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, Vector & normal, Vector & point, float distance);
+        bool check_body_intersect(vector<Isect> & intersecciones, Ray & ray, Vector & orientation, Vector & point, double tt);
+        void intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, Vector & normal, Vector & point, double distance);
     private:
 };
 

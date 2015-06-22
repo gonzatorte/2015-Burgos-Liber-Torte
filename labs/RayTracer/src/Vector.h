@@ -7,20 +7,20 @@ using namespace std;
 class Vector{
     public:
         Vector();
-        Vector(float x, float y, float z);
+        Vector(double x, double y, double z);
         ~Vector();
         Vector operator+(const Vector & v);
         Vector operator-(const Vector & v);
         Vector operator-();
         Vector operator/(const Vector & v);
-        Vector operator*(float num);
+        Vector operator*(double num);
         Vector cross(const Vector & v);
-        float operator*(const Vector &);
+        double operator*(const Vector &);
         Vector operator^(Vector v);
         Vector & operator=(const Vector & v);
         Vector & operator+=(const Vector & v);
         bool operator==(const Vector & v);
-        bool similar(Vector & v, float eps);
+        bool similar(Vector & v, double eps);
         bool operator!=(const Vector & v);
         bool operator<(const Vector & v);
         bool operator<=(const Vector & v);
@@ -28,14 +28,14 @@ class Vector{
         bool operator>(const Vector & v);
         bool operator<<(const Vector & v);
         friend ostream & operator<<(ostream & , Vector & );
-        float Norm();
+        double Norm();
         Vector UnitVector();
-        float Square();
+        double Square();
         Vector Projection(Vector & v);
         Vector Rejection(Vector & v);
         void clear();
 
-        float x,y,z;
+        double x,y,z;
 };
 
 class ManyVector{

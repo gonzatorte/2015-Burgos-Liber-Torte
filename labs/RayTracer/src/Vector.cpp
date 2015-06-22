@@ -24,7 +24,7 @@ Vector & Vector::operator+=(const Vector & v){
     return *this;
 }
 
-Vector::Vector(float x, float y, float z){
+Vector::Vector(double x, double y, double z){
     this->x = x;
     this->y = y;
     this->z = z;
@@ -47,12 +47,12 @@ Vector Vector::operator/(const Vector & v) {
     return result;
 }
 
-Vector Vector::operator*(float num) {
+Vector Vector::operator*(double num) {
     Vector result = Vector(this->x * num, this->y * num, this->z * num);
     return result;
 }
 
-float Vector::operator*(const Vector & v) {
+double Vector::operator*(const Vector & v) {
     return this->x * v.x + this->y * v.y + this->z * v.z;
 }
 
@@ -60,7 +60,7 @@ Vector Vector::operator^(Vector v) {
     return this->cross(v);
 }
 
-bool Vector::similar(Vector & v, float eps){
+bool Vector::similar(Vector & v, double eps){
     return (*this - (Vector(1,1,1)*eps) < v) && (v < *this + (Vector(1,1,1)*eps));
 }
 
@@ -106,7 +106,7 @@ Vector Vector::Projection(Vector & v){
     return v*(((*this) * v)/v.Square());
 }
 
-float Vector::Square(){
+double Vector::Square(){
     return (*this)*(*this);
 }
 
@@ -114,7 +114,7 @@ Vector Vector::UnitVector(){
     return (*this)*(1/sqrt(this->Square()));
 }
 
-float Vector::Norm(){
+double Vector::Norm(){
     return sqrt(this->Square());
 }
 

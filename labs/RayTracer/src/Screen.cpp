@@ -199,11 +199,9 @@ void Screen::auxiliar_coef_image(int height, int width){
 
     RGBQUAD free_color;
     vector<double> colorsList;
-    Pixel** buff = new Pixel*[width];
     for (int j=0; j < width; j++) {
         if (j%100 == 0)
             cout << "Van " << j << " De " << width << " Lineas" << endl;
-        buff[j] = new Pixel[height];
         for (int i=0; i < height; i++) {
             Vector rayDir = (cam->lookAt)*cam->distance + cam->upVector*((scene->height)/2 - (i + 0.5));
             rayDir = rayDir + cam->leftVector*((scene->width)/2 - (j - 0.5));

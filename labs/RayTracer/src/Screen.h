@@ -4,7 +4,6 @@
 #include <ctime>
 #include <vector>
 
-#include "Pixel.h"
 #include "Ray.h"
 
 #include "Trace.h"

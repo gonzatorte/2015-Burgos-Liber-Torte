@@ -25,7 +25,7 @@ bool shadow(Ray & ray, Figure * fig){
     bool interfiere = true;
     vector<Isect> isects = fig->intersect(ray);
     if (!isects.empty()){
-        float minDistance = isects[0].distance;
+        double minDistance = isects[0].distance;
         for (list<Figure*>::iterator it_figure = s->figures.begin(); it_figure!=s->figures.end(); ++it_figure){
             Figure * other_fig = (*it_figure);
             if (other_fig != fig){
@@ -72,14 +72,14 @@ void Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight, ManyVector 
 
             if (shadow(rayL, figure)){
                 if (diffuse_component){
-                    float difuse_angle = (-rayL.direction.UnitVector()) * normal.UnitVector();
+                    double difuse_angle = (-rayL.direction.UnitVector()) * normal.UnitVector();
                     difuse_angle = limited(difuse_angle,0,1);
                     colorDifuso = colorDifuso + (curr_light->diffuse_color * (figure->kdif * difuse_angle));
                 }
                 if (specular_component){
-                    float reflex_view_angle = cam_direction * specular_direction;
+                    double reflex_view_angle = cam_direction * specular_direction;
                     reflex_view_angle = limited(reflex_view_angle,0,1);
-                    float phong = powf(reflex_view_angle, figure->shininess);
+                    double phong = powf(reflex_view_angle, figure->shininess);
                     colorSpecular = colorSpecular +
                             (curr_light->specular_color * figure->kspec * phong);
                 }
@@ -102,7 +102,7 @@ void Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight, ManyVector 
             if ((weight * figure->refr_medium > minWeight) && (figure->ktran > 0)){
                 Vector transDirection;
                 bool no_total_ref;
-                float eta;
+                double eta;
                 if (isect.enter){
                     eta = ray.tran/figure->refr_medium;
                     no_total_ref = Ray::transmisionDirection(eta, ray.direction, normal, transDirection);

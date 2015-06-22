@@ -19,7 +19,7 @@ class Shade{
         bool ambient_component;
         bool natural_component;
         int maxLevel;
-        float minWeight;
+        double minWeight;
         virtual ~Shade();
         void shadeRay(Ray & ray, Isect & isect, int level, int weight, ManyVector & resColors);
     protected:

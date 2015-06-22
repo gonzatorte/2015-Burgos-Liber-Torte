@@ -14,7 +14,7 @@ class Heart: public Figure{
         Heart();
         void read(tinyxml2::XMLElement* element);
         virtual ~Heart();
-        float radius;
+        double radius;
         Vector axis2T;
         Vector axis2B;
         Vector axis1L;

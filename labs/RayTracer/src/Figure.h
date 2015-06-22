@@ -15,18 +15,18 @@ class Isect;
 class Figure: public Object
 {
     public:
-        static const float FIGURE_EPS = 0.05f;
+        static const double FIGURE_EPS = 0.05f;
         void read(tinyxml2::XMLElement* element);
         Figure();
         virtual ~Figure();
         virtual vector<Isect> intersect(Ray & r) = 0;
         Vector color;
-        float kspec;
-        float kdif;
-        float kamb;
-        float ktran;
-        float shininess;
-        float refr_medium;
+        double kspec;
+        double kdif;
+        double kamb;
+        double ktran;
+        double shininess;
+        double refr_medium;
         friend ostream & operator<<(ostream & , Figure & );
         virtual void print(ostream & stream);
     protected:

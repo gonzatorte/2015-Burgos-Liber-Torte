@@ -17,10 +17,10 @@ void Circunference::read(tinyxml2::XMLElement* element) {
 
 vector<Isect> Circunference::intersect(Ray & ray) {
     vector <Isect> intersecciones;
-    float cosciente = norm * (center - ray.origin);
-    float denominador = norm * (ray.direction);
+    double cosciente = norm * (center - ray.origin);
+    double denominador = norm * (ray.direction);
     if (denominador != 0) {
-        float t = cosciente/denominador;
+        double t = cosciente/denominador;
         if (t>=Figure::FIGURE_EPS) {
             Vector point = ray.origin + ray.direction * t;
             if ((point - center).Square() < radius*radius){

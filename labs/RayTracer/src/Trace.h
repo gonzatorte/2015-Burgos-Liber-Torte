@@ -3,7 +3,6 @@
 
 #include "Shade.h"
 #include "Ray.h"
-#include "Pixel.h"
 
 #include <vector>
 
