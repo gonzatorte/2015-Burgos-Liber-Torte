@@ -9,119 +9,15 @@ Screen::Screen(){
 }
 
 ManyVector ** Screen::component_diffuse(){
-    Trace * t = new Trace();
-    t->shader->diffuse_component = true;
-    t->shader->natural_component = true;
-    t->shader->maxLevel = 1;
-    Scene* scene = Scene::getInstance();
-    int width = scene->width;
-    int height = scene->height;
-
-    ManyVector ** buff = processScreen(t, height, width);
-
-    FIBITMAP* image = FreeImage_Allocate(width, height, 24);
-
-    Vector ** Vbuff = new Vector*[width];
-    for (int j = 0 ; j < width; j++){
-        Vbuff[j] = new Vector[height];
-        for (int i = 0 ; i < height; i++){
-            Vbuff[j][i] = buff[j][i].v1;
-        }
-    }
-
-    Pic::copy_to_image(image, Vbuff, height, width);
-
-    cout << "Guardando imagen" << endl;
-    Pic::add_png_metadata(image);
-    FreeImage_Save(FIF_PNG, image,"diffuse.png", 0);
-    return buff;
 }
 
 ManyVector ** Screen::component_spec(){
-    Trace * t = new Trace();
-    t->shader->specular_component = true;
-    t->shader->natural_component = true;
-    t->shader->maxLevel = 1;
-    Scene* scene = Scene::getInstance();
-    int width = scene->width;
-    int height = scene->height;
-
-    ManyVector ** buff = processScreen(t, height, width);
-
-    FIBITMAP* image = FreeImage_Allocate(width, height, 24);
-
-    Vector ** Vbuff = new Vector*[width];
-    for (int j = 0 ; j < width; j++){
-        Vbuff[j] = new Vector[height];
-        for (int i = 0 ; i < height; i++){
-            Vbuff[j][i] = buff[j][i].v1;
-        }
-    }
-
-    Pic::copy_to_image(image, Vbuff, height, width);
-
-    cout << "Guardando imagen" << endl;
-    Pic::add_png_metadata(image);
-    FreeImage_Save(FIF_PNG, image,"specular.png", 0);
-    return buff;
 }
 
 ManyVector ** Screen::component_ambient(){
-    Trace * t = new Trace();
-    t->shader->ambient_component = true;
-    t->shader->natural_component = true;
-    t->shader->maxLevel = 1;
-    Scene* scene = Scene::getInstance();
-    int width = scene->width;
-    int height = scene->height;
-
-    ManyVector ** buff = processScreen(t, height, width);
-
-    FIBITMAP* image = FreeImage_Allocate(width, height, 24);
-
-    Vector ** Vbuff = new Vector*[width];
-    for (int j = 0 ; j < width; j++){
-        Vbuff[j] = new Vector[height];
-        for (int i = 0 ; i < height; i++){
-            Vbuff[j][i] = buff[j][i].v1;
-        }
-    }
-
-    Pic::copy_to_image(image, Vbuff, height, width);
-
-    cout << "Guardando imagen" << endl;
-    Pic::add_png_metadata(image);
-    FreeImage_Save(FIF_PNG, image,"ambient.png", 0);
-    return buff;
 }
 
 ManyVector ** Screen::component_refract(){
-    Trace * t = new Trace();
-    t->shader->refraction_component = true;
-    t->shader->natural_component = true;
-    t->shader->maxLevel = 1;
-    Scene* scene = Scene::getInstance();
-    int width = scene->width;
-    int height = scene->height;
-
-    ManyVector ** buff = processScreen(t, height, width);
-
-    FIBITMAP* image = FreeImage_Allocate(width, height, 24);
-
-    Vector ** Vbuff = new Vector*[width];
-    for (int j = 0 ; j < width; j++){
-        Vbuff[j] = new Vector[height];
-        for (int i = 0 ; i < height; i++){
-            Vbuff[j][i] = buff[j][i].v1;
-        }
-    }
-
-    Pic::copy_to_image(image, Vbuff, height, width);
-
-    cout << "Guardando imagen" << endl;
-    Pic::add_png_metadata(image);
-    FreeImage_Save(FIF_PNG, image,"refraction.png", 0);
-    return buff;
 }
 
 ManyVector ** Screen::component_reflex(){
