@@ -2,8 +2,8 @@
 
 #define limited(V,I,S) ((V)<(I))?(I):(((V)>(S))?(S):(V))
 
-Shade::Shade(){
-    //ctor
+Shade::Shade(Trace * _tracer){
+    tracer = _tracer;
 }
 
 Shade::~Shade(){
@@ -50,7 +50,6 @@ Vector & Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     Figure* figure = isect.figure;
     Vector normal = isect.normal;
     Vector point = isect.surfacePoint;
-    Trace trace;
     Vector colorAmbiente;
     Vector colorDifuso;
     Vector colorSpecular;
@@ -89,7 +88,7 @@ Vector & Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
         // Reflexion
         if ((weight * figure->kspec > minWeight) && (figure->kspec > 0)){
             Ray rayStart(point, specular_direction);
-            colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
+            colorReflexion = tracer->traceRay(rayStart, level + 1, weight * figure->kspec);
             colorReflexion = colorReflexion * figure->kspec;
         }
         if ((weight * figure->refr_medium > minWeight) && (figure->ktran > 0)){
@@ -106,7 +105,7 @@ Vector & Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
             if (no_total_ref){
                 Ray rayStart(point, transDirection);
                 rayStart.tran = eta;
-                colorRefraction = trace.traceRay(rayStart, level + 1, weight * figure->ktran);
+                colorRefraction = tracer->traceRay(rayStart, level + 1, weight * figure->ktran);
                 colorRefraction = colorRefraction * figure->ktran;
             }
         }

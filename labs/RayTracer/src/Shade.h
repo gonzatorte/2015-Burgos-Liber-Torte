@@ -6,10 +6,12 @@
 #include "Scene.h"
 #include "Trace.h"
 
-class Shade
-{
+class Trace;
+
+class Shade{
     public:
-        Shade();
+        Shade(Trace * t);
+        Trace * tracer;
         virtual ~Shade();
         Vector & shadeRay(Ray & ray, Isect & isect, int level, int weight);
     protected:

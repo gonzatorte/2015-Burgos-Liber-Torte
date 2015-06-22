@@ -1,12 +1,12 @@
 #include "Trace.h"
 
 Trace::Trace(){
+    shader = new Shade(this);
 }
 
 Vector Trace::traceRay(Ray & ray, int level, int weight) {
     Vector color;
     Scene* scene = Scene::getInstance();
-    Shade shade;
     Isect closest;
     double minDistance = 100000;
     bool finded = false;
@@ -20,7 +20,7 @@ Vector Trace::traceRay(Ray & ray, int level, int weight) {
         }
     }
     if (finded) {
-        color = shade.shadeRay(ray, closest, level, weight);
+        color = shader->shadeRay(ray, closest, level, weight);
     } else {
         color = Vector(0,0,0);
     }

@@ -6,9 +6,12 @@
 #include "Ray.h"
 #include "Pixel.h"
 
+class Shade;
+
 class Trace{
     public:
         Trace();
+        Shade * shader;
         Vector traceRay(Ray & ray, int level, int weight);
         virtual ~Trace();
     protected:
