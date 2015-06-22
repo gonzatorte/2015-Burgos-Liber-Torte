@@ -1,6 +1,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include <list>
+
 #include "tinyxml2.h"
 #include "Sphere.h"
 #include "Cylinder.h"
@@ -12,12 +14,13 @@
 #include "Light.h"
 #include "Ray.h"
 #include "Mesh.h"
-#include <list>
+
 
 using namespace std;
 
-class Scene
-{
+class Screen;
+
+class Scene {
     public:
         Scene();
         static Scene* instance;

@@ -1,24 +1,35 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
-#include "Pixel.h"
-#include "Ray.h"
-#include "lib/FreeImage/FreeImage.h"
 #include <ctime>
 #include <vector>
 
+#include "Pixel.h"
+#include "Ray.h"
+
+#include "Trace.h"
 
 using namespace std;
 
-class Screen
-{
+class Trace;
+
+class Screen{
     public:
         Screen();
-        void createScreen();
         virtual ~Screen();
+
+        void createScreen();
+
+        ManyVector ** component_diffuse();
+        ManyVector ** component_spec();
+        ManyVector ** component_ambient();
+        ManyVector ** component_refract();
+        ManyVector ** component_reflex();
+        ManyVector ** component_all();
     protected:
+        ManyVector ** processScreen(Trace * t, int height, int width);
+        void auxiliar_coef_image(int height, int width);
     private:
-        vector<double> getColor(Ray ray);
 
 };
 

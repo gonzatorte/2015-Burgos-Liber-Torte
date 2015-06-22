@@ -12,8 +12,16 @@ class Shade{
     public:
         Shade(Trace * t);
         Trace * tracer;
+        bool reflexion_component;
+        bool refraction_component;
+        bool diffuse_component;
+        bool specular_component;
+        bool ambient_component;
+        bool natural_component;
+        int maxLevel;
+        float minWeight;
         virtual ~Shade();
-        Vector & shadeRay(Ray & ray, Isect & isect, int level, int weight);
+        void shadeRay(Ray & ray, Isect & isect, int level, int weight, ManyVector & resColors);
     protected:
     private:
 };
