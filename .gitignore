@@ -9,3 +9,4 @@
 *.png
 *.tga
 *.cbp
+**/Thumbs.db
