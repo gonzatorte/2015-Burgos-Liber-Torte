@@ -15,9 +15,9 @@ int main ( int argc, char** argv ){
     }
     Scene* scene = Scene::getInstance();
     scene->sceneRead(filepath);
-    ini_time();
+    clock_t ini = ini_time();
     scene->createScreen();
-    float e_time = end_time();
+    float e_time = end_time(ini);
     cout << "Elapsed time : " << e_time << endl;
     return 0;
 }

@@ -20,7 +20,7 @@
 	<plane centerX="0" centerY="200" centerZ="2000" normalX="0" normalY="-1" normalZ="0"  width="5000" height="5000" r="200" g="200" b="200" ktran="0" kspec="0" kdif="0.5" kamb="0.2" shininess="0" />
 	<plane centerX="400" centerY="0" centerZ="2000" normalX="-1" normalY="0" normalZ="0" width="5000" height="5000" r="0" g="80" b="0" ktran="0" kspec="0" kdif="0.3" kamb="0.1" shininess="0" />
 
-	<sphere centerX="-200" centerY="-70" centerZ="1550" radius="120" r="0" g="0" b="0"  ktran="1" kspec="0" kdif="0.3" kamb="0" shininess="1.5" refr_medium="1.25" />
+	<sphere centerX="-200" centerY="-70" centerZ="1550" radius="120" r="0" g="0" b="0"  ktran="1" kspec="0" kdif="0.3" kamb="0" shininess="1.5" refr_medium="1.1" />
 
 	<sphere centerX="200" centerY="0" centerZ="1550" radius="50" r="1" g="1" b="1" ktran="0" kspec="0.8" kdif="0" kamb="0.2" shininess="0" />
     <cylinder baseX="-90" baseY="50" baseZ="1500" topX="-90" topY="-100" topZ="1500" radius="60" r="0" g="100" b="0" ktran="0" kspec="0" kdif="0.8" kamb="0.1" shininess="15" refr_medium="3" />

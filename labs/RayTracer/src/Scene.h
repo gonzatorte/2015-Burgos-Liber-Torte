@@ -2,6 +2,7 @@
 #define SCENE_H
 
 #include <list>
+#include <ctime>
 
 #include "tinyxml2.h"
 #include "Sphere.h"
@@ -33,6 +34,7 @@ class Scene {
         Screen* screen;
         Camera* camera;
         int width, height;
+        time_t time_scene;
         friend ostream & operator<<(ostream & , Scene & );
     protected:
     private:

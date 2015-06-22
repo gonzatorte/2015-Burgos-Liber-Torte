@@ -3,8 +3,8 @@
 
 #include <ctime>
 
-void ini_time();
-float end_time();
+clock_t ini_time();
+float end_time(clock_t );
 
 
 

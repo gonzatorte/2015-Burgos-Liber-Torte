@@ -1,6 +1,9 @@
+#include <sstream>
+
 #include "Screen.h"
 #include "Scene.h"
 #include "Pic.h"
+#include "Profile.h"
 
 using namespace std;
 
@@ -31,6 +34,7 @@ ManyVector ** Screen::component_ambient(ManyVector ** buff){
                 Vbuff[j][i].z = (Vbuff[j][i].z > 255)?255:Vbuff[j][i].z;
             }
         }
+        cout << "Guardando imagen" << endl;
         Pic::save_image(Vbuff, "ambient.png", width, height);
     }
 
@@ -60,6 +64,7 @@ ManyVector ** Screen::component_diffuse(ManyVector ** buff){
                 Vbuff[j][i].z = (Vbuff[j][i].z > 255)?255:Vbuff[j][i].z;
             }
         }
+        cout << "Guardando imagen" << endl;
         Pic::save_image(Vbuff, "diffuse.png", width, height);
     }
 
@@ -89,6 +94,7 @@ ManyVector ** Screen::component_spec(ManyVector ** buff){
                 Vbuff[j][i].z = (Vbuff[j][i].z > 255)?255:Vbuff[j][i].z;
             }
         }
+        cout << "Guardando imagen" << endl;
         Pic::save_image(Vbuff, "specular.png", width, height);
     }
 
@@ -119,6 +125,7 @@ ManyVector ** Screen::component_reflex(ManyVector ** buff){
                 Vbuff[j][i].z = (Vbuff[j][i].z > 255)?255:Vbuff[j][i].z;
             }
         }
+        cout << "Guardando imagen" << endl;
         Pic::save_image(Vbuff, "reflexion.png", width, height);
     }
 
@@ -149,6 +156,7 @@ ManyVector ** Screen::component_refract(ManyVector ** buff){
                 Vbuff[j][i].z = (Vbuff[j][i].z > 255)?255:Vbuff[j][i].z;
             }
         }
+        cout << "Guardando imagen" << endl;
         Pic::save_image(Vbuff, "refraction.png", width, height);
     }
 
@@ -184,7 +192,18 @@ ManyVector ** Screen::component_all(ManyVector ** buff){
             }
         }
 
-        Pic::save_image(Vbuff, "PRUEBAIMAGE.png", width, height);
+        struct tm * now = localtime( & scene->time_scene );
+        stringstream strbufftime;
+        strbufftime << (now->tm_year + 1900) << '_'
+             << (now->tm_mon + 1) << '_'
+             <<  (now->tm_mday) << '_'
+             << (now->tm_hour) << '_'
+             << (now->tm_min) << '_'
+             << (now->tm_sec) << ".png";
+        const char * filename = strbufftime.str().c_str();
+
+        cout << "Guardando imagen" << endl;
+        Pic::save_image(Vbuff, filename, width, height);
     }
 
     return buff;
@@ -196,6 +215,9 @@ void Screen::auxiliar_coef_image(int height, int width){
 
     FIBITMAP* refractionImage = FreeImage_Allocate(width, height, 24);
     FIBITMAP* reflexionImage = FreeImage_Allocate(width, height, 24);
+
+    cout << "Generando imagen auxiliar" << endl;
+    clock_t ini = ini_time();
 
     RGBQUAD free_color;
     vector<double> colorsList;
@@ -220,9 +242,14 @@ void Screen::auxiliar_coef_image(int height, int width){
         }
     }
 
+    cout << "Tiempo transcurrido : " << end_time(ini) << endl;
+
+    cout << "Guardando imagen" << endl;
     Pic::add_png_metadata(reflexionImage);
+//    Pic::save_image(Vbuff, filename, width, height);
     FreeImage_Save(FIF_PNG, reflexionImage,"ReflexionImage.png", 0);
 
+    cout << "Guardando imagen" << endl;
     Pic::add_png_metadata(refractionImage);
     FreeImage_Save(FIF_PNG, refractionImage,"refractionImage.png", 0);
 }
@@ -249,6 +276,9 @@ ManyVector ** Screen::processScreen(Trace * trace, int height, int width) {
     Scene* scene = Scene::getInstance();
     Camera* cam = scene->camera;
 
+    cout << "Generando imagen principal" << endl;
+    clock_t ini = ini_time();
+
     ManyVector ** buff = new ManyVector*[width];
     for (int j=0; j < width; j++) {
         if (j%100 == 0)
@@ -265,6 +295,9 @@ ManyVector ** Screen::processScreen(Trace * trace, int height, int width) {
             }
         }
     }
+
+    cout << "Tiempo transcurrido : " << end_time(ini) << endl;
+
     return buff;
 }
 

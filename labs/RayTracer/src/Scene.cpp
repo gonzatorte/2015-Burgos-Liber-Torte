@@ -1,11 +1,13 @@
 #include "Scene.h"
 #include <string>
-#include <math.h>
+#include <cmath>
+#include <ctime>
+
 Scene* Scene::instance = NULL;
 
-Scene::Scene()
-{
+Scene::Scene(){
     screen = new Screen();
+    time_scene = time(0);
 }
 
 Scene* Scene::getInstance() {
