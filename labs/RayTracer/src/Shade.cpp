@@ -92,7 +92,7 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
             colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
             colorReflexion = colorReflexion * figure->kspec;
         }
-        if ((weight * figure->ktran > minWeight) && (figure->ktran > 0)){
+        if ((weight * figure->refr_medium > minWeight) && (figure->ktran > 0)){
             Vector transDirection;
             bool no_total_ref;
             float eta;

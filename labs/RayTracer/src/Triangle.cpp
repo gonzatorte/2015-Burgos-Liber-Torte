@@ -28,10 +28,10 @@ vector<Isect> Triangle::intersect(Ray & ray) {
                 Isect isect;
                 isect.surfacePoint = isectPoint;
                 isect.normal = norm;
-                isect.enter = (ray.direction * isect.normal) < 0;
-//                if (!isect.enter){
-//                    isect.normal = -isect.normal;
-//                }
+                isect.enter = (ray.direction * isect.normal) > 0;
+                if (!isect.enter){
+                    isect.normal = -isect.normal;
+                }
                 isect.distance = t;
                 isect.figure = this;
                 intersecciones.push_back(isect);

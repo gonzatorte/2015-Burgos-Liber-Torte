@@ -21,10 +21,10 @@ void Cylinder::intersect_add_isect(vector<Isect> & intersecciones, Ray & ray, Ve
     isect.distance = distance;
     isect.surfacePoint = point;
     isect.normal = normal;
-    isect.enter = (ray.direction * isect.normal) < 0;
-//    if (!isect.enter){
-//        isect.normal = -isect.normal;
-//    }
+    isect.enter = (ray.direction * isect.normal) > 0;
+    if (!isect.enter){
+        isect.normal = -isect.normal;
+    }
     intersecciones.push_back(isect);
 }
 

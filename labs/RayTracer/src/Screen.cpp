@@ -47,6 +47,23 @@ vector<double> Screen::getColor(Ray ray) {
     return colorsList;
 }
 
+void add_png_metadata(FIBITMAP* bitmap){
+    FITAG * tag = FreeImage_CreateTag();
+    const char * value = "Hello World";
+    const char *key = "Comment";
+    DWORD len;
+    len = strlen(value)+1;
+    if (tag){
+        FreeImage_SetTagType(tag, FIDT_ASCII);
+        FreeImage_SetTagKey(tag, key);
+        FreeImage_SetTagLength(tag, len);
+        FreeImage_SetTagCount(tag, len);
+        FreeImage_SetTagValue(tag, value);
+        FreeImage_SetMetadata(FIMD_COMMENTS, bitmap, key, tag);
+        FreeImage_DeleteTag(tag);
+    }
+}
+
 void Screen::createScreen() {
     Scene* scene = Scene::getInstance();
     int width = scene->width;
@@ -92,8 +109,13 @@ void Screen::createScreen() {
         }
     }
     cout << "Guardando imagen" << endl;
+    add_png_metadata(image);
     FreeImage_Save(FIF_PNG, image,"PRUEBAIMAGE.png", 0);
+
+    add_png_metadata(reflexionImage);
     FreeImage_Save(FIF_PNG, reflexionImage,"ReflexionImage.png", 0);
+
+    add_png_metadata(refractionImage);
     FreeImage_Save(FIF_PNG, refractionImage,"refractionImage.png", 0);
 
 }

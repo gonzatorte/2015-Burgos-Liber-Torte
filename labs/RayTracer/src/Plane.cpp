@@ -39,9 +39,9 @@ vector<Isect> Plane::intersect(Ray & ray) {
                 isect.surfacePoint = isectPoint;
                 isect.normal = norm;
                 isect.enter = (ray.direction * isect.normal) > 0;
-//                if (!isect.enter){
-//                    isect.normal = -isect.normal;
-//                }
+                if (!isect.enter){
+                    isect.normal = -isect.normal;
+                }
                 isect.distance = t;
                 intersecciones.push_back(isect);
             }

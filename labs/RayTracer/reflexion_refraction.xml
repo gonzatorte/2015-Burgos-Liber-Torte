@@ -1,0 +1,15 @@
+<scene width="1000" height="500">
+	<camera viewPointX="0" viewPointY="0" viewPointZ="-600" lookAtX="0" lookAtY="0" lookAtZ="1" upVectorX="0" upVectorY="1" upVectorZ="0" />
+	<plane centerX="-400" centerY="0" centerZ="2000" normalX="1" normalY="0" normalZ="0"  width="5000" height="5000" r="200" g="0" b="0" ktran="0" kspec="0" kdif="0.5" kamb="0.3" shininess="1.2" />
+	<plane centerX="0" centerY="-250" centerZ="2000" normalX="0" normalY="1" normalZ="0"  width="5000" height="5000" r="0" g="200" b="0" ktran="0" kspec="0" kdif="0.5" kamb="0.5" shininess="1.2" />
+	<plane centerX="0" centerY="500" centerZ="2000" normalX="0" normalY="0" normalZ="-1"  width="5000" height="5000" r="0" g="0" b="200" ktran="0" kspec="0" kdif="0.5" kamb="0.4" shininess="1.2" />
+	<plane centerX="0" centerY="250" centerZ="2000" normalX="0" normalY="-1" normalZ="0"  width="5000" height="5000" r="100" g="0" b="100" ktran="0" kspec="0" kdif="0.5" kamb="0" shininess="1.2" />
+	<plane centerX="400" centerY="0" centerZ="2000" normalX="-1" normalY="0" normalZ="0" width="5000" height="5000" r="50" g="100" b="50" ktran="0" kspec="0" kdif="0.5" kamb="0.5" shininess="1.2" />
+
+
+	<sphere centerX="-100" centerY="-100" centerZ="1000" radius="80" r="0" g="0" b="0" ktran="0.5" kspec="2" kdif="0" kamb="0" shininess="1.5" refr_medium="1.2" />
+	<sphere centerX="100" centerY="100" centerZ="1000" radius="80" r="0" g="0" b="0" ktran="2" kspec="0.5" kdif="0" kamb="0" shininess="1.5" refr_medium="1.2" />
+
+	<sphere centerX="100" centerY="-100" centerZ="1000" radius="80" r="0" g="0" b="0" ktran="0.5" kspec="2" kdif="0" kamb="0" shininess="1.5" refr_medium="0.95" />
+	<sphere centerX="-100" centerY="100" centerZ="1000" radius="80" r="0" g="0" b="0" ktran="2" kspec="0.5" kdif="0" kamb="0" shininess="1.5" refr_medium="0.95" />
+</scene>
