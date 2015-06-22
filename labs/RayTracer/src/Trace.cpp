@@ -1,12 +1,9 @@
 #include "Trace.h"
 
-Trace::Trace()
-{
-    //ctor
+Trace::Trace(){
 }
 
-ManyVector Trace::traceRay(Ray & ray, int level, int weight) {
-    ManyVector mv;
+Vector Trace::traceRay(Ray & ray, int level, int weight) {
     Vector color;
     Scene* scene = Scene::getInstance();
     Shade shade;
@@ -23,21 +20,12 @@ ManyVector Trace::traceRay(Ray & ray, int level, int weight) {
         }
     }
     if (finded) {
-        mv = shade.shadeRay(ray, closest, level, weight);
+        color = shade.shadeRay(ray, closest, level, weight);
     } else {
         color = Vector(0,0,0);
-        mv.v1 = color;
-        mv.v2 = color;
-        mv.v3 = color;
-        mv.v4 = color;
-        mv.v5 = color;
-        mv.v6 = color;
     }
-    return mv;
-
+    return color;
 }
 
-Trace::~Trace()
-{
-    //dtor
+Trace::~Trace(){
 }

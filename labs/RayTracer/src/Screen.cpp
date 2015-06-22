@@ -14,9 +14,7 @@ Pixel & average(Pixel & p1, Pixel & p2, Pixel & p3, Pixel & p4) {
     return result;
 }
 
-Screen::Screen()
-{
-    //ctor
+Screen::Screen(){
 }
 
 vector<double> Screen::getColor(Ray ray) {
@@ -113,7 +111,7 @@ void Screen::createScreen() {
     FIBITMAP* refractionImage = FreeImage_Allocate(width, height, 24);
     FIBITMAP* reflexionImage = FreeImage_Allocate(width, height, 24);
 
-    ManyVector mv;
+    Vector color;
     RGBQUAD free_color;
     vector<double> colorsList;
     Pixel** buff = new Pixel*[width];
@@ -125,8 +123,8 @@ void Screen::createScreen() {
             Vector rayDir = (cam->lookAt)*cam->distance + cam->upVector*((scene->height)/2 - (i + 0.5)); //PELIGRO!!! Checkear esto con distintas pos de la camara.
             rayDir = rayDir + cam->leftVector*((scene->width)/2 - (j - 0.5));
             Ray ray = Ray(cam->viewPoint, rayDir);
-            mv = trace.traceRay(ray, 0, 1);
-            buff[j][i] = Pixel(j,i,mv.v1.x, mv.v1.y, mv.v1.z);
+            color = trace.traceRay(ray, 0, 1);
+            buff[j][i] = Pixel(j,i,color.x, color.y, color.z);
             if ((i > 0) && (j > 0)) {
 //                add_pixel_to_image(image, free_color, buff, j, i);
                 buff[j-1][i-1] = average(buff[j-1][i-1], buff[j][i-1], buff[j-1][i], buff[j][i]);

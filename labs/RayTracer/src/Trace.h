@@ -6,11 +6,10 @@
 #include "Ray.h"
 #include "Pixel.h"
 
-class Trace
-{
+class Trace{
     public:
         Trace();
-        ManyVector traceRay(Ray & ray, int level, int weight);
+        Vector traceRay(Ray & ray, int level, int weight);
         virtual ~Trace();
     protected:
     private:
