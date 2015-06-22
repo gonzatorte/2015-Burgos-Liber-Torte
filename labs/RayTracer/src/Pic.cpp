@@ -35,3 +35,11 @@ void Pic::copy_to_image(FIBITMAP * image, Vector ** buff, int height, int width)
     }
 }
 
+
+void Pic::save_image(Vector ** Vbuff, char * filepath, int width, int height){
+    cout << "Guardando imagen" << endl;
+    FIBITMAP * image = FreeImage_Allocate(width, height, 24);
+    Pic::copy_to_image(image, Vbuff, height, width);
+    Pic::add_png_metadata(image);
+    FreeImage_Save(FIF_PNG, image, filepath, 0);
+}

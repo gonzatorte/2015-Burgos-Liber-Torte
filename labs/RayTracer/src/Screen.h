@@ -20,12 +20,12 @@ class Screen{
 
         void createScreen();
 
-        ManyVector ** component_diffuse();
-        ManyVector ** component_spec();
-        ManyVector ** component_ambient();
-        ManyVector ** component_refract();
-        ManyVector ** component_reflex();
-        ManyVector ** component_all();
+        ManyVector ** component_diffuse(ManyVector ** buff = NULL);
+        ManyVector ** component_spec(ManyVector ** buff = NULL);
+        ManyVector ** component_ambient(ManyVector ** buff = NULL);
+        ManyVector ** component_refract(ManyVector ** buff = NULL);
+        ManyVector ** component_reflex(ManyVector ** buff = NULL);
+        ManyVector ** component_all(ManyVector ** buff = NULL);
     protected:
         ManyVector ** processScreen(Trace * t, int height, int width);
         void auxiliar_coef_image(int height, int width);
