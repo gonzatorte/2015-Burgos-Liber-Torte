@@ -4,8 +4,7 @@
 
 using namespace std;
 
-class Vector
-{
+class Vector{
     public:
         Vector();
         Vector(float x, float y, float z);
@@ -35,6 +34,15 @@ class Vector
         Vector Rejection(Vector & v);
 
         float x,y,z;
+};
+
+struct ManyVector{
+    Vector v1;
+    Vector v2;
+    Vector v3;
+    Vector v4;
+    Vector v5;
+    Vector v6;
 };
 
 #endif // VECTOR_H

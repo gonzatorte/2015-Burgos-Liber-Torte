@@ -59,16 +59,6 @@ bool Cylinder::check_body_intersect(vector<Isect> & intersecciones, Ray & ray, V
 vector<Isect> Cylinder::intersect(Ray & ray) {
     vector <Isect> intersecciones;
 
-//    Vector AB = (top - base);
-//    Vector AO = (ray.origin - base);
-//    Vector AOxAB = (AO ^ AB);
-//    Vector VxAB  = (ray.direction ^ AB);
-//    float  ab2   = (AB * AB);
-//    float a      = (VxAB * VxAB);
-//    float b      = 2 * (VxAB * AOxAB);
-//    float c      = (AOxAB * AOxAB) - (radius*radius * ab2);
-//    Vector orientation = AB.UnitVector();
-
     Vector orientation = (top - base).UnitVector();
     Vector dp = ray.origin - base;
     Vector ray_p_orient = ray.direction.Rejection(orientation);

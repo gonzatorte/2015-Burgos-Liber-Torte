@@ -6,8 +6,7 @@
 #include "Ray.h"
 #include "Pixel.h"
 
-class Trace
-{
+class Trace{
     public:
         Trace();
         Vector traceRay(Ray & ray, int level, int weight);

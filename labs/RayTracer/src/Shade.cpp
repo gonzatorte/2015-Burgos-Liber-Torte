@@ -45,7 +45,7 @@ bool transmisionDirection(float eta, Vector incidentRay, Vector normal, Vector &
     return true;
 }
 
-Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
+Vector & Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     Scene* s = Scene::getInstance();
     Figure* figure = isect.figure;
     Vector normal = isect.normal;
@@ -123,5 +123,11 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     color.x = color.x < 256 ? color.x : 255;
     color.y = color.y < 256 ? color.y : 255;
     color.z = color.z < 256 ? color.z : 255;
+//        mv.v2 = figure->color + colorAmbiente;
+//        mv.v3 = figure->color + colorDifuso;
+//        mv.v4 = figure->color + colorSpecular;
+//        mv.v5 = figure->color + colorReflexion;
+//        mv.v6 = figure->color + colorRefraction;
+//    }
     return color;
 }

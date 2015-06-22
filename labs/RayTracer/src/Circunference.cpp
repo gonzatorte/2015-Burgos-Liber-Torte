@@ -28,7 +28,7 @@ vector<Isect> Circunference::intersect(Ray & ray) {
                 isect.figure = this;
                 isect.surfacePoint = point;
                 isect.normal = norm;
-                isect.enter = (ray.direction * isect.normal) > 0;
+                isect.enter = (ray.direction * isect.normal) < 0;
                 if (!isect.enter){
                     isect.normal = -isect.normal;
                 }

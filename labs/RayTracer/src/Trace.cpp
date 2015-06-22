@@ -1,8 +1,6 @@
 #include "Trace.h"
 
-Trace::Trace()
-{
-    //ctor
+Trace::Trace(){
 }
 
 Vector Trace::traceRay(Ray & ray, int level, int weight) {
@@ -27,10 +25,7 @@ Vector Trace::traceRay(Ray & ray, int level, int weight) {
         color = Vector(0,0,0);
     }
     return color;
-
 }
 
-Trace::~Trace()
-{
-    //dtor
+Trace::~Trace(){
 }
