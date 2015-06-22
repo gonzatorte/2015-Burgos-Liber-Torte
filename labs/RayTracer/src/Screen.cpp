@@ -202,7 +202,7 @@ ManyVector ** Screen::component_all(ManyVector ** buff){
              << (now->tm_sec) << ".png";
         const char * filename = strbufftime.str().c_str();
 
-        cout << "Guardando imagen" << endl;
+        cout << "Guardando imagen " << filename << endl;
         Pic::save_image(Vbuff, filename, width, height);
     }
 
@@ -244,14 +244,38 @@ void Screen::auxiliar_coef_image(int height, int width){
 
     cout << "Tiempo transcurrido : " << end_time(ini) << endl;
 
-    cout << "Guardando imagen" << endl;
-    Pic::add_png_metadata(reflexionImage);
-//    Pic::save_image(Vbuff, filename, width, height);
-    FreeImage_Save(FIF_PNG, reflexionImage,"ReflexionImage.png", 0);
 
-    cout << "Guardando imagen" << endl;
-    Pic::add_png_metadata(refractionImage);
-    FreeImage_Save(FIF_PNG, refractionImage,"refractionImage.png", 0);
+    {
+        struct tm * now = localtime( & scene->time_scene );
+        stringstream strbufftime1;
+        strbufftime1 << (now->tm_year + 1900) << '_'
+             << (now->tm_mon + 1) << '_'
+             <<  (now->tm_mday) << '_'
+             << (now->tm_hour) << '_'
+             << (now->tm_min);
+        strbufftime1 << '_' << "aux_reflx.png";
+        const char * filename1 = strbufftime1.str().c_str();
+
+        cout << "Guardando imagen " << filename1 << endl;
+        Pic::add_png_metadata(reflexionImage);
+        FreeImage_Save(FIF_PNG, reflexionImage, filename1, 0);
+    }
+
+    {
+        struct tm * now = localtime( & scene->time_scene );
+        stringstream strbufftime1;
+        strbufftime1 << (now->tm_year + 1900) << '_'
+             << (now->tm_mon + 1) << '_'
+             <<  (now->tm_mday) << '_'
+             << (now->tm_hour) << '_'
+             << (now->tm_min);
+        strbufftime1 << '_' << "aux_refr.png";
+        const char * filename1 = strbufftime1.str().c_str();
+
+        cout << "Guardando imagen " << filename1 << endl;
+        Pic::add_png_metadata(refractionImage);
+        FreeImage_Save(FIF_PNG, refractionImage, filename1, 0);
+    }
 }
 
 void Screen::createScreen(){
@@ -261,13 +285,13 @@ void Screen::createScreen(){
     int width = scene->width;
     int height = scene->height;
 
-    ManyVector ** buff = component_all();
-
-    component_ambient(buff);
-    component_diffuse(buff);
-    component_spec(buff);
-    component_reflex(buff);
-    component_refract(buff);
+//    ManyVector ** buff = component_all();
+//
+//    component_ambient(buff);
+//    component_diffuse(buff);
+//    component_spec(buff);
+//    component_reflex(buff);
+//    component_refract(buff);
 
     auxiliar_coef_image(height, width);
 }
