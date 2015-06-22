@@ -5,7 +5,8 @@ Trace::Trace()
     //ctor
 }
 
-Vector Trace::traceRay(Ray & ray, int level, int weight) {
+ManyVector Trace::traceRay(Ray & ray, int level, int weight) {
+    ManyVector mv;
     Vector color;
     Scene* scene = Scene::getInstance();
     Shade shade;
@@ -22,11 +23,17 @@ Vector Trace::traceRay(Ray & ray, int level, int weight) {
         }
     }
     if (finded) {
-        color = shade.shadeRay(ray, closest, level, weight);
+        mv = shade.shadeRay(ray, closest, level, weight);
     } else {
         color = Vector(0,0,0);
+        mv.v1 = color;
+        mv.v2 = color;
+        mv.v3 = color;
+        mv.v4 = color;
+        mv.v5 = color;
+        mv.v6 = color;
     }
-    return color;
+    return mv;
 
 }
 

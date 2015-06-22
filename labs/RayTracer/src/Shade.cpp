@@ -45,7 +45,7 @@ bool transmisionDirection(float eta, Vector incidentRay, Vector normal, Vector &
     return true;
 }
 
-Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
+ManyVector & Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     Scene* s = Scene::getInstance();
     Figure* figure = isect.figure;
     Vector normal = isect.normal;
@@ -89,7 +89,9 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
         // Reflexion
         if ((weight * figure->kspec > minWeight) && (figure->kspec > 0)){
             Ray rayStart(point, specular_direction);
-            colorReflexion = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
+            ManyVector mv;
+            mv = trace.traceRay(rayStart, level + 1, weight * figure->kspec);
+            colorReflexion = mv.v1;
             colorReflexion = colorReflexion * figure->kspec;
         }
         if ((weight * figure->refr_medium > minWeight) && (figure->ktran > 0)){
@@ -106,7 +108,9 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
             if (no_total_ref){
                 Ray rayStart(point, transDirection);
                 rayStart.tran = eta;
-                colorRefraction = trace.traceRay(rayStart, level + 1, weight * figure->ktran);
+                ManyVector mv;
+                mv = trace.traceRay(rayStart, level + 1, weight * figure->ktran);
+                colorRefraction = mv.v1;
                 colorRefraction = colorRefraction * figure->ktran;
             }
         }
@@ -123,5 +127,14 @@ Vector Shade::shadeRay(Ray &ray, Isect & isect, int level, int weight){
     color.x = color.x < 256 ? color.x : 255;
     color.y = color.y < 256 ? color.y : 255;
     color.z = color.z < 256 ? color.z : 255;
-    return color;
+    ManyVector mv;
+    mv.v1 = color;
+    if (level == 0){
+        mv.v2 = figure->color + colorAmbiente;
+        mv.v3 = figure->color + colorDifuso;
+        mv.v4 = figure->color + colorSpecular;
+        mv.v5 = figure->color + colorReflexion;
+        mv.v6 = figure->color + colorRefraction;
+    }
+    return mv;
 }
